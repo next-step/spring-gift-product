@@ -5,6 +5,7 @@ import gift.dto.ProductResponseDto;
 import gift.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,5 +37,10 @@ public class ProductController {
     public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long id,
         @RequestBody ProductRequestDto productRequestDto) {
         return new ResponseEntity<>(productService.updateProduct(id, productRequestDto), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
     }
 }

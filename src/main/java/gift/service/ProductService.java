@@ -61,4 +61,11 @@ public class ProductService {
     }
 
 
+    public void deleteProduct(Long id) {
+        Product product = productRepository.findProductById(id);
+        if (product == null) {
+            throw new NoSuchElementException("Invalid id = " + id);
+        }
+        productRepository.deleteProduct(id);
+    }
 }
