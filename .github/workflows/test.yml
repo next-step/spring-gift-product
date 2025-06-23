@@ -1,9 +1,9 @@
-name: Gradle CI with Tests
+name: spring-gift Test Automation
 
 on:
   push:
     branches:
-      - step-*
+      - step*
   workflow_dispatch:
 
 jobs:
