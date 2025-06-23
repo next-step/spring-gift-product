@@ -23,4 +23,8 @@ public class GiftRepository {
     public void save(RequestGift requestGift) {
         giftMap.put(requestGift.id(), RequestGift.from(requestGift));
     }
+
+    public Gift findById(Long id) {
+        return giftMap.get(id);
+    }
 }

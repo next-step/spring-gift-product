@@ -1,6 +1,7 @@
 package gift.controller;
 
 import gift.dto.request.RequestGift;
+import gift.entity.Gift;
 import gift.repository.GiftRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,5 +20,11 @@ public class GiftController {
     public ResponseEntity<?> addGift(@RequestBody RequestGift requestGift) {
         giftRepository.save(requestGift);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getGiftById(@PathVariable Long id) {
+        Gift gift = giftRepository.findById(id);
+        return ResponseEntity.ok().body(giftRepository.findById(id));
     }
 }
