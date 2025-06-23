@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/products")
 public class ItemController {
 
     private final ItemService itemService;
@@ -19,15 +20,15 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @PostMapping("/api/products")
+    @PostMapping
     public ResponseEntity<ItemDTO> addItems(
             @RequestBody ItemDTO dto
     ) {
-        ItemDTO saved = itemService.saveItem(dto);
-        return ResponseEntity.ok(saved);
+        ItemDTO item = itemService.saveItem(dto);
+        return new ResponseEntity<>(item, HttpStatus.CREATED);
     }
 
-    @GetMapping("/api/products")
+    @GetMapping
     public ResponseEntity<List<ItemDTO>> getItems(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Integer price
@@ -36,7 +37,7 @@ public class ItemController {
         return ResponseEntity.ok(items);
     }
 
-    @DeleteMapping("/api/products")
+    @DeleteMapping
     public ResponseEntity<Void> deleteItems(
             @RequestParam(required = false) String name
     ) {
@@ -44,7 +45,7 @@ public class ItemController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/api/products/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ItemDTO> updateItems(
             @PathVariable Long id,
             @RequestBody ItemDTO dto
