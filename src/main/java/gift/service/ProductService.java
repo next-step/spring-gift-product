@@ -29,8 +29,16 @@ public class ProductService {
         return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
     }
 
+    public ProductResponseDto updateProduct(Long productId, String name, Integer price, String imageUrl) {
+        Product product = productRepository.update(productId, name, price, imageUrl)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found: id=" + productId));
+
+        return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
+    }
+
     public void deleteById(Long productId) {
         productRepository.deleteById(productId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found: id=" + productId));
     }
+
 }

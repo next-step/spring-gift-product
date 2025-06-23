@@ -26,6 +26,19 @@ public class ProductRepository {
         return Optional.ofNullable(products.get(productId));
     }
 
+    public Optional<Product> update(Long id, String name, Integer price, String imageUrl) {
+        Product existingProduct = products.get(id);
+        if (existingProduct == null) {
+            return Optional.empty();
+        }
+
+        existingProduct.setName(name);
+        existingProduct.setPrice(price);
+        existingProduct.setImageUrl(imageUrl);
+
+        return Optional.of(existingProduct);
+    }
+
     public Optional<Product> deleteById(Long id) {
         return Optional.ofNullable(products.remove(id));
     }

@@ -44,6 +44,21 @@ public class ProductController {
         return ResponseEntity.ok(productService.findById(productId));
     }
 
+    @PutMapping("/{productId}")
+    public ResponseEntity<ProductResponseDto> updateProduct(
+            @PathVariable("productId") Long productId,
+            @RequestBody ProductRequestDto requestDto
+    ) {
+        if (requestDto == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        String name = requestDto.getName();
+        Integer price = requestDto.getPrice();
+        String imageUrl = requestDto.getImageUrl();
+
+        return ResponseEntity.ok(productService.updateProduct(productId, name, price, imageUrl));
+    }
+
     @DeleteMapping("/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable("productId") Long productId) {
         productService.deleteById(productId);
