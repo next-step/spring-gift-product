@@ -11,12 +11,25 @@
 
 ### 🔨 기능 목록
 
-1. Product 도메인 (Value Object)
-    - 해당 객체는 불변(Immutable) 객체로 구현한다.
-    - price < 0인 경우, IllegalArgumentException을 발생시킨다.
+1. **Product 도메인 (Immutable 객체)**
 
-   | 필드명      | 타입        | 제약 조건            |
-      |----------|-----------|------------------|
-   | name     | `String`  | null 또는 빈 문자열 불가 |
-   | price    | `Integer` | 0 이상             |
-   | imageUrl | `String`  | null 또는 빈 문자열 불가 |
+    * `Product` 객체는 자바 `record`를 활용해 불변(Immutable)으로 구현한다.
+    * 객체 생성 시 다음 조건을 엄격하게 검증하며, 조건을 위반하면 `IllegalArgumentException`을 발생시킨다.
+
+   | 필드명      | 타입        | 제약 조건                                 |
+      | -------- | --------- | ------------------------------------- |
+   | id       | `Long`    | null일 수 있으나, 명시적 생성 시에는 null 불가 (필수값) |
+   | name     | `String`  | null 또는 빈 문자열, 공백 문자만 포함할 수 없음        |
+   | price    | `Integer` | null 불가, 0 이상인 정수만 가능                 |
+   | imageUrl | `String`  | null 또는 빈 문자열, 공백 문자만 포함할 수 없음        |
+
+    * **객체 생성 메서드**
+
+        * `of(String name, Integer price, String imageUrl)` : ID 없이 생성 (ID는 null)
+        * `withId(Long id, String name, Integer price, String imageUrl)` : ID 포함 생성, `id`가 null이면 예외
+          발생
+
+    * **업데이트 메서드**
+
+        * `update(String name, Integer price, String imageUrl)` : 불변 객체 특성에 따라 기존 `id`를 유지하며, 새
+          필드값으로 새 `Product` 객체를 반환
