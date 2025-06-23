@@ -18,12 +18,26 @@ public class ProductService {
     }
 
     public ProductResponse addProduct(ProductRequest request) {
-        validate(request); // 유효성 검사
+        validate(request);
 
         Product product = request.toEntity();
         Product savedProduct = productRepository.save(product);
         return ProductResponse.from(savedProduct);
     }
+
+    public ProductResponse updateProduct(Long id, ProductRequest request) {
+        productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 상품을 찾을 수 없습니다."));
+
+        validate(request);
+
+        Product updateParam = request.toEntity();
+        productRepository.update(id, updateParam);
+
+        Product updatedProduct = productRepository.findById(id).get();
+        return ProductResponse.from(updatedProduct);
+    }
+
 
     private void validate(ProductRequest request) {
         if (request.getName() == null || request.getName().trim().isEmpty()) {
@@ -37,5 +51,7 @@ public class ProductService {
         if (request.getImageURL() == null || request.getImageURL().trim().isEmpty()) {
             throw new InvalidProductException("상품 이미지 URL은 필수입니다.");
         }
+
+
     }
 }

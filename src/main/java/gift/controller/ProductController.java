@@ -4,10 +4,7 @@ import gift.dto.ProductRequest;
 import gift.dto.ProductResponse;
 import gift.service.ProductService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -24,7 +21,15 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest request) {
         ProductResponse response = productService.addProduct(request);
-        // 201 Created 상태 코드와 함께, Location 헤더에 생성된 리소스의 URI를 담아 반환
         return ResponseEntity.created(URI.create("/api/products/" + response.getId())).body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponse> updateProduct(
+            @PathVariable Long id,
+            @RequestBody ProductRequest request) {
+
+        ProductResponse updatedProduct = productService.updateProduct(id, request);
+        return ResponseEntity.ok(updatedProduct); // 200 OK 상태와 함께 수정된 상품 정보 반환
     }
 }
