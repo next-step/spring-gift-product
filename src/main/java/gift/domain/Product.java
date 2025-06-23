@@ -1,6 +1,7 @@
 package gift.domain;
 
 import gift.dto.product.CreateProductRequest;
+import gift.dto.product.UpdateProductRequest;
 
 public class Product {
 
@@ -36,8 +37,14 @@ public class Product {
         return quantity;
     }
 
-
     public static Product of(CreateProductRequest request) {
         return new Product(request.name(), request.price(), request.quantity());
+    }
+
+    public Product update(UpdateProductRequest request) {
+        name = request.name();
+        price = request.price();
+        quantity = request.quantity();
+        return this;
     }
 }
