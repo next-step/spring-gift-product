@@ -1,1 +1,15 @@
 # spring-gift-product
+
+## 1주차 1단계 기능 구현
+
+### 상품을 조회, 추가, 수정, 삭제할 수 있는 간단한 HTTP API를 구현
+
+- api 명세서
+
+| URL | 메서드 | 기능 | 설명 |
+|-----|--------|------|------|
+| `/api/products` | POST | 상품 생성 | 새 상품을 등록한다. |
+| `/api/products/{productId}` | GET | 상품 조회 | 특정 상품의 정보를 조회한다. |
+| `/api/products/{productId}` | PUT | 상품 수정 | 기존 상품의 정보를 수정한다. |
+| `/api/products/{productId}` | DELETE | 상품 삭제 | 특정 상품을 삭제한다. |
+| `/api/products?page=0&size=10&sort=name,<br/>asc&categoryId=1` | GET | 상품 목록 조회 (페이지네이션 적용) | 모든 상품의 목록을 페이지 단위로 조회한다. |
