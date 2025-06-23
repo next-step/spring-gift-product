@@ -1,6 +1,6 @@
 
 ###
-POST http://localhost:8080/api/products
+POST {{url}}/api/products
 Content-Type: application/json
 
 {
@@ -10,8 +10,21 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8080/api/products
+GET {{url}}/api/products
 Content-Type: application/json
 
 ###
-GET http://localhost:8080/api/products/{{id}}
+GET {{url}}/api/products/{{id}}
+
+###
+PUT {{url}}/api/products/{{id}}
+Content-Type: application/json
+
+{
+  "name": "카카오 무지 인형",
+  "price": 3500,
+  "imageUrl": "https://example.com/image-updated.jpg"
+}
+
+###
+DELETE {{url}}/api/products/{{id}}

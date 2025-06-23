@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,13 +74,22 @@ public class ProductController {
         if (!isValidProductRequest(productRequest)) {
             return ResponseEntity.badRequest().build();
         }
-        
+
         products.put(id, new Product(id, 
         productRequest.getName(), 
         productRequest.getPrice(), 
         productRequest.getImageUrl()));
         
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
+        Product removedProduct = products.remove(id);
+        if (removedProduct == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
     }
 
     private boolean isValidProductRequest(ProductRequest productRequest) {
