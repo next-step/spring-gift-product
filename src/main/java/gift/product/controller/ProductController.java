@@ -1,6 +1,8 @@
 package gift.product.controller;
 
+import gift.domain.Product;
 import gift.product.dto.ProductCreateRequest;
+import gift.product.dto.ProductResponse;
 import gift.product.service.ProductService;
 import gift.util.LocationGenerator;
 import org.springframework.http.HttpRequest;
@@ -8,11 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
@@ -32,5 +33,21 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).location(
                 LocationGenerator.generate(savedId)
         ).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductResponse>> getAllProducts() {
+
+        List<ProductResponse> response = productService.findAllProducts();
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable String id) {
+
+        ProductResponse response = productService.findProduct(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
