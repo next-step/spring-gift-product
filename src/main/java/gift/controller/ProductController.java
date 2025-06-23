@@ -45,4 +45,10 @@ public class ProductController {
         ProductResponse updatedProduct = productService.updateProduct(id, request);
         return ResponseEntity.ok(updatedProduct); // 200 OK 상태와 함께 수정된 상품 정보 반환
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
+    }
 }

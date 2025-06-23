@@ -68,6 +68,12 @@ public class ProductService {
             throw new InvalidProductException("상품 이미지 URL은 필수입니다.");
         }
 
+    }
 
+    public void deleteProduct(Long id) {
+        productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 상품을 찾을 수 없습니다."));
+
+        productRepository.delete(id);
     }
 }

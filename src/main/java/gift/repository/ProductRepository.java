@@ -33,4 +33,8 @@ public class ProductRepository {
         return new ArrayList<>(store.values());
     }
 
+    public void delete(Long id) {
+        store.remove(id);
+    }
+
 }
