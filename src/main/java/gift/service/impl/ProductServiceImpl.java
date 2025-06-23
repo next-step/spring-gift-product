@@ -49,11 +49,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean deleteProduct(Long id) {
+    public void deleteProduct(Long id) {
         if (productRepository.findById(id).isEmpty()) {
             throw new RuntimeException("상품을 찾을 수 없습니다.");
         }
 
-        return productRepository.deleteById(id);
+        productRepository.deleteById(id);
     }
 }

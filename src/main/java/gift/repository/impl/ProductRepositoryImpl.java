@@ -42,7 +42,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public boolean deleteById(Long id) {
-        return products.remove(id) != null;
+    public void deleteById(Long id) {
+        products.remove(id);
     }
 }
