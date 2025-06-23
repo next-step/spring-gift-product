@@ -3,12 +3,10 @@ package gift;
 import gift.dto.CreateProductDto;
 import gift.dto.ProductDto;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -22,8 +20,20 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductDto> createProduct(@RequestBody CreateProductDto body) {
-        ProductDto result = productService.createProduct(body);
-        URI location = URI.create("/products/"+result.id());
-        return ResponseEntity.created(location).body(result);
+        ProductDto response = productService.createProduct(body);
+        URI location = URI.create("/products/"+response.id());
+        return ResponseEntity.created(location).body(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDto> getProduct(@PathVariable Long id) {
+        ProductDto response = productService.getProduct(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductDto>> getAllProduct() {
+        List<ProductDto> response = productService.getAllProduct();
+        return ResponseEntity.ok(response);
     }
 }
