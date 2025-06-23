@@ -48,4 +48,12 @@ class ProductController {
         return new  ResponseEntity<>(product, HttpStatus.OK);
     }
 
+    //상품 삭제
+    @DeleteMapping("/product/{id}")
+    public ResponseEntity<Product> deleteProduct(@PathVariable long id) {
+        if (!products.containsKey(id)) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        products.remove(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
