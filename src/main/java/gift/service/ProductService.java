@@ -55,4 +55,12 @@ public class ProductService {
         }
         return productRepository.updateProduct(product);
     }
+
+    public void deleteProductById(Long id) {
+        Optional<Product> optionalProduct = productRepository.getProductById(id);
+        if (optionalProduct.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        productRepository.deleteProductById(id);
+    }
 }
