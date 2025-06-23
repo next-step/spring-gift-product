@@ -56,4 +56,14 @@ public class ItemRepositoryImpl implements ItemRepository {
             }
         }
     }
+
+    @Override
+    public Item findById(Long id) {
+        for(Item item : items.values()){
+            if(item.getId().equals(id)){
+                return item;
+            }
+        }
+        return null;
+    }
 }

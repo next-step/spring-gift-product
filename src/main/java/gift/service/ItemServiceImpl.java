@@ -35,4 +35,16 @@ public class ItemServiceImpl implements ItemService {
     public void delete(String name) {
         itemRepository.deleteItems(name);
     }
+
+    @Override
+    public ItemDTO updateItem(Long id, ItemDTO dto) {
+        Item item = itemRepository.findById(id);
+        if(dto.getId().equals(item.getId())){
+            item.setName(dto.getName());
+            item.setPrice(dto.getPrice());
+            item.setImageUrl(dto.getImageUrl());
+        }
+
+        return new ItemDTO(item);
+    }
 }

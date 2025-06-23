@@ -43,4 +43,13 @@ public class ItemController {
         itemService.delete(name);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PutMapping("/api/products/{id}")
+    public ResponseEntity<ItemDTO> updateItems(
+            @PathVariable Long id,
+            @RequestBody ItemDTO dto
+    ) {
+        ItemDTO item = itemService.updateItem(id, dto);
+        return  ResponseEntity.ok(item);
+    }
 }
