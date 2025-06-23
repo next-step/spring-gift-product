@@ -1,13 +1,12 @@
 package gift.controller;
 
 
-import gift.dto.CreateItemDTO;
+import gift.dto.ItemDTO;
 import gift.service.ItemService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class ItemController {
@@ -19,11 +18,19 @@ public class ItemController {
     }
 
     @PostMapping("/api/products")
-    public ResponseEntity<CreateItemDTO> addItems(
-            @RequestBody CreateItemDTO dto
+    public ResponseEntity<ItemDTO> addItems(
+            @RequestBody ItemDTO dto
     ) {
-        CreateItemDTO saved = itemService.saveItem(dto);
+        ItemDTO saved = itemService.saveItem(dto);
         return ResponseEntity.ok(saved);
+    }
+    @GetMapping("/api/products")
+    public ResponseEntity<List<ItemDTO>> getItems(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Integer price
+    ) {
+        List<ItemDTO> items = itemService.getItems(name, price);
+        return ResponseEntity.ok(items);
     }
 
 }

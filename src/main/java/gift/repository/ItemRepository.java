@@ -1,8 +1,12 @@
 package gift.repository;
 
-import gift.dto.CreateItemDTO;
+import gift.dto.ItemDTO;
 import gift.entity.Item;
 
+import java.util.List;
+
 public interface ItemRepository {
-    Item saveItem(CreateItemDTO dto);
+    Item saveItem(ItemDTO dto);
+
+    List<ItemDTO> getItems(String name, Integer price);
 }

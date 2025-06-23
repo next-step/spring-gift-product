@@ -2,17 +2,24 @@ package gift.dto;
 
 import gift.entity.Item;
 
-public class CreateItemDTO {
+public class ItemDTO {
     private Long id;
     private String name;
     private Integer price;
     private String imageUrl;
 
-    public CreateItemDTO() {
+    public ItemDTO() {
+    }
+
+    public ItemDTO(Long id, String name, Integer price, String imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
 
     }
 
-    public CreateItemDTO(Item item) {
+    public ItemDTO(Item item) {
         this.id = item.getId();
         this.name = item.getName();
         this.price = item.getPrice();

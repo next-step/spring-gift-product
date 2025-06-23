@@ -1,11 +1,12 @@
 package gift.service;
 
 
-import gift.dto.CreateItemDTO;
+import gift.dto.ItemDTO;
 import gift.entity.Item;
 import gift.repository.ItemRepository;
-import gift.repository.ItemRepositoryImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -16,9 +17,17 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public CreateItemDTO saveItem(CreateItemDTO dto) {
+    public ItemDTO saveItem(ItemDTO dto) {
         Item item = itemRepository.saveItem(dto);
 
-        return new CreateItemDTO(item);
+        return new ItemDTO(item);
+    }
+
+    @Override
+    public List<ItemDTO> getItems(String name, Integer price) {
+
+        List<ItemDTO> items = itemRepository.getItems(name, price);
+
+        return items;
     }
 }
