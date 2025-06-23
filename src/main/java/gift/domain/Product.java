@@ -1,5 +1,7 @@
 package gift.domain;
 
+import gift.dto.product.CreateProductRequest;
+
 public class Product {
 
     private static Long count = 1L;
@@ -10,7 +12,7 @@ public class Product {
     private Integer price;
     private Integer quantity;
 
-    public Product(String name, Integer price, Integer quantity) {
+    private Product(String name, Integer price, Integer quantity) {
         this.id = count;
         count++;
         this.name = name;
@@ -33,5 +35,9 @@ public class Product {
     public Integer getQuantity() {
         return quantity;
     }
-    
+
+
+    public static Product of(CreateProductRequest request) {
+        return new Product(request.name(), request.price(), request.quantity());
+    }
 }
