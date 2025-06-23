@@ -80,7 +80,7 @@ public class ProductController {
         productRequest.getPrice(), 
         productRequest.getImageUrl()));
         
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
