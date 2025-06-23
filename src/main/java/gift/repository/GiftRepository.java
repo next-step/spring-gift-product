@@ -1,6 +1,7 @@
 package gift.repository;
 
 import gift.dto.request.RequestGift;
+import gift.dto.request.RequestModifyGift;
 import gift.entity.Gift;
 import org.springframework.stereotype.Repository;
 
@@ -27,10 +28,27 @@ public class GiftRepository {
     }
 
     public Gift findById(Long id) {
+        Gift gift = giftMap.get(id);
+        if(gift == null){
+            throw new RuntimeException("해당 상품이 없습니다.");
+        }
         return giftMap.get(id);
     }
 
     public List<Gift> findAll(){
         return new ArrayList<>(giftMap.values());
+    }
+
+    public Gift modify(Long id, RequestModifyGift requestModifyGift) {
+        Gift gift = giftMap.get(id);
+        if(gift == null){
+            throw new RuntimeException("해당 상품이 없습니다.");
+        }
+        gift.setPrice(requestModifyGift.price());
+        gift.setName(requestModifyGift.name());
+        gift.setImageUrl(requestModifyGift.imageUrl());
+        giftMap.put(id, gift);
+
+        return gift;
     }
 }

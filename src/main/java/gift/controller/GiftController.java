@@ -1,7 +1,7 @@
 package gift.controller;
 
 import gift.dto.request.RequestGift;
-import gift.entity.Gift;
+import gift.dto.request.RequestModifyGift;
 import gift.repository.GiftRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,5 +30,10 @@ public class GiftController {
     @GetMapping("")
     public ResponseEntity<?> getAllGifts(){
         return ResponseEntity.ok().body(giftRepository.findAll());
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateGift(@PathVariable Long id, @RequestBody RequestModifyGift requestModifyGift) {
+        return ResponseEntity.ok().body(giftRepository.modify(id, requestModifyGift));
     }
 }
