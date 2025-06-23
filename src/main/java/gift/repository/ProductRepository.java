@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
@@ -17,5 +18,9 @@ public class ProductRepository {
         product.setId(counter.incrementAndGet());
         products.put(product.getId(), product);
         return product;
+    }
+
+    public Optional<Product> getProductById(Long id) {
+        return Optional.ofNullable(products.get(id));
     }
 }
