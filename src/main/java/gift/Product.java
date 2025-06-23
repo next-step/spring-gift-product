@@ -3,8 +3,8 @@ package gift;
 public class Product {
 
     private Long id;
-    private final String name;
-    private final Long price;
+    private String name;
+    private Long price;
 
     public Product(String name, Long price) {
         this.id = null;
@@ -26,5 +26,13 @@ public class Product {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
     }
 }
