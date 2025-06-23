@@ -81,7 +81,7 @@ class ProductController {
     //상품 삭제
     @DeleteMapping("/api/products/{id}")
     public ResponseEntity<Product> deleteProduct(@PathVariable long id) {
-        if (!products.containsKey(id)) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (!products.containsKey(id)) {return new ResponseEntity<>(HttpStatus.NOT_FOUND);}
         products.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
