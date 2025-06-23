@@ -4,6 +4,7 @@ import gift.entity.Product;
 
 import gift.repository.ProductRepository;
 import gift.validator.ProductValidator;
+import java.util.List;
 
 public class ProductService {
 
@@ -13,6 +14,10 @@ public class ProductService {
         ProductValidator.validate(product);  // 검증은 여기서 호출만
 
         return repository.save(product);
+    }
+
+    public List<Product> getAllProducts() {
+        return repository.findAll();
     }
 
 }
