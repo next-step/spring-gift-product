@@ -9,4 +9,6 @@ public interface ItemRepository {
     Item saveItem(ItemDTO dto);
 
     List<ItemDTO> getItems(String name, Integer price);
+
+    void deleteItems(String name);
 }

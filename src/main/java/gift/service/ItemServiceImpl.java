@@ -30,4 +30,9 @@ public class ItemServiceImpl implements ItemService {
 
         return items;
     }
+
+    @Override
+    public void delete(String name) {
+        itemRepository.deleteItems(name);
+    }
 }

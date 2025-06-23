@@ -47,4 +47,13 @@ public class ItemRepositoryImpl implements ItemRepository {
 
         return result;
     }
+
+    @Override
+    public void deleteItems(String name) {
+        for(Item item : items.values()){
+            if(item.getName().equals(name)){
+                items.remove(item.getId());
+            }
+        }
+    }
 }
