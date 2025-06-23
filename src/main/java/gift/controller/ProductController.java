@@ -4,10 +4,7 @@ package gift.controller;
 import gift.dto.RequestDto;
 import gift.dto.ResponseDto;
 import gift.entity.Product;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -37,5 +34,17 @@ public class ProductController {
         }
 
         return responseList;
+    }
+
+    @GetMapping("/api/products/{id}")
+    public ResponseDto getProductById(@PathVariable Long id) {
+
+        Product product = products.get(id);
+
+        if (product == null) {
+            throw new IllegalArgumentException("Product not found");
+        }
+
+        return new ResponseDto(product);
     }
 }

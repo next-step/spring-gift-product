@@ -51,5 +51,7 @@
           "imageUrl": "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"
       }
       ```
+    - [ ] **예외**:
+      - id가 존재하지 않을 때: 404 
 - [ ] 상품 수정 API
 - [ ] 상품 삭제 API
