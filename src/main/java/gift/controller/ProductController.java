@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
@@ -22,6 +23,18 @@ public class ProductController {
     public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest request) {
         ProductResponse response = productService.addProduct(request);
         return ResponseEntity.created(URI.create("/api/products/" + response.getId())).body(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductResponse>> findAllProducts() {
+        List<ProductResponse> productResponses = productService.findAllProducts();
+        return ResponseEntity.ok(productResponses);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponse> findProduct(@PathVariable Long id) {
+        ProductResponse productResponse = productService.findProductById(id);
+        return ResponseEntity.ok(productResponse);
     }
 
     @PutMapping("/{id}")

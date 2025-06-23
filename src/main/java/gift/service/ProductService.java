@@ -7,6 +7,9 @@ import gift.exception.InvalidProductException;
 import gift.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 public class ProductService {
@@ -38,6 +41,19 @@ public class ProductService {
         return ProductResponse.from(updatedProduct);
     }
 
+    public List<ProductResponse> findAllProducts() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .map(ProductResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    public ProductResponse findProductById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 상품을 찾을 수 없습니다."));
+
+        return ProductResponse.from(product);
+    }
 
     private void validate(ProductRequest request) {
         if (request.getName() == null || request.getName().trim().isEmpty()) {
