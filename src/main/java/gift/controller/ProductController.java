@@ -2,15 +2,11 @@ package gift.controller;
 
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
-import gift.entity.Product;
 
 import gift.service.ProductService;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +20,11 @@ class ProductController {
 
     public ProductController(ProductService productService) {
         this.productService = productService;
+    }
+
+    @PostMapping("/api/products")
+    public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto requestDto) {
+        return new ResponseEntity<>(productService.createProduct(requestDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/api/products")

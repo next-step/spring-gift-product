@@ -12,4 +12,20 @@ public class ProductRequestDto {
         this.price = price;
         this.imageUrl = imageUrl;
     }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public int getPrice() {
+        return this.price;
+    }
+
+    public String getImageUrl() {
+        return this.imageUrl;
+    }
 }

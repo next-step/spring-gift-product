@@ -8,4 +8,5 @@ public interface ProductService {
 
     List<ProductResponseDto> findAllProducts();
 
+    ProductResponseDto createProduct(ProductRequestDto requestDto);
 }

@@ -14,6 +14,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     // DB connection 하지 않음에 따라 Collection인 HashMap을 사용 (DB 연결 시 없어질 예정)
     private final Map<Long, Product> products = new HashMap<>();
+    private long productId = 1L;
 
     @Override
     public List<ProductResponseDto> findAllProducts() {
@@ -26,5 +27,17 @@ public class ProductRepositoryImpl implements ProductRepository {
                 new ProductResponseDto(entry.getValue())); // Product -> ProductResponseDto
         }
         return productList;
+    }
+
+    @Override
+    public ProductResponseDto createProduct(ProductRequestDto requestDto) {
+        products.put(productId,
+            new Product(requestDto.getId(), requestDto.getName(), requestDto.getPrice(),
+                requestDto.getImageUrl()));
+        productId++; // id 값 1 증가
+
+        return new ProductResponseDto(requestDto.getId(), requestDto.getName(),
+            requestDto.getPrice(),
+            requestDto.getImageUrl());
     }
 }
