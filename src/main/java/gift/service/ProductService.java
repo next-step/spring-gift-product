@@ -34,4 +34,8 @@ public class ProductService {
         Product product = getProduct.orElseThrow(() -> new IllegalStateException("Product를 찾을 수 없습니다."));
         return product.update(request);
     }
+
+    public void deleteProduct(Long id) {
+        productRepository.deleteByid(id);
+    }
 }
