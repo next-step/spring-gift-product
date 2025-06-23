@@ -29,60 +29,49 @@ public class ProductApiController {
 
   // 상품 조회
   @GetMapping("/{productId}")
-  public ResponseEntity<ProductResponse> getProduct(
+  @ResponseStatus(HttpStatus.OK)
+  public ProductResponse getProduct(
       @PathVariable Long productId
   ) {
-    ProductResponse result = productService.getProductById(productId);
-
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(result);
+    return productService.getProductById(productId);
   }
 
   // 상품 목록 조회
   @GetMapping("/all")
-  public ResponseEntity<List<ProductResponse>> getProductList(){
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(productService.getProductList());
+  @ResponseStatus(HttpStatus.OK)
+  public List<ProductResponse> getProductList(){
+    return productService.getProductList();
   }
 
   // 상품 생성
-  // return body는 없이 return하는 게 좋을까?
-  // 아니면 생성된 id 정도만 return하는 게 좋을까? -> 이 경우에는 NO_CONTENT일까? 아니면 그냥 OK?
   @PostMapping("")
-  public ResponseEntity createProduct(
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void createProduct(
       @RequestBody ProductRequest request
   ) {
     productService.save(request);
-
-    return ResponseEntity.status(HttpStatus.CREATED)
-        .build();
   }
 
   // 상품 수정
-  // API 명세서에는 PathVariable로 productId를 받아오도록 명시되어있지만,
+  // API 명세서에는 PathVariable로 productId를 받아오도록 명시되어있어 그대로 구현했지만,
   // 데이터베이스를 연결하지 않은 상태에서는 상품 생성 요청을 보낼 때
   // 요청 dto에 상품 id까지 담겨서 오는 것을 가정하겠습니다.
   @PatchMapping("/{productId}")
-  public ResponseEntity updateProduct(
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void updateProduct(
       @RequestBody ProductRequest request,
       @PathVariable Long productId
   ) {
     productService.update(request);
-
-    return ResponseEntity.status(HttpStatus.NO_CONTENT)
-        .build();
   }
-
 
   // 상품 삭제
   @DeleteMapping("/{productId}")
-  public ResponseEntity deleteProduct(
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteProduct(
       @PathVariable Long productId
   ) {
     productService.deleteById(productId);
-
-    return ResponseEntity.status(HttpStatus.NO_CONTENT)
-        .build();
   }
 
 }
