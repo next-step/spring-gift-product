@@ -1,5 +1,7 @@
 package gift.dto;
 
+import gift.entity.Product;
+
 public class ResponseDto {
     private Long id;
     private String name;

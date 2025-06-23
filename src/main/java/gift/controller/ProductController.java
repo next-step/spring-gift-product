@@ -1,8 +1,9 @@
 package gift.controller;
 
-import gift.dto.Product;
+
 import gift.dto.RequestDto;
 import gift.dto.ResponseDto;
+import gift.entity.Product;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

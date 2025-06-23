@@ -1,4 +1,4 @@
-package gift.dto;
+package gift.entity;
 
 public class Product {
     private Long id;
