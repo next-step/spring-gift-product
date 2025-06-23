@@ -7,18 +7,23 @@ public class Product {
   private int price;
   private String imageUrl;
 
-  public Product(){
-    this.id = null;
-    this.name = null;
-    this.price = 0;
-    this.imageUrl = null;
-  }
-
   public Product(Long id, String name, int price, String imageUrl){
     this.id = id;
     this.name = name;
     this.price = price;
     this.imageUrl = imageUrl;
+  }
+
+  public static Product of(Long id, String name, int price, String imageUrl){
+    return new Product(id, name, price, imageUrl);
+  }
+
+  public Product update(String name, int price, String imageUrl){
+    this.name = name;
+    this.price = price;
+    this.imageUrl=imageUrl;
+
+    return this;
   }
 
   public Long getId(){

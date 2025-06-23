@@ -7,12 +7,11 @@ import org.springframework.stereotype.Component;
 public class ProductMapper {
 
   public Product toEntity(ProductRequest request) {
-    return new Product(request.getId(), request.getName(), request.getPrice(),
-        request.getImageUrl());
+    return Product.of(request.id(), request.name(), request.price(), request.imageUrl());
   }
 
   public ProductResponse toResponse(Product product){
-    return new ProductResponse(product.getName(), product.getPrice(), product.getImageUrl());
+    return ProductResponse.of(product.getName(), product.getPrice(), product.getImageUrl());
   }
 
 }

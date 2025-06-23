@@ -27,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
       return null;
     }
 
-    return new ProductResponse(product);
+    return ProductResponse.of(product.getName(), product.getPrice(), product.getImageUrl());
   }
 
   @Override
@@ -37,10 +37,9 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public void update(ProductRequest request) {
-    Product product = productRepository.findById(request.getId());
-    product.setName(request.getName());
-    product.setPrice(request.getPrice());
-    product.setImageUrl(request.getImageUrl());
+    Product product = productRepository.findById(request.id());
+    product.update(request.name(), request.price(), request.imageUrl());
+    productRepository.save(product);
   }
 
   @Override

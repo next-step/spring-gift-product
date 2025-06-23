@@ -1,6 +1,5 @@
 package gift.service;
 
-import gift.domain.Product;
 import gift.dto.ProductRequest;
 import gift.dto.ProductResponse;
 import java.util.List;
