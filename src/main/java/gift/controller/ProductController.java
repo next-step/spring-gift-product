@@ -9,10 +9,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 class ProductController {
@@ -25,6 +22,11 @@ class ProductController {
     @PostMapping("/api/products")
     public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto requestDto) {
         return new ResponseEntity<>(productService.createProduct(requestDto), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/api/products/{productId}")
+    public ResponseEntity<ProductResponseDto> findProduct(@PathVariable Long productId) {
+        return new ResponseEntity<>(productService.findProduct(productId), HttpStatus.OK);
     }
 
     @GetMapping("/api/products")

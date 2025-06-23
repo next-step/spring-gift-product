@@ -1,6 +1,7 @@
 package gift.dto;
 
 public class ProductRequestDto {
+
     Long id;
     String name;
     int price;
