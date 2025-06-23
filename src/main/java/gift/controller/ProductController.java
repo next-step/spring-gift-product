@@ -10,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
+@RequestMapping("/api/products")
 public class ProductController {
 
     private final ProductService productService;
@@ -18,7 +19,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PostMapping("/api/products")
+    @PostMapping
     public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto requestDto) {
         if (requestDto == null) {
             return ResponseEntity.badRequest().build();
@@ -38,7 +39,7 @@ public class ProductController {
         return ResponseEntity.created(location).body(responseDto); // 201 created 반환
     }
 
-    @GetMapping("/api/products/{productId}")
+    @GetMapping("/{productId}")
     public ResponseEntity<ProductResponseDto> getProduct(@PathVariable("productId") Long productId) {
         return ResponseEntity.ok(productService.findById(productId));
     }
