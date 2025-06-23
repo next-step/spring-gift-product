@@ -1,14 +1,14 @@
 package gift.domain.product.dto;
 
-public class AddProductRequest {
+public class ProductRequest {
     private String name;
     private int price;
     private String imageUrl;
 
-    public AddProductRequest() {
+    public ProductRequest() {
     }
     
-    public AddProductRequest(String name, int price, String imageUrl) {
+    public ProductRequest(String name, int price, String imageUrl) {
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;
