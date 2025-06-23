@@ -22,5 +22,7 @@ public class ProductRepository {
         store.put(product.getId(), product);
         return product;
     }
-
+    public void update(Long id, Product updated) {
+        store.put(id, updated);
+    }
 }

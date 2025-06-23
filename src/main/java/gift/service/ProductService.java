@@ -26,7 +26,14 @@ public class ProductService {
     public Product create(ProductRequestDto dto) {
         return repository.save(new Product(null, dto.getName(), dto.getPrice(), dto.getImageUrl()));
     }
-
+    public Optional<Product> update(Long id, ProductRequestDto dto) {
+        if (repository.findById(id).isEmpty()) {
+            return Optional.empty();
+        }
+        Product updated = new Product(id, dto.getName(), dto.getPrice(), dto.getImageUrl());
+        repository.update(id, updated);
+        return Optional.of(updated);
+    }
 
 
 

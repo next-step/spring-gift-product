@@ -50,5 +50,14 @@ public class ProductController {
         return ResponseEntity.created(location).body(responseDto);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> update(@PathVariable Long id,
+                                                     @Valid @RequestBody ProductRequestDto requestDto) {
+        return service.update(id, requestDto)
+                .map(updated -> ResponseEntity.ok(new ProductResponseDto(updated)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
 }
 
