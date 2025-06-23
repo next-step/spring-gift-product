@@ -26,4 +26,9 @@ public class GiftController {
     public ResponseEntity<?> getGiftById(@PathVariable Long id) {
         return ResponseEntity.ok().body(giftRepository.findById(id));
     }
+
+    @GetMapping("")
+    public ResponseEntity<?> getAllGifts(){
+        return ResponseEntity.ok().body(giftRepository.findAll());
+    }
 }

@@ -4,6 +4,8 @@ import gift.dto.request.RequestGift;
 import gift.entity.Gift;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,5 +28,9 @@ public class GiftRepository {
 
     public Gift findById(Long id) {
         return giftMap.get(id);
+    }
+
+    public List<Gift> findAll(){
+        return new ArrayList<>(giftMap.values());
     }
 }
