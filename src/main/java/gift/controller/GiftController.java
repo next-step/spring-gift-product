@@ -36,4 +36,10 @@ public class GiftController {
     public ResponseEntity<?> updateGift(@PathVariable Long id, @RequestBody RequestModifyGift requestModifyGift) {
         return ResponseEntity.ok().body(giftRepository.modify(id, requestModifyGift));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteGift(@PathVariable Long id) {
+        giftRepository.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

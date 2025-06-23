@@ -51,4 +51,8 @@ public class GiftRepository {
 
         return gift;
     }
+
+    public void delete(Long id) {
+        giftMap.remove(id);
+    }
 }
