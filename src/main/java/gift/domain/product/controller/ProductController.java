@@ -4,6 +4,7 @@ import gift.domain.product.model.Product;
 import gift.domain.product.dto.AddProductRequest;
 import gift.domain.product.dto.ProductResponse;
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -44,6 +45,17 @@ public class ProductController {
         products.put(id, product);
 
         return ResponseEntity.created(URI.create("/api/products/" + id)).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductResponse>> getProducts() {
+        List<ProductResponse> productResponses = products.values().stream()
+            .map(ProductResponse::from)
+            .toList();
+        if (productResponses.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(productResponses);
     }
 
     @GetMapping("/{id}")
