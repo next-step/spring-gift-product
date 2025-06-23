@@ -8,7 +8,7 @@
 
 #### 🛠 구현할 기능 목록
 - [ ] 상품 추가 API
-  - [ ] 상품 하나 추가
+  - [ ] 단건 상품 추가
     - **Request**: POST /api/products
       ```json
       {
@@ -52,6 +52,26 @@
       }
       ```
     - [ ] **예외**:
-      - id가 존재하지 않을 때: 404 
+      - id가 존재하지 않을 때: 404 Not Found
 - [ ] 상품 수정 API
+  - [ ] 단건 상품 전체 수정
+    - **Request**: PUT /api/products/{id}
+      ```json
+      {
+          "name": "아이스 카페 아메리카노 T",
+          "price": 9000,
+          "imageUrl": "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"
+      }
+      ```
+    - **Response**: 200 OK
+      ```json
+      {
+          "id": 8146027,
+          "name": "아이스 카페 아메리카노 T",
+          "price": 9000,
+          "imageUrl": "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"
+      }
+      ```
+    - [ ] **예외**:
+      - id가 존재하지 않을 때: 404 Not Found
 - [ ] 상품 삭제 API
