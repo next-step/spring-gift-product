@@ -58,7 +58,7 @@ public class ProductRepositoryV1 implements ProductRepository{
         if (StringValidator.validate(dto.getImageURL())) {
             imageURL = dto.getImageURL();
         }
-        if (dto.getPrice() != 0) {
+        if (dto.getPrice() > 0) {
             price = dto.getPrice();
         }
 
