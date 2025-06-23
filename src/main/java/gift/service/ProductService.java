@@ -28,4 +28,9 @@ public class ProductService {
 
         return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
     }
+
+    public void deleteById(Long productId) {
+        productRepository.deleteById(productId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found: id=" + productId));
+    }
 }

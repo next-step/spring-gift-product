@@ -25,4 +25,8 @@ public class ProductRepository {
     public Optional<Product> findById(Long productId) {
         return Optional.ofNullable(products.get(productId));
     }
+
+    public Optional<Product> deleteById(Long id) {
+        return Optional.ofNullable(products.remove(id));
+    }
 }
