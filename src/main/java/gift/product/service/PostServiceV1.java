@@ -4,6 +4,7 @@ import gift.domain.Product;
 import gift.global.exception.NotFoundProductException;
 import gift.product.dto.ProductCreateRequest;
 import gift.product.dto.ProductResponse;
+import gift.product.dto.ProductUpdateRequest;
 import gift.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +39,9 @@ public class PostServiceV1 implements ProductService{
 
     public void deleteProduct(String id) {
         productRepository.deleteById(id);
+    }
+
+    public void updateProduct(String id, ProductUpdateRequest dto) {
+        productRepository.update(id, dto);
     }
 }

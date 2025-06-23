@@ -2,6 +2,7 @@ package gift.product.controller;
 
 import gift.product.dto.ProductCreateRequest;
 import gift.product.dto.ProductResponse;
+import gift.product.dto.ProductUpdateRequest;
 import gift.product.service.ProductService;
 import gift.util.LocationGenerator;
 import org.springframework.http.HttpStatus;
@@ -50,6 +51,14 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
 
         productService.deleteProduct(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateProduct(@PathVariable String id, @RequestBody ProductUpdateRequest dto) {
+
+        productService.updateProduct(id, dto);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

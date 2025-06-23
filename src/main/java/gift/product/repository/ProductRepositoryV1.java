@@ -3,6 +3,8 @@ package gift.product.repository;
 import gift.domain.Product;
 import gift.global.exception.NotFoundProductException;
 import gift.product.dto.ProductCreateRequest;
+import gift.product.dto.ProductUpdateRequest;
+import gift.util.StringValidator;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -37,7 +39,29 @@ public class ProductRepositoryV1 implements ProductRepository{
 
 
     public void deleteById(String id) {
-        if (products.get(id) != null)products.remove(id);
+        if (products.get(id) != null) products.remove(id);
         else throw new NotFoundProductException("삭제 실패 - 존재하지 않는 상품입니다");
+    }
+
+
+    public void update(String id, ProductUpdateRequest dto) {
+        if (products.get(id) == null) throw new NotFoundProductException("수정 실패 - 존재하지 않는 상품입니다");
+
+        Product oldProduct = products.get(id);
+        String name = oldProduct.getName();
+        int price = oldProduct.getPrice();
+        String imageURL = oldProduct.getImageURL();
+
+        if (StringValidator.validate(dto.getName())) {
+            name = dto.getName();
+        }
+        if (StringValidator.validate(dto.getImageURL())) {
+            imageURL = dto.getImageURL();
+        }
+        if (dto.getPrice() != 0) {
+            price = dto.getPrice();
+        }
+
+        products.put(id, new Product(id, name, price, imageURL));
     }
 }
