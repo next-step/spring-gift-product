@@ -24,7 +24,6 @@ public class GiftController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getGiftById(@PathVariable Long id) {
-        Gift gift = giftRepository.findById(id);
         return ResponseEntity.ok().body(giftRepository.findById(id));
     }
 }
