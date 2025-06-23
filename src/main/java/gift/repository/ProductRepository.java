@@ -17,6 +17,10 @@ public class ProductRepository {
     public Optional<Product> findById(Long id) {
         return Optional.ofNullable(store.get(id));
     }
-
+    public Product save(Product product) {
+        product.setId(sequence++);
+        store.put(product.getId(), product);
+        return product;
+    }
 
 }

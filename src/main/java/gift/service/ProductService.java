@@ -1,5 +1,6 @@
 package gift.service;
 
+import gift.dto.ProductRequestDto;
 import gift.entity.Product;
 import org.springframework.stereotype.Service;
 import gift.repository.ProductRepository;
@@ -21,6 +22,9 @@ public class ProductService {
 
     public Optional<Product> getById(Long id) {
         return repository.findById(id);
+    }
+    public Product create(ProductRequestDto dto) {
+        return repository.save(new Product(null, dto.getName(), dto.getPrice(), dto.getImageUrl()));
     }
 
 
