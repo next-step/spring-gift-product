@@ -1,6 +1,7 @@
 package gift.entity;
 
 public class Product {
+
     Long id;
     String name;
     int price;
@@ -13,6 +14,7 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
+    // getter
     public Long getId() {
         return this.id;
     }
@@ -27,5 +29,22 @@ public class Product {
 
     public String getImageUrl() {
         return this.imageUrl;
+    }
+
+    //setter
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

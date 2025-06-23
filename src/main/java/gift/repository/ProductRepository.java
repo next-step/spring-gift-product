@@ -4,7 +4,6 @@ package gift.repository;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import java.util.List;
-import org.springframework.http.HttpStatusCode;
 
 public interface ProductRepository {
 
@@ -13,4 +12,6 @@ public interface ProductRepository {
     ProductResponseDto createProduct(ProductRequestDto requestDto);
 
     ProductResponseDto findProduct(Long productId);
+
+    ProductResponseDto updateProduct(Long productId, ProductRequestDto requestDto);
 }

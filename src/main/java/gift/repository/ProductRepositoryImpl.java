@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -45,8 +44,21 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public ProductResponseDto findProduct(Long productId) {
         Product product = products.get(productId);
-        ProductResponseDto responseDto = new ProductResponseDto(product);
-        System.out.println(responseDto.getClass());
+        return new ProductResponseDto(product);
+    }
+
+    @Override
+    public ProductResponseDto updateProduct(Long productId, ProductRequestDto requestDto) {
+        Product product = products.get(productId);
+
+        // product 내용 update
+        product.setId(requestDto.getId());
+        product.setName(requestDto.getName());
+        product.setPrice(requestDto.getPrice());
+        product.setImageUrl(requestDto.getImageUrl());
+
+        products.put(productId, product);
+
         return new ProductResponseDto(product);
     }
 }

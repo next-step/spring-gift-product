@@ -4,7 +4,6 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.repository.ProductRepository;
 import java.util.List;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,5 +28,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponseDto findProduct(Long productId) {
         return productRepository.findProduct(productId);
+    }
+
+    @Override
+    public ProductResponseDto updateProduct(Long productId, ProductRequestDto requestDto) {
+        return productRepository.updateProduct(productId, requestDto);
     }
 }
