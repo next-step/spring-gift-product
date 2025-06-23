@@ -2,11 +2,10 @@ package gift.repository;
 
 import gift.domain.Product;
 import gift.dto.CreateProductRequest;
+import gift.dto.UpdateProductRequest;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class ProductMemoryRepository implements ProductRepository{
@@ -27,5 +26,30 @@ public class ProductMemoryRepository implements ProductRepository{
     @Override
     public Optional<Product> findById(Long id) {
         return Optional.ofNullable(products.get(id));
+    }
+
+    @Override
+    public List<Product> findAll() {
+
+        List<Product> productList = new ArrayList<>();
+        Collection<Product> values = products.values();
+
+        for (Product value : values) {
+            productList.add(value);
+        }
+        return productList;
+    }
+
+    @Override
+    public Product update(Long id, UpdateProductRequest request) {
+        products.remove(id);
+        Product updateProduct = new Product(id, request.getName(), request.getPrice(), request.getImageUrl());
+        products.put(id, updateProduct);
+        return updateProduct;
+    }
+
+    @Override
+    public void delete(Long id) {
+        products.remove(id);
     }
 }
