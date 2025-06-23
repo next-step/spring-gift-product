@@ -16,6 +16,10 @@ public class Product {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -28,7 +32,9 @@ public class Product {
         return imageUrl;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void updateProduct(String name, int price, String imageUrl) {
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
     }
 }

@@ -44,5 +44,21 @@ public class ProductService {
         );
     }
 
+    public ProductResponseDto updateProduct(Long id, ProductRequestDto productRequestDto) {
+        Product product = productRepository.findProductById(id);
+        if (product == null) {
+            throw new NoSuchElementException("Invalid id = " + id);
+        }
+        product.updateProduct(productRequestDto.getName(), productRequestDto.getPrice(), productRequestDto.getImageUrl());
+        Product updateProduct = productRepository.updateProduct(product);
+
+        return new ProductResponseDto(
+            updateProduct.getId(),
+            updateProduct.getName(),
+            updateProduct.getPrice(),
+            updateProduct.getImageUrl()
+        );
+    }
+
 
 }

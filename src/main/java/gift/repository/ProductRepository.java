@@ -19,4 +19,9 @@ public class ProductRepository {
     public Product findProductById(Long id) {
         return productMap.get(id);
     }
+
+    public Product updateProduct(Product product) {
+        productMap.put(product.getId(), product);
+        return product;
+    }
 }
