@@ -3,6 +3,7 @@ package gift.controller;
 import gift.domain.Product;
 import gift.dto.product.CreateProductRequest;
 import gift.dto.product.ProductResponse;
+import gift.dto.product.UpdateProductRequest;
 import gift.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,5 +32,11 @@ public class ProductController {
     public ResponseEntity<List<ProductResponse>> getProducts() {
         List<ProductResponse> products = productService.getAllProducts();
         return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @PutMapping("/products/{id}")
+    public ResponseEntity<Void> updateProduct(@PathVariable Long id, @RequestBody UpdateProductRequest request) {
+        productService.updateProduct(id, request);
+        return ResponseEntity.noContent().build();
     }
 }
