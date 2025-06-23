@@ -2,11 +2,15 @@ package gift.controller;
 
 import gift.dto.ProductResponseDto;
 import gift.dto.ProductRequestDto;
+import gift.entity.Product;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
@@ -41,6 +45,15 @@ public class ProductController {
                         productService.getProductById(id)
                 ), HttpStatus.OK
         );
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDto>> getAllProducts() {
+        List<Product> products = productService.getProductList();
+        List<ProductResponseDto> response = products.stream()
+                .map(product -> new ProductResponseDto(product))
+                .toList();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

@@ -3,9 +3,7 @@ package gift.repository;
 import gift.entity.Product;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
@@ -22,5 +20,9 @@ public class ProductRepository {
 
     public Optional<Product> getProductById(Long id) {
         return Optional.ofNullable(products.get(id));
+    }
+
+    public List<Product> getProductList() {
+        return new ArrayList<>(products.values());
     }
 }

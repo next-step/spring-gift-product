@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,5 +29,9 @@ public class ProductService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
         }
         return optionalProduct.get();
+    }
+
+    public List<Product> getProductList() {
+        return productRepository.getProductList();
     }
 }
