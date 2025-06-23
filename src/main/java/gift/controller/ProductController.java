@@ -33,9 +33,14 @@ public class ProductController {
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(responseDto.getId())
-                .toUri();
+                .toUri(); // location 생성
 
-        return ResponseEntity.created(location).body(responseDto);
+        return ResponseEntity.created(location).body(responseDto); // 201 created 반환
+    }
+
+    @GetMapping("/api/products/{productId}")
+    public ResponseEntity<ProductResponseDto> getProduct(@PathVariable("productId") Long productId) {
+        return ResponseEntity.ok(productService.findById(productId));
     }
 
 }

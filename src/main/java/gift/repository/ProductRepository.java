@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class ProductRepository {
@@ -21,4 +22,7 @@ public class ProductRepository {
         return product;
     }
 
+    public Optional<Product> findById(Long productId) {
+        return Optional.ofNullable(products.get(productId));
+    }
 }
