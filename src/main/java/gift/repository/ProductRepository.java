@@ -25,4 +25,9 @@ public class ProductRepository {
     public List<Product> getProductList() {
         return new ArrayList<>(products.values());
     }
+
+    public Product updateProduct(Product product) {
+        products.put(product.getId(), product);
+        return product;
+    }
 }

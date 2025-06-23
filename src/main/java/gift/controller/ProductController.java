@@ -1,5 +1,6 @@
 package gift.controller;
 
+import gift.dto.ProductPatchDto;
 import gift.dto.ProductResponseDto;
 import gift.dto.ProductRequestDto;
 import gift.entity.Product;
@@ -54,6 +55,18 @@ public class ProductController {
                 .map(product -> new ProductResponseDto(product))
                 .toList();
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> updateProductById(
+            @PathVariable Long id,
+            @Valid @RequestBody ProductPatchDto patch
+    ) {
+        return new ResponseEntity<>(
+                new ProductResponseDto(
+                        productService.updateProductById(id, patch.getName(), patch.getPrice(), patch.getImageUrl())
+                ), HttpStatus.OK
+        );
     }
 
 }
