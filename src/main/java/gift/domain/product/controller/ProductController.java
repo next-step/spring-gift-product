@@ -29,7 +29,7 @@ public class ProductController {
     public ResponseEntity<Void> addProduct(@RequestBody ProductRequest productRequest) {
         long id = sequence.incrementAndGet();
 
-        if (!isValidProductRequest(productRequest)) {
+        if (isValidProductRequest(productRequest)) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -71,7 +71,7 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
 
-        if (!isValidProductRequest(productRequest)) {
+        if (isValidProductRequest(productRequest)) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -93,11 +93,11 @@ public class ProductController {
     }
 
     private boolean isValidProductRequest(ProductRequest productRequest) {
-        return productRequest != null && 
-        productRequest.getPrice() > 0 && 
-        productRequest.getName() != null && 
-        !productRequest.getName().isBlank() && 
-        productRequest.getImageUrl() != null && 
-        !productRequest.getImageUrl().isBlank();
+        return productRequest == null ||
+                productRequest.getPrice() <= 0 ||
+                productRequest.getName() == null ||
+                productRequest.getName().isBlank() ||
+                productRequest.getImageUrl() == null ||
+                productRequest.getImageUrl().isBlank();
     }
 }
