@@ -1,0 +1,17 @@
+
+###
+POST http://localhost:8080/api/products
+Content-Type: application/json
+
+{
+  "name": "카카오 무지 인형",
+  "price": 3000,
+  "imageUrl": "https://example.com/image.jpg"
+}
+
+###
+GET http://localhost:8080/api/products
+Content-Type: application/json
+
+###
+GET http://localhost:8080/api/products/{{id}}
