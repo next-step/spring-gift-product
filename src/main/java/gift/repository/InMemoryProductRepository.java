@@ -16,6 +16,10 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public void save(Product product) {
+        if (product == null) {
+            throw new IllegalArgumentException("저장할 상품 정보가 null입니다.");
+        }
+
         Long id = generateId();
         Product productWithId = Product.withId(
                 id,
@@ -29,13 +33,21 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public void update(Long id, Product updatedProduct) {
-        products.computeIfPresent(id, (key, existingProduct) -> existingProduct.update(
-                updatedProduct.name(),
-                updatedProduct.price(),
-                updatedProduct.imageUrl()
-        ));
-        
-        if (!products.containsKey(id)) {
+        if (id == null) {
+            throw new IllegalArgumentException("수정할 상품 ID가 null입니다.");
+        }
+        if (updatedProduct == null) {
+            throw new IllegalArgumentException("수정할 상품 정보가 null입니다.");
+        }
+
+        boolean updated =
+                products.computeIfPresent(id, (key, existingProduct) -> existingProduct.update(
+                        updatedProduct.name(),
+                        updatedProduct.price(),
+                        updatedProduct.imageUrl()
+                )) != null;
+
+        if (!updated) {
             throw new IllegalArgumentException("존재하지 않는 상품 ID입니다: " + id);
         }
     }
@@ -47,7 +59,14 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public void deleteById(Long id) {
-        products.remove(id);
+        if (id == null) {
+            throw new IllegalArgumentException("삭제할 상품 ID가 null입니다.");
+        }
+
+        Product removed = products.remove(id);
+        if (removed == null) {
+            throw new IllegalArgumentException("존재하지 않는 상품 ID입니다: " + id);
+        }
     }
 
     @Override
@@ -57,6 +76,9 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public Optional<Product> findById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("조회할 상품 ID가 null입니다.");
+        }
         return Optional.ofNullable(products.get(id));
     }
 
