@@ -6,7 +6,7 @@ POST /api/products
 GET /api/products/{productId}
 
 3. 모든 상품 조회 기능
-상품 목록 조회 (페이지네이션 적용)	모든 상품의 목록을 페이지 단위로 조회한다.
+상품 목록 조회 (페이지네이션 적용)	모든 상품의 목록을 페이지 단위로 조회한다(추후 예정)
 GET	/api/products?page=0&size=10&sort=name,asc&categoryId=1	
 
 4. 상품 수정 기능
