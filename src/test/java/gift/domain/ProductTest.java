@@ -29,7 +29,7 @@ class ProductTest {
     void 제품명_또는_이미지_URL이_null_비어있거나_공백일_때_IllegalArgumentException_발생(String invalidInput) {
         IllegalArgumentException nameException = assertThrows(IllegalArgumentException.class,
                 () -> Product.of(invalidInput, 100, "valid_url.png"));
-        assertEquals("제품명은 비어있거나 null일 수 없습니다.", nameException.getMessage());
+        assertEquals("name은 비어있거나 null일 수 없습니다.", nameException.getMessage());
 
         IllegalArgumentException imageUrlException = assertThrows(IllegalArgumentException.class,
                 () -> Product.of("Valid Name", 100, invalidInput));
