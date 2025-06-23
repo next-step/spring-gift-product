@@ -52,4 +52,12 @@ public class ProductService {
         }
         return ProductDto.from(product);
     }
+
+    public void deleteProduct(Long id) {
+        Product product = productCollector.get(id);
+        if(product == null) {
+            throw new EntityNotFoundException("Product id {"+id+"} not found");
+        }
+        productCollector.delete(id);
+    }
 }
