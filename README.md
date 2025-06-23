@@ -7,7 +7,28 @@
 - 현재는 별도의 데이터베이스가 없으므로 적절한 자바 컬렉션 프레임워크를 사용하여 메모리에 저장한다.
 
 #### 🛠 구현할 기능 목록
-- [ ] 상품 조회 API
 - [ ] 상품 추가 API
+  - [ ] 상품 하나 추가
+    - **Request**: POST /api/products
+      ```json
+      {
+          "id": 8146027,
+          "name": "아이스 카페 아메리카노 T",
+          "price": 4500,
+          "imageUrl": "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"
+      }
+      ```
+    - **Response**: 201 Created
+      ```json 
+      [
+        {
+          "id": 8146027,
+          "name": "아이스 카페 아메리카노 T",
+          "price": 4500,
+          "imageUrl": "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"
+        }
+      ]
+      ```
+- [ ] 상품 조회 API
 - [ ] 상품 수정 API
 - [ ] 상품 삭제 API
