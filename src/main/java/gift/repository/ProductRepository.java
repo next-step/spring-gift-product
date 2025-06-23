@@ -1,12 +1,9 @@
 package gift.repository;
 
-import gift.dto.ProductRequestDto;
-import gift.dto.ProductResponseDto;
 import gift.entity.Product;
-import org.springframework.stereotype.Repository;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class ProductRepository {
@@ -17,5 +14,9 @@ public class ProductRepository {
         product.setId(nextId++);
         productMap.put(product.getId(), product);
         return product;
+    }
+
+    public Product findProductById(Long id) {
+        return productMap.get(id);
     }
 }

@@ -4,6 +4,7 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
+import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,4 +30,19 @@ public class ProductService {
                 saveProduct.getImageUrl()
         );
     }
+
+    public ProductResponseDto findProductById(Long id) {
+        Product product = productRepository.findProductById(id);
+        if (product == null) {
+            throw new NoSuchElementException("Invalid id = " + id);
+        }
+        return new ProductResponseDto(
+            product.getId(),
+            product.getName(),
+            product.getPrice(),
+            product.getImageUrl()
+        );
+    }
+
+
 }
