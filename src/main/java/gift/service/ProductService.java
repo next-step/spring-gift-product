@@ -20,4 +20,8 @@ public class ProductService {
         return repository.findAll();
     }
 
+    public Product getProductById(Long id) {
+        return ProductValidator.validateExists(id, repository);
+    }
+
 }

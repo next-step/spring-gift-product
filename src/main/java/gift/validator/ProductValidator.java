@@ -1,7 +1,9 @@
 package gift.validator;
 
 import gift.entity.Product;
+import gift.repository.ProductRepository;
 import java.net.URL;
+import java.util.NoSuchElementException;
 
 public class ProductValidator {
 
@@ -17,6 +19,11 @@ public class ProductValidator {
         if (!isValidUrl(product.getImageUrl())) {
             throw new IllegalArgumentException("유효한 이미지 URL이 아닙니다.");
         }
+    }
+
+    public static Product validateExists(Long id, ProductRepository repository) {
+        return repository.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("상품을 찾을 수 없습니다."));
     }
 
     private static boolean isBlank(String str) {

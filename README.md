@@ -6,6 +6,7 @@
 
 - [ ] 상품 등록 (POST /api/products)
 - [ ] 상품 목록 조회 (GET /api/products)
+- [ ] 상품 개별 조회 (GET /api/products/{id})
 - [ ] 상품 수정 (PUT /api/products/{id})
 - [ ] 상품 삭제 (DELETE /api/products/{id})
 
@@ -55,3 +56,23 @@
         "imageUrl": "https://cdn.pixabay.com/photo/2015/04/08/13/13/coffee-712661_1280.jpg"
       }
     ]
+
+3. 상품 개별 조회 (GET /api/products/{id})
+  - 특정 상품 ID를 이용해 단일 상품 정보를 조회합니다.
+  - **URL**: `/api/products/{id}`
+  - **Method**: `GET`
+  - **Path Variable**: `id` (상품 ID, Long)
+  - **Response Content-Type**: `application/json`
+  - 응답 예시 (200 OK)
+    ```json
+    {
+      "id": 1,
+      "name": "초콜릿",
+      "price": 3000,
+      "imageUrl": "https://cdn.pixabay.com/photo/2017/02/03/14/47/chocolate-2038186_1280.jpg"
+    }
+  - 예외 처리
+    - 존재하지 않는 ID로 요청이 올 경우에는 "상품을 찾을 수 없습니다."라는 메세지를 응답하고 404 Not Found 상태 코드 반환
+  - 내부 검증 방식
+    - ProductValidator.validateExists(id, repository) 를 통해 상품 존재 여부를 검증
+    - 검증에 실패할 경우 NoSuchElementException 을 발생시키고, GlobalExceptionHandler 에서 이를 잡아 404 상태 코드로 응답
