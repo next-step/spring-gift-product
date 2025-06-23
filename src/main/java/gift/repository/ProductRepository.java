@@ -23,4 +23,11 @@ public class ProductRepository {
         Product product = products.get(id);
         return Optional.ofNullable(product);
     }
+
+    public void deleteByid(Long id) {
+        if (!products.containsKey(id)) {
+            throw new IllegalStateException("해당 id의 상품이 존재하지 않습니다.");
+        }
+        products.remove(id);
+    }
 }
