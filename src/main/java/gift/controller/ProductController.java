@@ -4,13 +4,12 @@ package gift.controller;
 import gift.dto.RequestDto;
 import gift.dto.ResponseDto;
 import gift.entity.Product;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class ProductController {
@@ -25,5 +24,18 @@ public class ProductController {
         products.put(productId, product);
 
         return new ResponseDto(product);
+    }
+
+    @GetMapping("/api/products")
+    public List<ResponseDto> getProducts() {
+
+        List<ResponseDto> responseList = new ArrayList<>();
+
+        for (Product product : products.values()) {
+            ResponseDto responseDto = new ResponseDto(product);
+            responseList.add(responseDto);
+        }
+
+        return responseList;
     }
 }
