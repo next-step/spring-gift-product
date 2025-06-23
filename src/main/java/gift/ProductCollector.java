@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public class ProductCollector {
 
-    private Long id = 0L;
+    private Long id = 1L;
     private final Map<Long, Product> map = new HashMap<>();
 
     public Product add(Product product) {

@@ -4,9 +4,9 @@ public class Product {
 
     private Long id;
     private final String name;
-    private final long price;
+    private final Long price;
 
-    public Product(String name, long price) {
+    public Product(String name, Long price) {
         this.id = null;
         this.name = name;
         this.price = price;
@@ -24,7 +24,7 @@ public class Product {
         return price;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }
