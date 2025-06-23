@@ -1,0 +1,39 @@
+package gift.controller;
+
+import gift.domain.Product;
+import gift.dto.CreateProductRequest;
+import gift.dto.CreateProductResponse;
+import gift.service.ProductService;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.NoSuchElementException;
+
+
+@RestController
+@RequestMapping("/api/products")
+public class ProductController {
+
+    private final ProductService service;
+
+    public ProductController(ProductService service) {
+        this.service = service;
+    }
+
+    @PostMapping
+    public HttpEntity<CreateProductResponse> createProduct(@RequestBody CreateProductRequest request) {
+        CreateProductResponse createProductResponse = service.save(request);
+
+        return new ResponseEntity<>(createProductResponse, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public HttpEntity<Product> findProductById(@PathVariable Long id) {
+        Product findProduct = service.findById(id);
+
+        return new ResponseEntity<>(findProduct, HttpStatus.OK);
+    }
+}
