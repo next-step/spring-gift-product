@@ -1,6 +1,7 @@
 package gift.product.repository;
 
 import gift.domain.Product;
+import gift.global.exception.NotFoundProductException;
 import gift.product.dto.ProductCreateRequest;
 import org.springframework.stereotype.Repository;
 
@@ -32,5 +33,11 @@ public class ProductRepositoryV1 implements ProductRepository{
 
     public Optional<Product> findById(String id) {
         return Optional.ofNullable(products.get(id));
+    }
+
+
+    public void deleteById(String id) {
+        if (products.get(id) != null)products.remove(id);
+        else throw new NotFoundProductException("삭제 실패 - 존재하지 않는 상품입니다");
     }
 }

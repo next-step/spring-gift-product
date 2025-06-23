@@ -1,17 +1,12 @@
 package gift.product.controller;
 
-import gift.domain.Product;
 import gift.product.dto.ProductCreateRequest;
 import gift.product.dto.ProductResponse;
 import gift.product.service.ProductService;
 import gift.util.LocationGenerator;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
@@ -49,5 +44,13 @@ public class ProductController {
         ProductResponse response = productService.findProduct(id);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
+
+        productService.deleteProduct(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

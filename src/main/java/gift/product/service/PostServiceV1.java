@@ -35,4 +35,8 @@ public class PostServiceV1 implements ProductService{
                 .orElseThrow(() -> new NotFoundProductException("상품이 존재하지 않습니다."));
         return new ProductResponse(findProduct);
     }
+
+    public void deleteProduct(String id) {
+        productRepository.deleteById(id);
+    }
 }

@@ -14,4 +14,6 @@ public interface ProductRepository {
     List<Product> findAll();
 
     Optional<Product> findById(String id);
+
+    void deleteById(String id);
 }

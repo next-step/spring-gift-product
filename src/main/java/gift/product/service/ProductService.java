@@ -12,4 +12,5 @@ public interface ProductService {
     String addProduct(ProductCreateRequest dto);
     List<ProductResponse> findAllProducts();
     ProductResponse findProduct(String id);
+    void deleteProduct(String id);
 }
