@@ -74,4 +74,5 @@
       ```
     - [ ] **예외**:
       - id가 존재하지 않을 때: 404 Not Found
+      - name, price, imageUrl 중 하나라도 존재하지 않을 때: 400 Bad Request
 - [ ] 상품 삭제 API

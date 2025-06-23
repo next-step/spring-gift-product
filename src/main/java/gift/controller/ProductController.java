@@ -47,4 +47,21 @@ public class ProductController {
 
         return new ResponseDto(product);
     }
+
+    @PatchMapping("/api/products/{id}")
+    public ResponseDto updateProduct(
+            @PathVariable Long id,
+            @RequestBody RequestDto requestDto
+    ) {
+
+        Product product = products.get(id);
+
+        if (product == null) {
+            throw new IllegalArgumentException("Product not found");
+        }
+
+        product.update(requestDto);
+
+        return new ResponseDto(product);
+    }
 }
