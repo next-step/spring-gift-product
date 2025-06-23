@@ -25,4 +25,8 @@ public class ProductRepository {
     public void update(Long id, Product updated) {
         store.put(id, updated);
     }
+    public void delete(Long id) {
+        store.remove(id);
+    }
+
 }
