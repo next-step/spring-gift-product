@@ -55,7 +55,7 @@
       - id가 존재하지 않을 때: 404 Not Found
 - [ ] 상품 수정 API
   - [ ] 단건 상품 전체 수정
-    - **Request**: PUT /api/products/{id}
+    - **Request**: PATCH /api/products/{id}
       ```json
       {
           "name": "아이스 카페 아메리카노 T",
@@ -76,3 +76,16 @@
       - id가 존재하지 않을 때: 404 Not Found
       - name, price, imageUrl 중 하나라도 존재하지 않을 때: 400 Bad Request
 - [ ] 상품 삭제 API
+  - [ ] 단건 상품 삭제
+    - **Request**: DELETE /api/products/{id}
+    - **Response**: 200 OK
+      ```json
+      {
+          "id": 8146027,
+          "name": "아이스 카페 아메리카노 T",
+          "price": 4500,
+          "imageUrl": "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"
+      }
+      ```
+    - [ ] **예외**:
+      - id가 존재하지 않을 때: 404 Not Found
