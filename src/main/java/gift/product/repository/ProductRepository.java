@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface ProductRepository {
 
-    String addProduct(ProductCreateRequest dto);
+    String save(ProductCreateRequest dto);
 
     List<Product> findAll();
 

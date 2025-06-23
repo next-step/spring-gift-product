@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class ProductRepositoryV1 implements ProductRepository{
     private final Map<String, Product> products = new HashMap<>();
 
-    public String addProduct(ProductCreateRequest dto) {
+    public String save(ProductCreateRequest dto) {
         Product product = new Product(dto.getName(), dto.getPrice(), dto.getImageURL());
 
         products.put(product.getId(), product);

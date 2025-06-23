@@ -20,7 +20,7 @@ public class PostServiceV1 implements ProductService{
 
 
     public String addProduct(ProductCreateRequest dto) {
-        return productRepository.addProduct(dto);
+        return productRepository.save(dto);
     }
 
     public List<ProductResponse> findAllProducts() {
