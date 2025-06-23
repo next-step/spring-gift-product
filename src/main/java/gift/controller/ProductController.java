@@ -64,4 +64,17 @@ public class ProductController {
 
         return new ResponseDto(product);
     }
+
+    @DeleteMapping("/api/products/{id}")
+    public ResponseDto deleteProduct(@PathVariable Long id) {
+        Product product = products.get(id);
+
+        if (product == null) {
+            throw new IllegalArgumentException("Product not found");
+        }
+
+        products.remove(id);
+
+        return new ResponseDto(product);
+    }
 }
