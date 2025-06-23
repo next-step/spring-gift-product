@@ -5,8 +5,11 @@ import gift.dto.ProductResponseDto;
 import gift.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-@RestController("/api/products")
+import java.net.URI;
+
+@RestController
 public class ProductController {
 
     private final ProductService productService;
@@ -15,17 +18,24 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PostMapping
+    @PostMapping("/api/products")
     public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto requestDto) {
-
-        if (requestDto != null) {
-            String name = requestDto.getName();
-            Integer price = requestDto.getPrice();
-            String imageUrl = requestDto.getImageUrl();
-
-            return ResponseEntity.ok(productService.createProduct(name, price, imageUrl));
+        if (requestDto == null) {
+            return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.badRequest().build();
+
+        String name = requestDto.getName();
+        Integer price = requestDto.getPrice();
+        String imageUrl = requestDto.getImageUrl();
+
+        ProductResponseDto responseDto = productService.createProduct(name, price, imageUrl);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(responseDto.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(responseDto);
     }
 
 }
