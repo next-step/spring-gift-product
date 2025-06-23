@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
@@ -60,5 +62,12 @@ public class ProductRepositoryImpl implements ProductRepository {
         products.put(productId, product);
 
         return new ProductResponseDto(product);
+    }
+
+    @Override
+    public void deleteProduct(Long productId) {
+        if (products.remove(productId) == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 }
