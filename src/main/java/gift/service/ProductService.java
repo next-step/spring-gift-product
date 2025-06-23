@@ -2,8 +2,11 @@ package gift.service;
 
 import gift.domain.Product;
 import gift.dto.product.CreateProductRequest;
+import gift.dto.product.ProductResponse;
 import gift.repository.ProductRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -17,5 +20,10 @@ public class ProductService {
     public Product saveProduct(CreateProductRequest request) {
         Product product = Product.of(request);
         return productRepository.save(product);
+    }
+
+    public List<ProductResponse> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        return products.stream().map(ProductResponse::new).toList();
     }
 }
