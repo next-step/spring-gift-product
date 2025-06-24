@@ -1,11 +1,12 @@
 package gift.controller;
 
-import gift.common.ApiResponse;
+import gift.common.code.CustomResponseCode;
+import gift.common.dto.CustomResponseBody;
 import gift.dto.ProductRequest;
 import gift.dto.ProductResponse;
 import gift.service.ProductService;
+import jakarta.validation.Valid;
 import java.util.List;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,47 +28,51 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<ProductResponse>> createProduct(
-        @RequestBody ProductRequest request) {
+    public ResponseEntity<CustomResponseBody<ProductResponse>> createProduct(
+        @Valid @RequestBody ProductRequest request) {
         ProductResponse response = productService.create(request);
 
         return ResponseEntity
-            .status(HttpStatus.CREATED)
-            .body(new ApiResponse<>(201, "상품 생성 성공", response));
+            .status(CustomResponseCode.CREATED.getHttpStatus())
+            .body(CustomResponseBody.of(CustomResponseCode.CREATED, response));
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ProductResponse>>> getAllProducts() {
+    public ResponseEntity<CustomResponseBody<List<ProductResponse>>> getAllProducts() {
         List<ProductResponse> responses = productService.getAllProducts();
 
         return ResponseEntity
-            .ok(new ApiResponse<>(200, "상품 목록 조회 성공", responses));
+            .status(CustomResponseCode.LIST_RETRIEVED.getHttpStatus())
+            .body(CustomResponseBody.of(CustomResponseCode.LIST_RETRIEVED, responses));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<ProductResponse>> getProduct(@PathVariable Long id) {
+    public ResponseEntity<CustomResponseBody<ProductResponse>> getProduct(@PathVariable Long id) {
         ProductResponse response = productService.getProduct(id);
 
         return ResponseEntity
-            .ok(new ApiResponse<>(200, "상품 조회 성공", response));
+            .status(CustomResponseCode.RETRIEVED.getHttpStatus())
+            .body(CustomResponseBody.of(CustomResponseCode.RETRIEVED, response));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<ProductResponse>> updateProduct(
+    public ResponseEntity<CustomResponseBody<ProductResponse>> updateProduct(
         @PathVariable Long id,
-        @RequestBody ProductRequest request
+        @Valid @RequestBody ProductRequest request
     ) {
         ProductResponse response = productService.update(id, request);
 
         return ResponseEntity
-            .ok(new ApiResponse<>(200, "상품 수정 성공", response));
+            .status(CustomResponseCode.UPDATED.getHttpStatus())
+            .body(CustomResponseBody.of(CustomResponseCode.UPDATED, response));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Void>> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<CustomResponseBody<Void>> deleteProduct(@PathVariable Long id) {
         productService.delete(id);
 
         return ResponseEntity
-            .ok(new ApiResponse<>(204, "상품 삭제 성공", null));
+            .status(CustomResponseCode.DELETED.getHttpStatus())
+            .body(CustomResponseBody.of(CustomResponseCode.DELETED));
     }
 }
