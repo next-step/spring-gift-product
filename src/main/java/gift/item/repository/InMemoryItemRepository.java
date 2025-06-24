@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 public class InMemoryItemRepository implements ItemRepository {
 
     private final Map<Long, Item> items = new HashMap<>();
+    private Long nextId = 1L;
 
     @Override
     public Item findById(Long id) {
@@ -20,5 +21,12 @@ public class InMemoryItemRepository implements ItemRepository {
     @Override
     public List<Item> findAll() {
         return new ArrayList<>(items.values());
+    }
+
+    @Override
+    public Item save(Item item) {
+        item.setId(nextId++);
+        items.put(item.getId(), item);
+        return item;
     }
 }

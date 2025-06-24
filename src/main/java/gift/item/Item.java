@@ -14,6 +14,13 @@ public class Item {
         this.imageUrl = imageUrl;
     }
 
+    // 새로운 item 생성시 사용하는 생성자
+    public Item(String name, Integer price, String imageUrl) {
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
+    }
+
     public Long getId() {
         return id;
     }
@@ -28,6 +35,10 @@ public class Item {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setName(String name) {
