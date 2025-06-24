@@ -1,6 +1,8 @@
 package gift.service;
 
+import gift.dto.ProductRequest;
 import gift.dto.ProductResponse;
+import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,4 +28,12 @@ public class ProductService {
         .map(ProductResponse::new)
         .orElse(null);
   }
+
+  public ProductResponse addProduct(ProductRequest request) {
+    Product product = new Product(null, request.getName(), request.getPrice(),
+        request.getImageUrl());
+    Product saved = productRepository.save(product);
+    return new ProductResponse(saved);
+  }
+
 }
