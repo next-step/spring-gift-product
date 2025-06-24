@@ -55,6 +55,7 @@
 - 상태 코드:
     - `204 No Content`: 삭제 성공
     - `404 Not Found`: 해당 ID의 상품이 존재하지 않을 경우
+<<<<<<< HEAD
 
 ### ✅ 상품 목록 페이지네이션 조회 API (`GET /api/products?page=0&size=10`)
 - 전체 상품 목록을 페이징 처리하여 조회하는 API
