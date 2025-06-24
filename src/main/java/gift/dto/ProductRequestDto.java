@@ -3,7 +3,7 @@ package gift.dto;
 public class ProductRequestDto {
 
     private String name;
-    private long price;
+    private Long price;
     private String imageUrl;
 
 
@@ -12,7 +12,7 @@ public class ProductRequestDto {
         return name;
     }
 
-    public long getPrice() {
+    public Long getPrice() {
         return price;
     }
 
