@@ -18,7 +18,7 @@ public class ItemController {
 
 	// 게시글 생성
 	@PostMapping()
-	public Long createItem(@RequestBody CreateItemRequest req) {
+	public Long createItem(@RequestBody ItemRequest req) {
 		if(req.name() == null || req.price() == null || req.imageUrl() == null)
 			throw new RuntimeException("요청 데이터가 잘못됐습니다.");
 
@@ -35,5 +35,11 @@ public class ItemController {
 	@GetMapping("/{itemId}")
 	public Item getItem(@PathVariable Long itemId) {
 		return itemService.getItem(itemId);
+	}
+
+	// 게시글 수정
+	@PutMapping("/{itemId}")
+	public Item updateItem(@PathVariable Long itemId, @RequestBody ItemRequest req) {
+
 	}
 }

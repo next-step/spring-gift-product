@@ -12,7 +12,7 @@ public class ItemService {
 
 	private final List<Item> db = new ArrayList<>();
 
-	public Long createItem(CreateItemRequest req) {
+	public Long createItem(ItemRequest req) {
 		Item item = new Item(req.name(), req.price(), req.imageUrl());
 		db.add(item);
 		return item.getId();
