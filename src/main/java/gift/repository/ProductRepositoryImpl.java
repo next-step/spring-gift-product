@@ -14,7 +14,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     private final Map<Long, Product> products = new HashMap<>();
 
     @Override
-    public Product createProduct(ProductRequestDto requestDto) {
+    public ProductResponseDto createProduct(ProductRequestDto requestDto) {
         Long id = requestDto.getId();
         String name = requestDto.getName();
         Integer price = requestDto.getPrice();
@@ -22,7 +22,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         Product product = new Product(id, name, price, imageUrl);
         products.put(id, product);
-        return product;
+        return new ProductResponseDto(product);
     }
 
     @Override
@@ -33,5 +33,11 @@ public class ProductRepositoryImpl implements ProductRepository {
         }
 
         return productList;
+    }
+
+    @Override
+    public ProductResponseDto findProductById(Long id) {
+        Product product = products.get(id);
+        return new ProductResponseDto(product);
     }
 }

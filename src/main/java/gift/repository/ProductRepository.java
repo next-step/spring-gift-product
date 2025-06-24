@@ -6,6 +6,7 @@ import gift.entity.Product;
 import java.util.List;
 
 public interface ProductRepository {
-    public Product createProduct(ProductRequestDto requestDto);
+    public ProductResponseDto createProduct(ProductRequestDto requestDto);
     public List<ProductResponseDto> findAllProducts();
+    public ProductResponseDto findProductById(Long id);
 }

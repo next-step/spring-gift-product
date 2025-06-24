@@ -17,13 +17,16 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public ProductResponseDto createProduct(ProductRequestDto requestDto) {
-        Product product = productRepository.createProduct(requestDto);
-
-        return new ProductResponseDto(product);
+        return productRepository.createProduct(requestDto);
     }
 
     @Override
     public List<ProductResponseDto> findAllProducts() {
         return productRepository.findAllProducts();
+    }
+
+    @Override
+    public ProductResponseDto findProductById(Long id) {
+        return productRepository.findProductById(id);
     }
 }
