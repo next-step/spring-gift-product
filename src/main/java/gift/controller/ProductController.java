@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -64,6 +65,18 @@ public class ProductController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
     
+    //상품 일부 수정 api (dbId)
+    @PatchMapping("{id}")
+    public ResponseEntity<ModifyProductResponseDto> modifyProductInfoWithDbId(
+        @PathVariable Long id,
+        @RequestBody ModifyProductRequestDto requestDto
+    ) {
+        ModifyProductResponseDto responseDto = productService.modifyProductInfoWithDbId(id,
+            requestDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+    
+    //상품 단건 삭제 api
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteProductWithDbId(
         @PathVariable Long id

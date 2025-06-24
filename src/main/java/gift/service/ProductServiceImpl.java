@@ -52,15 +52,31 @@ public class ProductServiceImpl implements ProductService {
             requestDto.getImageUrl()
         );
         
-        ModifyProductResponseDto responseDto = productRepository.modifyProductWithDbId(id,
+        return productRepository.modifyProductWithDbId(id,
             newProduct);
-        return responseDto;
     }
     
+    //상품 단건 삭제
     @Override
     public void deleteProductWithDbId(Long id) {
         Product product = productRepository.findProductWithDbId(id);
         productRepository.deleteProductWithDbId(id);
+    }
+    
+    @Override
+    public ModifyProductResponseDto modifyProductInfoWithDbId(Long id,
+        ModifyProductRequestDto requestDto) {
+        Product product = productRepository.findProductWithDbId(id);
+        
+        Product newProduct = new Product(
+            requestDto.getId() != null ? requestDto.getId() : product.getId(),
+            requestDto.getName() != null ? requestDto.getName() : product.getName(),
+            requestDto.getPrice() != null ? requestDto.getPrice() : product.getPrice(),
+            requestDto.getImageUrl() != null ? requestDto.getImageUrl() : product.getImageUrl()
+        );
+        
+        return productRepository.modifyProductWithDbId(id,
+            newProduct);
     }
     
 }

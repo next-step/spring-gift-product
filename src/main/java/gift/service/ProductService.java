@@ -19,4 +19,6 @@ public interface ProductService {
     ModifyProductResponseDto modifyProductWithDbId(Long id, ModifyProductRequestDto requestDto);
     
     void deleteProductWithDbId(Long id);
+    
+    ModifyProductResponseDto modifyProductInfoWithDbId(Long id, ModifyProductRequestDto requestDto);
 }
