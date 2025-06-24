@@ -45,4 +45,10 @@ public class ProductController {
 
         return oldProduct;
     }
+
+    @DeleteMapping("/product/{id}")
+    public String deleteProduct(@PathVariable Long id) {
+        products.remove(id);
+        return "상품 삭제: " + id;
+    }
 }
