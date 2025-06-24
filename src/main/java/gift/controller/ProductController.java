@@ -40,4 +40,20 @@ public class ProductController {
 
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
+
+    // 상품 수정
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updateProduct) {
+        Product product = products.get(id);
+
+        if (product == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        product.setName(updateProduct.getName());
+        product.setPrice(updateProduct.getPrice());
+        product.setImageUrl(updateProduct.getImageUrl());
+
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
 }
