@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler(InvalidProductException.class)
-  public ResponseEntity<?> handleInvalidProductException(InvalidProductException e){
-    return ResponseEntity.status(e.getErrorCode().getHttpStatus())
-        .body(e.getErrorCode().getErrorMessage());
-  }
+    @ExceptionHandler(InvalidProductException.class)
+    public ResponseEntity<?> handleInvalidProductException(InvalidProductException e) {
+        return ResponseEntity.status(e.getErrorCode().getHttpStatus())
+            .body(e.getErrorCode().getErrorMessage());
+    }
 
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<?> handleException(Exception e){
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .body(e.getMessage());
-  }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleException(Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(e.getMessage());
+    }
 
 }

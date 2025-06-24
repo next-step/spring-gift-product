@@ -5,9 +5,9 @@ package gift.dto;
  이후에 기능 확장, 필드 추가 등을 고려해 미리 분리해 놓는 게 낫다고 판단했습니다.
 */
 
-public record ProductResponse(String name, int price, String imageUrl){
+public record ProductResponse(String name, int price, String imageUrl) {
 
-  public static ProductResponse of(String name, int price, String imageUrl){
-    return new ProductResponse(name, price, imageUrl);
-  }
+    public static ProductResponse of(String name, int price, String imageUrl) {
+        return new ProductResponse(name, price, imageUrl);
+    }
 }
