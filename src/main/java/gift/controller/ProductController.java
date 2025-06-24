@@ -4,6 +4,8 @@ package gift.controller;
 import gift.dto.RequestDto;
 import gift.dto.ResponseDto;
 import gift.entity.Product;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -38,15 +40,15 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseDto getProductById(@PathVariable Long id) {
+    public ResponseEntity<ResponseDto> getProductById(@PathVariable Long id) {
 
         Product product = products.get(id);
 
         if (product == null) {
-            throw new IllegalArgumentException("Product not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseDto(product);
+        return new ResponseEntity<>(new ResponseDto(product), HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
