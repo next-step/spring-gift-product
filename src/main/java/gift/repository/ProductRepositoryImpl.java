@@ -1,8 +1,11 @@
 package gift.repository;
 
 import gift.dto.ProductRequestDto;
+import gift.dto.ProductResponseDto;
 import gift.entity.Product;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Repository;
 
@@ -20,5 +23,15 @@ public class ProductRepositoryImpl implements ProductRepository {
         Product product = new Product(id, name, price, imageUrl);
         products.put(id, product);
         return product;
+    }
+
+    @Override
+    public List<ProductResponseDto> findAllProducts() {
+        List<ProductResponseDto> productList = new ArrayList<>();
+        for (Map.Entry<Long, Product> entry : products.entrySet()) {
+            productList.add(new ProductResponseDto(entry.getValue()));
+        }
+
+        return productList;
     }
 }
