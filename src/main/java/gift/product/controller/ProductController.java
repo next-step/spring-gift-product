@@ -21,6 +21,10 @@ public class ProductController {
         return productService.addProduct(productRequest);
     }
 
+    @GetMapping("/{productId}")
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId) {
+        return productService.getProduct(productId);
+    }
 
 
 }
