@@ -27,4 +27,9 @@ public class ProductRepositoryImpl implements ProductRepository {
     public List<Product> findAllProducts() {
         return new ArrayList<>(products.values());
     }
+
+    @Override
+    public void deleteProductById(Long id) {
+        products.remove(id);
+    }
 }
