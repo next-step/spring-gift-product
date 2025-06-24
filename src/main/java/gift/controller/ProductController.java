@@ -29,4 +29,11 @@ public class ProductController {
         return new ResponseEntity<>(productService.saveProduct(dto), HttpStatus.CREATED);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> findMemoById(@PathVariable Long id) {
+        return new ResponseEntity<>(productService.findProductById(id), HttpStatus.OK);
+    }
+
+
+
 }
