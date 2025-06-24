@@ -2,8 +2,11 @@ package gift.repository;
 
 import gift.dto.AddProductRequestDto;
 import gift.dto.AddProductResponseDto;
+import gift.dto.FindProductResponseDto;
 import gift.entity.Product;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Repository;
 
@@ -27,5 +30,17 @@ public class ProductRepositoryImpl implements ProductRepository {
         products.put(dbId, product);
         
         return new AddProductResponseDto(dbId, product);
+    }
+    
+    @Override
+    public List<FindProductResponseDto> findAllProducts() {
+        List<FindProductResponseDto> responseDtoList = new ArrayList<>();
+        for (HashMap.Entry<Long, Product> entry : products.entrySet()) {
+            responseDtoList.add(new FindProductResponseDto(
+                entry.getKey(),
+                entry.getValue()
+            ));
+        }
+        return responseDtoList;
     }
 }
