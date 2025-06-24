@@ -7,7 +7,7 @@ public class Product {
     private Integer price;
     private String imageUrl;
 
-    public Product(Long id, String name, Integer price, String imageUrl){
+    public Product(Long id, String name, Integer price, String imageUrl) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -18,15 +18,15 @@ public class Product {
         return id;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public Integer getPrice(){
+    public Integer getPrice() {
         return price;
     }
 
-    public String getImageUrl(){
+    public String getImageUrl() {
         return imageUrl;
     }
 }
