@@ -59,4 +59,9 @@ public class ProductRepositoryImpl implements ProductRepository {
         products.put(id, newProduct);
         return new ModifyProductResponseDto(id, newProduct);
     }
+    
+    @Override
+    public void deleteProductWithDbId(Long id) {
+        products.remove(id);
+    }
 }

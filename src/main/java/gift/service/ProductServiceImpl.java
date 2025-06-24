@@ -57,4 +57,10 @@ public class ProductServiceImpl implements ProductService {
         return responseDto;
     }
     
+    @Override
+    public void deleteProductWithDbId(Long id) {
+        Product product = productRepository.findProductWithDbId(id);
+        productRepository.deleteProductWithDbId(id);
+    }
+    
 }

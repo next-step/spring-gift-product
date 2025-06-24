@@ -17,4 +17,6 @@ public interface ProductRepository {
     Product findProductWithDbId(Long id);
     
     ModifyProductResponseDto modifyProductWithDbId(Long id, Product newProduct);
+    
+    void deleteProductWithDbId(Long id);
 }
