@@ -1,9 +1,6 @@
 package gift;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,5 +14,11 @@ public class ProductController {
     public String createProduct(@RequestBody Product product) {
         products.put(product.getId(), product);
         return "상품 생성: " + product.getId();
+    }
+
+    @GetMapping("/product/{id}")
+    public Product getProduct(@PathVariable Long id) {
+        Product product = products.get(id);
+        return product;
     }
 }
