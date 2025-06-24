@@ -42,47 +42,41 @@ public class ProductController {
     //read
     //특정 상품을 조회(id)
     @GetMapping("/products/{id}")
-    public Product findProductById(@PathVariable Long id) {
-        Optional<Product> optionalProduct = Optional.ofNullable(products.get(id));
-        if (optionalProduct.isPresent()) {
-            return optionalProduct.get();
-        }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "존재하지 않는 상품입니다.");
+    public Product getProduct(@PathVariable Long id) {
+        return findProductById(id);
     }
 
     //read
     //전체 상품을 조회
     @GetMapping("/products")
     public List<Product> getProducts() {
-        return products.values().stream().collect(Collectors.toList());
+        return products.values()
+            .stream()
+            .collect(Collectors.toList());
     }
 
     //update
     //상품 수정
     @PutMapping("/products/{id}")
-    public Product modifyProduct(@RequestBody ProductRequestDto requestDto, @PathVariable Long id) {
-        Optional<Product> optionalProduct = Optional.ofNullable(products.get(id));
-        if (optionalProduct.isPresent()) {
-            Long found = optionalProduct.get().getId();
-            Product product = new Product(found, requestDto.getName(), requestDto.getPrice(),
-                requestDto.getImageUrl());
-            products.put(found, product);
-            return product;
-        }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "존재하지 않는 상품입니다.");
+    public Product modifyProduct(
+        @RequestBody ProductRequestDto requestDto,
+        @PathVariable Long id
+    ) {
+        Long found = findProductById(id).getId();
+        Product product = new Product(found,
+            requestDto.getName(),
+            requestDto.getPrice(),
+            requestDto.getImageUrl());
+        products.put(found, product);
+        return product;
     }
 
     //delete
     //등록된 상품을 삭제
     @DeleteMapping("/products/{id}")
     public void removeProduct(@PathVariable Long id) {
-        Optional<Product> optionalProduct = Optional.ofNullable(products.get(id));
-        if (optionalProduct.isPresent()) {
-            Long found = optionalProduct.get().getId();
-            products.remove(found);
-            return;
-        }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "존재하지 않는 상품입니다.");
+        Long found = findProductById(id).getId();
+        products.remove(found);
     }
 
     public boolean checkProduct(ProductRequestDto requestDto) {
@@ -96,5 +90,13 @@ public class ProductController {
             return false;
         }
         return true;
+    }
+
+    public Product findProductById(Long id){
+        Optional<Product> optionalProduct = Optional.ofNullable(products.get(id));
+        if (optionalProduct.isPresent()) {
+            return optionalProduct.get();
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "존재하지 않는 상품입니다.");
     }
 }

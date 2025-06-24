@@ -5,7 +5,7 @@ public class Product {
     private Long id;
     private String name;
     private Integer price;
-    private String imageUrl = "default link";
+    private String imageUrl;
 
     public Product(Long id, String name, Integer price, String imageUrl) {
         this.id = id;
