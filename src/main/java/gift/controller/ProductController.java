@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +46,26 @@ public class ProductController {
         if (product == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+
+        return ResponseEntity.ok(new ProductResponseDto(product));
+    }
+
+    // 상품 수정
+    @PutMapping("/{productId}")
+    public ResponseEntity<ProductResponseDto> updateProduct(
+            @PathVariable long productId,
+            @RequestBody ProductRequestDto productRequestDto) {
+
+        Product product = products.get(productId);
+        if (product == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        product.update(
+                productRequestDto.getName(),
+                productRequestDto.getPrice(),
+                productRequestDto.getImageUrl()
+        );
 
         return ResponseEntity.ok(new ProductResponseDto(product));
     }
