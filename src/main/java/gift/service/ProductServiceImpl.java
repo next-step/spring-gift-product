@@ -2,7 +2,6 @@ package gift.service;
 
 import gift.entity.Product;
 import gift.repository.ProductRepository;
-import gift.repository.ProductRepositoryImpl;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,5 +73,14 @@ public class ProductServiceImpl implements ProductService {
         if (product.getImageUrl() != null) existingProduct.setImageUrl(product.getImageUrl());
 
         return productRepository.update(existingProduct);
+    }
+
+    @Override
+    public void deleteById(Long productId) {
+        Long deletedCount = productRepository.deleteById(productId);
+        if (deletedCount == 0) {
+            throw new NoSuchElementException(
+                    String.format("Id %d에 해당하는 상품이 존재하지 않습니다.", productId));
+        }
     }
 }

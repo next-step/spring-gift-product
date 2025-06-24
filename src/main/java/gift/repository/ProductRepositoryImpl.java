@@ -50,4 +50,13 @@ public class ProductRepositoryImpl implements ProductRepository {
         productMap.put(product.getId(), product); // 제품을 업데이트
         return product; // 업데이트된 제품 반환
     }
+
+    @Override
+    public Long deleteById(Long productId) {
+        if (productMap.containsKey(productId)) {
+            productMap.remove(productId); // 제품을 삭제
+            return 1L; // 영향을 받은 행 수 반환
+        }
+        return 0L; // 제품이 존재하지 않으면 0 반환
+    }
 }

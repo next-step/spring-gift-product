@@ -9,4 +9,5 @@ public interface ProductService {
     Product getById(Long productId);
     Product create(Product product);
     Product update(Product product);
+    void deleteById(Long productId); // 삭제 메소드 추가
 }

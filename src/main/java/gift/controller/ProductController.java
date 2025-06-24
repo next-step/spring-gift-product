@@ -27,6 +27,9 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("상품 ID는 필수입니다.");
+        }
         Product product = productService.getById(id);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
@@ -44,5 +47,14 @@ public class ProductController {
         }
         Product updatedProduct = productService.update(dto.toEntity(id));
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("상품 ID는 필수입니다.");
+        }
+        productService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
