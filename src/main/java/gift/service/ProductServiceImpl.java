@@ -43,4 +43,17 @@ public class ProductServiceImpl implements ProductService {
 
         return new ProductResponseDto(product);
     }
+
+    @Override
+    public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
+        Product product = productList.get(id);
+
+        if (product == null) {
+            throw new ProductNotFoundException(id); // 예외 처리
+        }
+
+        product.update(requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
+
+        return new ProductResponseDto(product);
+    }
 }

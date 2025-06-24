@@ -28,4 +28,11 @@ public class Product {
     public String getImageUrl() {
         return imageUrl;
     }
+
+    // 상품 수정을 위한 메서드
+    public void update(String name, int price, String imageUrl) {
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
+    }
 }

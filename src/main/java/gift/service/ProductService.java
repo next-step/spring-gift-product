@@ -8,4 +8,6 @@ public interface ProductService {
     ProductResponseDto addProduct(ProductRequestDto requestDto);
 
     ProductResponseDto getProductById(Long id);
+
+    ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto);
 }
