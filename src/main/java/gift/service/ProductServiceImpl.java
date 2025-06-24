@@ -2,6 +2,7 @@ package gift.service;
 
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
+import gift.exception.ProductNotFoundException;
 import gift.repository.ProductRepositoryImpl;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,18 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public ProductResponseDto findProductById(Long id) {
         Product product = productRepositoryImpl.findProductById(id);
+        if (product == null) {
+            throw new ProductNotFoundException(id);
+        }
         return new ProductResponseDto(product);
     }
 
     @Override
     public ProductResponseDto updateProduct(Long id, String name, Long price, String url) {
         Product product = productRepositoryImpl.findProductById(id);
+        if (product == null) {
+            throw new ProductNotFoundException(id);
+        }
         Product newProduct = productRepositoryImpl.updateProduct(id, name, price, url);
         return new ProductResponseDto(newProduct);
     }
@@ -36,6 +43,9 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public void deleteProduct(Long id) {
         Product product = productRepositoryImpl.findProductById(id);
+        if (product == null) {
+            throw new ProductNotFoundException(id);
+        }
         productRepositoryImpl.deleteProduct(product.id());
     }
 }
