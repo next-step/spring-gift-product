@@ -16,14 +16,14 @@ public class ProductController {
     private final Map<Long, Product> products = new HashMap<>();
 
     @PostMapping
-    public ResponseDto addProduct(@RequestBody RequestDto requestDto) {
+    public ResponseEntity<ResponseDto> addProduct(@RequestBody RequestDto requestDto) {
         long productId = products.isEmpty() ? 1: Collections.max(products.keySet()) + 1;
 
         Product product = new Product(productId, requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
 
         products.put(productId, product);
 
-        return new ResponseDto(product);
+        return new ResponseEntity<>(new ResponseDto(product), HttpStatus.CREATED);
     }
 
     @GetMapping
