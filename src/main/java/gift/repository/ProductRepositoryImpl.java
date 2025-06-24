@@ -31,11 +31,10 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public List<FindProductResponseDto> findAllProducts() {
         List<FindProductResponseDto> responseDtoList = new ArrayList<>();
-        for (HashMap.Entry<Long, Product> entry : products.entrySet()) {
-            responseDtoList.add(new FindProductResponseDto(
-                entry.getKey(),
-                entry.getValue()
-            ));
+        for (Product product : products.values()) {
+            responseDtoList.add(
+                new FindProductResponseDto(product)
+            );
         }
         return responseDtoList;
     }

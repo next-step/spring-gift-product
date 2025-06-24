@@ -46,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public FindProductResponseDto findProductWithDbId(Long id) {
         Product product = productRepository.findProductWithDbId(id);
-        return new FindProductResponseDto(id, product);
+        return new FindProductResponseDto(product);
     }
     
     //상품 수정 (상품 자체가 다른 것으로 바뀜)
