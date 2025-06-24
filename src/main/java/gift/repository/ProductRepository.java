@@ -10,6 +10,9 @@ public class ProductRepository {
 
     private final Map<Long, Product> products = new HashMap<>();
 
+    // ID 관리
+    private long temp_id = 1L;
+
     // 전체 조회
     public List<Product> findAll() {
         return new ArrayList<>(products.values());
@@ -18,6 +21,13 @@ public class ProductRepository {
     // 단건 조회
     public Optional<Product> findById(Long id) {
         return Optional.ofNullable(products.get(id));
+    }
+
+    // 상품 생성
+    public Product save(Product product){
+        product.setId(temp_id++);
+        products.put(product.getId(), product);
+        return product;
     }
 
 }

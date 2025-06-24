@@ -15,4 +15,21 @@ public class ProductResponseDto {
         this.price = product.getPrice();
         this.imageUrl = product.getImageUrl();
     }
+
+    // Getter
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
 }
