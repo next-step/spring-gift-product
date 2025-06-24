@@ -32,4 +32,10 @@ public class ProductServiceImpl implements ProductService{
         Product newProduct = productRepositoryImpl.updateProduct(id, name, price, url);
         return new ProductResponseDto(newProduct);
     }
+
+    @Override
+    public void deleteProduct(Long id) {
+        Product product = productRepositoryImpl.findProductById(id);
+        productRepositoryImpl.deleteProduct(product.id());
+    }
 }

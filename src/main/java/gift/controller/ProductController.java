@@ -4,6 +4,7 @@ import gift.dto.ProductAddRequestDto;
 import gift.dto.ProductUpdateRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.service.ProductServiceImpl;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,14 @@ public class ProductController {
     ) {
         ProductResponseDto responseDto = productServiceImpl.updateProduct(id, requestDto.name(), requestDto.price(), requestDto.url());
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(
+            @PathVariable Long id
+    ) {
+        productServiceImpl.deleteProduct(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
