@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Key;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class ProductController {
@@ -25,11 +28,21 @@ public class ProductController {
                 requestDto.getPrice(),
                 requestDto.getImageUrl()
         );
-        products.put(1L, product);
+        products.put(product.getId(), product);
         return product;
     }
 
     //read
+    //특정 상품을 조회(id)
+
+    //read
+    //전체 상품을 조회
+    @GetMapping("/products")
+    public List<Product> getProducts(){
+        return products.values()
+                .stream()
+                .collect(Collectors.toList());
+    }
 
     //update
     //상품의 일부 내용만을 수정
