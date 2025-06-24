@@ -79,4 +79,9 @@ public class ItemService {
             updatedItem.getImageUrl()
         );
     }
+
+    public void deleteItem(Long itemId) {
+        // todo: item이 존재하는지 확인하는 로직 추가
+        itemRepository.remove(itemId);
+    }
 }

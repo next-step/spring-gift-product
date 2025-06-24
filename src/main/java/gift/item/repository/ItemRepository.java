@@ -13,4 +13,6 @@ public interface ItemRepository {
 
     Item update(Item item);
 
+    void remove(Long id);
+
 }

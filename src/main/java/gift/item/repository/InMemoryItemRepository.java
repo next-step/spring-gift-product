@@ -35,4 +35,9 @@ public class InMemoryItemRepository implements ItemRepository {
         items.put(item.getId(), item);
         return item;
     }
+
+    @Override
+    public void remove(Long id) {
+        items.remove(id);
+    }
 }
