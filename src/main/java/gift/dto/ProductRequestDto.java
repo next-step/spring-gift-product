@@ -1,21 +1,18 @@
-package gift.entity;
+package gift.dto;
 
-public class Product {
+public class ProductRequestDto {
 
-    private Long id;
     private String name;
     private int price;
     private String imageUrl;
 
-    public Product(Long id, String name, int price, String imageUrl) {
-        this.id = id;
+    public ProductRequestDto() {
+    }
+
+    public ProductRequestDto(String name, int price, String imageUrl) {
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getName() {
