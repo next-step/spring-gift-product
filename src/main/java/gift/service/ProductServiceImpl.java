@@ -41,4 +41,10 @@ public class ProductServiceImpl implements ProductService {
             .map(ProductResponseDto::new)
             .toList();
     }
+
+    @Override
+    public void updateProduct(Long id, ProductRequestDto requestDto) {
+        Product product = productRepository.findProductById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,  "해당 ID의 상품이 없습니다."));
+        product.update(requestDto);
+    }
 }
