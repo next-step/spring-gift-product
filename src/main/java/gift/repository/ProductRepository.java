@@ -42,35 +42,24 @@ public class ProductRepository {
     }
 
     public List<Product> findAll(int page, int size, String sortField, String sortDir) {
-        List<Product> productList = new ArrayList<>(products.values());
+        Comparator<Product> comparator;
 
-        if (sortField.equals("price")) {
-            if (sortDir.equalsIgnoreCase("desc")) {
-                productList.sort((a, b) -> b.getPrice().compareTo(a.getPrice()));
-            } else {
-                productList.sort((a, b) -> a.getPrice().compareTo(b.getPrice()));
-            }
-        } else if (sortField.equals("name")) {
-            if (sortDir.equalsIgnoreCase("desc")) {
-                productList.sort((a, b) -> b.getName().compareToIgnoreCase(a.getName()));
-            } else {
-                productList.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
-            }
+        if ("name".equals(sortField)) {
+            comparator = Comparator.comparing(Product::getName, String.CASE_INSENSITIVE_ORDER);
+        } else if ("price".equals(sortField)) {
+            comparator = Comparator.comparing(Product::getPrice);
         } else {
-            if (sortDir.equalsIgnoreCase("desc")) {
-                productList.sort((a, b) -> b.getId().compareTo(a.getId()));
-            } else {
-                productList.sort((a, b) -> a.getId().compareTo(b.getId()));
-            }
+            comparator = Comparator.comparing(Product::getId);
         }
 
-        int fromIndex = page * size;
-        int toIndex = Math.min(fromIndex + size, productList.size());
-
-        if (fromIndex >= productList.size()) {
-            return new ArrayList<>();
+        if ("desc".equalsIgnoreCase(sortDir)) {
+            comparator = comparator.reversed();
         }
 
-        return productList.subList(fromIndex, toIndex);
+        return products.values().stream()
+                .sorted(comparator)
+                .skip((long) page * size) // 페이지 지정
+                .limit(size) // 개수 지정
+                .toList();
     }
 }
