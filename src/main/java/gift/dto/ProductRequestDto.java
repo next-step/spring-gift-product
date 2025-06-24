@@ -3,10 +3,13 @@ package gift.dto;
 public class ProductRequestDto {
 
     private String name;
-    private Double price;
+    private Long price;
     private String imageUrl;
 
-    public ProductRequestDto(String name, Double price, String imageUrl) {
+    public ProductRequestDto() {
+    }
+
+    public ProductRequestDto(String name, Long price, String imageUrl) {
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;
@@ -16,7 +19,7 @@ public class ProductRequestDto {
         return name;
     }
 
-    public Double getPrice() {
+    public Long getPrice() {
         return price;
     }
 
