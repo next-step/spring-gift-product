@@ -38,11 +38,8 @@ public class ProductService {
         }
 
         Product product = optional.get();
-        product.setName(requestDto.getName());
-        product.setPrice(requestDto.getPrice());
-        product.setImageUrl(requestDto.getImageUrl());
-
-        return new ProductResponseDto(productRepository.save(product));
+        product.update(requestDto);
+        return new ProductResponseDto(product);
     }
 
     public void deleteProduct(Long id) {
