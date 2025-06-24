@@ -3,10 +3,10 @@ package gift.dto;
 import gift.entity.Product;
 
 public class ResponseDto {
-    private Long id;
-    private String name;
-    private Double price;
-    private String imageUrl;
+    private final Long id;
+    private final String name;
+    private final Double price;
+    private final String imageUrl;
 
     public ResponseDto(Product product) {
         this.id = product.getId();

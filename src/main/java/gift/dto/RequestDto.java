@@ -1,9 +1,9 @@
 package gift.dto;
 
 public class RequestDto {
-    private String name;
-    private Double price;
-    private String imageUrl;
+    private final String name;
+    private final Double price;
+    private final String imageUrl;
 
     RequestDto(String name, Double price, String imageUrl) {
         this.name = name;

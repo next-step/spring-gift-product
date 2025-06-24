@@ -3,7 +3,7 @@ package gift.entity;
 import gift.dto.RequestDto;
 
 public class Product {
-    private Long id;
+    private final Long id;
     private String name;
     private Double price;
     private String imageUrl;
