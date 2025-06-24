@@ -36,10 +36,6 @@ public class ProductServiceImpl implements ProductService {
         return allProducts;
     }
 
-    @Override
-    public ProductResponseDto findProductById(Long id) {
-        return null;
-    }
 
     @Override
     public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
