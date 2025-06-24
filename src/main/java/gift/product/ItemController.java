@@ -30,4 +30,10 @@ public class ItemController {
 	public List<Item> getAllItems() {
 		return itemService.getAllItems();
 	}
+
+	// 게시글 단건 조회
+	@GetMapping("/{itemId}")
+	public Item getItem(@PathVariable Long itemId) {
+		return itemService.getItem(itemId);
+	}
 }

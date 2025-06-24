@@ -22,4 +22,12 @@ public class ItemService {
 		return db;
 	}
 
+
+	public Item getItem(Long itemId) {
+		return db.stream()
+			.filter(item -> item.getId() == itemId)
+			.findFirst()
+			.orElseThrow(() -> new RuntimeException("해당 ID는 존재하지 않습니다"));
+	}
+
 }
