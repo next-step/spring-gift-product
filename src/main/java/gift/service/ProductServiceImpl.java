@@ -53,4 +53,9 @@ public class ProductServiceImpl implements ProductService {
         productRepository.findProductById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,  "해당 ID의 상품이 없습니다."));
         productRepository.deleteProductById(id);
     }
+
+    @Override
+    public void deleteAllProducts() {
+        productRepository.deleteAllProducts();
+    }
 }

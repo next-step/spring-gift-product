@@ -49,4 +49,10 @@ public class ProductController {
         productService.deleteProductById(productId);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllProducts() {
+        productService.deleteAllProducts();
+        return ResponseEntity.noContent().build();
+    }
 }
