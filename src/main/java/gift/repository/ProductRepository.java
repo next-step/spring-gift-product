@@ -49,5 +49,13 @@ public class ProductRepository {
     return updated;
   }
 
+  public boolean delete(Long id) {
+    if (!products.containsKey(id)) {
+      return false;
+    }
+    products.remove(id);
+    return true;
+  }
+
 
 }

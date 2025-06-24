@@ -42,5 +42,9 @@ public class ProductService {
     return updated != null ? new ProductResponse(updated) : null;
   }
 
+  public boolean deleteProduct(Long id) {
+    return productRepository.delete(id);
+  }
+
 
 }
