@@ -70,7 +70,7 @@ public class ItemService {
         oldItem.setPrice(itemUpdateDto.getPrice());
         oldItem.setImageUrl(itemUpdateDto.getImageUrl());
 
-        Item updatedItem = itemRepository.save(oldItem);
+        Item updatedItem = itemRepository.update(oldItem);
 
         return new ItemResponseDto(
             updatedItem.getId(),
