@@ -26,6 +26,9 @@
           "imageUrl": "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"
       }
       ```
+    - [ ] **예외**:
+      - name, price, imageUrl 중 하나라도 값이 존재하지 않을 때: default 값 처리 또는 400 Bad Request
+
 - [ ] 상품 조회 API
   - [ ] 전체 상품 조회
     - **Request**: GET /api/products
@@ -52,7 +55,8 @@
       }
       ```
     - [ ] **예외**:
-      - id가 존재하지 않을 때: 404 Not Found
+      - 데이터베이스에 id가 존재하지 않을 때: 404 Not Found
+
 - [ ] 상품 수정 API
   - [ ] 단건 상품 전체 수정
     - **Request**: PATCH /api/products/{id}
@@ -73,8 +77,9 @@
       }
       ```
     - [ ] **예외**:
-      - id가 존재하지 않을 때: 404 Not Found
-      - name, price, imageUrl 중 하나라도 존재하지 않을 때: 400 Bad Request
+      - 데이터베이스에 id가 존재하지 않을 때: 404 Not Found
+      - name, price, imageUrl 중 하나라도 존재하지 않을 때: 일부만 수정하도록 처리 또는 400 Bad Request
+
 - [ ] 상품 삭제 API
   - [ ] 단건 상품 삭제
     - **Request**: DELETE /api/products/{id}
@@ -88,4 +93,4 @@
       }
       ```
     - [ ] **예외**:
-      - id가 존재하지 않을 때: 404 Not Found
+      - 데이터베이스에 id가 존재하지 않을 때: 404 Not Found
