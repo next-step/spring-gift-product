@@ -29,6 +29,8 @@ public class ProductService {
         long pId = sequence.incrementAndGet();
         product.setId(pId);
 
+        products.put(pId, product);
+
         return product;
     }
 
@@ -68,9 +70,8 @@ public class ProductService {
      * @param requestDto
      */
     public void update(Long id, ProductRequestDto requestDto){
-        Product product = products.get(id);
+        Product product = findById(id);
         product.update(requestDto.name(), requestDto.price(), requestDto.imageUrl());
-        products.put(id ,product);
     }
 
     /**
