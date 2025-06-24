@@ -8,6 +8,8 @@ import java.util.List;
 public interface ProductRepository {
 
     List<ProductResponseDto> findAllProducts();
-    ProductResponseDto findProductByIdElseThrow(Long id);
+    Product findProductByIdElseThrow(Long id);
     ProductResponseDto saveProduct(String name, Long price, String imageUrl);
+    Product updateProduct(Long id, String name, Long price, String imageUrl);
+
 }

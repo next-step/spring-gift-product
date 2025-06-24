@@ -2,10 +2,14 @@ package gift.service;
 
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
+import gift.entity.Product;
 import gift.repository.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -26,9 +30,9 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public ProductResponseDto findProductById(Long id) {
 
-        ProductResponseDto findProduct = productRepository.findProductByIdElseThrow(id);
+        Product product = productRepository.findProductByIdElseThrow(id);
 
-        return findProduct;
+        return new ProductResponseDto(product);
     }
 
     @Override
@@ -39,5 +43,20 @@ public class ProductServiceImpl implements ProductService{
         String imageUrl = dto.getImageUrl();
 
         return productRepository.saveProduct(name, price, imageUrl);
+    }
+
+    @Transactional
+    @Override
+    public ProductResponseDto updateProduct(Long id, ProductRequestDto dto) {
+
+        Product findedProduct = productRepository.findProductByIdElseThrow(id);
+        Product updatedProduct = productRepository.updateProduct(
+                id,
+                dto.getName(),
+                dto.getPrice(),
+                dto.getImageUrl()
+        );
+
+        return new ProductResponseDto(updatedProduct);
     }
 }

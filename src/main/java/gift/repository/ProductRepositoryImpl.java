@@ -23,14 +23,14 @@ public class ProductRepositoryImpl implements ProductRepository{
     }
 
     @Override
-    public ProductResponseDto findProductByIdElseThrow(Long id) {
+    public Product findProductByIdElseThrow(Long id) {
 
         Product product = productList.get(id);
 
         if (product == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 ID의 상품은 존재하지 않습니다.");
 
-        return new ProductResponseDto(product);
+        return product;
     }
 
     @Override
@@ -42,5 +42,15 @@ public class ProductRepositoryImpl implements ProductRepository{
         productList.put(id, product);
 
         return new ProductResponseDto(product);
+    }
+
+    @Override
+    public Product updateProduct(Long id, String name, Long price, String imageUrl) {
+
+        Product product = productList.get(id);
+
+        product.updateProduct(name, price, imageUrl);
+
+        return product;
     }
 }
