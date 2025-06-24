@@ -25,7 +25,15 @@ public class ProductServiceImpl implements ProductService {
     //상품 추가 Service
     @Override
     public AddProductResponseDto addProduct(AddProductRequestDto requestDto) {
-        return productRepository.addProduct(requestDto);
+        
+        Product product = new Product(
+            requestDto.getId(),
+            requestDto.getName(),
+            requestDto.getPrice(),
+            requestDto.getImageUrl()
+        );
+        
+        return productRepository.addProduct(product);
     }
     
     //상품 전체 조회

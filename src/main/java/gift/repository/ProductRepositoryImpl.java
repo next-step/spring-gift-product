@@ -1,6 +1,5 @@
 package gift.repository;
 
-import gift.dto.AddProductRequestDto;
 import gift.dto.AddProductResponseDto;
 import gift.dto.FindProductResponseDto;
 import gift.dto.ModifyProductResponseDto;
@@ -21,14 +20,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     private final Map<Long, Product> products = new HashMap<>();
     
     @Override
-    public AddProductResponseDto addProduct(AddProductRequestDto requestDto) {
-        
-        Product product = new Product(
-            requestDto.getId(),
-            requestDto.getName(),
-            requestDto.getPrice(),
-            requestDto.getImageUrl()
-        );
+    public AddProductResponseDto addProduct(Product product) {
         
         Long dbId = (long) products.size() + 1;
         products.put(dbId, product);
