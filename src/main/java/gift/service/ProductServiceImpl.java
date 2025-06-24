@@ -44,4 +44,18 @@ public class ProductServiceImpl implements ProductService {
 
         return ProductResponse.from(product);
     }
+
+    @Override
+    public ProductResponse update(Long id, ProductRequest request) {
+
+        Product product = products.get(id);
+
+        if (product == null) {
+            throw new IllegalArgumentException("해당 상품이 존재하지 않습니다.");
+        }
+
+        product.update(request.name(), request.price(), request.imageUrl());
+
+        return ProductResponse.from(product);
+    }
 }

@@ -2,10 +2,10 @@ package gift.entity;
 
 public class Product {
 
-    private final Long id;
-    private final String name;
-    private final Integer price;
-    private final String imageUrl;
+    private Long id;
+    private String name;
+    private Integer price;
+    private String imageUrl;
 
     public Product(Long id, String name, Integer price, String imageUrl) {
         this.id = id;
@@ -28,5 +28,11 @@ public class Product {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public void update(String name, int price, String imageUrl) {
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
     }
 }
