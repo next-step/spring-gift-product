@@ -50,4 +50,8 @@ public class ItemRepository {
 
         return allItems.subList(startIndex, endIndex);
     }
+
+    public void deleteById(Long id) {
+        items.remove(id);
+    }
 }

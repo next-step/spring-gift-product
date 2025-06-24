@@ -53,5 +53,10 @@ public class ItemService {
         return ItemResponse.from(updatedItem);
     }
 
-    
+    public void deleteItem(Long id) {
+        itemRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "삭제하려는 상품을 찾을 수 없습니다: " + id));
+        itemRepository.deleteById(id);
+    }
 }
