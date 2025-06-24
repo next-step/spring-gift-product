@@ -20,4 +20,10 @@ public class ProductService {
         .map(ProductResponse::new)
         .collect(Collectors.toList());
   }
+
+  public ProductResponse getProductById(Long id) {
+    return productRepository.findById(id)
+        .map(ProductResponse::new)
+        .orElse(null);
+  }
 }
