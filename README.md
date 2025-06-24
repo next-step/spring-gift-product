@@ -12,7 +12,7 @@
 - [x] 상품 단건 조회 API (GET `/api/products/{productId}`)
 - [x] 상품 전체 목록 조회 API (GET `/api/products`) - 페이지네이션은 DB 연동 후 구현 예정
 - [x] 상품 수정 API (PUT `/api/products/{productId}`)
-- [ ] 상품 삭제 API (DELETE `/api/products/{productId}`)
+- [x] 상품 삭제 API (DELETE `/api/products/{productId}`)
 
 
 ## 기능별 요청/응답 예시
@@ -91,5 +91,12 @@
   "price": 4900,
   "imageUrl": "https://image.istarbucks.co.kr/upload/store/skuimg/2021/04/[110563]_20210426095937947.jpg"
 }
+```
+---
+### 5) 상품 삭제 API (DELETE `/api/products/{productId}`)
+
+#### response (`/api/products/1`)
+```
+  성공 시 204, 실패 시 404
 ```
 ---
