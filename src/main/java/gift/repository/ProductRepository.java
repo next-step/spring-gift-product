@@ -23,4 +23,7 @@ public class ProductRepository {
     }
 
 
+    public Optional<Product> findById(Long id) {
+        return Optional.ofNullable(products.get(id));
+    }
 }
