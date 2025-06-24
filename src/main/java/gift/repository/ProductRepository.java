@@ -3,8 +3,7 @@ package gift.repository;
 import gift.entity.Product;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class ProductRepository {
@@ -17,6 +16,10 @@ public class ProductRepository {
         }
         products.put(product.getId(), product);
         return product;
+    }
+
+    public List<Product> findAll() {
+        return new ArrayList<>(products.values());
     }
 
 
