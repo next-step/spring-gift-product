@@ -16,4 +16,7 @@ public interface ProductRepositoryInterface {
 
     // 선택 상품 조회
     Optional<ProductResponseDto> findProductById(Long id);
+
+    // 상품 수정
+    Optional<ProductResponseDto> updateProduct(Long id, ProductRequestDto requestDto);
 }

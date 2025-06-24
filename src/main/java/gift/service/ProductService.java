@@ -32,4 +32,9 @@ public class ProductService implements ProductServiceInterface {
         return productRepository.findProductById(id);
     }
 
+    @Override
+    public Optional<ProductResponseDto> updateProduct(Long id, ProductRequestDto requestDto) {
+        return productRepository.updateProduct(id, requestDto);
+    }
+
 }
