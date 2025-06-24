@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 public class ProductRepository {
 
   private final Map<Long, Product> products = new HashMap<>();
+  private Long sequence = 2L; // ID 자동 증가용 (초기값 2, 이미 1번 있음)
 
   public ProductRepository() {
     // 초기 더미 데이터
@@ -27,4 +28,14 @@ public class ProductRepository {
   public Optional<Product> findById(Long id) {
     return Optional.ofNullable(products.get(id));
   }
+
+
+  public Product save(Product product) {
+    Long id = sequence++;
+    Product newProduct = new Product(id, product.getName(), product.getPrice(),
+        product.getImageUrl());
+    products.put(id, newProduct);
+    return newProduct;
+  }
+
 }
