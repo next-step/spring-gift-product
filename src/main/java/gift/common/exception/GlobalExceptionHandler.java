@@ -92,12 +92,12 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private ResponseEntity<ErrorResponse> createErrorResponse(ErrorCode errorCode, String field, Object rejectedValue, HttpStatus status) {
-        return createErrorResponse(errorCode, field, rejectedValue, errorCode.getMessage(), status);
+    private ResponseEntity<ErrorResponse> createErrorResponse(ErrorCode errorCode, String errorType, Object rejectedValue, HttpStatus status) {
+        return createErrorResponse(errorCode, errorType, rejectedValue, errorCode.getMessage(), status);
     }
 
-    private ResponseEntity<ErrorResponse> createErrorResponse(ErrorCode errorCode, String field, Object rejectedValue, String message, HttpStatus status) {
-        ErrorDetail errorDetail = new ErrorDetail(field, rejectedValue, message);
+    private ResponseEntity<ErrorResponse> createErrorResponse(ErrorCode errorCode, String errorType, Object rejectedValue, String message, HttpStatus status) {
+        ErrorDetail errorDetail = new ErrorDetail(errorType, rejectedValue, message);
         ErrorResponse errorResponse = new ErrorResponse(errorCode.name(), List.of(errorDetail));
         return new ResponseEntity<>(errorResponse, status);
     }
