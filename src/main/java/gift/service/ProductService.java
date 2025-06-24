@@ -6,4 +6,6 @@ import gift.dto.ProductResponseDto;
 public interface ProductService {
 
     ProductResponseDto addProduct(ProductRequestDto requestDto);
+
+    ProductResponseDto getProductById(Long id);
 }
