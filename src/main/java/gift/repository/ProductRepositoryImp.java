@@ -3,10 +3,10 @@ package gift.repository;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +38,15 @@ public class ProductRepositoryImp implements ProductRepository{
         if (product == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 ID의 상품을 찾을 수 없습니다.");
         }
+
+        return ProductResponseDto.toDto(product);
+    }
+
+    @Override
+    public ProductResponseDto createProduct(String name, Long price, String imageUrl) {
+        Long productId = products.isEmpty() ? 1 : Collections.max(products.keySet()) + 1;
+        Product product = new Product(productId, name, price, imageUrl);
+        products.put(productId, product);
 
         return ProductResponseDto.toDto(product);
     }

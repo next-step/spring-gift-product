@@ -7,7 +7,7 @@
 ## 2️⃣ 구현 예정 기능 목록
 - [x] 상품 목록 조회 API (`GET /products`)
 - [x] 상품 단건 조회 API (`GET /products/{id}`)
-- [ ] 상품 추가 API (`POST /products`)
+- [x] 상품 추가 API (`POST /products`)
 - [ ] 상품 수정 API (`PUT /products/{id}`)
 - [ ] 상품 일부 수정 API (`PATCH /products/{id}`)
 - [ ] 상품 삭제 API (`DELETE /products/{id}`)
