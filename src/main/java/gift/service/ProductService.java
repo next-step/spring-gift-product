@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import gift.domain.Product;
 import gift.dto.CreateProductRequest;
 import gift.dto.CreateProductResponse;
 import gift.dto.ReadProductResponse;
+import gift.dto.UpdateProductRequest;
+import gift.dto.UpdateProductResponse;
 import gift.exception.NotFoundException;
 import gift.repository.ProductRepository;
 
@@ -34,5 +37,10 @@ public class ProductService {
     public CreateProductResponse createProduct(CreateProductRequest request) {
         return CreateProductResponse.of(
             productRepository.save(request.name(), request.price(), request.imageUrl()));
+    }
+
+    public UpdateProductResponse updateProduct(Long id, UpdateProductRequest request) {
+        return UpdateProductResponse.of(
+            productRepository.update(id, request.name(), request.price(), request.imageUrl()));
     }
 }
