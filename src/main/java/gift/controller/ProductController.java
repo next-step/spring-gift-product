@@ -60,4 +60,12 @@ public class ProductController {
 
 		return new ResponseEntity<>(existingProduct, HttpStatus.OK);
 	}
+
+	@DeleteMapping("/products/{id}")
+	public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+		if (products.remove(id) == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
 }
