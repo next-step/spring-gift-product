@@ -18,4 +18,6 @@ public interface ProductRepository {
     ModifyProductResponseDto modifyProductWithDbId(Long id, Product newProduct);
     
     void deleteProductWithDbId(Long id);
+    
+    Long getRecentId();
 }

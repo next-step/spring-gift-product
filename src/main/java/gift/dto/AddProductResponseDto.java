@@ -8,22 +8,19 @@ public class AddProductResponseDto {
     private final String name; //상품의 이름
     private final Long price; //상품의 가격
     private final String imageUrl; //상품의 이미지 URL
-    private final Long dbId;
     
-    public AddProductResponseDto(Long id, String name, Long price, String imageUrl, Long dbId) {
+    public AddProductResponseDto(Long id, String name, Long price, String imageUrl) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;
-        this.dbId = dbId;
     }
     
-    public AddProductResponseDto(Long dbId, Product product) {
+    public AddProductResponseDto(Product product) {
         this.id = product.getId();
         this.name = product.getName();
         this.price = product.getPrice();
         this.imageUrl = product.getImageUrl();
-        this.dbId = dbId;
     }
     
     public Long getId() {
@@ -42,7 +39,4 @@ public class AddProductResponseDto {
         return imageUrl;
     }
     
-    public Long getDbId() {
-        return dbId;
-    }
 }

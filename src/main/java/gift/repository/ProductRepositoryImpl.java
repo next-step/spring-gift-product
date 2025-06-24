@@ -22,10 +22,10 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public AddProductResponseDto addProduct(Product product) {
         
-        Long dbId = (long) products.size() + 1;
+        Long dbId = product.getId();
         products.put(dbId, product);
         
-        return new AddProductResponseDto(dbId, product);
+        return new AddProductResponseDto(product);
     }
     
     @Override
@@ -55,5 +55,10 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public void deleteProductWithDbId(Long id) {
         products.remove(id);
+    }
+    
+    @Override
+    public Long getRecentId() {
+        return (long) products.size() + 1;
     }
 }

@@ -2,20 +2,14 @@ package gift.dto;
 
 public class AddProductRequestDto {
     
-    private final Long id; //상품의 id
     private final String name; //상품의 이름
     private final Long price; //상품의 가격
     private final String imageUrl; //상품의 이미지 URL
     
-    public AddProductRequestDto(Long id, String name, Long price, String imageUrl) {
-        this.id = id;
+    public AddProductRequestDto(String name, Long price, String imageUrl) {
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;
-    }
-    
-    public Long getId() {
-        return id;
     }
     
     public String getName() {

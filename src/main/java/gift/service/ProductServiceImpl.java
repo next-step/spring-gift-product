@@ -27,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
     public AddProductResponseDto addProduct(AddProductRequestDto requestDto) {
         
         Product product = new Product(
-            requestDto.getId(),
+            productRepository.getRecentId(),
             requestDto.getName(),
             requestDto.getPrice(),
             requestDto.getImageUrl()
