@@ -28,10 +28,16 @@ public class Product {
     public void setPrice(Long price){
         this.price = price;
     }
-    public String getImageURL(){
+    public String getImageUrl(){
         return imageURL;
     }
-    public void setImageURL(){
+    public void setImageUrl(){
+        this.imageURL = imageURL;
+    }
+
+    public void update(String name, Long price, String imageURL){
+        this.name = name;
+        this.price = price;
         this.imageURL = imageURL;
     }
 
