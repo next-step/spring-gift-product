@@ -41,4 +41,9 @@ public class ProductRepositoryImpl implements ProductRepository {
         product.updateProduct(name, price, imageUrl);
         return product;
     }
+
+    @Override
+    public void deleteProduct(Long id) {
+        productList.remove(id);
+    }
 }

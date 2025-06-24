@@ -10,4 +10,6 @@ public interface ProductRepository {
     ProductResponseDto saveProduct(Product product);
     Product findProductById(Long id);
     Product updateProduct(Long id, String name, Long price, String ImageUrl);
+
+    void deleteProduct(Long id);
 }
