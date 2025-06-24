@@ -27,4 +27,9 @@ public class ProductRepositoryImpl implements ProductRepository{
         }
         return productsList;
     }
+
+    @Override
+    public Product findProductById(Long id) {
+        return products.get(id);
+    }
 }

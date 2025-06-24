@@ -4,8 +4,11 @@ import gift.dto.CreateProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
+import gift.repository.ProductRepositoryImpl;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -26,5 +29,18 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public List<ProductResponseDto> findAllProducts() {
         return productRepository.findAllProducts();
+    }
+
+    @Override
+    public ProductResponseDto findProductById(Long id) {
+        Product find = productRepository.findProductById(id);
+
+        if(find == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        ProductResponseDto responseDto = new ProductResponseDto(find.getId(), find.getName(),
+            find.getPrice(), find.getImageUrl());
+        return responseDto;
     }
 }

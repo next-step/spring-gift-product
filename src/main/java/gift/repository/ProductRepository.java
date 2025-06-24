@@ -8,4 +8,5 @@ import java.util.List;
 public interface ProductRepository {
     Product createProduct(Product newProduct);
     List<ProductResponseDto> findAllProducts();
+    Product findProductById(Long id);
 }

@@ -8,4 +8,5 @@ import java.util.List;
 public interface ProductService {
     ProductResponseDto createProduct(CreateProductRequestDto requestDto);
     List<ProductResponseDto> findAllProducts();
+    ProductResponseDto findProductById(Long id);
 }
