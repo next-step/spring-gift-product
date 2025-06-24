@@ -30,7 +30,8 @@ public class ProductService {
 
     public ReadProductResponse getProductById(Long id) {
         return ReadProductResponse.of(
-            productRepository.findById(id).orElseThrow(() -> new NotFoundException("해당 상품이 존재하지 않습니다.")));
+            productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("해당 상품이 존재하지 않습니다.")));
     }
 
     public CreateProductResponse createProduct(CreateProductRequest request) {
