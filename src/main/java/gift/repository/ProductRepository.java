@@ -1,5 +1,10 @@
 package gift.repository;
 
-public interface ProductRepository {
+import gift.dto.AddProductRequestDto;
+import gift.dto.AddProductResponseDto;
 
+public interface ProductRepository {
+    
+    //상품 추가 api
+    AddProductResponseDto addProduct(AddProductRequestDto requestDto);
 }
