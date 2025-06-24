@@ -1,6 +1,5 @@
 package gift.controller;
 
-
 import gift.dto.RequestDto;
 import gift.dto.ResponseDto;
 import gift.entity.Product;
@@ -56,10 +55,8 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ResponseDto> updateProduct(
-            @PathVariable Long id,
-            @RequestBody RequestDto requestDto
-    ) {
+    public ResponseEntity<ResponseDto> updateProduct(@PathVariable Long id,
+                                                     @RequestBody RequestDto requestDto) {
 
         Product product = products.get(id);
 
