@@ -37,4 +37,9 @@ public class ProductService implements ProductServiceInterface {
         return productRepository.updateProduct(id, requestDto);
     }
 
+    @Override
+    public boolean deleteProduct(Long id) {
+        return productRepository.deleteProduct(id);
+    }
+
 }

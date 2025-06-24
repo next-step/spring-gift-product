@@ -19,4 +19,7 @@ public interface ProductRepositoryInterface {
 
     // 상품 수정
     Optional<ProductResponseDto> updateProduct(Long id, ProductRequestDto requestDto);
+
+    // 상품 삭제 (성공시 true, 없으면 false)
+    boolean deleteProduct(Long id);
 }

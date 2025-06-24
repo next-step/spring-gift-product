@@ -81,4 +81,14 @@ public class ProductRepository implements ProductRepositoryInterface {
         }
     }
 
+    @Override
+    public boolean deleteProduct(Long id) {
+        if (products.containsKey(id)) {
+            products.remove(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
