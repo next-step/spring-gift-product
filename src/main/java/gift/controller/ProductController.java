@@ -4,10 +4,7 @@ import gift.model.Product;
 import jakarta.annotation.PostConstruct;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -21,7 +18,7 @@ public class ProductController {
 	@PostConstruct
 	public void init() {
 		products.put(8146027L, new Product(8146027L, "아이스 카페 아메리카노 T", 4500, "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"));
-		System.out.println("initialized size: " + products.size());
+		System.out.println("initialized: total " + products.size() + " products");
 	}
 
 	@GetMapping("/products")
@@ -38,5 +35,11 @@ public class ProductController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+	}
+
+	@PostMapping("/products")
+	public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+		products.put(product.getId(), product);
+		return new ResponseEntity<>(product, HttpStatus.CREATED);
 	}
 }
