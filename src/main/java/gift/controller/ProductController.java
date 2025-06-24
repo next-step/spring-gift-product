@@ -1,13 +1,12 @@
 package gift.controller;
 
+import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.service.ProductServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,5 +33,12 @@ public class ProductController {
         ProductResponseDto dto = productService.findProductById(id);
 
         return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<ProductResponseDto> craeteProduct(
+            @Valid @RequestBody ProductRequestDto dto) {
+
+        return new ResponseEntity<>(productService.saveProduct(dto), HttpStatus.CREATED);
     }
 }

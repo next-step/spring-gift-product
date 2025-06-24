@@ -1,5 +1,6 @@
 package gift.service;
 
+import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -28,5 +29,15 @@ public class ProductServiceImpl implements ProductService{
         ProductResponseDto findProduct = productRepository.findProductByIdElseThrow(id);
 
         return findProduct;
+    }
+
+    @Override
+    public ProductResponseDto saveProduct(ProductRequestDto dto) {
+
+        String name = dto.getName();
+        Long price = dto.getPrice();
+        String imageUrl = dto.getImageUrl();
+
+        return productRepository.saveProduct(name, price, imageUrl);
     }
 }

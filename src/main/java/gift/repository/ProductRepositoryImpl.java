@@ -32,4 +32,15 @@ public class ProductRepositoryImpl implements ProductRepository{
 
         return new ProductResponseDto(product);
     }
+
+    @Override
+    public ProductResponseDto saveProduct(String name, Long price, String imageUrl) {
+
+        Long id = productList.isEmpty() ? 1 : Collections.max(productList.keySet()) + 1;
+
+        Product product = new Product(id, name, price, imageUrl);
+        productList.put(id, product);
+
+        return new ProductResponseDto(product);
+    }
 }
