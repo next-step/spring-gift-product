@@ -11,7 +11,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     // 컬렉션을 활용하여 임시로 구현
     final private HashMap<Long, Product> productMap;
-    private Long sequence;
+    private Long sequence; // ID 생성에 사용될 시퀀스
 
     public ProductRepositoryImpl() {
         this.productMap = new HashMap<>();
@@ -29,5 +29,10 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public List<Product> findAll() {
         return productMap.values().stream().toList();
+    }
+
+    @Override
+    public Product findById(Long productId) {
+        return productMap.get(productId);
     }
 }
