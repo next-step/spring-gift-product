@@ -2,10 +2,10 @@ package gift.dto;
 
 public class ProductRequestDto {
 
-    Long id;
-    String name;
-    int price;
-    String imageUrl;
+    private final Long id;
+    private final String name;
+    private final int price;
+    private final String imageUrl;
 
     public ProductRequestDto(Long id, String name, int price, String imageUrl) {
         this.id = id;
