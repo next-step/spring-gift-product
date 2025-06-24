@@ -19,7 +19,7 @@
 - [x] 관리자 상품 수정 페이지 및 수정 (`GET/PUT admin/products/edit/{id}`)
 - [x] 관리자 상품 삭제 (`DELETE admin/products/{id}`)
 
-## 4️⃣ 기술 스택
+## 3️⃣ 기술 스택
 - Java 17
 - Spring Boot 3.5.3
 - JSON
