@@ -6,6 +6,8 @@ import gift.entity.Product;
 import gift.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
@@ -19,5 +21,9 @@ public class ProductService {
         Product savedProduct = productRepository.saveProduct(product);
 
         return new ProductResponseDto(savedProduct);
+    }
+
+    public List<ProductResponseDto> findAllProducts() {
+        return productRepository.findAllProducts();
     }
 }

@@ -5,10 +5,9 @@ import gift.dto.ProductResponseDto;
 import gift.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
@@ -24,5 +23,13 @@ public class ProductController {
             @RequestBody ProductRequestDto requestDto) {
         return new ResponseEntity<>(productService.saveProduct(requestDto), HttpStatus.CREATED);
     }
+
+    // 목록 조회
+    @GetMapping
+    public List<ProductResponseDto> findAllProducts() {
+        return productService.findAllProducts();
+    }
+
+
 
 }
