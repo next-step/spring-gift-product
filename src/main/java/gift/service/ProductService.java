@@ -9,4 +9,5 @@ public interface ProductService {
     public List<ProductResponseDto> findAllProducts();
     public ProductResponseDto findProductById(Long id);
     public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto);
+    public void deleteProduct(Long id);
 }
