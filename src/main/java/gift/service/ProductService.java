@@ -59,4 +59,9 @@ public class ProductService {
 
         return productRepository.createProduct(name, price, imageUrl);
     }
+
+    public void deleteProduct(Long id){
+
+        productRepository.deleteProduct(id);
+    }
 }

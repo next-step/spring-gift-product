@@ -46,4 +46,12 @@ public class ProductController {
 
         return new ResponseEntity<>(productResponseDto, HttpStatus.CREATED);
     }
+
+    // 상품 삭제
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id){
+        productService.deleteProduct(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
