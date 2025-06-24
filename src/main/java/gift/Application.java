@@ -61,13 +61,12 @@ class ProductController {
 
     //상품 조회
     @GetMapping("/api/products")
-    public String getProduct(@RequestParam(value = "id", defaultValue = "0") long id, Model model) {
-
+    public String getProduct(Model model) {
         model.addAttribute("allProducts",products.findAll());
         return "products";
     }
 
-    //상품 추가
+    //상품 추가,상품 수정
     @PostMapping("/api/products")
     public String createProduct(@RequestParam long id, @RequestParam String name, @RequestParam int price, @RequestParam String imageURL) {
         Product product = new Product(id, name, price, imageURL);
@@ -75,9 +74,12 @@ class ProductController {
         return "redirect:/api/products";
     }
 
-    //상품 수정(수정 페이지 사용)
+    //상품 수정(수정 페이지 이동)
     @GetMapping("/api/products/edit")
-    public String updateProduct(@RequestParam long id, Model model) {
+    public String updateProduct(@RequestParam long id, Model model, RedirectAttributes redirectAttributes) {
+        if (products.get(id) == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "상품이 존재하지 않음");
+            return "redirect:/api/products"; }
         Product product = products.get(id);
         model.addAttribute("selectedProduct", product);
         return "products";
@@ -85,7 +87,10 @@ class ProductController {
 
     //상품 삭제
     @PostMapping("/api/products/delete")
-    public String deleteProduct(@RequestParam long id) {
+    public String deleteProduct(@RequestParam long id, RedirectAttributes redirectAttributes) {
+        if (products.get(id) == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "상품이 존재하지 않음");
+            return "redirect:/api/products"; }
         products.delete(id);
         return "redirect:/api/products";
     }
