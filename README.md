@@ -38,7 +38,15 @@
         * 존재하지 않는 ID 요청 시 404 Not Found 반환
 
 
-3. 상품 삭제
+3. 상품 수정
+    * PUT /api/products/{id} 엔드포인트 구현
+    * 요청 JSON을 Product 객체로 매핑
+    * 해당 ID의 상품 정보를 요청 JSON의 데이터로 수정
+    * 수정 성공 시 200 OK 반환 + 수정된 상품 정보 응답
+    * 존재하지 않는 ID 요청 시 404 Not Found 반환
+
+
+4. 상품 삭제
     * DELETE /api/products/{id} 엔드포인트 구현
     * 해당 ID의 상품을 삭제
     * 삭제 성공 시 204 No Content 반환

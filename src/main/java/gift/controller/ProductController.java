@@ -3,9 +3,12 @@ package gift.controller;
 import gift.model.Product;
 import gift.service.ProductService;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +20,7 @@ public class ProductController {
 
     private final ProductService productService = new ProductService();
 
+    // 상품 저장
     @PostMapping
     public ResponseEntity<Map<String, Object>> addProduct(@RequestBody Product product) {
 
@@ -26,5 +30,23 @@ public class ProductController {
         responseBody.put("message", "New product created");
         responseBody.put("product", savedProduct);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
+    }
+
+    // 상품 목록 조회
+    @GetMapping
+    public ResponseEntity<List<Product>> getAllProducts() {
+        List<Product> products = productService.getAllProducts();
+        return ResponseEntity.ok(products); // 200 OK
+    }
+
+    // 상품 단건 조회
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
+        try {
+            Product product = productService.getProduct(id);
+            return ResponseEntity.ok(product); // 200 OK
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 Not Found
+        }
     }
 }
