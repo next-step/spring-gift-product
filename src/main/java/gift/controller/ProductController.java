@@ -24,4 +24,10 @@ public class ProductController {
         return ResponseEntity.status(201).body(saved);
     }
 
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDto>> getAllProducts() {
+        List<ProductResponseDto> products = productService.findAllProducts();
+        return ResponseEntity.ok(products);
+    }
+
 }

@@ -33,4 +33,18 @@ public class ProductRepository implements ProductRepositoryInterface {
         return responseDto;
     }
 
+    @Override
+    public List<ProductResponseDto> findAllProducts() {
+        List<ProductResponseDto> productList = new ArrayList<>();
+        for (Product product : products.values()) {
+            productList.add(new ProductResponseDto(
+                    product.getId(),
+                    product.getName(),
+                    product.getPrice(),
+                    product.getImageUrl()
+            ));
+        }
+        return productList;
+    }
+
 }

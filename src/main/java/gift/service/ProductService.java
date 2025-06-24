@@ -22,4 +22,9 @@ public class ProductService implements ProductServiceInterface {
         return productRepository.addProduct(requestDto);
     }
 
+    @Override
+    public List<ProductResponseDto> findAllProducts() {
+        return productRepository.findAllProducts();
+    }
+
 }
