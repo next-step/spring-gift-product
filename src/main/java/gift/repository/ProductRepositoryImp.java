@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class ProductRepositoryImp implements ProductRepository{
@@ -23,40 +20,33 @@ public class ProductRepositoryImp implements ProductRepository{
     }
 
     @Override
-    public List<ProductResponseDto> findAllProducts() {
+    public List<Product> findAllProducts() {
 
-        return products.values()
-                .stream()
-                .map(ProductResponseDto::toDto)
-                .toList();
+        return new ArrayList<>(products.values());
     }
 
     @Override
-    public ProductResponseDto findProductByIdOrElseThrow(Long id) {
+    public Product findProductByIdOrElseThrow(Long id) {
         Product product = products.get(id);
 
         if (product == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 ID의 상품을 찾을 수 없습니다.");
         }
 
-        return ProductResponseDto.toDto(product);
+        return product;
     }
 
     @Override
-    public ProductResponseDto createProduct(String name, Long price, String imageUrl) {
+    public Product createProduct(String name, Long price, String imageUrl) {
         Long productId = products.isEmpty() ? 1 : Collections.max(products.keySet()) + 1;
         Product product = new Product(productId, name, price, imageUrl);
         products.put(productId, product);
 
-        return ProductResponseDto.toDto(product);
+        return product;
     }
 
     @Override
     public void deleteProduct(Long id) {
-        if (!products.containsKey(id)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 ID의 상품을 찾을 수 없습니다.");
-        }
-
         products.remove(id);
     }
 }

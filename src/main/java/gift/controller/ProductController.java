@@ -2,11 +2,13 @@ package gift.controller;
 
 import gift.dto.CreateProductRequestDto;
 import gift.dto.ProductResponseDto;
+import gift.dto.UpdateProductRequestDto;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -52,6 +54,26 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id){
         productService.deleteProduct(id);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // 상품 일부 수정
+    @PatchMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> patchProduct(
+            @PathVariable Long id,
+            @RequestBody UpdateProductRequestDto requestDto){
+
+        if (requestDto.getName() == null && requestDto.getPrice() == null && requestDto.getImageUrl() == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정할 값이 존재하지 않습니다.");
+        }
+
+        ProductResponseDto productResponseDto = productService.patchProduct(
+                id,
+                requestDto.getName(),
+                requestDto.getPrice(),
+                requestDto.getImageUrl()
+        );
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
