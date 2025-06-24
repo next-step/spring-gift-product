@@ -3,6 +3,7 @@ package gift.repository;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
+import gift.exception.ProductNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,9 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public ProductResponseDto findProductById(Long id) {
         Product product = products.get(id);
+        if (product == null) {
+            throw new ProductNotFoundException(id);
+        }
 
         return ProductResponseDto.from(product);
     }
@@ -60,7 +64,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public void deleteProduct(Long id) {
         if (products.remove(id) == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ProductNotFoundException(id);
         }
     }
 }

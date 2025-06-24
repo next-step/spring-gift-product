@@ -29,17 +29,17 @@ public class ProductController {
     public ResponseEntity<ProductResponseDto> createProduct(
         @RequestBody ProductRequestDto requestDto
     ) {
-        return new ResponseEntity<>(productService.createProduct(requestDto), HttpStatus.OK);
+        return ResponseEntity.ok(productService.createProduct(requestDto));
     }
 
     @GetMapping
     public ResponseEntity<List<ProductResponseDto>> findAllProducts() {
-        return new ResponseEntity<>(productService.findAllProducts(), HttpStatus.OK);
+        return ResponseEntity.ok(productService.findAllProducts());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDto> findProductById(@PathVariable Long id) {
-        return new ResponseEntity<>(productService.findProductById(id), HttpStatus.OK);
+        return ResponseEntity.ok(productService.findProductById(id));
     }
 
     @PutMapping("/{id}")
@@ -47,13 +47,13 @@ public class ProductController {
         @PathVariable Long id,
         @RequestBody ProductRequestDto requestDto
     ) {
-        return new ResponseEntity<>(productService.updateProduct(id, requestDto), HttpStatus.OK);
+        return ResponseEntity.ok(productService.updateProduct(id, requestDto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }
