@@ -31,10 +31,22 @@ public class ProductService {
     }
 
     public ProductResponseDto findProduct(Long id){
-        Product product = productRepository.findproduct(id);
+        Product product = productRepository.findProduct(id);
         if(product==null){
             throw new NoSuchElementException("product does not exist.");
         }
         return new ProductResponseDto(product.getId(), product.getName(),product.getPrice(),product.getImageUrl());
+    }
+
+    public ProductResponseDto updateProduct(Long id, ProductRequestDto productRequestDto){
+        Product product = productRepository.findProduct(id);
+        if(product==null){
+            throw new NoSuchElementException("product does not exist.");
+        }
+        //db저장
+        product.updateProduct(productRequestDto.getName(),productRequestDto.getPrice(),productRequestDto.getImageUrl());
+        Product updateProduct = productRepository.updateProduct(product);
+
+        return new ProductResponseDto(updateProduct.getId(),updateProduct.getName(),updateProduct.getPrice(),updateProduct.getImageUrl());
     }
 }

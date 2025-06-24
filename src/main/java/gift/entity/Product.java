@@ -27,4 +27,10 @@ public class Product {
     public void setId(Long id){
         this.id=id;
     }
+
+    public void updateProduct(String name, int price, String imageUrl){
+        this.name=name;
+        this.price=price;
+        this.imageUrl=imageUrl;
+    }
 }
