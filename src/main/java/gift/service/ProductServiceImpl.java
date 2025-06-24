@@ -1,0 +1,59 @@
+package gift.service;
+
+import gift.dto.ProductRequestDto;
+import gift.dto.ProductResponseDto;
+import gift.entity.Product;
+import gift.repository.ProductRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class ProductServiceImpl implements ProductService {
+
+    private final ProductRepository productRepository;
+
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    @Override
+    public ProductResponseDto saveProduct(ProductRequestDto requestDto) {
+        Product product = new Product(requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
+        Product saveProduct = productRepository.saveProduct(product);
+
+        return new ProductResponseDto(saveProduct);
+    }
+
+    @Override
+    public List<ProductResponseDto> findAllProducts() {
+        List<ProductResponseDto> allProducts = productRepository.findAllProducts();
+        return allProducts;
+    }
+
+
+    @Override
+    public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
+
+        Product product = productRepository.findProduct(id);
+
+        if(requestDto.getName() != null) {
+            product.setName(requestDto.getName());
+        }
+
+        if(requestDto.getPrice() != null) {
+            product.setPrice(requestDto.getPrice());
+        }
+        if(requestDto.getImageUrl() != null) {
+            product.setImageUrl(requestDto.getImageUrl());
+        }
+
+        return new ProductResponseDto(product);
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+        productRepository.deleteProduct(id);
+    }
+}
