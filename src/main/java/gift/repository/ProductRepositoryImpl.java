@@ -44,4 +44,25 @@ public class ProductRepositoryImpl implements ProductRepository {
                 product.getImageUrl()
         );
     }
+
+    @Override
+    public ProductResponseDto updateProduct(Long id, ProductRequestDto productRequestDto)
+            throws IllegalArgumentException {
+        Product product = products.get(id);
+
+        if (product == null) {
+            throw new IllegalArgumentException("해당 ID의 상품이 존재하지 않습니다: " + id);
+        }
+
+        product.setName(productRequestDto.getName());
+        product.setPrice(productRequestDto.getPrice());
+        product.setImageUrl(productRequestDto.getImageUrl());
+
+        return new ProductResponseDto(
+                product.getId(),
+                product.getName(),
+                product.getPrice(),
+                product.getImageUrl()
+        );
+    }
 }

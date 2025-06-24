@@ -24,4 +24,10 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
         return productRepository.createProduct(productRequestDto);
     }
+
+    @Override
+    public ProductResponseDto updateProduct(Long id, ProductRequestDto productRequestDto)
+            throws IllegalArgumentException {
+        return productRepository.updateProduct(id, productRequestDto);
+    }
 }

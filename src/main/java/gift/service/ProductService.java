@@ -9,4 +9,6 @@ public interface ProductService {
     List<ProductResponseDto> findAllProducts();
 
     ProductResponseDto createProduct(ProductRequestDto productRequestDto);
+
+    ProductResponseDto updateProduct(Long id, ProductRequestDto productRequestDto);
 }
