@@ -53,4 +53,13 @@ public class ProductServiceImpl implements ProductService{
         product.update(requestDto);
         return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
     }
+
+    @Override
+    public void deleteProductById(Long id) {
+        Product product = productRepository.findProductById(id);
+        if(product == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        productRepository.deleteProductById(id);
+    }
 }
