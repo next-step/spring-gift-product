@@ -45,7 +45,7 @@ public class ProductApiController {
 
   // 상품 생성
   @PostMapping("")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @ResponseStatus(HttpStatus.CREATED)
   public void createProduct(
       @RequestBody ProductRequest request
   ) {
