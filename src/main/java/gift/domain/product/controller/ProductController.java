@@ -3,6 +3,7 @@ package gift.domain.product.controller;
 import gift.domain.product.model.Product;
 import gift.domain.product.dto.ProductRequest;
 import gift.domain.product.dto.ProductResponse;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -26,12 +27,8 @@ public class ProductController {
     private final AtomicLong sequence = new AtomicLong();
 
     @PostMapping
-    public ResponseEntity<Void> addProduct(@RequestBody ProductRequest productRequest) {
+    public ResponseEntity<Void> addProduct(@Valid @RequestBody ProductRequest productRequest) {
         long id = sequence.incrementAndGet();
-
-        if (isValidProductRequest(productRequest)) {
-            return ResponseEntity.badRequest().build();
-        }
 
         Product product = new Product(id, 
         productRequest.getName(), 
@@ -64,15 +61,11 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateProduct(@PathVariable("id") Long id,
-    @RequestBody ProductRequest productRequest) {
+    @Valid @RequestBody ProductRequest productRequest) {
         Product product = products.get(id);
 
         if (product == null) {
             return ResponseEntity.notFound().build();
-        }
-
-        if (isValidProductRequest(productRequest)) {
-            return ResponseEntity.badRequest().build();
         }
 
         products.put(id, new Product(id, 
@@ -90,14 +83,5 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.noContent().build();
-    }
-
-    private boolean isValidProductRequest(ProductRequest productRequest) {
-        return productRequest == null ||
-                productRequest.getPrice() <= 0 ||
-                productRequest.getName() == null ||
-                productRequest.getName().isBlank() ||
-                productRequest.getImageUrl() == null ||
-                productRequest.getImageUrl().isBlank();
     }
 }
