@@ -59,5 +59,8 @@ public class ProductRepositoryImpl implements ProductRepository{
         return product;
     }
 
-    
+    @Override
+    public void deleteProduct(Long id) {
+        productList.remove(id);
+    }
 }

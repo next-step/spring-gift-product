@@ -59,4 +59,11 @@ public class ProductServiceImpl implements ProductService{
 
         return new ProductResponseDto(updatedProduct);
     }
+
+    @Override
+    public void deleteProduct(Long id) {
+        Product findedProduct = productRepository.findProductByIdElseThrow(id);
+
+        productRepository.deleteProduct(id);
+    }
 }
