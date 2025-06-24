@@ -5,6 +5,8 @@ import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 
+import java.util.NoSuchElementException;
+
 public class ProductService {
     private final ProductRepository productRepository;
 
@@ -26,5 +28,13 @@ public class ProductService {
                 saveProduct.getPrice(),
                 saveProduct.getImageUrl()
         );
+    }
+
+    public ProductResponseDto findProduct(Long id){
+        Product product = productRepository.findproduct(id);
+        if(product==null){
+            throw new NoSuchElementException("product does not exist.");
+        }
+        return new ProductResponseDto(product.getId(), product.getName(),product.getPrice(),product.getImageUrl());
     }
 }
