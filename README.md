@@ -4,7 +4,7 @@
 
 - [x] 상품 조회 API 구현
 - [x] 상품 등록 API 구현
-- [ ] 상품 수정 API 구현
+- [x] 상품 수정 API 구현
 - [ ] 상품 삭제 API 구현
 - [ ] 상품 목록 페이지네이션 조회 API 구현
 
@@ -36,3 +36,15 @@
   "imageUrl": "https://st.kakaocdn.net/product/gift/product/20240101120000_hotamericano.jpg"
 }
 ```
+### ✅ 상품 수정 API (`PUT /api/products/{id}`)
+- 특정 ID의 상품 정보를 수정하는 API
+- 요청 Body: JSON 형식의 수정할 상품 정보 (`name`, `price`, `imageUrl`)
+- 기존 상품이 존재할 경우에만 수정됨
+- 응답 예시:
+```json
+{
+  "id": 1,
+  "name": "수정된 아메리카노",
+  "price": 4800,
+  "imageUrl": "https://example.com/updated.jpg"
+}

@@ -39,4 +39,19 @@ public class ProductController {
                 .body(product); // 저장된 상품 객체 반환
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
+        Product existing = products.get(id);
+        if (existing == null) {
+            return ResponseEntity.notFound().build(); // 404
+        }
+
+        // 기존 객체를 덮어쓰기
+        updatedProduct.setId(id);
+        products.put(id, updatedProduct);
+
+        return ResponseEntity.ok(updatedProduct); // 200 OK
+    }
+
+
 }
