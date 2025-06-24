@@ -5,6 +5,7 @@ import gift.service.ProductServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,5 +26,13 @@ public class ProductController {
         List<ProductResponseDto> productList = productService.findAllProducts();
 
         return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<ProductResponseDto> findProduct(@PathVariable Long id) {
+
+        ProductResponseDto dto = productService.findProductById(id);
+
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 }
