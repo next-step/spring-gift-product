@@ -44,4 +44,10 @@ public class ProductRepositoryImpl implements ProductRepository {
         productMap.put(product.getId(), product); // 제품을 저장
         return product; // 저장된 제품 반환
     }
+
+    @Override
+    public Product update(Product product) {
+        productMap.put(product.getId(), product); // 제품을 업데이트
+        return product; // 업데이트된 제품 반환
+    }
 }
