@@ -1,0 +1,26 @@
+package gift.service;
+
+import gift.dto.ProductRequest;
+import gift.dto.ProductResponse;
+import gift.entity.Product;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ProductServiceImpl implements ProductService {
+
+    private final Map<Long, Product> products = new HashMap<>();
+    private final AtomicLong autoIncrementId = new AtomicLong(1);
+
+    @Override
+    public ProductResponse create(ProductRequest request) {
+
+        Long id = autoIncrementId.getAndIncrement();
+        Product product = new Product(id, request.name(), request.price(), request.imageUrl());
+        products.put(id, product);
+
+        return ProductResponse.from(product);
+    }
+}
