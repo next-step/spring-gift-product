@@ -49,4 +49,9 @@ public class ProductService {
         Product findProduct = productRepository.findProductByIdOrElseThrow(id);
         findProduct.updateProduct(name, price, imageUrl);
     }
+
+    public ProductResponseDto findProductById(Long id){
+
+        return productRepository.findProductByIdOrElseThrow(id);
+    }
 }
