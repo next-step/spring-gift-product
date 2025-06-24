@@ -24,4 +24,13 @@ public class ProductController {
                 .created(null)
                 .body(product);
     }
+
+    @GetMapping("/{productId}")
+    public ResponseEntity<Product> getProduct(@PathVariable Long productId) {
+        Product product = products.get(productId);
+        if (product == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(product);
+    }
 }
