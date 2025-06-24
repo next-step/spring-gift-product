@@ -2,6 +2,7 @@ package gift.item.controller;
 
 import gift.item.dto.ItemResponseDto;
 import gift.item.service.ItemService;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,5 +24,11 @@ public class ItemController {
         ItemResponseDto dto = itemService.findItem(itemId);
         return ResponseEntity.ok(dto);
     }
-    
+
+    @GetMapping
+    public ResponseEntity<List<ItemResponseDto>> findAll() {
+        List<ItemResponseDto> dtos = itemService.findAll();
+        return ResponseEntity.ok(dtos);
+    }
+
 }
