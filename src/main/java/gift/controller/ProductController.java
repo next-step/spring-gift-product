@@ -5,6 +5,7 @@ import gift.dto.ProductResponse;
 import gift.service.ProductService;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,6 +50,15 @@ public class ProductController {
       return ResponseEntity.notFound().build(); // 404 응답
     }
     return ResponseEntity.ok(response);
+  }
+
+  @DeleteMapping("/{productId}")
+  public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+    boolean deleted = productService.deleteProduct(productId);
+    if (!deleted) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.noContent().build(); // 204 No Content
   }
 
 }
