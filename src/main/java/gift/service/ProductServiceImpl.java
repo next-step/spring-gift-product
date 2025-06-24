@@ -71,4 +71,10 @@ public class ProductServiceImpl implements ProductService {
         return new ProductResponseDto(product);
     }
 
+    @Override
+    public List<ProductResponseDto> getAllProducts() {
+        return productList.values().stream()
+                .map(ProductResponseDto::new)
+                .collect(Collectors.toList());
+    }
 }
