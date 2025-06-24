@@ -1,5 +1,6 @@
 package gift.service;
 
+import gift.dto.ProductRequestDTO;
 import gift.dto.ProductResponseDTO;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
@@ -39,5 +40,24 @@ public class ProductService {
                 product.getPrice(),
                 product.getImageUrl()
         );
+    }
+
+    public ProductResponseDTO create(ProductRequestDTO productRequestDTO) {
+        Product product = new Product(
+                null,
+                productRequestDTO.getName(),
+                productRequestDTO.getPrice(),
+                productRequestDTO.getImageUrl()
+        );
+
+        Product saved = productRepository.save(product);
+
+        return new ProductResponseDTO(
+                saved.getId(),
+                saved.getName(),
+                saved.getPrice(),
+                saved.getImageUrl()
+        );
+
     }
 }

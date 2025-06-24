@@ -12,4 +12,16 @@ public class ProductResponseDTO {
         this.price = price;
         this.imageUrl = imageUrl;
     }
+    public Integer getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public Integer getPrice() {
+        return price;
+    }
+    public String getImageUrl() {
+        return imageUrl;
+    }
 }

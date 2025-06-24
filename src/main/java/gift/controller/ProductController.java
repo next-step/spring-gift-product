@@ -28,4 +28,10 @@ public class ProductController {
         ProductResponseDTO product = productService.getById(id);
         return ResponseEntity.ok(product);
     }
+
+    @PostMapping
+    public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody ProductRequestDTO product) {
+        ProductResponseDTO created = productService.create(product);
+        return ResponseEntity.ok(created);
+    }
 }
