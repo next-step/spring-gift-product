@@ -52,4 +52,11 @@ public class ItemService {
 			.orElseThrow(() -> new RuntimeException("해당 ID는 존재하지 않습니다"));
 	}
 
+
+	public void deleteItem(Long itemId) {
+		boolean removed = db.removeIf(item -> item.getId() == itemId);
+		if (!removed)
+			throw new RuntimeException("해당 ID는 존재하지 않습니다.");
+	}
+
 }

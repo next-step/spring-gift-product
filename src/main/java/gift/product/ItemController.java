@@ -45,4 +45,10 @@ public class ItemController {
 
 		return itemService.updateItem(itemId, req);
 	}
+
+	// 게시글 삭제
+	@DeleteMapping("/{itemId}")
+	public void deleteItem(@PathVariable Long itemId) {
+		itemService.deleteItem(itemId);
+	}
 }
