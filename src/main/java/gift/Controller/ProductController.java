@@ -3,6 +3,8 @@ package gift.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import gift.Model.Product;
+import gift.Validation.ProductValidator;
+import org.springframework.http.*;
 
 @RestController
 @RequestMapping("/api/products")
@@ -26,31 +28,50 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
-        return products.get(id);
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+        Product product = products.get(id);
+        if (product == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(product);
     }
 
     @PostMapping
-    public Product addProduct(@RequestBody Product product){
-        product.setId(nextId);
-        products.put(nextId,product);
-        nextId++;
-        return product;
+    public ResponseEntity<?> addProduct(@RequestBody Product product) {
+        Map<String, String> errors = ProductValidator.validate(product);
+        if (!errors.isEmpty()) {
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        product.setId(nextId++);
+        products.put(product.getId(), product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable Long id){
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        if (!products.containsKey(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
         products.remove(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product updated){
-        Product product = products.get(id);
-        if(product != null){
-            product.setName(updated.getName());
-            product.setPrice(updated.getPrice());
-            product.setImgURL(updated.getImgURL());
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody Product updated) {
+        Product existing = products.get(id);
+        if (existing == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return product;
+
+        Map<String, String> errors = ProductValidator.validate(updated);
+        if (!errors.isEmpty()) {
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        existing.setName(updated.getName());
+        existing.setPrice(updated.getPrice());
+        existing.setImgURL(updated.getImgURL());
+        return ResponseEntity.ok(existing);
     }
 }
