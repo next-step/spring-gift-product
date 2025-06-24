@@ -10,7 +10,7 @@
 - [x] 상품 추가 API (`POST /products`)
 - [ ] 상품 수정 API (`PUT /products/{id}`)
 - [ ] 상품 일부 수정 API (`PATCH /products/{id}`)
-- [ ] 상품 삭제 API (`DELETE /products/{id}`)
+- [x] 상품 삭제 API (`DELETE /products/{id}`)
 
 ## 3️⃣ 기술 스택
 - Java 17

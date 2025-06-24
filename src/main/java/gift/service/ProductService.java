@@ -17,51 +17,48 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<ProductResponseDto> findAllProducts() {
+    public List<ProductResponseDto> findAllProducts(){
 
         return productRepository.findAllProducts()
                 .stream()
-                .map(ProductResponseDto::from)
+                .map(ProductResponseDto::toDto)
                 .toList();
     }
 
-    public ProductResponseDto findProductById(Long id) {
-        Product findProduct = productRepository.findProductByIdOrElseThrow(id);
-
-        return ProductResponseDto.from(findProduct);
-    }
-
-    @Transactional
-    public ProductResponseDto createProduct(String name, Long price, String imageUrl) {
-        Product createdProduct = productRepository.createProduct(name, price, imageUrl);
-
-        return ProductResponseDto.from(createdProduct);
-    }
-
-    @Transactional
-    public void deleteProduct(Long id) {
-        Product findProduct = productRepository.findProductByIdOrElseThrow(id);
-        productRepository.deleteProduct(id);
-    }
-
-    @Transactional
-    public void updateProduct(Long id, String name, Long price, String imageUrl) {
-        Product findProduct = productRepository.findProductByIdOrElseThrow(id);
-        findProduct.updateProduct(name, price, imageUrl);
-    }
-
     public ProductResponseDto findProductById(Long id){
+        Product findProduct = productRepository.findProductByIdOrElseThrow(id);
 
-        return productRepository.findProductByIdOrElseThrow(id);
+        return ProductResponseDto.toDto(findProduct);
     }
 
     public ProductResponseDto createProduct(String name, Long price, String imageUrl){
+        Product createdProduct = productRepository.createProduct(name, price, imageUrl);
 
-        return productRepository.createProduct(name, price, imageUrl);
+        return ProductResponseDto.toDto(createdProduct);
     }
 
+    @Transactional
     public void deleteProduct(Long id){
-
+        Product findProduct = productRepository.findProductByIdOrElseThrow(id);
         productRepository.deleteProduct(id);
+    }
+
+    @Transactional
+    public ProductResponseDto patchProduct(Long id, String name, Long price, String imageUrl){
+        Product findProduct = productRepository.findProductByIdOrElseThrow(id);
+
+        if (name != null){
+            findProduct.setName(name);
+        }
+
+        if (price != null){
+            findProduct.setPrice(price);
+        }
+
+        if (imageUrl != null){
+            findProduct.setImageUrl(imageUrl);
+        }
+
+        return ProductResponseDto.toDto(findProduct);
     }
 }
