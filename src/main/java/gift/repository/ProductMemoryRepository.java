@@ -42,8 +42,8 @@ public class ProductMemoryRepository implements ProductRepository{
 
     @Override
     public Product update(Long id, UpdateProductRequest request) {
-        products.remove(id);
         Product updateProduct = new Product(id, request.getName(), request.getPrice(), request.getImageUrl());
+        products.remove(id);
         products.put(id, updateProduct);
         return updateProduct;
     }
