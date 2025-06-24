@@ -13,6 +13,13 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
+    //상품 수정
+    public void update(String name, int price, String imageUrl) {
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
+    }
+
     public Long getId(){
         return id;
     }
@@ -28,4 +35,18 @@ public class Product {
     public String getImageUrl(){
         return imageUrl;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+
 }

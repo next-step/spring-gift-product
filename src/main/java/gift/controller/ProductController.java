@@ -38,4 +38,24 @@ public class ProductController {
     public ResponseEntity<List<Product>> getAllProducts() {
         return ResponseEntity.ok(new ArrayList<>(products.values()));
     }
+
+    @PutMapping("/{productId}") // 상품 수정 - 부분수정 가능
+    public ResponseEntity<Product> updateProduct(@PathVariable Long productId, @RequestBody ProductRequest request) {
+        Product exist = products.get(productId);
+        if (exist == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (request.getName() != null && !request.getName().isBlank()) {
+            exist.setName(request.getName());
+        }
+        if (request.getPrice() > 0) {
+            exist.setPrice(request.getPrice());
+        }
+        if (request.getImageUrl() != null && !request.getImageUrl().isBlank()) {
+            exist.setImageUrl(request.getImageUrl());
+        }
+
+        return ResponseEntity.ok(exist);
+    }
 }

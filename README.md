@@ -54,9 +54,9 @@
 
 ```
 ---
-### 3) 상품 목록 전체조회 API (GET `/api/products/`)
+### 3) 상품 목록 전체조회 API (GET `/api/products`)
 
-#### 200 response (`/api/products/1`)
+#### 200 response (`/api/products`)
 ```json
 [
   {
