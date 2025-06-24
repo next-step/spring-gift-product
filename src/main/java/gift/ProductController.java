@@ -9,6 +9,9 @@ import java.util.*;
 public class ProductController {
     private final Map<Long, Product> products = new HashMap<>();
 
+    public ProductController() {
+
+    }
     @PostMapping("/product")
     public String createProduct(@RequestBody Product product) {
         products.put(product.getId(), product);
