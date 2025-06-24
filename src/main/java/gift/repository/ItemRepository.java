@@ -14,6 +14,11 @@ public class ItemRepository {
 
     private final Map<Long, Item> items = new HashMap<>();
 
+    public Item save(Item item) {
+        items.put(item.getId(), item);
+        return item;
+    }
+
     public Optional<Item> findById(Long id) {
         return Optional.ofNullable(items.get(id));
     }

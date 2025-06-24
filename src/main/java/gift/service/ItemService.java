@@ -1,5 +1,6 @@
 package gift.service;
 
+import gift.dto.ItemRequest;
 import gift.dto.ItemResponse;
 import gift.entity.Item;
 import gift.repository.ItemRepository;
@@ -16,6 +17,16 @@ public class ItemService {
 
     public ItemService(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
+    }
+
+    public ItemResponse createItem(ItemRequest request) {
+        if (itemRepository.findById(request.id()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                "이미 존재하는 상품 ID입니다: " + request.id());
+        }
+        Item item = new Item(request.id(), request.name(), request.price(), request.imageUrl());
+        Item savedItem = itemRepository.save(item);
+        return ItemResponse.from(savedItem);
     }
 
     public ItemResponse getItemById(Long id) {
