@@ -58,4 +58,14 @@ public class ProductController {
 
         return ResponseEntity.ok(exist);
     }
+
+    @DeleteMapping("/{productId}") //상품 삭제
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+        Product exist = products.get(productId);
+        if (exist == null) {
+            return ResponseEntity.notFound().build();
+        }
+        products.remove(productId);
+        return ResponseEntity.noContent().build();
+    }
 }
