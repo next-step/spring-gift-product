@@ -24,4 +24,12 @@ public class ProductService {
         return ProductValidator.validateExists(id, repository);
     }
 
+    public Product updateProduct(Long id, Product updateData) {
+        ProductValidator.validate(updateData);                     // 유효성 검사
+        Product existing = ProductValidator.validateExists(id, repository); // 존재 여부 확인
+
+        repository.update(id, updateData);
+        return existing;
+    }
+
 }

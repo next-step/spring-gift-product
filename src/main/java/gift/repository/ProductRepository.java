@@ -27,4 +27,13 @@ public class ProductRepository {
         return Optional.ofNullable(storage.get(id));
     }
 
+    public void update(Long id, Product updatedProduct) {
+        Product existing = storage.get(id);
+        if (existing != null) {
+            existing.setName(updatedProduct.getName());
+            existing.setPrice(updatedProduct.getPrice());
+            existing.setImageUrl(updatedProduct.getImageUrl());
+        }
+    }
+
 }
