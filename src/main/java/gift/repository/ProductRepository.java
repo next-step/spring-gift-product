@@ -38,4 +38,16 @@ public class ProductRepository {
     return newProduct;
   }
 
+  public Product update(Long id, String name, int price, String imageUrl) {
+    Product product = products.get(id);
+    if (product == null) {
+      return null; // 없는 ID는 무시
+    }
+
+    Product updated = new Product(id, name, price, imageUrl);
+    products.put(id, updated);
+    return updated;
+  }
+
+
 }
