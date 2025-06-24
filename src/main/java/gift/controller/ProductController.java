@@ -1,8 +1,9 @@
 package gift.controller;
 
 import gift.dto.ProductAddRequestDto;
-import gift.dto.ProductAddResponseDto;
+import gift.dto.ProductResponseDto;
 import gift.service.ProductServiceImpl;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +18,19 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductAddResponseDto> addProduct(
+    public ResponseEntity<ProductResponseDto> addProduct(
             @RequestBody ProductAddRequestDto requestDto
     ) {
-        ProductAddResponseDto responseDto = productServiceImpl.addProduct(requestDto.name(), requestDto.price(), requestDto.url());
+        ProductResponseDto responseDto = productServiceImpl.addProduct(requestDto.name(), requestDto.price(), requestDto.url());
         return new ResponseEntity<>(responseDto,HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> findProductById(
+            @PathVariable Long id
+    ) {
+        ProductResponseDto responseDto = productServiceImpl.findProductById(id);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
 }

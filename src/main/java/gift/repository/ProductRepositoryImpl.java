@@ -18,4 +18,10 @@ public class ProductRepositoryImpl implements ProductRepository {
         products.put(newId, product);
         return product;
     }
+
+    @Override
+    public Product findProductById(Long id) {
+        Product product = products.get(id);
+        return product;
+    }
 }

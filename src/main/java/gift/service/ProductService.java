@@ -1,7 +1,8 @@
 package gift.service;
 
-import gift.dto.ProductAddResponseDto;
+import gift.dto.ProductResponseDto;
 
 public interface ProductService {
-    public ProductAddResponseDto addProduct(String name, Long price, String url);
+    public ProductResponseDto addProduct(String name, Long price, String url);
+    public ProductResponseDto findProductById(Long id);
 }

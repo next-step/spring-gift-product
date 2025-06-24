@@ -1,6 +1,6 @@
 package gift.service;
 
-import gift.dto.ProductAddResponseDto;
+import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepositoryImpl;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,14 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ProductAddResponseDto addProduct(String name, Long price, String url) {
+    public ProductResponseDto addProduct(String name, Long price, String url) {
         Product product = productRepositoryImpl.addProduct(name, price, url);
-        return new ProductAddResponseDto(product);
+        return new ProductResponseDto(product);
+    }
+
+    @Override
+    public ProductResponseDto findProductById(Long id) {
+        Product product = productRepositoryImpl.findProductById(id);
+        return new ProductResponseDto(product);
     }
 }
