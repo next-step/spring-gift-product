@@ -36,4 +36,8 @@ public class ProductRepository {
         }
     }
 
+    public void delete(Long id) {
+        storage.remove(id);
+    }
+
 }

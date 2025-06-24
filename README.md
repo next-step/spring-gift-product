@@ -107,3 +107,17 @@
   - 내부 검증 방식
     - 수정 시에도 등록과 동일한 유효성 검사를 수행 (ProductValidator)
     - 수정 후에도 ID는 변하지 않으며, 기존 상품 객체의 필드만 변경
+
+5. 상품 삭제 (DELETE /api/products/{id})
+  - 특정 상품을 삭제합니다.
+  - 존재하지 않는 상품 ID를 요청할 경우 404 Not Found 응답을 반환합니다.
+  - **URL**: `/api/products/{id}`
+  - **Method**: `DELETE`
+  - **Path Variable**: `id` (상품 ID)
+  - 응답 예시 (204 No Content)
+    - 본문 없이 상태 코드만 반환됩니다.
+  - 예외 처리
+    - 존재하지 않는 ID로 요청이 올 경우에는 "상품을 찾을 수 없습니다."라는 메세지를 응답하고 404 Not Found 상태 코드 반환
+  - 내부 검증 방식
+    - 삭제 전에 해당 상품의 존재 여부를 ProductValidator 에서 검증
+      - 검증 실패 시 NoSuchElementException 발생 → GlobalExceptionHandler 가 404로 처리

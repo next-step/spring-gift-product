@@ -32,4 +32,9 @@ public class ProductService {
         return existing;
     }
 
+    public void deleteProduct(Long id) {
+        ProductValidator.validateExists(id, repository); // 존재 여부 검증
+        repository.delete(id);
+    }
+
 }
