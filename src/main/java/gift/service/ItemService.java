@@ -35,4 +35,9 @@ public class ItemService {
         itemRepository.deleteItem(name);
     }
 
+    public ItemDto updateItem(Long id, ItemDto dto) {
+        Item item = itemRepository.updateItem(id, dto);
+        return new ItemDto(item);
+    }
+
 }

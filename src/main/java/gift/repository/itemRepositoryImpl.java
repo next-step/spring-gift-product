@@ -2,6 +2,7 @@ package gift.repository;
 
 import gift.dto.ItemDto;
 import gift.entity.Item;
+import gift.exception.ItemNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -41,5 +42,15 @@ public class itemRepositoryImpl implements ItemRepository {
         }
     }
 
-
+    @Override
+    public Item updateItem(Long id, ItemDto dto) {
+        Item item = items.get(id);
+        if (item == null) {
+            throw new ItemNotFoundException("상품을 찾을 수 없습니다: " + id);
+        }
+        item.setName(dto.getName());
+        item.setPrice(dto.getPrice());
+        item.setImageUrl(dto.getImageUrl());
+        return item;
+    }
 }

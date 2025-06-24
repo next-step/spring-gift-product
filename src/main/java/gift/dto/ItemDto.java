@@ -7,7 +7,7 @@ public class ItemDto {
     private Long id;
     private String name;
     private Integer price;
-    private String ImageUrl;
+    private String imageUrl;
 
     //생성자
     protected ItemDto() {}
@@ -16,7 +16,7 @@ public class ItemDto {
         this.id = item.getId();
         this.name = item.getName();
         this.price = item.getPrice();
-        this.ImageUrl = item.getImageUrl();
+        this.imageUrl = item.getImageUrl();
     }
 
     //getter
@@ -33,6 +33,6 @@ public class ItemDto {
     }
 
     public String getImageUrl() {
-        return ImageUrl;
+        return imageUrl;
     }
 }

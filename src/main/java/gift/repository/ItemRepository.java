@@ -11,5 +11,7 @@ public interface ItemRepository {
     List<ItemDto> findItems(String name);
 
     void deleteItem(String name);
+
+    Item updateItem(Long id, ItemDto dto);
 }
 
