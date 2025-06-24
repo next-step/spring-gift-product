@@ -49,4 +49,12 @@ public class ProductService {
 
         return new ProductResponseDto(updateProduct.getId(),updateProduct.getName(),updateProduct.getPrice(),updateProduct.getImageUrl());
     }
+
+    public void deleteProduct(Long id){
+        Product product = productRepository.findProduct(id);
+        if(product==null){
+            throw new NoSuchElementException("Product does not exist.");
+        }
+        productRepository.deleteProduct(id);
+    }
 }
