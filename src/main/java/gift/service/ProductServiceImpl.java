@@ -26,6 +26,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public AddProductResponseDto addProduct(AddProductRequestDto requestDto) {
         
+        if (requestDto.getName() == null ||
+            requestDto.getPrice() == null || requestDto.getImageUrl() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        
         Product product = new Product(
             productRepository.getRecentId(),
             requestDto.getName(),
