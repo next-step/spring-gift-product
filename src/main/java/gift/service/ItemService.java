@@ -31,4 +31,8 @@ public class ItemService {
         return items;
     }
 
+    public void deleteItem(String name) {
+        itemRepository.deleteItem(name);
+    }
+
 }

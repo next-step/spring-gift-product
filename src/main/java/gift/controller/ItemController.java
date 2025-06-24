@@ -3,6 +3,7 @@ package gift.controller;
 import gift.dto.ItemDto;
 import gift.entity.Item;
 import gift.service.ItemService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,15 @@ public class ItemController {
         List<ItemDto> items = itemService.findItems(name);
         return ResponseEntity.ok(items);
     }
+
+    @DeleteMapping("/api/products")
+    public ResponseEntity<Void> deleteItems(
+            @RequestParam(required = false) String name
+    ) {
+        itemService.deleteItem(name);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 
 }

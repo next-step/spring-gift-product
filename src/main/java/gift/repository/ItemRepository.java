@@ -9,5 +9,7 @@ public interface ItemRepository {
     Item saveItem(ItemDto dto);
 
     List<ItemDto> findItems(String name);
+
+    void deleteItem(String name);
 }
 
