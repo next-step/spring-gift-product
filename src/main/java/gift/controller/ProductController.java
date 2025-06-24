@@ -54,6 +54,24 @@ public class ProductController {
 
     //update
     //상품 수정
+    @PutMapping("/products/{id}")
+    public Product modifyProduct(
+        @RequestBody ProductRequestDto requestDto,
+        @PathVariable Long id
+    ) {
+        Optional<Product> optionalProduct = Optional.ofNullable(products.get(id));
+        if (optionalProduct.isPresent()) {
+            Long found = optionalProduct.get().getId();
+            Product product = new Product(
+                found,
+                requestDto.getName(),
+                requestDto.getPrice(),
+                requestDto.getImageUrl());
+            products.put(found, product);
+            return product;
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "존재하지 않는 상품입니다.");
+    }
 
     //delete
     //등록된 상품을 삭제
