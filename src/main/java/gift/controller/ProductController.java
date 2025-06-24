@@ -60,7 +60,7 @@ public class ProductController {
     //update
     //상품 수정
     @PutMapping("/products/{id}")
-    public Product modifyProduct(
+    public ResponseEntity<Product> modifyProduct(
         @RequestBody ProductRequestDto requestDto,
         @PathVariable Long id
     ) {
@@ -70,7 +70,7 @@ public class ProductController {
             requestDto.getPrice(),
             requestDto.getImageUrl());
         products.put(found, product);
-        return product;
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     //delete
