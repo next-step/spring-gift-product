@@ -73,15 +73,15 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseDto deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<ResponseDto> deleteProduct(@PathVariable Long id) {
         Product product = products.get(id);
 
         if (product == null) {
-            throw new IllegalArgumentException("Product not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         products.remove(id);
 
-        return new ResponseDto(product);
+        return new ResponseEntity<>(new ResponseDto(product), HttpStatus.OK);
     }
 }
