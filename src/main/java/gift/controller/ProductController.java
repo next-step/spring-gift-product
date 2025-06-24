@@ -19,9 +19,9 @@ public class ProductController {
     public ResponseEntity<ResponseDto> addProduct(@RequestBody RequestDto requestDto) {
         long productId = products.isEmpty() ? 1: Collections.max(products.keySet()) + 1;
 
-        Product product = new Product(productId, requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
+        Product product = new Product(productId, requestDto.name(), requestDto.price(), requestDto.imageUrl());
 
-        if (requestDto.getName() == null || requestDto.getPrice() == null || requestDto.getImageUrl() == null) {
+        if (requestDto.name() == null || requestDto.price() == null || requestDto.imageUrl() == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -67,7 +67,7 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        if (requestDto.getName() == null || requestDto.getPrice() == null || requestDto.getImageUrl() == null) {
+        if (requestDto.name() == null || requestDto.price() == null || requestDto.imageUrl() == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 

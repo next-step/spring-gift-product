@@ -33,8 +33,8 @@ public class Product {
     }
 
     public void update(RequestDto requestDto) {
-        this.name = requestDto.getName();
-        this.price = requestDto.getPrice();
-        this.imageUrl = requestDto.getImageUrl();
+        this.name = requestDto.name();
+        this.price = requestDto.price();
+        this.imageUrl = requestDto.imageUrl();
     }
 }
