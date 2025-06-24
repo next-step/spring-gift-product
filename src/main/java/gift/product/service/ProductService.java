@@ -3,6 +3,7 @@ package gift.product.service;
 import gift.product.Product;
 import gift.product.dto.ProductRequest;
 import gift.product.dto.ProductResponse;
+import gift.product.dto.ProductUpdateRequest;
 import gift.product.repository.ProductRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,15 @@ public class ProductService {
         if (product == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(ProductResponse.from(product), HttpStatus.OK);
+    }
+
+    public ResponseEntity<ProductResponse> updateProduct(Long id, ProductUpdateRequest req) {
+        Product product = productRepository.get(id);
+        if (product == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        product.update(req);
         return new ResponseEntity<>(ProductResponse.from(product), HttpStatus.OK);
     }
 }

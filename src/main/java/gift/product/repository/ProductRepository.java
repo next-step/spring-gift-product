@@ -1,6 +1,7 @@
 package gift.product.repository;
 
 import gift.product.Product;
+import gift.product.dto.ProductUpdateRequest;
 
 import java.util.HashMap;
 import java.util.Map;
