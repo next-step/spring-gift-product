@@ -1,23 +1,26 @@
 package gift.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class ProductRequestDto {
-    private Long id;
-    @NotNull
+public class UpdateProductRequestDto {
+
+    @NotBlank(message = "상품명을 입력하세요.")
     private String name;
-    @NotNull
+
+    @NotNull(message = "가격을 입력하세요.")
+    @Min(value = 0, message = "가격은 0 이상이어야 합니다.")
     private Integer price;
+
+    @NotBlank(message = "이미지 URL을 입력하세요.")
     private String imageUrl;
-    public Long getId()
-    {
-        return id;
-    }
+
     public String getName()
     {
         return name;
     }
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
     public String getImageUrl()
@@ -25,9 +28,6 @@ public class ProductRequestDto {
         return imageUrl;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
     public void setName(String name) {
         this.name = name;
     }
