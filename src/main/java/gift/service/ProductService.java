@@ -20,7 +20,7 @@ public class ProductService {
     public ProductService(ProductRepository productRepository) {this.productRepository = productRepository;}
 
     public ProductResponseDto findProductById(Long id){
-        Product product = productRepository.findProductById();
+        Product product = productRepository.findProductById(id);
 
         return new ProductResponseDto(product);
     }
@@ -46,7 +46,7 @@ public class ProductService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No product found");
         }
         
-        return productRepository.findProductById(id);
+        return new ProductResponseDto(productRepository.findProductById(id));
     }
 
     public void deleteProduct(Long id){

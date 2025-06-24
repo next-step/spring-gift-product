@@ -27,7 +27,7 @@ public class ProductController {
      * @return : ProductResponseDto JSON
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Product> findProductById(@PathVariable Long id){
+    public ResponseEntity<ProductResponseDto> findProductById(@PathVariable Long id){
         return new ResponseEntity<>(productService.findProductById(id), HttpStatus.OK);
     }
 
@@ -36,7 +36,7 @@ public class ProductController {
      * @return : ProductResponseDto JSON
      */
     @GetMapping()
-    public ResponseEntity<List<Product>> findAllProducts(){
+    public List<ProductResponseDto> findAllProducts(){
         return productService.findAllProduct();
     }
 
