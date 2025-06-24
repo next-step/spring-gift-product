@@ -63,5 +63,23 @@ public class ProductController {
         return ResponseEntity.noContent().build(); // 204 No Content
     }
 
+    @GetMapping
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        List<Product> allProducts = new ArrayList<>(products.values());
+
+        int fromIndex = page * size;
+        int toIndex = Math.min(fromIndex + size, allProducts.size());
+
+        if (fromIndex >= allProducts.size()) {
+            return ResponseEntity.ok(Collections.emptyList());
+        }
+
+        List<Product> paginated = allProducts.subList(fromIndex, toIndex);
+        return ResponseEntity.ok(paginated);
+    }
+
 
 }
