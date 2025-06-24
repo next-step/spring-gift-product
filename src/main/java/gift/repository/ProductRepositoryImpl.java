@@ -3,6 +3,7 @@ package gift.repository;
 import gift.dto.AddProductRequestDto;
 import gift.dto.AddProductResponseDto;
 import gift.dto.FindProductResponseDto;
+import gift.dto.ModifyProductResponseDto;
 import gift.entity.Product;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,5 +52,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Product findProductWithDbId(Long id) {
         return Optional.ofNullable(products.get(id))
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+    
+    @Override
+    public ModifyProductResponseDto modifyProductWithDbId(Long id, Product newProduct) {
+        products.put(id, newProduct);
+        return new ModifyProductResponseDto(id, newProduct);
     }
 }

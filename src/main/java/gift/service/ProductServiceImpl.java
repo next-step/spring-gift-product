@@ -3,6 +3,8 @@ package gift.service;
 import gift.dto.AddProductRequestDto;
 import gift.dto.AddProductResponseDto;
 import gift.dto.FindProductResponseDto;
+import gift.dto.ModifyProductRequestDto;
+import gift.dto.ModifyProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
@@ -35,6 +37,24 @@ public class ProductServiceImpl implements ProductService {
     public FindProductResponseDto findProductWithDbId(Long id) {
         Product product = productRepository.findProductWithDbId(id);
         return new FindProductResponseDto(id, product);
+    }
+    
+    //상품 수정 (상품 자체가 다른 것으로 바뀜)
+    @Override
+    public ModifyProductResponseDto modifyProductWithDbId(Long id,
+        ModifyProductRequestDto requestDto) {
+        Product product = productRepository.findProductWithDbId(id);
+        
+        Product newProduct = new Product(
+            requestDto.getId(),
+            requestDto.getName(),
+            requestDto.getPrice(),
+            requestDto.getImageUrl()
+        );
+        
+        ModifyProductResponseDto responseDto = productRepository.modifyProductWithDbId(id,
+            newProduct);
+        return responseDto;
     }
     
 }
