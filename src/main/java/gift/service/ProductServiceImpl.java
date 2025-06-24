@@ -4,7 +4,11 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -19,5 +23,11 @@ public class ProductServiceImpl implements ProductService {
         Product product = new Product(requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
         Product savedProduct = productRepository.saveProduct(product);
         return new ProductResponseDto(savedProduct);
+    }
+
+    @Override
+    public ProductResponseDto findProductById(Long id) {
+        Product product = productRepository.findProductById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,  "해당 ID의 상품이 없습니다."));
+        return new ProductResponseDto(product);
     }
 }

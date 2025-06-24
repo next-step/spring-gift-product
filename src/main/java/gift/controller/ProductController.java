@@ -23,4 +23,9 @@ public class ProductController {
         return new ResponseEntity<>(productService.saveProduct(requestDto), HttpStatus.CREATED);
     }
 
+    @GetMapping("/{productId}")
+    public ResponseEntity<ProductResponseDto> getProduct(@PathVariable("productId") Long productId) {
+        return new ResponseEntity<>(productService.findProductById(productId), HttpStatus.OK);
+    }
+
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
@@ -17,5 +18,10 @@ public class ProductRepositoryImpl implements ProductRepository {
         product.setId(productId);
         products.put(productId, product);
         return product;
+    }
+
+    @Override
+    public Optional<Product> findProductById(Long id) {
+        return Optional.ofNullable(products.get(id));
     }
 }

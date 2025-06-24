@@ -5,4 +5,6 @@ import gift.dto.ProductResponseDto;
 
 public interface ProductService {
     ProductResponseDto saveProduct(ProductRequestDto productRequestDto);
+
+    ProductResponseDto findProductById(Long id);
 }
