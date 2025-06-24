@@ -1,10 +1,13 @@
 package gift.Controller;
 
-import gift.Model.Product;
-import gift.Validation.ProductValidator;
-import org.springframework.http.*;
+import gift.Dto.*;
+import gift.Exception.*;
+import gift.Model.*;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.*;
 
 @RestController
@@ -15,64 +18,74 @@ public class ProductController {
     private long nextId = 1;
 
     public ProductController() {
-        products.put(nextId, new Product(
-                nextId++,
-                "아이스 카페 아메리카노 T",
-                4500,
-                "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"
-        ));
+        addSampleProduct();
     }
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return new ArrayList<>(products.values());
+    public ResponseEntity<List<Product>> getAll() {
+        List<Product> allProducts = new ArrayList<>(products.values());
+        return ResponseEntity.ok(allProducts);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    public ResponseEntity<Product> get(@PathVariable Long id) {
         Product product = products.get(id);
         if (product == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new ProductNotFoundException(id);
         }
         return ResponseEntity.ok(product);
     }
 
     @PostMapping
-    public ResponseEntity<?> addProduct(@RequestBody Product product) {
-        Map<String, String> errors = ProductValidator.validate(product);
-        if (!errors.isEmpty()) {
-            return ResponseEntity.badRequest().body(errors);
-        }
+    public ResponseEntity<Product> add(@RequestBody ProductRequest request) {
+        Long id = nextId++;
+        Product product = new Product(
+                id,
+                request.toName().getValue(),
+                request.toPrice().getValue(),
+                request.toImgUrl().getValue()
+        );
+        products.put(id, product);
 
-        product.setId(nextId++);
-        products.put(product.getId(), product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(product);
+        URI location = URI.create("/api/products/" + id);
+        return ResponseEntity.created(location).body(product);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody Product updated) {
+    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody ProductRequest request) {
         Product existing = products.get(id);
         if (existing == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw new ProductNotFoundException(id);
         }
 
-        Map<String, String> errors = ProductValidator.validate(updated);
-        if (!errors.isEmpty()) {
-            return ResponseEntity.badRequest().body(errors);
-        }
-
-        existing.setName(updated.getName());
-        existing.setPrice(updated.getPrice());
-        existing.setImgURL(updated.getImgURL());
-        return ResponseEntity.ok(existing);
+        Product updated = new Product(
+                id,
+                request.toName().getValue(),
+                request.toPrice().getValue(),
+                request.toImgUrl().getValue()
+        );
+        products.put(id, updated);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        if (!products.containsKey(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        Product removed = products.remove(id);
+        if (removed == null) {
+            throw new ProductNotFoundException(id);
         }
-        products.remove(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private void addSampleProduct() {
+        ProductRequest sample = new ProductRequestSample();
+        Product product = new Product(
+                nextId,
+                sample.toName().getValue(),
+                sample.toPrice().getValue(),
+                sample.toImgUrl().getValue()
+        );
+        products.put(nextId, product);
+        nextId++;
     }
 }
