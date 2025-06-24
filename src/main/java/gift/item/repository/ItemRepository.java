@@ -11,4 +11,6 @@ public interface ItemRepository {
 
     Item save(Item item);
 
+    Item update(Item item);
+
 }

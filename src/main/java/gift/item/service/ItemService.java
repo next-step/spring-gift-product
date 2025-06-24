@@ -3,6 +3,7 @@ package gift.item.service;
 import gift.item.Item;
 import gift.item.dto.ItemCreateDto;
 import gift.item.dto.ItemResponseDto;
+import gift.item.dto.ItemUpdateDto;
 import gift.item.repository.ItemRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,23 @@ public class ItemService {
             savedItem.getName(),
             savedItem.getPrice(),
             savedItem.getImageUrl()
+        );
+    }
+
+    public ItemResponseDto updateItem(Long itemId, ItemUpdateDto itemUpdateDto) {
+        Item oldItem = itemRepository.findById(itemId);
+
+        oldItem.setName(itemUpdateDto.getName());
+        oldItem.setPrice(itemUpdateDto.getPrice());
+        oldItem.setImageUrl(itemUpdateDto.getImageUrl());
+
+        Item updatedItem = itemRepository.save(oldItem);
+
+        return new ItemResponseDto(
+            updatedItem.getId(),
+            updatedItem.getName(),
+            updatedItem.getPrice(),
+            updatedItem.getImageUrl()
         );
     }
 }

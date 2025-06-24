@@ -29,4 +29,10 @@ public class InMemoryItemRepository implements ItemRepository {
         items.put(item.getId(), item);
         return item;
     }
+
+    @Override
+    public Item update(Item item) {
+        items.put(item.getId(), item);
+        return item;
+    }
 }
