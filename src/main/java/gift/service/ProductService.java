@@ -74,4 +74,12 @@ public class ProductService {
                 product.getImageUrl()
         );
     }
+
+    public void delete(Integer id) {
+        Product product = productRepository.findById(id);
+        if (product == null) {
+            throw new IllegalArgumentException("Product not found");
+        }
+        productRepository.delete(id);
+    }
 }

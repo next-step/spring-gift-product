@@ -26,4 +26,8 @@ public class ProductRepository {
     public Product findById(Integer id) {
         return store.get(id);
     }
+
+    public void delete(Integer id) {
+        store.remove(id);
+    }
 }
