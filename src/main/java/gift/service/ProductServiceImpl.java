@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,5 +31,14 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponseDto findProductById(Long id) {
         Product product = productRepository.findProductById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,  "해당 ID의 상품이 없습니다."));
         return new ProductResponseDto(product);
+    }
+
+    @Override
+    public List<ProductResponseDto> findAllProducts() {
+        List<Product> allProducts = productRepository.findAllProducts();
+
+        return allProducts.stream()
+            .map(ProductResponseDto::new)
+            .toList();
     }
 }

@@ -1,12 +1,10 @@
 package gift.repository;
 
+import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
@@ -23,5 +21,10 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public Optional<Product> findProductById(Long id) {
         return Optional.ofNullable(products.get(id));
+    }
+
+    @Override
+    public List<Product> findAllProducts() {
+        return new ArrayList<>(products.values());
     }
 }
