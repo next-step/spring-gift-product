@@ -2,15 +2,15 @@ package gift.controller;
 
 import gift.dto.ProductRequestDto;
 import gift.entity.Product;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Key;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -34,6 +34,14 @@ public class ProductController {
 
     //read
     //특정 상품을 조회(id)
+    @GetMapping("/products/{id}")
+    public Product findProductById(@PathVariable Long id){
+        Optional<Product> optionalProduct = Optional.ofNullable(products.get(id));
+        if(optionalProduct.isPresent()){
+            return optionalProduct.get();
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "존재하지 않는 상품입니다.");
+    }
 
     //read
     //전체 상품을 조회
