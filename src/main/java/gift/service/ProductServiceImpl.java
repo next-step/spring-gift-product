@@ -21,12 +21,4 @@ public class ProductServiceImpl implements ProductService{
 
         return findList;
     }
-
-    @Override
-    public ProductResponseDto findProductById(Long id) {
-
-        ProductResponseDto findProduct = productRepository.findProductByIdElseThrow(id);
-
-        return findProduct;
-    }
 }

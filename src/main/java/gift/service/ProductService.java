@@ -7,5 +7,5 @@ import java.util.List;
 public interface ProductService {
 
     List<ProductResponseDto> findAllProducts();
-    ProductResponseDto findProductById(Long id);
+
 }
