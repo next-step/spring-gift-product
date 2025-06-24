@@ -50,4 +50,10 @@ public class Product {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    public void update(String name, Integer price, String url) {
+        this.name = name;
+        this.price = price;
+        this.imageUrl = url;
+    }
 }

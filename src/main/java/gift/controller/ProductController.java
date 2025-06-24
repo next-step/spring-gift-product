@@ -36,7 +36,14 @@ public class ProductController {
         return new ResponseEntity<>(productService.findProductById(id), HttpStatus.OK);
     }
 
-
+    // 수정
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> updateProduct(
+            @PathVariable Long id,
+            @RequestBody ProductResponseDto requestDto
+    ) {
+        return new ResponseEntity<>(productService.updateProduct(id, requestDto.name(), requestDto.price(), requestDto.imageUrl()), HttpStatus.OK);
+    }
 
 
 }
