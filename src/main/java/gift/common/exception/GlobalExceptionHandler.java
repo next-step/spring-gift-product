@@ -1,104 +1,106 @@
 package gift.common.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.ProblemDetail;
 import org.springframework.validation.BindException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+@Order
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    /*
+    1. 어플리케이션 공통 예외
+     */
     @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<ErrorResponse> handleNullPointerException(NullPointerException ex) {
-        return createErrorResponse(
-                ErrorCode.NULL_ERROR,
-                ErrorField.NULL_POINTER.name(),
-                ex.getClass().getSimpleName(),
-                HttpStatus.BAD_REQUEST);
+    public ErrorResponse handleNpe(NullPointerException ex, HttpServletRequest req) {
+        return ErrorResponse.builder(ex, HttpStatus.BAD_REQUEST, "NULL 값이 발생했습니다")
+                .property("code", ErrorCode.NULL_ERROR.name())
+                .property("field", ErrorField.NULL_POINTER.name())
+                .property("path", req.getRequestURI())
+                .build();
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
-        return createErrorResponse(
-                ErrorCode.INVALID_INPUT,
-                ErrorField.INVALID_ARGUMENT.name(),
-                ex.getClass().getSimpleName(),
-                ex.getMessage(),
-                HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
-
-        List<ErrorDetail> errorDetails = ex.getBindingResult().getFieldErrors().stream()
-                .map(error -> new ErrorDetail(
-                        error.getField(),
-                        error.getRejectedValue(),
-                        error.getDefaultMessage()))
-                .collect(Collectors.toList());
-
-        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.VALIDATION_FAILED.name(), errorDetails);
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
-        return createErrorResponse(
-                ErrorCode.MALFORMED_JSON,
-                ErrorField.REQUEST_BODY.name(),
-                ErrorField.INVALID_FORMAT.name(),
-                "유효하지 않은 요청 본문 형식입니다",
-                HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<ErrorResponse> handleMissingParams(MissingServletRequestParameterException ex) {
-        String paramName = ex.getParameterName();
-        return createErrorResponse(
-                ErrorCode.MISSING_PARAMETER,
-                paramName,
-                ErrorField.MISSING.name(),
-                "필수 파라미터가 누락되었습니다",
-                HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(BindException.class)
-    public ResponseEntity<ErrorResponse> handleBindException(BindException ex) {
-
-        List<ErrorDetail> errorDetails = ex.getFieldErrors().stream()
-                .map(error -> new ErrorDetail(
-                        error.getField(),
-                        error.getRejectedValue(),
-                        error.getDefaultMessage()))
-                .collect(Collectors.toList());
-
-        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.BINDING_FAILED.name(), errorDetails);
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    public ErrorResponse handleIllegalArg(IllegalArgumentException ex, HttpServletRequest req) {
+        return ErrorResponse.builder(ex, HttpStatus.BAD_REQUEST, ex.getMessage())
+                .property("code", ErrorCode.INVALID_INPUT.name())
+                .property("field", ErrorField.INVALID_ARGUMENT.name())
+                .property("path", req.getRequestURI())
+                .build();
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex) {
-        return createErrorResponse(
-                ErrorCode.UNEXPECTED_ERROR,
-                ErrorField.INTERNAL_SERVER_ERROR.name(),
-                ex.getClass().getSimpleName(),
-                HttpStatus.INTERNAL_SERVER_ERROR);
+    public ErrorResponse handleUnexpected(Exception ex, HttpServletRequest req) {
+        return ErrorResponse.builder(ex, HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다")
+                .property("code", ErrorCode.UNEXPECTED_ERROR.name())
+                .property("path", req.getRequestURI())
+                .build();
     }
 
-    private ResponseEntity<ErrorResponse> createErrorResponse(ErrorCode errorCode, String errorType, Object rejectedValue, HttpStatus status) {
-        return createErrorResponse(errorCode, errorType, rejectedValue, errorCode.getMessage(), status);
+    /*
+    2.스프링 MVC 표준 예외 (override)
+    */
+
+    @Override
+    protected ResponseEntity<Object> handleMissingServletRequestParameter(
+            MissingServletRequestParameterException ex,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request) {
+
+        ErrorResponse err = ErrorResponse.builder(ex, status,
+                        "필수 파라미터 '%s'가 누락되었습니다".formatted(ex.getParameterName()))
+                .property("code", ErrorCode.MISSING_PARAMETER.name())
+                .property("parameter", ex.getParameterName())
+                .build();
+
+        ProblemDetail body = err.updateAndGetBody(getMessageSource(), LocaleContextHolder.getLocale());
+        return handleExceptionInternal(ex, body, headers, status, request);
     }
 
-    private ResponseEntity<ErrorResponse> createErrorResponse(ErrorCode errorCode, String errorType, Object rejectedValue, String message, HttpStatus status) {
-        ErrorDetail errorDetail = new ErrorDetail(errorType, rejectedValue, message);
-        ErrorResponse errorResponse = new ErrorResponse(errorCode.name(), List.of(errorDetail));
-        return new ResponseEntity<>(errorResponse, status);
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(
+            HttpMessageNotReadableException ex,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request) {
+
+        ErrorResponse err = ErrorResponse.builder(ex, status, "잘못된 JSON 형식입니다")
+                .property("code", ErrorCode.MALFORMED_JSON.name())
+                .build();
+
+        ProblemDetail body = err.updateAndGetBody(getMessageSource(), LocaleContextHolder.getLocale());
+        return handleExceptionInternal(ex, body, headers, status, request);
     }
+
+    @ExceptionHandler(BindException.class)
+    public ErrorResponse handleBind(BindException ex, HttpServletRequest req) {
+        List<ProblemDetail> fieldErrors = ex.getFieldErrors().stream()
+                .map(fe -> {
+                    ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, fe.getDefaultMessage());
+                    pd.setProperty("field", fe.getField());
+                    pd.setProperty("rejected", fe.getRejectedValue());
+                    return pd;
+                })
+                .toList();
+
+        return ErrorResponse.builder(ex, HttpStatus.BAD_REQUEST, "바인딩에 실패했습니다")
+                .property("code", ErrorCode.BINDING_FAILED.name())
+                .property("errors", fieldErrors)
+                .property("path", req.getRequestURI())
+                .build();
+    }
+
 }
