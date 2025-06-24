@@ -4,11 +4,12 @@ import gift.entity.Product;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    private final Map<Long, Product> store = new HashMap<>();
+    private final Map<Long, Product> store = new ConcurrentHashMap<>(); // Thread-safe 를 위해 ConcurrentHashMap 사용
     private Long sequence = 1L;
 
     @Override
