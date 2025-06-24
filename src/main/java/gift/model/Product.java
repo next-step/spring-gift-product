@@ -46,6 +46,24 @@ public class Product {
     }
 
     public boolean validateProduct() {
-        return this.name != null && this.price >= 0;
+        return this.id != null && this.name != null && this.price >= 0;
+    }
+
+    public void updateFrom(Product updatedProduct) {
+        if (updatedProduct == null) {
+            throw new IllegalArgumentException("업데이트할 상품 정보가 null입니다");
+        }
+
+        if (updatedProduct.getName() != null) {
+            this.name = updatedProduct.getName();
+        }
+
+        if (updatedProduct.getPrice() >= 0) {
+            this.price = updatedProduct.getPrice();
+        }
+
+        if (updatedProduct.getImageUrl() != null) {
+            this.imageUrl = updatedProduct.getImageUrl();
+        }
     }
 }

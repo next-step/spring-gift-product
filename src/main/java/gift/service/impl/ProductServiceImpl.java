@@ -15,7 +15,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product createProduct(Product product) {
         if (!product.validateProduct()) {
-            throw new RuntimeException("상품 정보가 올바르지 않습니다.");
+            throw new RuntimeException("상품 정보가 올바르지 않습니다. ID: " + product.getId());
         }
         return productRepository.save(product);
     }
@@ -32,17 +32,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다. ID: " + id));
     }
 
     @Override
     public Product updateProduct(Long id, Product product) {
         if (!product.validateProduct()) {
-            throw new RuntimeException("상품 정보가 올바르지 않습니다.");
+            throw new RuntimeException("상품 정보가 올바르지 않습니다. ID: " + id);
         }
 
         if (productRepository.findById(id).isEmpty()) {
-            throw new RuntimeException("상품을 찾을 수 없습니다.");
+            throw new RuntimeException("상품을 찾을 수 없습니다. ID: " + id);
         }
 
         return productRepository.update(id, product);
@@ -51,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(Long id) {
         if (productRepository.findById(id).isEmpty()) {
-            throw new RuntimeException("상품을 찾을 수 없습니다.");
+            throw new RuntimeException("상품을 찾을 수 없습니다. ID: " + id);
         }
 
         productRepository.deleteById(id);

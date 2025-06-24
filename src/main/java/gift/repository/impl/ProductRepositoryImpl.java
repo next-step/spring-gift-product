@@ -10,12 +10,12 @@ import java.util.*;
 public class ProductRepositoryImpl implements ProductRepository {
 
     private final Map<Long, Product> products = new HashMap<>();
-    private Long id = 1L;
+    private Long nextId = 1L;
 
     @Override
     public Product save(Product product) {
-        product.setId(id);
-        products.put(id++, product);
+        product.setId(nextId);
+        products.put(nextId++, product);
         return product;
     }
 
@@ -30,12 +30,10 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product update(Long id, Product product) {
+    public Product update(Long id, Product updatedProduct) {
         Product existingProduct = products.get(id);
         if (existingProduct != null) {
-            existingProduct.setName(product.getName());
-            existingProduct.setPrice(product.getPrice());
-            existingProduct.setImageUrl(product.getImageUrl());
+            existingProduct.updateFrom(updatedProduct);
             return existingProduct;
         }
         return null;
