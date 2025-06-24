@@ -21,6 +21,10 @@ public class ProductController {
 
         Product product = new Product(productId, requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
 
+        if (requestDto.getName() == null || requestDto.getPrice() == null || requestDto.getImageUrl() == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         products.put(productId, product);
 
         return new ResponseEntity<>(new ResponseDto(product), HttpStatus.CREATED);
