@@ -36,4 +36,11 @@ public class ProductService {
     return new ProductResponse(saved);
   }
 
+  public ProductResponse updateProduct(Long id, ProductRequest request) {
+    Product updated = productRepository.update(id, request.getName(), request.getPrice(),
+        request.getImageUrl());
+    return updated != null ? new ProductResponse(updated) : null;
+  }
+
+
 }
