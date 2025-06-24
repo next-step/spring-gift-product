@@ -58,4 +58,16 @@ public class ProductServiceImpl implements ProductService {
 
         return ProductResponse.from(product);
     }
+
+    @Override
+    public void delete(Long id) {
+
+        Product product = products.get(id);
+
+        if (product == null) {
+            throw new IllegalArgumentException("해당 상품이 존재하지 않습니다.");
+        }
+
+        products.remove(id);
+    }
 }
