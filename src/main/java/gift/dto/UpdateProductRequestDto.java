@@ -1,8 +1,19 @@
 package gift.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class UpdateProductRequestDto {
+
+    @NotBlank(message = "상품 이름은 비어 있을 수 없습니다.")
     private final String name;
+
+    @NotNull(message = "가격은 필수 입력입니다.")
+    @Min(value = 0, message = "가격은 0 이상이어야 합니다.")
     private final Long price;
+
+    @NotBlank(message = "상품 이미지는 비어 있을 수 없습니다.")
     private final String imageUrl;
 
     public UpdateProductRequestDto(String name, Long price, String imageUrl) {

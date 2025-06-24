@@ -44,7 +44,7 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductResponseDto patchProduct(Long id, String name, Long price, String imageUrl){
+    public void patchProduct(Long id, String name, Long price, String imageUrl){
         Product findProduct = productRepository.findProductByIdOrElseThrow(id);
 
         if (name != null){
@@ -58,7 +58,11 @@ public class ProductService {
         if (imageUrl != null){
             findProduct.setImageUrl(imageUrl);
         }
+    }
 
-        return ProductResponseDto.toDto(findProduct);
+    @Transactional
+    public void updateProduct(Long id, String name, Long price, String imageUrl){
+        Product findProduct = productRepository.findProductByIdOrElseThrow(id);
+        findProduct.updateProduct(name, price, imageUrl);
     }
 }

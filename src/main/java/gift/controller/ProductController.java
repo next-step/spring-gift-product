@@ -2,6 +2,7 @@ package gift.controller;
 
 import gift.dto.CreateProductRequestDto;
 import gift.dto.ProductResponseDto;
+import gift.dto.PatchProductRequestDto;
 import gift.dto.UpdateProductRequestDto;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
@@ -59,15 +60,32 @@ public class ProductController {
 
     // 상품 일부 수정
     @PatchMapping("/{id}")
-    public ResponseEntity<ProductResponseDto> patchProduct(
+    public ResponseEntity<Void> patchProduct(
             @PathVariable Long id,
-            @RequestBody UpdateProductRequestDto requestDto){
+            @RequestBody PatchProductRequestDto requestDto){
 
         if (requestDto.getName() == null && requestDto.getPrice() == null && requestDto.getImageUrl() == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정할 값이 존재하지 않습니다.");
         }
 
-        ProductResponseDto productResponseDto = productService.patchProduct(
+        productService.patchProduct(
+                id,
+                requestDto.getName(),
+                requestDto.getPrice(),
+                requestDto.getImageUrl()
+        );
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // 상품 전체 수정
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateProduct(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateProductRequestDto requestDto
+            ){
+
+        productService.updateProduct(
                 id,
                 requestDto.getName(),
                 requestDto.getPrice(),
