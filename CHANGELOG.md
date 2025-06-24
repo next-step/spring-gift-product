@@ -1,0 +1,9 @@
+- refactor: 상품 추가 검증, 상품 수정 검증 수정
+- feat: 상품 수정 기능 구현
+- feat: 상품 삭제 기능 구현
+- style: 상품 추가 관련 메서드명 변경
+- feat: 상품 조회 기능 구현
+- feat: 상품 추가 기능 구현
+- docs: 구현할 기능 목록 추가
+- feat: set up the project
+- Initial commit
