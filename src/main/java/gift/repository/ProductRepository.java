@@ -9,5 +9,5 @@ public interface ProductRepository {
     public List<ProductResponseDto> findAllProducts();
     ProductResponseDto saveProduct(Product product);
     Product findProductById(Long id);
-
+    Product updateProduct(Long id, String name, Long price, String ImageUrl);
 }

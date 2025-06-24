@@ -34,4 +34,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Product findProductById(Long id) {
         return productList.get(id);
     }
+
+    @Override
+    public Product updateProduct(Long id, String name, Long price, String imageUrl) {
+        Product product = productList.get(id);
+        product.updateProduct(name, price, imageUrl);
+        return product;
+    }
 }
