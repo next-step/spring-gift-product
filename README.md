@@ -4,11 +4,11 @@
 
 ### Step 1
 
-- [ ] 상품 등록 (POST /api/products)
-- [ ] 상품 목록 조회 (GET /api/products)
-- [ ] 상품 개별 조회 (GET /api/products/{id})
-- [ ] 상품 수정 (PUT /api/products/{id})
-- [ ] 상품 삭제 (DELETE /api/products/{id})
+- [x] 상품 등록 (POST /api/products)
+- [x] 상품 목록 조회 (GET /api/products)
+- [x] 상품 개별 조회 (GET /api/products/{id})
+- [x] 상품 수정 (PUT /api/products/{id})
+- [x] 상품 삭제 (DELETE /api/products/{id})
 
 1. 상품 등록 (POST /api/products)
   - 상품 정보를 등록합니다.  
@@ -17,18 +17,20 @@
   - **Method**: `POST`
   - **Content-Type**: `application/json`
   - 요청 예시
-    - {
-        "name": "초콜릿",
-        "price": 3000,
-        "imageUrl": "https://cdn.pixabay.com/photo/2017/02/03/14/47/chocolate-2038186_1280.jpg"
-      }
+    ```json
+    {
+      "name": "초콜릿",
+      "price": 1000,
+      "imageUrl": "https://i.namu.wiki/i/p5SG0f_Sux-XgAa3uNUsJLG_VeWFakukCtXW4kAiWZoiTqjYq0xVDJGpWqga8_LNZGQoCLf-E-gCev-GLYdibGQgQFny_R44zfBbtwU52rpJ1d_sOkzZb8CaBO7DTi3mTrTkRW_SN7wBX9DlAa0zBg.webp"
+    }
   - 응답 예시
-    - {
-        "id": 1,
-        "name": "초콜릿",
-        "price": 3000,
-        "imageUrl": "https://cdn.pixabay.com/photo/2017/02/03/14/47/chocolate-2038186_1280.jpg"
-      }
+    ```json
+    {
+      "id": 1,
+      "name": "초콜릿",
+      "price": 1000,
+      "imageUrl": "https://i.namu.wiki/i/p5SG0f_Sux-XgAa3uNUsJLG_VeWFakukCtXW4kAiWZoiTqjYq0xVDJGpWqga8_LNZGQoCLf-E-gCev-GLYdibGQgQFny_R44zfBbtwU52rpJ1d_sOkzZb8CaBO7DTi3mTrTkRW_SN7wBX9DlAa0zBg.webp"
+    }
   - 예외 처리
     - 가격이 0 미만이면 "가격은 0 이상이어야 합니다." 메세지를 응답하고 400 Bad Request 상태 코드 반환
     - 잘못된 이미지 URL 요청이 들어오면 "유효한 이미지 URL이 아닙니다." 메세지를 응답하고 400 Bad Request 상태 코드 반환
@@ -46,14 +48,14 @@
       {
         "id": 1,
         "name": "초콜릿",
-        "price": 3000,
-        "imageUrl": "https://cdn.pixabay.com/photo/2017/02/03/14/47/chocolate-2038186_1280.jpg"
+        "price": 1000,
+        "imageUrl": "https://i.namu.wiki/i/p5SG0f_Sux-XgAa3uNUsJLG_VeWFakukCtXW4kAiWZoiTqjYq0xVDJGpWqga8_LNZGQoCLf-E-gCev-GLYdibGQgQFny_R44zfBbtwU52rpJ1d_sOkzZb8CaBO7DTi3mTrTkRW_SN7wBX9DlAa0zBg.webp"
       },
       {
         "id": 2,
         "name": "커피",
         "price": 4500,
-        "imageUrl": "https://cdn.pixabay.com/photo/2015/04/08/13/13/coffee-712661_1280.jpg"
+        "imageUrl": "https://i.namu.wiki/i/OPfz4S6ZJjWE5_e3Drmrzrgufe3hP-5wyR71QWp3LD3MXoKU2cd3Stnry_yQZgD4MjmwbRfTnOGE87Y9ZS8qkZWGnoeeOBeqpS9Bv3v7P5vVsaMU97ukaJ5PXZF-mmkFY_rtqNoQR5KsQWbbU3Mq0g.webp"
       }
     ]
 
@@ -68,8 +70,8 @@
     {
       "id": 1,
       "name": "초콜릿",
-      "price": 3000,
-      "imageUrl": "https://cdn.pixabay.com/photo/2017/02/03/14/47/chocolate-2038186_1280.jpg"
+      "price": 1000,
+      "imageUrl": "https://i.namu.wiki/i/p5SG0f_Sux-XgAa3uNUsJLG_VeWFakukCtXW4kAiWZoiTqjYq0xVDJGpWqga8_LNZGQoCLf-E-gCev-GLYdibGQgQFny_R44zfBbtwU52rpJ1d_sOkzZb8CaBO7DTi3mTrTkRW_SN7wBX9DlAa0zBg.webp"
     }
   - 예외 처리
     - 존재하지 않는 ID로 요청이 올 경우에는 "상품을 찾을 수 없습니다."라는 메세지를 응답하고 404 Not Found 상태 코드 반환
