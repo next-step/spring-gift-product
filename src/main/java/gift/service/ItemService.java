@@ -1,9 +1,12 @@
 package gift.service;
 
-import gift.dto.CreateItemDto;
+import gift.dto.ItemDto;
 import gift.entity.Item;
+import gift.exception.ItemNotFoundException;
 import gift.repository.ItemRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ItemService {
@@ -14,9 +17,18 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    public CreateItemDto saveItem(CreateItemDto dto) {
+    public ItemDto saveItem(ItemDto dto) {
         Item item = itemRepository.saveItem(dto);
-        return new CreateItemDto(item);
+        return new ItemDto(item);
+    }
+
+    public List<ItemDto> findItems(String name) {
+        List<ItemDto> items = itemRepository.findItems(name);
+
+        if (items.isEmpty()) {
+            throw new ItemNotFoundException("상품이 존재하지 않습니다: " + name);
+        }
+        return items;
     }
 
 }

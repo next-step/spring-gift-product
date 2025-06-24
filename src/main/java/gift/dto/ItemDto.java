@@ -2,7 +2,7 @@ package gift.dto;
 
 import gift.entity.Item;
 
-public class CreateItemDto {
+public class ItemDto {
 
     private Long id;
     private String name;
@@ -10,9 +10,9 @@ public class CreateItemDto {
     private String ImageUrl;
 
     //생성자
-    protected CreateItemDto() {}
+    protected ItemDto() {}
 
-    public CreateItemDto(Item item) {
+    public ItemDto(Item item) {
         this.id = item.getId();
         this.name = item.getName();
         this.price = item.getPrice();
