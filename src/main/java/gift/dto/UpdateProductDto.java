@@ -1,6 +1,6 @@
 package gift.dto;
 
-public record UpdateProductDto(String name, Long price) {
+public record UpdateProductDto(String name, Long price, String imageUrl) {
 
     // validation
     public UpdateProductDto {

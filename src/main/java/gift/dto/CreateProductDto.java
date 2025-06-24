@@ -2,7 +2,7 @@ package gift.dto;
 
 import gift.Product;
 
-public record CreateProductDto(String name, Long price) {
+public record CreateProductDto(String name, Long price, String imageUrl) {
 
     // validation
     public CreateProductDto {
@@ -13,6 +13,6 @@ public record CreateProductDto(String name, Long price) {
     }
 
     public Product createInstance() {
-        return new Product(name, price);
+        return new Product(name, price, imageUrl);
     }
 }

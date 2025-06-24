@@ -4,14 +4,13 @@
 
 ### API 설계
 
-| 메소드    | URL            | request          | response         | 기능     |
-|--------|----------------|------------------|------------------|--------|
-| POST   | /products      | CreateProductDto | 201(created)     | 생성     |
-| GET    | /products/{id} | -                | ProductDto       | 단건조회   |
-| GET    | /products      | page-parameter   | List<ProductDto> | 전체조회   |
-| PATCH  | /products/{id} | UpdateProductDto | ProductDto       | 일부수정   |
-| PUT    | /products/{id} | UpdateProductDto | ProductDto       | 덮어쓰기수정 |
-| DELETE | /products/{id} | -                | 204(no-content)  | 단건조회   |
+| 메소드    | URL               | request          | response         | 기능     |
+|--------|-------------------|------------------|------------------|--------|
+| POST   | /api/products     | CreateProductDto | 201(created)     | 생성     |
+| GET    | api/products/{id} | -                | ProductDto       | 단건조회   |
+| GET    | api/products      | page-parameter   | List<ProductDto> | 전체조회   |
+| PATCH  | api/products/{id} | UpdateProductDto | ProductDto       | 일부수정   |
+| DELETE | api/products/{id} | -                | 204(no-content)  | 단건조회   |
 
 ---
 

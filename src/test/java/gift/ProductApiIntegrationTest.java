@@ -18,6 +18,8 @@ public class ProductApiIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
+    private static final String BASE_URL = "/api/products";
+
     @Test
     void integrationTest() throws Exception {
         // create
@@ -38,18 +40,18 @@ public class ProductApiIntegrationTest {
         assertCreateFail(json);
 
         // get
-        mockMvc.perform(get("/products/1"))
+        mockMvc.perform(get(BASE_URL+"/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("1"))
                 .andExpect(jsonPath("$.name").value("아메리카노"))
                 .andExpect(jsonPath("$.price").value("3000"));
 
-        mockMvc.perform(get("/products"))
+        mockMvc.perform(get(BASE_URL))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("아메리카노"))
                 .andExpect(jsonPath("$[1].name").value("카페라떼"));
 
-        mockMvc.perform(get("/products/3"))
+        mockMvc.perform(get(BASE_URL+"/3"))
                 .andExpect(status().isBadRequest());
 
         // update
@@ -69,14 +71,14 @@ public class ProductApiIntegrationTest {
         assertUpdateFail(1L, json);
 
         // delete
-        mockMvc.perform(delete("/products/1"))
+        mockMvc.perform(delete(BASE_URL+"/1"))
                 .andExpect(status().isNoContent());
-        mockMvc.perform(delete("/products/1"))
+        mockMvc.perform(delete(BASE_URL+"/1"))
                 .andExpect(status().isBadRequest());
     }
 
     void assertCreateSuccess(String json, Long expectedId, String expectedName, Long expectedPrice) throws Exception {
-        mockMvc.perform(post("/products")
+        mockMvc.perform(post(BASE_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isCreated())
@@ -86,14 +88,14 @@ public class ProductApiIntegrationTest {
     }
 
     void assertCreateFail(String json) throws Exception {
-        mockMvc.perform(post("/products")
+        mockMvc.perform(post(BASE_URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest());
     }
 
     void assertUpdateSuccess(Long id, String json, String expectedName, Long expectedPrice) throws Exception {
-        mockMvc.perform(patch("/products/"+id)
+        mockMvc.perform(patch(BASE_URL+"/"+id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isOk())
@@ -102,7 +104,7 @@ public class ProductApiIntegrationTest {
     }
 
     void assertUpdateFail(Long id, String json) throws Exception {
-        mockMvc.perform(patch("/products/"+id)
+        mockMvc.perform(patch(BASE_URL+"/"+id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest());
