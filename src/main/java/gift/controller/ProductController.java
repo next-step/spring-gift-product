@@ -4,6 +4,7 @@ import gift.dto.request.ProductReqDTO;
 import gift.dto.response.ProductResDTO;
 import gift.service.ProductService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,5 +41,11 @@ public class ProductController {
         @RequestBody ProductReqDTO productReqDTO
     ) {
         return ResponseEntity.ok(productService.update(id, productReqDTO));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable("id") Long id) {
+        productService.delete(id);
+        return ResponseEntity.ok("상품 삭제가 완료되었습니다.");
     }
 }

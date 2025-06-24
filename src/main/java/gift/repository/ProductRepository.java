@@ -20,4 +20,8 @@ public class ProductRepository {
     public Product findById(Long id) {
         return products.get(id);
     }
+
+    public void delete(Long id) {
+        products.remove(id);
+    }
 }
