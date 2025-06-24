@@ -154,7 +154,7 @@
         <button type="submit" th:text="${selectedProduct != null ? '수정하기' : '추가하기'}">추가하기</button>
 
         <!-- 수정 모드일 때 취소 버튼 -->
-        <a th:if="${selectedProduct != null}" href="/products">
+        <a th:if="${selectedProduct != null}" href="/api/products">
             <button type="button">취소</button>
         </a>
     </form>
@@ -186,7 +186,7 @@
             </a>
 
             <!-- 삭제 버튼 -->
-            <form style="display: inline;" th:action="@{/api/products(id=${product.id})}" method="post"
+            <form style="display: inline;" th:action="@{/api/products/delete(id=${product.id})}" method="post"
                   onsubmit="return confirm('정말로 이 상품을 삭제하시겠습니까?');">
                 <input type="hidden" name="id" th:value="${product.id}" />
                 <button type="submit" class="delete-btn">삭제</button>
