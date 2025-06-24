@@ -4,10 +4,7 @@ import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
@@ -25,4 +22,11 @@ public class ProductRepositoryImpl implements ProductRepository {
         return allProducts;
     }
 
+    @Override
+    public ProductResponseDto saveProduct(Product product) {
+        Long productId = productList.isEmpty() ? 1 : Collections.max(productList.keySet()) + 1;
+        product.setId(productId);
+        productList.put(productId, product);
+        return new ProductResponseDto(product);
+    }
 }

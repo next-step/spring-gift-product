@@ -1,12 +1,11 @@
 package gift.controller;
 
+import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,6 +22,11 @@ public class ProductController {
     public ResponseEntity<List<ProductResponseDto>> findAll() {
         List<ProductResponseDto> ProductResponseDtoList = productService.findAllProducts();
         return new ResponseEntity<>(ProductResponseDtoList, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto dto) {
+        return new ResponseEntity<>(productService.saveProduct(dto), HttpStatus.CREATED);
     }
 
 }
