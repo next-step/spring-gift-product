@@ -2,6 +2,7 @@ package gift.product.service;
 
 import gift.product.domain.Product;
 import gift.product.dto.ProductRequestDto;
+import gift.product.exception.ProductNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,7 +55,7 @@ public class ProductService {
         Product product = products.get(id);
         if (product == null){
             // ProductNotFoundException 구현 필요
-            throw new RuntimeException("상품을 찾을 수 없습니다. ID: " + id);
+            throw new ProductNotFoundException("상품을 찾을 수 없습니다. ID: " + id);
         }
 
         return product;
