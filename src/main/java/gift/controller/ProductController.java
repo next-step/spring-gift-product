@@ -45,5 +45,10 @@ public class ProductController {
         return new ResponseEntity<>(productService.updateProduct(id, requestDto.name(), requestDto.price(), requestDto.imageUrl()), HttpStatus.OK);
     }
 
-
+    // 삭제
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

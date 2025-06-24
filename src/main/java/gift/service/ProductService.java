@@ -44,4 +44,15 @@ public class ProductService {
 
         return new ProductResponseDto(product);
     }
+
+    public void deleteProduct(Long id) {
+        Product product = productRepository.findProductById(id);
+
+        if (product == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id = " + id);
+        }
+
+        productRepository.deleteProduct(id);
+
+    }
 }
