@@ -43,4 +43,15 @@ public class ItemService {
             .map(ItemResponse::from)
             .collect(Collectors.toList());
     }
+
+    public ItemResponse updateItem(Long id, ItemRequest request) {
+        Item existingItem = itemRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "수정하려는 상품을 찾을 수 없습니다: " + id));
+        existingItem.updateItemInfo(request.name(), request.price(), request.imageUrl());
+        Item updatedItem = itemRepository.save(existingItem);
+        return ItemResponse.from(updatedItem);
+    }
+
+    
 }
