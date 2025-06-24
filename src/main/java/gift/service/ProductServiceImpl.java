@@ -21,6 +21,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductResponseDto findProductById(Long id) throws IllegalArgumentException {
+        return productRepository.findProductById(id);
+    }
+
+    @Override
     public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
         return productRepository.createProduct(productRequestDto);
     }

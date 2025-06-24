@@ -28,6 +28,22 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
+    public ProductResponseDto findProductById(Long id) throws IllegalArgumentException {
+        Product product = products.get(id);
+
+        if (product == null) {
+            throw new IllegalArgumentException("해당 ID의 상품이 존재하지 않습니다: " + id);
+        }
+
+        return new ProductResponseDto(
+                product.getId(),
+                product.getName(),
+                product.getPrice(),
+                product.getImageUrl()
+        );
+    }
+
+    @Override
     public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
         Product product = new Product(
                 currentProductId++,

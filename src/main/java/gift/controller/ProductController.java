@@ -27,8 +27,17 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductResponseDto>> getProducts() {
+    public ResponseEntity<List<ProductResponseDto>> getAllProducts() {
         return new ResponseEntity<>(productService.findAllProducts(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProductById(@PathVariable Long id) {
+        try {
+            return new ResponseEntity<>(productService.findProductById(id), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping

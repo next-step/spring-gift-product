@@ -8,6 +8,8 @@ public interface ProductRepository {
 
     List<ProductResponseDto> findAllProducts();
 
+    ProductResponseDto findProductById(Long id);
+
     ProductResponseDto createProduct(ProductRequestDto productRequestDto);
 
     ProductResponseDto updateProduct(Long id, ProductRequestDto productRequestDto);
