@@ -24,4 +24,12 @@ public class ProductService {
         }
         throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    public ResponseEntity<ProductResponse> getProduct(Long id) {
+        Product product = productRepository.get(id);
+        if (product == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(ProductResponse.from(product), HttpStatus.OK);
+    }
 }
