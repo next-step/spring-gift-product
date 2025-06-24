@@ -54,4 +54,9 @@ public class ProductService {
 
         return productRepository.findProductByIdOrElseThrow(id);
     }
+
+    public ProductResponseDto createProduct(String name, Long price, String imageUrl){
+
+        return productRepository.createProduct(name, price, imageUrl);
+    }
 }
