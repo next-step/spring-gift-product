@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import gift.domain.Product;
 import gift.dto.CreateProductRequest;
 import gift.dto.CreateProductResponse;
 import gift.dto.ReadProductResponse;
@@ -42,5 +41,9 @@ public class ProductService {
     public UpdateProductResponse updateProduct(Long id, UpdateProductRequest request) {
         return UpdateProductResponse.of(
             productRepository.update(id, request.name(), request.price(), request.imageUrl()));
+    }
+
+    public void deleteProduct(Long id) {
+        productRepository.delete(id);
     }
 }

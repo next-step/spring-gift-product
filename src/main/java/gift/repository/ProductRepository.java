@@ -39,4 +39,12 @@ public class ProductRepository {
         products.put(id, new Product(id, name, price, imageUrl));
         return products.get(id);
     }
+
+    public void delete(Long id) {
+        if (!products.containsKey(id)) {
+            throw new NotFoundException("해당 상품이 존재하지 않습니다.");
+        }
+
+        products.remove(id);
+    }
 }
