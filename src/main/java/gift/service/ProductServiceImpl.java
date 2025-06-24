@@ -55,13 +55,13 @@ public class ProductServiceImpl implements ProductService {
         ModifyProductRequestDto requestDto) {
         Product product = productRepository.findProductWithDbId(id);
         
-        if (requestDto.getId() == null || requestDto.getName() == null ||
+        if (requestDto.getName() == null ||
             requestDto.getPrice() == null || requestDto.getImageUrl() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         
         Product newProduct = new Product(
-            requestDto.getId(),
+            id,
             requestDto.getName(),
             requestDto.getPrice(),
             requestDto.getImageUrl()
@@ -83,13 +83,13 @@ public class ProductServiceImpl implements ProductService {
         ModifyProductRequestDto requestDto) {
         Product product = productRepository.findProductWithDbId(id);
         
-        if (requestDto.getId() == null && requestDto.getName() == null &&
+        if (requestDto.getName() == null &&
             requestDto.getPrice() == null && requestDto.getImageUrl() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         
         Product newProduct = new Product(
-            requestDto.getId() != null ? requestDto.getId() : product.getId(),
+            id,
             requestDto.getName() != null ? requestDto.getName() : product.getName(),
             requestDto.getPrice() != null ? requestDto.getPrice() : product.getPrice(),
             requestDto.getImageUrl() != null ? requestDto.getImageUrl() : product.getImageUrl()

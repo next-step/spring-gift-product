@@ -48,7 +48,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public ModifyProductResponseDto modifyProductWithDbId(Long id, Product newProduct) {
         products.put(id, newProduct);
-        return new ModifyProductResponseDto(id, newProduct);
+        return new ModifyProductResponseDto(newProduct);
     }
     
     @Override
