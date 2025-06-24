@@ -1,12 +1,11 @@
 package gift.dto;
 
-public class ResErrorMessage {
+public class ResErrorMessageDto {
     private final String message;
 
-    public ResErrorMessage(String message) {
+    public ResErrorMessageDto(String message) {
         this.message = message;
     }
-
     public String getMessage() {
         return message;
     }

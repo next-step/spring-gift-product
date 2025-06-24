@@ -35,4 +35,13 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Product findById(Long productId) {
         return productMap.get(productId);
     }
+
+    @Override
+    public Product save(Product product) {
+        if (product.getId() == null) {
+            product.setId(++sequence); // ID가 없으면 시퀀스를 증가시켜 새 ID를 할당
+        }
+        productMap.put(product.getId(), product); // 제품을 저장
+        return product; // 저장된 제품 반환
+    }
 }
