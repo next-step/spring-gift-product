@@ -32,5 +32,15 @@ public class ProductMemoryRepository implements ProductRepository {
     public Optional<Product> findById(Long id) {
         return Optional.ofNullable(store.get(id));
     }
+
+    @Override
+    public void deleteById(Long id) {
+        store.remove(id);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return store.containsKey(id);
+    }
 }
 
