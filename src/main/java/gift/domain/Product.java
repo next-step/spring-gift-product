@@ -34,4 +34,16 @@ public class Product {
     public String getImageURL() {
         return imageURL;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
 }
