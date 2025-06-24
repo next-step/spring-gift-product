@@ -30,4 +30,9 @@ public class ProductServiceImpl implements ProductService {
             throws IllegalArgumentException {
         return productRepository.updateProduct(id, productRequestDto);
     }
+
+    @Override
+    public void deleteProduct(Long id) throws IllegalArgumentException {
+        productRepository.deleteProduct(id);
+    }
 }

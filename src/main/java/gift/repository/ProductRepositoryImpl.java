@@ -65,4 +65,13 @@ public class ProductRepositoryImpl implements ProductRepository {
                 product.getImageUrl()
         );
     }
+
+    @Override
+    public void deleteProduct(Long id) throws IllegalArgumentException {
+        if (!products.containsKey(id)) {
+            throw new IllegalArgumentException("해당 ID의 상품이 존재하지 않습니다: " + id);
+        }
+
+        products.remove(id);
+    }
 }
