@@ -1,2 +1,2 @@
 # spring-gift-product
--1단계 상품API RESTful API 만들기 코드리뷰 전
+-상품 조회, 수정, 추가, 삭제 구현
