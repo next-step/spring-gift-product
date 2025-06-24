@@ -5,7 +5,7 @@
 - [x] 상품 조회 API 구현
 - [x] 상품 등록 API 구현
 - [x] 상품 수정 API 구현
-- [ ] 상품 삭제 API 구현
+- [x] 상품 삭제 API 구현
 - [ ] 상품 목록 페이지네이션 조회 API 구현
 
 
@@ -48,3 +48,10 @@
   "price": 4800,
   "imageUrl": "https://example.com/updated.jpg"
 }
+```
+### ✅ 상품 삭제 API (`DELETE /api/products/{id}`)
+- 특정 ID의 상품을 삭제하는 API
+- 응답 본문 없이 상태 코드만 반환함
+- 상태 코드:
+    - `204 No Content`: 삭제 성공
+    - `404 Not Found`: 해당 ID의 상품이 존재하지 않을 경우
