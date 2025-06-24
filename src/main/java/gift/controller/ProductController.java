@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,5 +35,11 @@ public class ProductController {
   public ResponseEntity<Product> createProduct(@RequestBody Product product){
     productsMap.put(product.getId(), product);
     return new ResponseEntity<>(product,HttpStatus.OK);
+  }
+
+  @PatchMapping("/products/{id}")
+  public ResponseEntity<Product> updateProduct(@RequestBody Product newProduct){
+    productsMap.replace(newProduct.getId(),newProduct);
+    return new ResponseEntity<>(newProduct,HttpStatus.OK);
   }
 }
