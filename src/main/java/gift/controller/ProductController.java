@@ -42,8 +42,9 @@ public class ProductController {
     //read
     //특정 상품을 조회(id)
     @GetMapping("/products/{id}")
-    public Product getProduct(@PathVariable Long id) {
-        return findProductById(id);
+    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
+        Product product = findProductById(id);
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     //read
