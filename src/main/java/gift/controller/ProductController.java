@@ -15,8 +15,8 @@ public class ProductController {
 
     // 상품 전체 조회
     @GetMapping
-    public List<Product> getAllProducts() {
-        return new ArrayList<>(products.values());
+    public ResponseEntity<List<Product>> getAllProducts() {
+        return new ResponseEntity<>(new ArrayList<>(products.values()), HttpStatus.OK);
     }
 
     // 상품 id 기반 조회
@@ -63,7 +63,7 @@ public class ProductController {
         if (products.containsKey(id)) {
             products.remove(id);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
