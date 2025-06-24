@@ -43,5 +43,9 @@ public class ProductController {
     productsMap.replace(id,newProduct);
     return new ResponseEntity<>(newProduct,HttpStatus.OK);
   }
-
+  @DeleteMapping("/products/{id}")
+  public ResponseEntity<Product> deleteProduct(@PathVariable Long id){
+    productsMap.remove(id);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 }
