@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.tymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>상품목록</title>
+</head>
+<body>
+<h1>상품목록</h1>
+
+<a th:href="@{/api/admin/products/new}">+ 새 상품 등록</a>
+<table border="1">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>이름</th>
+    <th>가격</th>
+    <th>이미지</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="product : ${products}">
+    <td th:text="${product.id}">1</td>
+    <td th:text="${product.name}">아이스 아메리카노</td>
+    <td th:text="${product.price}">4500</td>
+    <td>
+      <img th:src="${product.imageUrl}" width="100" alt="이미지"/>
+    </td>
+    <td>
+      <a th:href="@{'/api/admin/products/' + ${product.id} + '/edit'}">수정</a>
+      <form th:action="@{'/api/admin/products/' + ${product.id} + '/delete'}" method="post" style="display:inline;">
+        <button type="submit">삭제</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
