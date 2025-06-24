@@ -4,6 +4,7 @@ import gift.item.Item;
 import gift.item.dto.ItemCreateDto;
 import gift.item.dto.ItemResponseDto;
 import gift.item.dto.ItemUpdateDto;
+import gift.item.exception.ItemNotFoundException;
 import gift.item.repository.ItemRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,11 @@ public class ItemService {
 
     public ItemResponseDto findItem(Long itemId) {
         Item item = itemRepository.findById(itemId);
+
+        if (item == null) {
+            throw new ItemNotFoundException(itemId);
+        }
+
         return new ItemResponseDto(
             item.getId(),
             item.getName(),
@@ -66,6 +72,10 @@ public class ItemService {
     public ItemResponseDto updateItem(Long itemId, ItemUpdateDto itemUpdateDto) {
         Item oldItem = itemRepository.findById(itemId);
 
+        if (oldItem == null) {
+            throw new ItemNotFoundException(itemId);
+        }
+
         oldItem.setName(itemUpdateDto.getName());
         oldItem.setPrice(itemUpdateDto.getPrice());
         oldItem.setImageUrl(itemUpdateDto.getImageUrl());
@@ -81,7 +91,12 @@ public class ItemService {
     }
 
     public void deleteItem(Long itemId) {
-        // todo: item이 존재하는지 확인하는 로직 추가
-        itemRepository.remove(itemId);
+        Item item = itemRepository.findById(itemId);
+
+        if (item == null) {
+            throw new ItemNotFoundException(itemId);
+        }
+
+        itemRepository.remove(item.getId());
     }
 }
