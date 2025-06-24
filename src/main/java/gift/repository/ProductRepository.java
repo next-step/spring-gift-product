@@ -47,4 +47,19 @@ public class ProductRepository implements ProductRepositoryInterface {
         return productList;
     }
 
+    @Override
+    public Optional<ProductResponseDto> findProductById(Long id) {
+        Product product = products.get(id);
+        if (product != null) {
+            return Optional.of(new ProductResponseDto(
+                    product.getId(),
+                    product.getName(),
+                    product.getPrice(),
+                    product.getImageUrl()
+            ));
+        } else {
+            return Optional.empty();
+        }
+    }
+
 }

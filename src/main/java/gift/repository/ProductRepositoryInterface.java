@@ -13,4 +13,7 @@ public interface ProductRepositoryInterface {
 
     // 전체 상품 목록 조회
     List<ProductResponseDto> findAllProducts();
+
+    // 선택 상품 조회
+    Optional<ProductResponseDto> findProductById(Long id);
 }

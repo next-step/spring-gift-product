@@ -27,4 +27,9 @@ public class ProductService implements ProductServiceInterface {
         return productRepository.findAllProducts();
     }
 
+    @Override
+    public Optional<ProductResponseDto> findProductById(Long id) {
+        return productRepository.findProductById(id);
+    }
+
 }
