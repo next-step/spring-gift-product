@@ -52,7 +52,7 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseDto updateProduct(
+    public ResponseEntity<ResponseDto> updateProduct(
             @PathVariable Long id,
             @RequestBody RequestDto requestDto
     ) {
@@ -60,12 +60,16 @@ public class ProductController {
         Product product = products.get(id);
 
         if (product == null) {
-            throw new IllegalArgumentException("Product not found");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        if (requestDto.getName() == null || requestDto.getPrice() == null || requestDto.getImageUrl() == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         product.update(requestDto);
 
-        return new ResponseDto(product);
+        return new ResponseEntity<>(new ResponseDto(product), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

@@ -2,10 +2,10 @@ package gift.dto;
 
 public class RequestDto {
     private String name;
-    private double price;
+    private Double price;
     private String imageUrl;
 
-    RequestDto(String name, double price, String imageUrl) {
+    RequestDto(String name, Double price, String imageUrl) {
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;
@@ -15,7 +15,7 @@ public class RequestDto {
         return name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 

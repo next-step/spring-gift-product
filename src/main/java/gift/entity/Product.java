@@ -5,11 +5,11 @@ import gift.dto.RequestDto;
 public class Product {
     private Long id;
     private String name;
-    private double price;
+    private Double price;
     private String imageUrl;
 
 
-    public Product(Long id, String name, double price, String imageUrl) {
+    public Product(Long id, String name,Double price, String imageUrl) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -24,7 +24,7 @@ public class Product {
         return name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
