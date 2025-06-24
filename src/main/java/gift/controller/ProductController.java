@@ -3,15 +3,9 @@ package gift.controller;
 import gift.entity.Product;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/products")
@@ -21,13 +15,13 @@ public class ProductController {
 
     // 상품 전체 조회
     @GetMapping
-    public List<Product> findAllProducts() {
+    public List<Product> getAllProducts() {
         return new ArrayList<>(products.values());
     }
 
     // 상품 id 기반 조회
     @GetMapping("/{id}")
-    public ResponseEntity<Product> findProductById(@PathVariable Long id) {
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         Product product = products.get(id);
 
         if (product == null) {
@@ -35,5 +29,15 @@ public class ProductController {
         }
 
         return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    // 상품 등록
+    @PostMapping
+    public ResponseEntity<Product> postProduct(@RequestBody Product product) {
+        Long productId = products.isEmpty() ? 1 : Collections.max(products.keySet()) + 1;
+        product.setId(productId);
+        products.put(productId, product);
+
+        return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 }
