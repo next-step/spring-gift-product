@@ -16,4 +16,8 @@ public class ProductRepository {
         products.put(product.getId(), product);
         return products.get(product.getId());
     }
+
+    public Product findById(Long id) {
+        return products.get(id);
+    }
 }
