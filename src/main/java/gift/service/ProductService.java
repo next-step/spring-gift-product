@@ -36,5 +36,15 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    public void update(Long id, Product updatedProduct) {
+        if (!productRepository.existsById(id)) {
+            throw new NoSuchElementException("해당 상품이 존재하지 않습니다.");
+        }
+
+        updatedProduct.setId(id); // ID 유지
+        productRepository.save(updatedProduct);
+    }
+
+
 }
 

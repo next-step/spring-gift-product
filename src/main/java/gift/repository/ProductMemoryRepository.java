@@ -12,7 +12,6 @@ public class ProductMemoryRepository implements ProductRepository {
     private final Map<Long, Product> store = new HashMap<>();
     private final AtomicLong idGenerator = new AtomicLong(1);
 
-    //등록
     @Override
     public Product save(Product product) {
         Long id = idGenerator.getAndIncrement();
@@ -21,13 +20,11 @@ public class ProductMemoryRepository implements ProductRepository {
         return product;
     }
 
-    //전체 조회
     @Override
     public List<Product> findAll() {
         return new ArrayList<>(store.values());
     }
 
-    //단일 조회
     @Override
     public Optional<Product> findById(Long id) {
         return Optional.ofNullable(store.get(id));

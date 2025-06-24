@@ -50,5 +50,17 @@ public class ProductController {
             return ResponseEntity.notFound().build(); // 404
         }
     }
+
+    //상품 수정
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Product updatedProduct) {
+        try {
+            productService.update(id, updatedProduct);
+            return ResponseEntity.noContent().build(); // 204
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();  // 404
+        }
+    }
+
 }
 
