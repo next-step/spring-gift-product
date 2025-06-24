@@ -1,5 +1,7 @@
 package gift.service;
 
+import gift.common.code.CustomResponseCode;
+import gift.common.exception.CustomException;
 import gift.dto.ProductRequest;
 import gift.dto.ProductResponse;
 import gift.entity.Product;
@@ -39,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = products.get(id);
 
         if (product == null) {
-            throw new IllegalArgumentException("조회하신 상품이 존재하지 않습니다.");
+            throw new CustomException(CustomResponseCode.NOT_FOUND);
         }
 
         return ProductResponse.from(product);
@@ -51,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = products.get(id);
 
         if (product == null) {
-            throw new IllegalArgumentException("해당 상품이 존재하지 않습니다.");
+            throw new CustomException(CustomResponseCode.NOT_FOUND);
         }
 
         product.update(request.name(), request.price(), request.imageUrl());
@@ -65,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = products.get(id);
 
         if (product == null) {
-            throw new IllegalArgumentException("해당 상품이 존재하지 않습니다.");
+            throw new CustomException(CustomResponseCode.NOT_FOUND);
         }
 
         products.remove(id);
