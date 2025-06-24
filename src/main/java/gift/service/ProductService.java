@@ -12,4 +12,7 @@ public interface ProductService {
     List<ProductResponseDto> findAllProducts();
 
     ProductResponseDto findProductById(Long id);
+
+    ProductResponseDto updateProduct(Long id, ProductRequestDto productRequestDto);
+
 }

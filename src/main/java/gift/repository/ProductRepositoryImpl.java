@@ -52,6 +52,27 @@ public class ProductRepositoryImpl implements ProductRepository {
                 product.getImageUrl());
     }
 
+    @Override
+    public ProductResponseDto updateProduct(Long id, ProductRequestDto productRequestDto) {
+        Product product = products.get(id);
+
+        if (product == null) {
+            throw new NoSuchElementException("수정할 상품이 없습니다. id=" + id);
+        }
+
+        Product updateProduct = new Product(id,
+                productRequestDto.getName(),
+                productRequestDto.getPrice(),
+                productRequestDto.getImageUrl()
+        );
+        products.put(id, updateProduct);
+
+        return new ProductResponseDto(updateProduct.getId(),
+                updateProduct.getName(),
+                updateProduct.getPrice(),
+                updateProduct.getImageUrl());
+    }
+
     private ProductResponseDto toResponseDto(Product product) {
         return new ProductResponseDto(
                 product.getId(),

@@ -25,7 +25,6 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
-
     @GetMapping
     public ResponseEntity<List<ProductResponseDto>> findAllProducts() {
         List<ProductResponseDto> list = productServiceImpl.findAllProducts();
@@ -35,6 +34,14 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDto> findProductById(@PathVariable Long id) {
         ProductResponseDto response = productServiceImpl.findProductById(id);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> updateProduct(
+            @PathVariable Long id,
+            @RequestBody @Valid ProductRequestDto requestDto) {
+        ProductResponseDto response = productServiceImpl.updateProduct(id, requestDto);
         return ResponseEntity.ok(response);
     }
 
