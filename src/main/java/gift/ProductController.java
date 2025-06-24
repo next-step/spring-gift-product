@@ -2,8 +2,7 @@ package gift;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -20,5 +19,11 @@ public class ProductController {
     public Product getProduct(@PathVariable Long id) {
         Product product = products.get(id);
         return product;
+    }
+
+    @GetMapping("/products")
+    public Collection<Product> getAllProducts() {
+        Collection<Product> productList = products.values();
+        return productList;
     }
 }
