@@ -38,8 +38,15 @@ public class ProductController {
 		}
 	}
 
+	// ID 충돌 시 409 conflict 예외처리 -> ID를 서버에서 생성한다면?
 	@PostMapping("/products")
 	public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+		if (products.containsKey(product.getId())) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
+		if (!validateProduct(product)) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		products.put(product.getId(), product);
 		return new ResponseEntity<>(product, HttpStatus.CREATED);
 	}
@@ -52,6 +59,9 @@ public class ProductController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		if (!Objects.equals(existingProduct.getId(), product.getId())) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if (!validateProduct(product)) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		existingProduct.setName(product.getName());
@@ -67,5 +77,20 @@ public class ProductController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	private boolean validateProduct(Product product) {
+		if (product.getName() == null || product.getName().trim().isEmpty()) {
+			return false;
+		}
+		if (product.getPrice() <= 0) {
+			return false;
+		}
+		String imageUrl = product.getImageUrl();
+		if (imageUrl == null || imageUrl.trim().isEmpty()) {
+			return false;
+		}
+		String urlRegex = "^(https?|ftp)://[^\\s/$.?#].\\S*$";
+		return imageUrl.matches(urlRegex);
 	}
 }
