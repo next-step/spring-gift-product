@@ -43,4 +43,14 @@ public class ProductServiceImpl implements ProductService{
             find.getPrice(), find.getImageUrl());
         return responseDto;
     }
+
+    @Override
+    public ProductResponseDto updateProductById(Long id, CreateProductRequestDto requestDto) {
+        Product product = productRepository.findProductById(id);
+        if(product == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        product.update(requestDto);
+        return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
+    }
 }
