@@ -12,6 +12,11 @@ import java.util.*;
 public class ProductRepositoryImpl implements ProductRepository{
 
     private final Map<Long, Product> productList = new HashMap<>();
+    private Long listId;
+
+    public ProductRepositoryImpl() {
+        this.listId = 0L;
+    }
 
     @Override
     public List<ProductResponseDto> findAllProducts() {
@@ -36,10 +41,10 @@ public class ProductRepositoryImpl implements ProductRepository{
     @Override
     public ProductResponseDto saveProduct(String name, Long price, String imageUrl) {
 
-        Long id = productList.isEmpty() ? 1 : Collections.max(productList.keySet()) + 1;
+        listId++;
 
-        Product product = new Product(id, name, price, imageUrl);
-        productList.put(id, product);
+        Product product = new Product(listId, name, price, imageUrl);
+        productList.put(listId, product);
 
         return new ProductResponseDto(product);
     }
@@ -53,4 +58,6 @@ public class ProductRepositoryImpl implements ProductRepository{
 
         return product;
     }
+
+    
 }
