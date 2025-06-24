@@ -30,4 +30,8 @@ public class ProductRepository {
 
         return allProducts;
     }
+
+    public Product findProductById(Long id) {
+        return products.get(id);
+    }
 }

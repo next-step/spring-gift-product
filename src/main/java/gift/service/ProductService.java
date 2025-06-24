@@ -26,4 +26,9 @@ public class ProductService {
     public List<ProductResponseDto> findAllProducts() {
         return productRepository.findAllProducts();
     }
+
+    public ProductResponseDto findProductById(Long id) {
+        Product product = productRepository.findProductById(id);
+        return new ProductResponseDto(product);
+    }
 }

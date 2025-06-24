@@ -30,6 +30,13 @@ public class ProductController {
         return productService.findAllProducts();
     }
 
+    // 단건 조회
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> findProductById(@PathVariable Long id) {
+        return new ResponseEntity<>(productService.findProductById(id), HttpStatus.OK);
+    }
+
+
 
 
 }
