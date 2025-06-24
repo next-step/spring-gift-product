@@ -1,5 +1,7 @@
 package gift.product;
 
+import gift.product.dto.ProductUpdateRequest;
+
 public class Product {
     private Long id;
     private String name;
@@ -32,4 +34,9 @@ public class Product {
         return imageUrl;
     }
 
+    public void update(ProductUpdateRequest req){
+        this.name = req.name();
+        this.price = req.price();
+        this.imageUrl = req.imageUrl();
+    }
 }
