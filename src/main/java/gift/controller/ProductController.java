@@ -4,6 +4,7 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,6 +81,15 @@ public class ProductController {
         }
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    // 상품 목록 조회
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDto>> findAllProducts() {
+        List<ProductResponseDto> productsList = products.values().stream()
+                                                        .map(ProductResponseDto::new)
+                                                        .toList();
+        return ResponseEntity.ok(productsList);
     }
 
 }
