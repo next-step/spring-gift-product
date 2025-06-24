@@ -22,6 +22,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         Product product = new Product(id, name, price, imageUrl);
         products.put(id, product);
+
         return new ProductResponseDto(product);
     }
 
@@ -38,6 +39,19 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public ProductResponseDto findProductById(Long id) {
         Product product = products.get(id);
+
+        return new ProductResponseDto(product);
+    }
+
+    @Override
+    public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
+        Product product = new Product(
+            id,
+            requestDto.getName(),
+            requestDto.getPrice(),
+            requestDto.getImageUrl());
+        products.put(id, product);
+
         return new ProductResponseDto(product);
     }
 }

@@ -9,4 +9,5 @@ public interface ProductRepository {
     public ProductResponseDto createProduct(ProductRequestDto requestDto);
     public List<ProductResponseDto> findAllProducts();
     public ProductResponseDto findProductById(Long id);
+    public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto);
 }
