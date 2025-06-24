@@ -1,12 +1,13 @@
 package gift.repository;
 
+import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 
 import java.util.List;
 
 public interface ProductRepository {
 
-    List<Product> findAllProducts();
+    List<ProductResponseDto> findAllProducts();
 
     Product saveProduct(Product product);
 

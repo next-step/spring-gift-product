@@ -6,6 +6,7 @@ import gift.entity.Product;
 import gift.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,7 +32,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponseDto> findAllProducts() {
-        return List.of();
+        List<ProductResponseDto> allProducts = productRepository.findAllProducts();
+        return allProducts;
     }
 
     @Override

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -25,6 +26,11 @@ public class ProductController {
     public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto requestDto) {
         return new ResponseEntity<>(productService.saveProduct(requestDto), HttpStatus.CREATED);
 
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDto>> findAllProducts() {
+        return new ResponseEntity<>(productService.findAllProducts(), HttpStatus.OK);
     }
 
 
