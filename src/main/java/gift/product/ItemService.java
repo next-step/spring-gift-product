@@ -1,6 +1,7 @@
 package gift.product;
 
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,6 +12,13 @@ import java.util.List;
 public class ItemService {
 
 	private final List<Item> db = new ArrayList<>();
+
+	// 테스트위해 서버 재실행마다 항상 2개는 채워놓기
+	@PostConstruct
+	public void init() {
+		db.add(new Item("egg", 7900, "url1"));
+		db.add(new Item("Nvidia Geforce 5060ti", 700000, "url2"));
+	}
 
 	public Long createItem(ItemRequest req) {
 		Item item = new Item(req.name(), req.price(), req.imageUrl());
@@ -29,5 +37,4 @@ public class ItemService {
 			.findFirst()
 			.orElseThrow(() -> new RuntimeException("해당 ID는 존재하지 않습니다"));
 	}
-
 }
