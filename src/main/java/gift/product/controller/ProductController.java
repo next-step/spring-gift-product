@@ -1,6 +1,7 @@
 package gift.product.controller;
 
 import gift.product.dto.ProductCreateRequestDto;
+import gift.product.dto.ProductUpdateRequestDto;
 import gift.product.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -20,5 +21,12 @@ public class ProductController {
     public ResponseEntity<Void> createProduct(@Valid @RequestBody ProductCreateRequestDto product) {
         productService.createProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PatchMapping("{id}")
+    public ResponseEntity<Void> updateProduct(@PathVariable Long id,
+                                              @Valid @RequestBody ProductUpdateRequestDto product) {
+        productService.updateProduct(id, product);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

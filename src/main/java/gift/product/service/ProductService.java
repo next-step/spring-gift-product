@@ -1,11 +1,16 @@
 package gift.product.service;
 
+import gift.exception.ProductNotFoundException;
 import gift.product.dto.ProductCreateRequestDto;
+import gift.product.dto.ProductResponseDto;
+import gift.product.dto.ProductUpdateRequestDto;
 import gift.product.entity.Product;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -20,5 +25,21 @@ public class ProductService {
                 product.price(),
                 product.imageUrl()
         ));
+    }
+
+    public void updateProduct(Long id, ProductUpdateRequestDto product) {
+        if (!products.containsKey(id))
+            throw new ProductNotFoundException("해당 상품을 찾을 수 없습니다.");
+
+        Product existingProduct = products.get(id);
+        if (product.name() != null) {
+            existingProduct.setName(product.name());
+        }
+        if (product.price() != null) {
+            existingProduct.setPrice(product.price());
+        }
+        if (product.imageUrl() != null) {
+            existingProduct.setImageUrl(product.imageUrl());
+        }
     }
 }
