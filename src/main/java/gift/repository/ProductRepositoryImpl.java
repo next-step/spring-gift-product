@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository{
@@ -27,9 +24,6 @@ public class ProductRepositoryImpl implements ProductRepository{
 
     @Override
     public ProductResponseDto findProductByIdElseThrow(Long id) {
-
-        Product p1 = new Product(1L, "p", 1000L, "t");
-        productList.put(1L, p1);
 
         Product product = productList.get(id);
 
