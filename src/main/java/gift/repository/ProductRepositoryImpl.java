@@ -73,6 +73,15 @@ public class ProductRepositoryImpl implements ProductRepository {
                 updateProduct.getImageUrl());
     }
 
+    @Override
+    public void deleteProduct(Long id) {
+        if (!products.containsKey(id)) {
+            throw new NoSuchElementException("삭제하고자 하는 상품이 존재하지 않습니다. id=" + id);
+        }
+
+        products.remove(id);
+    }
+
     private ProductResponseDto toResponseDto(Product product) {
         return new ProductResponseDto(
                 product.getId(),
