@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
@@ -41,4 +43,13 @@ public class ProductService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found: id=" + productId));
     }
 
+    public List<ProductResponseDto> findAll(int page, int size, String sort) {
+        String[] sortParts = sort.split(",");
+        String sortField = sortParts[0];
+        String sortDir = sortParts[1];
+
+        return productRepository.findAll(page, size, sortField, sortDir).stream()
+                .map(p -> new ProductResponseDto(p.getId(), p.getName(), p.getPrice(), p.getImageUrl()))
+                .toList();
+    }
 }

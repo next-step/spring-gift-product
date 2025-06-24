@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
@@ -63,5 +64,15 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable("productId") Long productId) {
         productService.deleteById(productId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDto>> getProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id,asc") String sort
+    ) {
+        List<ProductResponseDto> responseDtoList = productService.findAll(page, size, sort);
+        return ResponseEntity.ok(responseDtoList);
     }
 }

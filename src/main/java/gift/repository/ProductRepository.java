@@ -3,9 +3,7 @@ package gift.repository;
 import gift.entity.Product;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class ProductRepository {
@@ -41,5 +39,38 @@ public class ProductRepository {
 
     public Optional<Product> deleteById(Long id) {
         return Optional.ofNullable(products.remove(id));
+    }
+
+    public List<Product> findAll(int page, int size, String sortField, String sortDir) {
+        List<Product> productList = new ArrayList<>(products.values());
+
+        if (sortField.equals("price")) {
+            if (sortDir.equalsIgnoreCase("desc")) {
+                productList.sort((a, b) -> b.getPrice().compareTo(a.getPrice()));
+            } else {
+                productList.sort((a, b) -> a.getPrice().compareTo(b.getPrice()));
+            }
+        } else if (sortField.equals("name")) {
+            if (sortDir.equalsIgnoreCase("desc")) {
+                productList.sort((a, b) -> b.getName().compareToIgnoreCase(a.getName()));
+            } else {
+                productList.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
+            }
+        } else {
+            if (sortDir.equalsIgnoreCase("desc")) {
+                productList.sort((a, b) -> b.getId().compareTo(a.getId()));
+            } else {
+                productList.sort((a, b) -> a.getId().compareTo(b.getId()));
+            }
+        }
+
+        int fromIndex = page * size;
+        int toIndex = Math.min(fromIndex + size, productList.size());
+
+        if (fromIndex >= productList.size()) {
+            return new ArrayList<>();
+        }
+
+        return productList.subList(fromIndex, toIndex);
     }
 }
