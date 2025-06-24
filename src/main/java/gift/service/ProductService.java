@@ -20,8 +20,7 @@ public class ProductService {
     }
 
     public ProductResponseDto getProduct(Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+        Product product = findProductOrThrow(id);
         return new ProductResponseDto(product);
     }
 
@@ -32,12 +31,8 @@ public class ProductService {
     }
 
     public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
-        Optional<Product> optional = productRepository.findById(id);
-        if (optional.isEmpty()) {
-            throw new IllegalArgumentException("존재하지 않는 상품입니다.");
-        }
+        Product product = findProductOrThrow(id);
 
-        Product product = optional.get();
         product.update(requestDto);
         return new ProductResponseDto(product);
     }
@@ -63,4 +58,10 @@ public class ProductService {
                 .map(ProductResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+    private Product findProductOrThrow(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+    }
+
 }
