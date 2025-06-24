@@ -37,4 +37,19 @@ public class ItemService {
 			.findFirst()
 			.orElseThrow(() -> new RuntimeException("해당 ID는 존재하지 않습니다"));
 	}
+
+
+	public Item updateItem(Long itemId, ItemRequest req) {
+		return db.stream()
+			.filter(item -> item.getId() == itemId)
+			.findFirst()
+			.map(item -> {
+				item.setName(req.name());
+				item.setPrice(req.price());
+				item.setImageUrl(req.imageUrl());
+				return item;
+			})
+			.orElseThrow(() -> new RuntimeException("해당 ID는 존재하지 않습니다"));
+	}
+
 }
