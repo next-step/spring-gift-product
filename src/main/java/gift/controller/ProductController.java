@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api")
@@ -41,5 +42,22 @@ public class ProductController {
 	public ResponseEntity<Product> createProduct(@RequestBody Product product) {
 		products.put(product.getId(), product);
 		return new ResponseEntity<>(product, HttpStatus.CREATED);
+	}
+
+	@PutMapping("/products/{id}")
+	public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+		Product existingProduct = products.get(id);
+
+		if (existingProduct == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		if (!Objects.equals(existingProduct.getId(), product.getId())) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		existingProduct.setName(product.getName());
+		existingProduct.setPrice(product.getPrice());
+		existingProduct.setImageUrl(product.getImageUrl());
+
+		return new ResponseEntity<>(existingProduct, HttpStatus.OK);
 	}
 }
