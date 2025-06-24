@@ -34,4 +34,6 @@ public class ProductService {
     public boolean delete(Long id) {
         return productStore.remove(id) != null;
     }
+
+    //for commit
 }
