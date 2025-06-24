@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
+@RequestMapping("/api/products")
 public class ProductController {
     private final Map<Long, Product> products = new HashMap<>();
 
-    @PostMapping("/api/products")
+    @PostMapping
     public ResponseDto addProduct(@RequestBody RequestDto requestDto) {
         long productId = products.isEmpty() ? 1: Collections.max(products.keySet()) + 1;
 
@@ -23,7 +24,7 @@ public class ProductController {
         return new ResponseDto(product);
     }
 
-    @GetMapping("/api/products")
+    @GetMapping
     public List<ResponseDto> getProducts() {
 
         List<ResponseDto> responseList = new ArrayList<>();
@@ -36,7 +37,7 @@ public class ProductController {
         return responseList;
     }
 
-    @GetMapping("/api/products/{id}")
+    @GetMapping("/{id}")
     public ResponseDto getProductById(@PathVariable Long id) {
 
         Product product = products.get(id);
@@ -48,7 +49,7 @@ public class ProductController {
         return new ResponseDto(product);
     }
 
-    @PatchMapping("/api/products/{id}")
+    @PatchMapping("/{id}")
     public ResponseDto updateProduct(
             @PathVariable Long id,
             @RequestBody RequestDto requestDto
@@ -65,7 +66,7 @@ public class ProductController {
         return new ResponseDto(product);
     }
 
-    @DeleteMapping("/api/products/{id}")
+    @DeleteMapping("/{id}")
     public ResponseDto deleteProduct(@PathVariable Long id) {
         Product product = products.get(id);
 
