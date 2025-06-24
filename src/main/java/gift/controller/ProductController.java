@@ -3,6 +3,7 @@ package gift.controller;
 import gift.dto.ProductRequestDto;
 import gift.entity.Product;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -12,6 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+//@ResponseBody + @Controller
 @RestController
 public class ProductController {
 
@@ -21,15 +23,20 @@ public class ProductController {
     //create
     //생성한 product는 HashMap에 저장
     @PostMapping("/products")
-    public Product createProduct(@RequestBody ProductRequestDto requestDto) {
-        Product product = new Product(
-            ++pid,
-            requestDto.getName(),
-            requestDto.getPrice(),
-            requestDto.getImageUrl()
-        );
-        products.put(product.getId(), product);
-        return product;
+    public ResponseEntity<Product> createProduct(@RequestBody ProductRequestDto requestDto) {
+        if (checkProduct(requestDto)) {
+            Product product = new Product(
+                ++pid,
+                requestDto.getName(),
+                requestDto.getPrice(),
+                requestDto.getImageUrl()
+            );
+            products.put(product.getId(), product);
+            //ResponseEntity의 경우, 객체와 상태를 함께 반환(상태 지정 가능)
+            return new ResponseEntity<>(product, HttpStatus.CREATED);
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            "가격은 음수가 될 수 없으며, 상품명, 가격, 이미지 주소는 필수 값입니다.");
     }
 
     //read
@@ -47,25 +54,17 @@ public class ProductController {
     //전체 상품을 조회
     @GetMapping("/products")
     public List<Product> getProducts() {
-        return products.values()
-            .stream()
-            .collect(Collectors.toList());
+        return products.values().stream().collect(Collectors.toList());
     }
 
     //update
     //상품 수정
     @PutMapping("/products/{id}")
-    public Product modifyProduct(
-        @RequestBody ProductRequestDto requestDto,
-        @PathVariable Long id
-    ) {
+    public Product modifyProduct(@RequestBody ProductRequestDto requestDto, @PathVariable Long id) {
         Optional<Product> optionalProduct = Optional.ofNullable(products.get(id));
         if (optionalProduct.isPresent()) {
             Long found = optionalProduct.get().getId();
-            Product product = new Product(
-                found,
-                requestDto.getName(),
-                requestDto.getPrice(),
+            Product product = new Product(found, requestDto.getName(), requestDto.getPrice(),
                 requestDto.getImageUrl());
             products.put(found, product);
             return product;
@@ -76,15 +75,26 @@ public class ProductController {
     //delete
     //등록된 상품을 삭제
     @DeleteMapping("/products/{id}")
-    public void removeProduct(
-        @PathVariable Long id
-    ){
+    public void removeProduct(@PathVariable Long id) {
         Optional<Product> optionalProduct = Optional.ofNullable(products.get(id));
-        if(optionalProduct.isPresent()){
+        if (optionalProduct.isPresent()) {
             Long found = optionalProduct.get().getId();
             products.remove(found);
             return;
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "존재하지 않는 상품입니다.");
+    }
+
+    public boolean checkProduct(ProductRequestDto requestDto) {
+        //상품명, 가격, 이미지의 경우 모두 필수 값
+        if (requestDto.getName() == null || requestDto.getPrice() == null
+            || requestDto.getImageUrl() == null) {
+            return false;
+        }
+        //가격은 0이하가 될 수 없음
+        else if (requestDto.getPrice() < 0) {
+            return false;
+        }
+        return true;
     }
 }
