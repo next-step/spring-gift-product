@@ -70,4 +70,16 @@ public class ProductController {
 
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
+
+    // 상품 삭제
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        if (products.containsKey(id)) {
+            products.remove(id);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }
