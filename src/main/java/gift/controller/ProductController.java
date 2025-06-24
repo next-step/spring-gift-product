@@ -47,7 +47,7 @@ public class ProductController {
      */
     @PostMapping()
     public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto requestDto){
-        return new ResponseEntity<>(ProductService.saveProduct(requestDto), HttpStatus.OK);
+        return new ResponseEntity<>(productService.saveProduct(requestDto), HttpStatus.OK);
     }
 
     /*
@@ -58,7 +58,7 @@ public class ProductController {
      */
     @PatchMapping("/{id}")
     public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDto requestDto){
-        return new ResponseEntity<>(productService.update(id, requestDto.name(), requestDto.price()), HttpStatus.OK);
+        return new ResponseEntity<>(productService.updateProduct(id, requestDto.name(), requestDto.price()), HttpStatus.OK);
     }
 
     /*
@@ -68,7 +68,7 @@ public class ProductController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id){
-        productService.deleteMemo(id);
+        productService.deleteProduct(id);
         
         // 성공한 경우에만 OK 반환
         return new ResponseEntity<>(HttpStatus.OK);
