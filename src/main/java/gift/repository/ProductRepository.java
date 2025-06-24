@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ProductRepository {
     List<ProductResponseDto> findAllProducts();
+    ProductResponseDto findProductByIdOrElseThrow(Long id);
 }

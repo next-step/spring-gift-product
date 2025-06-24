@@ -19,4 +19,9 @@ public class ProductService {
 
         return productRepository.findAllProducts();
     }
+
+    public ProductResponseDto findProductById(Long id){
+
+        return productRepository.findProductByIdOrElseThrow(id);
+    }
 }
