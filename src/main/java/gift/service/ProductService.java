@@ -45,19 +45,11 @@ public class ProductService {
     }
 
     public List<ProductResponseDto> getProductList(int page, int size) {
-        List<Product> all = productRepository.findAll();
-
-        int fromIndex = page * size;
-        int toIndex = Math.min(fromIndex + size, all.size());
-
-        if (fromIndex >= all.size()) {
-            return List.of();
-        }
-
-        return all.subList(fromIndex, toIndex).stream()
+        return productRepository.findPage(page, size).stream()
                 .map(ProductResponseDto::new)
                 .collect(Collectors.toList());
     }
+
 
     private Product findProductOrThrow(Long id) {
         return productRepository.findById(id)

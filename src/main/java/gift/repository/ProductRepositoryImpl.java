@@ -35,4 +35,19 @@ public class ProductRepositoryImpl implements ProductRepository {
     public void deleteById(Long id) {
         store.remove(id);
     }
+
+    @Override
+    public List<Product> findPage(int page, int size) {
+        List<Product> all = new ArrayList<>(store.values());
+
+        int fromIndex = page * size;
+        int toIndex = Math.min(fromIndex + size, all.size());
+
+        if (fromIndex >= all.size()) {
+            return List.of();
+        }
+
+        return all.subList(fromIndex, toIndex);
+    }
+
 }
