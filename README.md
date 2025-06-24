@@ -5,7 +5,7 @@
 - 상품을 조회, 추가, 수정, 삭제할 수 있으며, 요청과 응답은 JSON 형식으로 이루어짐
 - 
 ## 2️⃣ 구현 예정 기능 목록
-- [ ] 상품 목록 조회 API (`GET /products`)
+- [x] 상품 목록 조회 API (`GET /products`)
 - [ ] 상품 단건 조회 API (`GET /products/{id}`)
 - [ ] 상품 추가 API (`POST /products`)
 - [ ] 상품 수정 API (`PUT /products/{id}`)
