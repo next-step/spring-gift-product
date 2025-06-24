@@ -8,7 +8,9 @@ import gift.dto.ModifyProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -45,6 +47,11 @@ public class ProductServiceImpl implements ProductService {
         ModifyProductRequestDto requestDto) {
         Product product = productRepository.findProductWithDbId(id);
         
+        if (requestDto.getId() == null || requestDto.getName() == null ||
+            requestDto.getPrice() == null || requestDto.getImageUrl() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        
         Product newProduct = new Product(
             requestDto.getId(),
             requestDto.getName(),
@@ -67,6 +74,11 @@ public class ProductServiceImpl implements ProductService {
     public ModifyProductResponseDto modifyProductInfoWithDbId(Long id,
         ModifyProductRequestDto requestDto) {
         Product product = productRepository.findProductWithDbId(id);
+        
+        if (requestDto.getId() == null && requestDto.getName() == null &&
+            requestDto.getPrice() == null && requestDto.getImageUrl() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
         
         Product newProduct = new Product(
             requestDto.getId() != null ? requestDto.getId() : product.getId(),
