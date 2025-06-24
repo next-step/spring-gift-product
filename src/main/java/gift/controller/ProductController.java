@@ -3,8 +3,10 @@ package gift.controller;
 import gift.dto.CreateProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.service.ProductService;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,5 +27,9 @@ public class ProductController {
         }else{
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDto>> findAllProducts(){
+        return new ResponseEntity<>(productService.findAllProducts(), HttpStatus.OK);
     }
 }

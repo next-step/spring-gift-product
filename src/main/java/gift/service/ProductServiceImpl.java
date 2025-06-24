@@ -4,6 +4,7 @@ import gift.dto.CreateProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,5 +21,10 @@ public class ProductServiceImpl implements ProductService{
         Product newProduct = new Product(id++, requestDto.getName(),requestDto.getPrice(),requestDto.getImageUrl());
         Product createdProduct = productRepository.createProduct(newProduct);
         return new ProductResponseDto(createdProduct.getId(), createdProduct.getName(), createdProduct.getPrice(), createdProduct.getImageUrl());
+    }
+
+    @Override
+    public List<ProductResponseDto> findAllProducts() {
+        return productRepository.findAllProducts();
     }
 }
