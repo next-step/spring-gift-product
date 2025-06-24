@@ -2,32 +2,19 @@ package gift.dto;
 
 import gift.entity.Product;
 
-public class ProductResponseDto {
-    private Long id;
-    private String name;
-    private Integer price;
-    private String imageUrl;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public ProductResponseDto(Product product) {
-        this.id = product.getId();
-        this.name = product.getName();
-        this.price = product.getPrice();
-        this.imageUrl = product.getImageUrl();
+// 다소 생소했던 record를 사용해 보았음
+public record ProductResponseDto(
+    Long id,
+    String name,
+    Integer price,
+    String imageUrl
+) {
+    public static ProductResponseDto from(Product product) {
+        return new ProductResponseDto(
+            product.getId(),
+            product.getName(),
+            product.getPrice(),
+            product.getImageUrl()
+        );
     }
 }

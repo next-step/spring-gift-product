@@ -17,22 +17,22 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public ProductResponseDto createProduct(ProductRequestDto requestDto) {
-        Long id = requestDto.getId();
-        String name = requestDto.getName();
-        Integer price = requestDto.getPrice();
-        String imageUrl = requestDto.getImageUrl();
+        Long id = requestDto.id();
+        String name = requestDto.name();
+        Integer price = requestDto.price();
+        String imageUrl = requestDto.imageUrl();
 
         Product product = new Product(id, name, price, imageUrl);
         products.put(id, product);
 
-        return new ProductResponseDto(product);
+        return ProductResponseDto.from(product);
     }
 
     @Override
     public List<ProductResponseDto> findAllProducts() {
         List<ProductResponseDto> productList = new ArrayList<>();
         for (Map.Entry<Long, Product> entry : products.entrySet()) {
-            productList.add(new ProductResponseDto(entry.getValue()));
+            productList.add(ProductResponseDto.from(entry.getValue()));
         }
 
         return productList;
@@ -42,19 +42,19 @@ public class ProductRepositoryImpl implements ProductRepository {
     public ProductResponseDto findProductById(Long id) {
         Product product = products.get(id);
 
-        return new ProductResponseDto(product);
+        return ProductResponseDto.from(product);
     }
 
     @Override
     public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
         Product product = new Product(
             id,
-            requestDto.getName(),
-            requestDto.getPrice(),
-            requestDto.getImageUrl());
+            requestDto.name(),
+            requestDto.price(),
+            requestDto.imageUrl());
         products.put(id, product);
 
-        return new ProductResponseDto(product);
+        return ProductResponseDto.from(product);
     }
 
     @Override
