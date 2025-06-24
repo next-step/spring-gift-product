@@ -50,10 +50,11 @@ public class ProductController {
     //read
     //전체 상품을 조회
     @GetMapping("/products")
-    public List<Product> getProducts() {
-        return products.values()
+    public ResponseEntity<List<Product>> getProducts() {
+        List<Product> productList = products.values()
             .stream()
             .collect(Collectors.toList());
+        return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
     //update
