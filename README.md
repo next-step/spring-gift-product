@@ -4,8 +4,8 @@
 1. 전체 상품을 조회한다(GET /api/products) - 완료 
 2. 단건 상품을 조회한다(GET /api/products/{id}) - 완료
 3. 상품을 추가한다(POST /api/products) - 완료
-4. 상품을 수정한다(PUT /api/products/{id})
-5. 상품을 삭제한다(DELETE /api/products/{id})
+4. 상품을 수정한다(PUT /api/products/{id}) - 완료
+5. 상품을 삭제한다(DELETE /api/products/{id}) - 완료
 
 위 목록을 HTTP API 구현해 CRUD가 작동하게 한다
 --> HTTP 요청과 응답은 JSON형식

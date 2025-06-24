@@ -39,4 +39,13 @@ public class ProductService {
         return Optional.of(product);
     }
 
+    public boolean delete(Long id){
+        if(productRepository.findById(id).isEmpty()){
+            return false;
+        } else {
+            productRepository.delete(id);
+            return true;
+        }
+    }
+
 }
