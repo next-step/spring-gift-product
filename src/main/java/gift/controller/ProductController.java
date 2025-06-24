@@ -21,7 +21,7 @@ public class ProductController {
     //create
     //생성한 product는 HashMap에 저장
     @PostMapping("/products")
-    public Product createProduct(@ModelAttribute ProductRequestDto requestDto){
+    public Product createProduct(@RequestBody ProductRequestDto requestDto){
         Product product = new Product(
                 ++id,
                 requestDto.getName(),
