@@ -27,4 +27,13 @@ public class ProductService {
         }
         return product.get();
     }
+
+    // 상품 수정
+    public void updateProduct(Product product) {
+        // 수정 전에 존재 여부 체크
+        if (productRepository.findById(product.getId()).isEmpty()) {
+            throw new IllegalArgumentException("수정할 상품이 존재하지 않습니다.");
+        }
+        productRepository.update(product);
+    }
 }

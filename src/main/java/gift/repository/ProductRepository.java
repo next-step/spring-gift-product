@@ -29,4 +29,9 @@ public class ProductRepository {
         return Optional.ofNullable(products.get(id));
     }
 
+    // 상품 수정
+    public void update(Product product) {
+        products.put(product.getId(), product);
+    }
+
 }

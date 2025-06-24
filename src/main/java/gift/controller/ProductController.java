@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +46,18 @@ public class ProductController {
         try {
             Product product = productService.getProduct(id);
             return ResponseEntity.ok(product); // 200 OK
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 Not Found
+        }
+    }
+
+    // 상품 수정
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+        try {
+            product.setId(id);
+            productService.updateProduct(product);
+            return ResponseEntity.noContent().build(); // 204 No Content
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 Not Found
         }
