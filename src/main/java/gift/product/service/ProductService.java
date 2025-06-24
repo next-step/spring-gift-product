@@ -82,4 +82,14 @@ public class ProductService {
         // 존재하지 않으면 무시
         products.remove(id);
     }
+
+
+    /**
+     * 상품 모두 삭제(테스트 전용)
+     *
+     */
+    public void deleteAllProducts() {
+        products.clear();
+        sequence.set(0);
+    }
 }
