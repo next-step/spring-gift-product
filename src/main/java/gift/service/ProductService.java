@@ -30,6 +30,9 @@ public class ProductService {
     }
 
     public ProductResponseDto saveProduct(ProductRequestDto requestDto){
+        if (requestDto.name() == null || requestDto.price() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The name and price are required values.");
+        }
         Product product = new Product(requestDto.name(), requestDto.price());
         return productRepository.saveProduct(product);
     }
