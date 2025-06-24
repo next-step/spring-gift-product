@@ -50,4 +50,13 @@ public class ProductRepositoryImp implements ProductRepository{
 
         return ProductResponseDto.toDto(product);
     }
+
+    @Override
+    public void deleteProduct(Long id) {
+        if (!products.containsKey(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 ID의 상품을 찾을 수 없습니다.");
+        }
+
+        products.remove(id);
+    }
 }
