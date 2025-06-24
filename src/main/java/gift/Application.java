@@ -75,12 +75,12 @@ class ProductController {
         return "redirect:/api/products";
     }
 
-    //상품 수정
-    @PatchMapping("/api/products/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable long id, @RequestBody Product product) {
-        if (!products.containsKey(id)) {return new ResponseEntity<>(HttpStatus.NOT_FOUND);}
-        products.update(id, product);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+    //상품 수정(수정 페이지 사용)
+    @GetMapping("/api/products/edit")
+    public String updateProduct(@RequestParam long id, Model model) {
+        Product product = products.get(id);
+        model.addAttribute("selectedProduct", product);
+        return "products";
     }
 
     //상품 삭제
