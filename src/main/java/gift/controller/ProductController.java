@@ -1,6 +1,7 @@
 package gift.controller;
 
 import gift.model.Product;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,4 +26,17 @@ public class ProductController {
         }
         return ResponseEntity.ok(product);
     }
+
+    @PostMapping
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+        // 현재 등록된 상품 중 가장 큰 ID를 가져와서 +1
+        Long newId = products.keySet().stream().max(Long::compareTo).orElse(0L) + 1;
+        product.setId(newId);
+        products.put(newId, product);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED) // 201 Created
+                .body(product); // 저장된 상품 객체 반환
+    }
+
 }
