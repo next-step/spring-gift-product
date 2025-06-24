@@ -2,15 +2,14 @@ package gift.controller;
 
 
 import gift.dto.CreateProductRequestDto;
+import gift.dto.UpdateProductRequestDto;
+import gift.entity.Product;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/api/admin/products")
@@ -45,6 +44,36 @@ public class AdminProductController {
             return "admin/products/new";
         }
         productService.create(dto);
+        return "redirect:/api/admin/products";
+    }
+
+    // Update
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model)
+    {
+        Product product=productService.getById(id)
+                .orElseThrow(()->new RuntimeException("Product not found"));
+        UpdateProductRequestDto dto=new UpdateProductRequestDto();
+        dto.setId(product.getId());
+        dto.setName(product.getName());
+        dto.setPrice(product.getPrice());
+        dto.setImageUrl(product.getImageUrl());
+
+        model.addAttribute("product",dto);
+        model.addAttribute("productId",id);
+        return "admin/products/edit";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String update(@PathVariable Long id, @Valid @ModelAttribute UpdateProductRequestDto dto, BindingResult bindingResult, Model model)
+    {
+        if (bindingResult.hasErrors())
+        {
+            model.addAttribute("productId",id);
+            model.addAttribute("product",dto);
+            return "admin/products/edit";
+        }
+        productService.update(id, dto);
         return "redirect:/api/admin/products";
     }
 

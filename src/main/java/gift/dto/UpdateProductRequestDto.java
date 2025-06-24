@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 public class UpdateProductRequestDto {
 
+    private Long id;
     @NotBlank(message = "상품명을 입력하세요.")
     private String name;
 
@@ -16,6 +17,10 @@ public class UpdateProductRequestDto {
     @NotBlank(message = "이미지 URL을 입력하세요.")
     private String imageUrl;
 
+    public Long getId()
+    {
+        return id;
+    }
     public String getName()
     {
         return name;
@@ -28,6 +33,10 @@ public class UpdateProductRequestDto {
         return imageUrl;
     }
 
+    public void setId(Long id)
+    {
+        this.id = id;
+    }
     public void setName(String name) {
         this.name = name;
     }
