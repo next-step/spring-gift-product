@@ -38,7 +38,7 @@ public class ProductController {
   }
 
   @PatchMapping("/products/{id}")
-  public ResponseEntity<Product> updateProduct(@RequestBody Product newProduct){
+  public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product newProduct){
     productsMap.replace(newProduct.getId(),newProduct);
     return new ResponseEntity<>(newProduct,HttpStatus.OK);
   }
