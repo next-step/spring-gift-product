@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
@@ -43,6 +45,13 @@ public class ProductController {
         ProductResponseDto updatedProduct = productService.updateProduct(id, requestDto);
 
         return ResponseEntity.ok(updatedProduct);
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> deleteProduct(@PathVariable Long id) {
+
+        ProductResponseDto responseDto = productService.deleteProduct(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 }

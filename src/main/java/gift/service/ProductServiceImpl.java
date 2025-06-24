@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -56,4 +58,17 @@ public class ProductServiceImpl implements ProductService {
 
         return new ProductResponseDto(product);
     }
+
+    @Override
+    public ProductResponseDto deleteProduct(Long id) {
+
+        Product product = productList.remove(id);
+
+        if (product == null) {
+            throw new ProductNotFoundException(id);
+        }
+
+        return new ProductResponseDto(product);
+    }
+
 }
