@@ -58,6 +58,20 @@ public class ProductService {
                 saved.getPrice(),
                 saved.getImageUrl()
         );
+    }
 
+    public ProductResponseDTO update(Integer id, ProductRequestDTO productRequestDTO) {
+        Product product = productRepository.findById(id);
+        if (product == null) {
+            throw new IllegalArgumentException("Product not found");
+        }
+        product.update(productRequestDTO.getName(), productRequestDTO.getPrice(), productRequestDTO.getImageUrl());
+
+        return new ProductResponseDTO(
+                product.getId(),
+                product.getName(),
+                product.getPrice(),
+                product.getImageUrl()
+        );
     }
 }
