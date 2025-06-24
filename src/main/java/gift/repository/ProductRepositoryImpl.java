@@ -8,7 +8,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
@@ -42,5 +45,11 @@ public class ProductRepositoryImpl implements ProductRepository {
             ));
         }
         return responseDtoList;
+    }
+    
+    @Override
+    public Product findProductWithDbId(Long id) {
+        return Optional.ofNullable(products.get(id))
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }

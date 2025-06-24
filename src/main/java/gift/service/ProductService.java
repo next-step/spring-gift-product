@@ -11,4 +11,6 @@ public interface ProductService {
     AddProductResponseDto addProduct(AddProductRequestDto requestDto);
     
     List<FindProductResponseDto> findAllProducts();
+    
+    FindProductResponseDto findProductWithDbId(Long id);
 }
