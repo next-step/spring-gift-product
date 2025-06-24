@@ -29,4 +29,14 @@ public class ProductService {
                 new Product(null, dto.getName(), dto.getPrice(), dto.getImageUrl()));
     }
 
+    public Optional<Product> update(Long id, ProductRequestDto dto){
+        if(productRepository.findById(id).isEmpty()){
+            return Optional.empty();
+        }
+
+        Product product = new Product(id, dto.getName(), dto.getPrice(), dto.getImageUrl());
+        productRepository.update(id, product);
+        return Optional.of(product);
+    }
+
 }

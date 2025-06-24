@@ -3,7 +3,7 @@
 구현 기능 목록 정리
 1. 전체 상품을 조회한다(GET /api/products) - 완료 
 2. 단건 상품을 조회한다(GET /api/products/{id}) - 완료
-3. 상품을 추가한다(POST /api/products)
+3. 상품을 추가한다(POST /api/products) - 완료
 4. 상품을 수정한다(PUT /api/products/{id})
 5. 상품을 삭제한다(DELETE /api/products/{id})
 

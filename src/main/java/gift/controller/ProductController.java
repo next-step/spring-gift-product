@@ -52,4 +52,11 @@ public class ProductController {
         return ResponseEntity.created(location).body(responseDto);
     }
 
+    // 상품 수정
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> update(@PathVariable Long id, @RequestBody ProductRequestDto productRequestDto) {
+        return productService.update(id, productRequestDto).map(product -> ResponseEntity.ok(new ProductResponseDto(product)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }

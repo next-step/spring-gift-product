@@ -30,4 +30,9 @@ public class ProductRepository {
         return product;
     }
 
+    // 상품 수정
+    public void update(Long id, Product product){
+        products.put(id, product);
+    }
+
 }
