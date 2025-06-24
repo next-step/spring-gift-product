@@ -36,4 +36,12 @@ public class ProductService {
         }
         productRepository.update(product);
     }
+
+    // 상품 삭제
+    public void deleteProduct(Long id) {
+        if (productRepository.findById(id).isEmpty()) {
+            throw new IllegalArgumentException("삭제할 상품이 존재하지 않습니다.");
+        }
+        productRepository.delete(id);
+    }
 }
