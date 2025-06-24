@@ -42,4 +42,13 @@ public class ProductService {
         product.update(req);
         return new ResponseEntity<>(ProductResponse.from(product), HttpStatus.OK);
     }
+
+    public ResponseEntity<Void> deleteProduct(Long id) {
+        Product product = productRepository.get(id);
+        if (product == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        productRepository.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
