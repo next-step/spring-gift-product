@@ -8,6 +8,7 @@
 
 ## 구현 기능 목록
 
+
 - [x] 상품 등록 API (POST `/api/products`)
 - [x] 상품 단건 조회 API (GET `/api/products/{productId}`)
 - [x] 상품 전체 목록 조회 API (GET `/api/products`) - 페이지네이션은 DB 연동 후 구현 예정
@@ -99,6 +100,7 @@
 ```
   성공 시 204, 실패 시 404
 ```
+<<<<<<< HEAD
 
 ---
 
