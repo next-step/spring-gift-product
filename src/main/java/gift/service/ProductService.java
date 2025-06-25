@@ -26,7 +26,8 @@ public class ProductService {
     }
 
     // 추가
-    public Product createProduct(Product product) {
+    public Product createProduct(ProductRequestDto req) {
+        Product product = new Product(null, req.getName(), req.getPrice(), req.getImageUrl());
         return repo.createProduct(product);
     }
 
@@ -37,7 +38,11 @@ public class ProductService {
     }
 
     // 삭제
-    public void deleteProduct(Long id) {
+    public boolean delete(Long id) {
+        if (repo.findById(id) == null) {
+            return false;
+        }
         repo.delete(id);
+        return true;
     }
 }

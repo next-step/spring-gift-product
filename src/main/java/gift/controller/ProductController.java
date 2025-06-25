@@ -5,6 +5,8 @@ import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.service.ProductService;
 import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,34 +26,46 @@ public class ProductController {
         this.service = service;
     }
 
-    // 전체 상품 조회
     @GetMapping
-    public List<Product> list() {
-        return service.getAll();
+    public ResponseEntity<List<ProductResponseDto>> getAll() {
+        List<ProductResponseDto> result = service.getAll()
+                .stream()
+                .map(ProductResponseDto::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(result);
     }
 
-    // 단건 상품 조회
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable Long id) {
-        return service.getById(id);
+    public ResponseEntity<ProductResponseDto> getById(@PathVariable Long id) {
+        Product product = service.getById(id);
+        if (product == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(new ProductResponseDto(product));
     }
 
-    // 추가
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return service.createProduct(product);
+    public ResponseEntity<ProductResponseDto> create(@RequestBody ProductRequestDto req) {
+        Product saved = service.createProduct(req);
+        return ResponseEntity.status(201).body(new ProductResponseDto(saved));
     }
 
-    // 수정
     @PutMapping("/{id}")
-    public ProductResponseDto update(@PathVariable Long id, @RequestBody ProductRequestDto req) {
+    public ResponseEntity<ProductResponseDto> update(@PathVariable Long id,
+            @RequestBody ProductRequestDto req) {
         Product updated = service.updateProduct(id, req);
-        return new ProductResponseDto(updated);
+        if (updated == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(new ProductResponseDto(updated));
     }
 
-    // 삭제
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.deleteProduct(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        boolean deleted = service.delete(id);
+        if (!deleted) {
+            return ResponseEntity.notFound().build(); // 없는 경우 404
+        }
+        return ResponseEntity.noContent().build(); // 삭제 성공 시 204 No Content
     }
 }
