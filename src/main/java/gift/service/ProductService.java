@@ -44,4 +44,12 @@ public class ProductService {
         Product savedProduct = productRepository.updateProduct(productId,updatedProduct);
         return new ProductResponseDto(savedProduct.id(), savedProduct.name(), savedProduct.price(), savedProduct.imageUrl());
     }
+
+    public void deleteProduct(Long productId) {
+        Product product = productRepository.findById(productId);
+        if(product == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found.");
+        }
+        productRepository.deleteById(productId);
+    }
     }
