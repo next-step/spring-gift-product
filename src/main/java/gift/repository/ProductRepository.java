@@ -2,14 +2,9 @@ package gift.repository;
 
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class ProductRepository {
@@ -20,12 +15,9 @@ public class ProductRepository {
     // DB 대체 제품 저장 컬렉션
     private final Map<Long, Product> products = new HashMap<>();
 
-    public Product findProductById(long id) {
+    public Optional<Product> findProductById(long id) {
         Product product = products.get(id);
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No found Product");
-        }
-        return product;
+        return Optional.ofNullable(product);
     }
 
     public List<ProductResponseDto> findAllProducts() {
@@ -36,8 +28,8 @@ public class ProductRepository {
         return list;
     }
 
-    public ProductResponseDto saveProduct(Product product) {
-        product.setId(label);
+    public ProductResponseDto saveProduct(String name, Long price) {
+        Product product = new Product(label, name, price);
         products.put(label, product);
         label++;
         return new ProductResponseDto(product);
