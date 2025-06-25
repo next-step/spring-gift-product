@@ -14,12 +14,9 @@ import org.springframework.stereotype.Service;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepositoryImpl productRepository;
-    private final ProductMapper productMapper;
 
-    public ProductServiceImpl(ProductRepositoryImpl productRepository,
-        ProductMapper productMapper) {
+    public ProductServiceImpl(ProductRepositoryImpl productRepository) {
         this.productRepository = productRepository;
-        this.productMapper = productMapper;
     }
 
     @Override
@@ -34,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
     public void save(ProductRequest request) {
         validateRequest(request);
 
-        productRepository.save(productMapper.toEntity(request));
+        productRepository.save(ProductMapper.toEntity(request));
     }
 
     @Override
@@ -56,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductResponse> getProductList() {
         return productRepository.findAll().stream()
-            .map(productMapper::toResponse)
+            .map(ProductMapper::toResponse)
             .toList();
     }
 
