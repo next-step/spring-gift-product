@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -75,11 +76,34 @@ public class AdminController {
             Model model) {
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("product", productRequestDto);
             return "admin/product-new";
         }
 
         productService.createProduct(productRequestDto);
 
         return "redirect:/admin/products";
+    }
+
+    @PutMapping("/{id}")
+    public String updateProduct(
+            @PathVariable Long id,
+            @Valid @ModelAttribute("product") ProductRequestDto productRequestDto,
+            BindingResult bindingResult,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("id", id);
+            model.addAttribute("product", productRequestDto);
+            return "admin/product-edit";
+        }
+
+        try {
+            productService.updateProduct(id, productRequestDto);
+            return "redirect:/admin/products/" + id;
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
     }
 }
