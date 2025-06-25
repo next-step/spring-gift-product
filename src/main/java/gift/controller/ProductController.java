@@ -67,12 +67,24 @@ public class ProductController {
         //return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
+    //modify.html을 불러오기 위한 메서드
+    @GetMapping("/products/modify/{id}")
+    public String modifyForm(
+        @PathVariable Long id,
+        Model model
+    ){
+        //String test = "test" + id.toString();
+        Product product = products.get(id);
+        model.addAttribute("product",product);
+        return "modify";
+    }
+
     //update
     //상품 수정
-    @PutMapping("/products/{id}")
-    public ResponseEntity<Product> modifyProduct(
-        @RequestBody ProductRequestDto requestDto,
-        @PathVariable Long id
+    @PutMapping("/products")
+    public String modifyProduct(
+        @ModelAttribute ProductRequestDto requestDto,
+        @RequestParam Long id
     ) {
         Long found = findProductById(id).getId();
         Product product = new Product(found,
@@ -80,13 +92,7 @@ public class ProductController {
             requestDto.getPrice(),
             requestDto.getImageUrl());
         products.put(found, product);
-        return new ResponseEntity<>(product, HttpStatus.OK);
-    }
-
-    //delete.html을 불러오기 위한 메서드
-    @GetMapping("/products/remove")
-    public String deleteForm(){
-        return "delete";
+        return "redirect:/products";
     }
 
     //delete
