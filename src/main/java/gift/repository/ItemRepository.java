@@ -10,11 +10,11 @@ public interface ItemRepository {
 
     List<ItemDTO> getItems(String name, Integer price);
 
-    void deleteItems(String name);
+    Item deleteItems(String name);
 
     Item findById(Long id);
 
     List<ItemDTO> getAllItems();
 
-    void deleteById(Long id);
+    Item deleteById(Long id);
 }

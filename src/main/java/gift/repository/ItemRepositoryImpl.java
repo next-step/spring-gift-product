@@ -48,12 +48,13 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public void deleteItems(String name) {
+    public Item deleteItems(String name) {
         for(Item item : items.values()){
             if(item.getName().equals(name)){
-                items.remove(item.getId());
+                return items.remove(item.getId());
             }
         }
+        return null;
     }
 
     @Override
@@ -76,7 +77,8 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public void deleteById(Long id) {
-        items.remove(id);
+    public Item deleteById(Long id) {
+        return items.remove(id);
+
     }
 }

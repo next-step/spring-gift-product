@@ -36,19 +36,25 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void delete(String name) {
-        itemRepository.deleteItems(name);
+        Item item =itemRepository.deleteItems(name);
+        if(item == null){
+            throw new ItemNotFoundException(name);
+        }
     }
 
     @Override
     public ItemDTO updateItem(Long id, ItemDTO dto) {
         Item item = itemRepository.findById(id);
-        if(dto.getId().equals(item.getId())){
-            item.setName(dto.getName());
-            item.setPrice(dto.getPrice());
-            item.setImageUrl(dto.getImageUrl());
-        }
+        if(item != null) {
+            if (dto.getId().equals(item.getId())) {
+                item.setName(dto.getName());
+                item.setPrice(dto.getPrice());
+                item.setImageUrl(dto.getImageUrl());
+            }
+            return new ItemDTO(item);
+        }else
+            throw new ItemNotFoundException();
 
-        return new ItemDTO(item);
     }
 
     @Override
@@ -65,6 +71,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void deleteById(Long id) {
-        itemRepository.deleteById(id);
+        Item item = itemRepository.deleteById(id);
+        if(item == null){
+            throw new ItemNotFoundException();
+        }
     }
 }
