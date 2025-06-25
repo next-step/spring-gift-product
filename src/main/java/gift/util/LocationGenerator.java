@@ -3,6 +3,7 @@ package gift.util;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+
 import java.util.UUID;
 
 public final class LocationGenerator {

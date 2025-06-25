@@ -2,11 +2,13 @@ package gift.product.dto;
 
 import gift.domain.Product;
 
+
 import java.util.UUID;
 
 public class ProductResponse {
 
     private UUID id;
+    private String id;
     private String name;
     private int price;
     private String imageURL;

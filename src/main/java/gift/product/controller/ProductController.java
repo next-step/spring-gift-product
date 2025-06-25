@@ -26,6 +26,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Void> addProduct(@RequestBody ProductCreateRequest dto) {
+
         if (!StringValidator.isNotBlank(dto.getName()) ||
                 !StringValidator.isNotBlank(dto.getImageURL()) || dto.getPrice() <= 0)
             throw new BadProductRequestException("이름, 가격, 이미지 주소는 필수입니다.");

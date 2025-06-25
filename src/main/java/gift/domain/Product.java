@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public class Product {
 
+
     private UUID id;
     private String name;
     private int price;
@@ -18,6 +19,7 @@ public class Product {
         this.imageURL = imageURL;
     }
 
+
     public Product(UUID id, String name, int price, String imageURL) {
         this.id = id;
         this.name = name;
@@ -26,6 +28,7 @@ public class Product {
     }
 
     public UUID getId() {
+
         return id;
     }
 
