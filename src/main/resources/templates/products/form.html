@@ -2,12 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>상품 등록</title>
+  <title>상품 등록 / 수정</title>
 </head>
 <body>
-<h1>상품 등록</h1>
+<h1 th:text="${productId != null ? '상품 수정' : '상품 등록'}"></h1>
 
-<form action="#" th:action="@{/admin/products/new}" method="post" th:object="${productRequest}">
+<form th:action="@{${productId != null} ? '/admin/products/' + ${productId} + '/edit' : '/admin/products/new'}"
+      method="post"
+      th:object="${productRequest}">
   이름: <input type="text" th:field="*{name}" />
   <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 
@@ -17,7 +19,10 @@
   이미지 URL: <input type="text" th:field="*{imageUrl}" />
   <div th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}"></div>
 
-  <button type="submit">등록</button>
+  <button type="submit" th:text="${productId != null ? '수정' : '등록'}"></button>
 </form>
+
+<br>
+<a th:href="@{/admin/products}">목록으로</a>
 </body>
 </html>

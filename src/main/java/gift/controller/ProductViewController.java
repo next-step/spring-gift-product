@@ -1,5 +1,6 @@
 package gift.controller;
 
+import gift.dto.api.ProductUpdateRequestDto;
 import gift.dto.view.ProductViewRequestDto;
 import gift.entity.Product;
 import gift.service.ProductService;
@@ -61,6 +62,42 @@ public class ProductViewController {
         Product product = productService.getProductById(id);
         model.addAttribute("product", product);
         return "products/detail";
+    }
+
+    // 상품 수정 폼 보여주기
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        Product product = productService.getProductById(id);
+
+        ProductViewRequestDto dto = new ProductViewRequestDto();
+        dto.setName(product.getName());
+        dto.setPrice(product.getPrice());
+        dto.setImageUrl(product.getImageUrl());
+
+        model.addAttribute("productRequest", dto);
+        model.addAttribute("productId", id);  // 수정 시 필요한 ID
+
+        return "products/form";
+    }
+
+    // 상품 수정 요청 처리
+    @PostMapping("/{id}/edit")
+    public String updateProduct(@PathVariable Long id,
+        @Valid @ModelAttribute("productRequest") ProductViewRequestDto dto,
+        BindingResult bindingResult,
+        Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("productId", id);
+            return "products/form";
+        }
+
+        // dto를 변환해서 넘김
+        ProductUpdateRequestDto updateDto = new ProductUpdateRequestDto(
+            dto.getName(), dto.getPrice(), dto.getImageUrl()
+        );
+
+        productService.updateProduct(id, updateDto);
+        return "redirect:/admin/products";
     }
 
 }

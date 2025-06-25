@@ -21,6 +21,13 @@ public class ProductUpdateRequestDto {
     @NotBlank(message = "이미지 URL은 필수입니다.")
     private String imageUrl;
 
+    // 생성자 추가
+    public ProductUpdateRequestDto(String name, int price, String imageUrl) {
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
+    }
+
     public String getName() {
         return name;
     }

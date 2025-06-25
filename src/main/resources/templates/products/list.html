@@ -17,7 +17,8 @@
     <th>상품명</th>
     <th>가격</th>
     <th>이미지</th>
-    <th>상세보기</th>
+    <th>상세</th>
+    <th>수정</th>
   </tr>
   </thead>
   <tbody>
@@ -33,6 +34,9 @@
     </td>
     <td>
       <a th:href="@{'/admin/products/' + ${product.id}}">상세보기</a>
+    </td>
+    <td>
+      <a th:href="@{'/admin/products/' + ${product.id} + '/edit'}">수정</a>
     </td>
   </tr>
   </tbody>
