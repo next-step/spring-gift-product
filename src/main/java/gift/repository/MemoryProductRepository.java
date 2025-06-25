@@ -3,7 +3,6 @@ package gift.repository;
 import gift.entity.Product;
 import gift.exception.NotFoundByIdException;
 import org.springframework.stereotype.Repository;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,9 +29,6 @@ public class MemoryProductRepository implements ProductRepository {
 
     @Override
     public void deleteProductById(Long id) {
-        if (!products.containsKey(id)) {
-            throw new NotFoundByIdException("Product with id " + id + " does not exist.");
-        }
         products.remove(id);
     }
 
