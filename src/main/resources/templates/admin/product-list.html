@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:replace="layout/base :: common_header(~{::title},~{})">
+<head th:replace="~{layout/base :: common_header(~{::title},~{})}">
     <title>상품 목록</title>
 </head>
-<!-- 카드 뷰 출처 : https://componentland.com/component/product-card-2 -->
 <body>
-    <h1 class="text-3xl font-bold text-center my-10">관리자 상품 목록</h1>
-    <div class="mx-auto w-[80vw] rounded-lg border border-grey-400 py-5 ">
-        <div class="flex justify-end px-5 mb-5">
-            <a class="rounded-lg bg-green-500 px-3 py-1 text-sm font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300" href="/admin/product/form">상품 등록</a>
-        </div>
-        <div class="flex flex-wrap justify-center gap-6">
-            <th:block th:each="product, stat : ${products}">
-                <div class="m-1 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-                    <div class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl">
-                        <img class="object-cover" th:src="${product.imageUrl}" alt="product image" />
-                    </div>
-                    <div class="mt-4 px-5 pb-5 flex flex-col items-start">
-                        <h5 class="text-xl tracking-tight text-slate-900" th:text="${product.name}">Nike Air MX Super 2500 - Red</h5>
-                        <span class="text-2xl font-bold text-slate-900 mt-2" th:text="${#numbers.formatInteger(product.price, 1,'COMMA')} + '원'">$ 199.99</span>
-                        <div class="flex flex-row w-full mt-4 justify-center">
-                            <button class="rounded-lg bg-blue-500 mx-3 px-3 py-1 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300">상품 보기</button>
-                            <button class="rounded-lg bg-red-500 mx-3 px-3 py-1 text-sm font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300">상품 삭제</button>
+    <main th:replace="~{layout/base :: common_content(~{::section})}">
+        <section>
+            <div class="flex justify-end px-5 mb-5">
+                <a class="rounded-lg bg-green-500 px-3 py-1 text-sm font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300" href="/admin/product/form">상품 등록</a>
+            </div>
+            <div class="flex flex-wrap justify-center gap-6">
+                <th:block th:each="product, stat : ${products}">
+                    <div class="m-1 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
+                        <div class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl">
+                            <img class="object-cover" th:src="${product.imageUrl}" alt="product image" />
+                        </div>
+                        <div class="mt-4 px-5 pb-5 flex flex-col items-start">
+                            <h5 class="text-xl tracking-tight text-slate-900" th:text="${product.name}">Nike Air MX Super 2500 - Red</h5>
+                            <span class="text-2xl font-bold text-slate-900 mt-2" th:text="${#numbers.formatInteger(product.price, 1,'COMMA')} + '원'">$ 199.99</span>
+                            <div class="flex flex-row w-full mt-4 justify-center">
+                                <button class="rounded-lg bg-blue-500 mx-3 px-3 py-1 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300">상품 보기</button>
+                                <button class="rounded-lg bg-red-500 mx-3 px-3 py-1 text-sm font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300">상품 삭제</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </th:block>
-        </div>
-    </div>
+                </th:block>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

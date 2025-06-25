@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npx tailwindcss -i ./src/index.css -o ../resources/static/main.css --minify",
-    "watch": "postcss ./src/index.css -o ../resources/static/main.css --watch"
+    "watch": "npx tailwindcss -i ./src/index.css -o ../resources/static/main.css --watch"
   },
   "keywords": [],
   "author": "",
