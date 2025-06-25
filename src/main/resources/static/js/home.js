@@ -1,5 +1,5 @@
 // 체크박스 클릭 후, 모두 삭제 버튼
-document.getElementById('deleteButton').addEventListener('click', () => {
+document.getElementById('delete-button').addEventListener('click', () => {
     const selectKeys = document.querySelectorAll('input[name=selectedKey]:checked');
     const selectkeyList = Array.from(selectKeys).map(selectKeys => selectKeys.value);
 

@@ -1,0 +1,23 @@
+.top-action-buttons {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+#delete-button {
+    display: inline-block;
+    background-color: #fa5a5a;
+    color: white;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+#delete-button:hover {
+    background-color: #ff7875;
+}
+
+#delete-button:active {
+    box-shadow: 0 0 #ff4c4b;
+    background-color: #ff4c4b;
+}
