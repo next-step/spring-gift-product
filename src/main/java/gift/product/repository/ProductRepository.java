@@ -2,8 +2,8 @@ package gift.product.repository;
 
 import gift.common.exception.ErrorCode;
 import gift.product.domain.Product;
+import gift.product.dto.CreateProductReqDto;
 import gift.product.exception.ProductNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -27,6 +27,13 @@ public class ProductRepository {
             throw new ProductNotFoundException(ErrorCode.NOT_FOUND);
         }
         return product;
+    }
+
+    public Long save(CreateProductReqDto dto) {
+        Long id = idGenerator.incrementAndGet();
+        Product newProduct = new Product(id, dto.name(), dto.price(), dto.description());
+        productMap.put(id, newProduct);
+        return id;
     }
 
 

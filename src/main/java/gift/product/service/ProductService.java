@@ -1,6 +1,7 @@
 package gift.product.service;
 
 import gift.product.domain.Product;
+import gift.product.dto.CreateProductReqDto;
 import gift.product.dto.GetProductResDto;
 import gift.product.exception.ProductNotFoundException;
 import gift.product.repository.ProductRepository;
@@ -21,6 +22,9 @@ public class ProductService {
     public GetProductResDto getProductById(Long id) throws ProductNotFoundException {
         Product product = productRepository.findById(id);
         return new GetProductResDto(product);
+    }
+    public Long createProduct(CreateProductReqDto dto) {
+        return productRepository.save(dto);
     }
 
 

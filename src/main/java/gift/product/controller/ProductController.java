@@ -2,13 +2,11 @@ package gift.product.controller;
 
 import gift.common.Response;
 import gift.product.domain.Product;
+import gift.product.dto.CreateProductReqDto;
 import gift.product.dto.GetProductResDto;
 import gift.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,5 +27,13 @@ public class ProductController {
         List<GetProductResDto> allProducts = productService.getAllProducts();
         return Response.ok(allProducts, "find product list success");
     }
+
+    @PostMapping
+    public Response<Long> createProduct(@RequestBody CreateProductReqDto product) {
+        Long productId = productService.createProduct(product);
+        return Response.ok(productId, "create product success");
+    }
+
+
 
 }
