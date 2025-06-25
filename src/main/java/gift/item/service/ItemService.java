@@ -54,9 +54,9 @@ public class ItemService {
 
     public ItemResponseDto createItem(ItemCreateDto itemCreateDto) {
         Item newItem = new Item(
-            itemCreateDto.getName(),
-            itemCreateDto.getPrice(),
-            itemCreateDto.getImageUrl()
+            itemCreateDto.name(),
+            itemCreateDto.price(),
+            itemCreateDto.imageUrl()
         );
 
         Item savedItem = itemRepository.save(newItem);
@@ -76,9 +76,9 @@ public class ItemService {
             throw new ItemNotFoundException(itemId);
         }
 
-        oldItem.setName(itemUpdateDto.getName());
-        oldItem.setPrice(itemUpdateDto.getPrice());
-        oldItem.setImageUrl(itemUpdateDto.getImageUrl());
+        oldItem.setName(itemUpdateDto.name());
+        oldItem.setPrice(itemUpdateDto.price());
+        oldItem.setImageUrl(itemUpdateDto.imageUrl());
 
         Item updatedItem = itemRepository.update(oldItem);
 
