@@ -108,8 +108,7 @@ public class InMemoryProductRepository implements ProductRepository {
 
         return new Page<>(pageContent, pageNumber, pageSize, total);
     }
-
-
+    
     @Override
     public Optional<Product> findById(Long id) {
         if (id == null) {
