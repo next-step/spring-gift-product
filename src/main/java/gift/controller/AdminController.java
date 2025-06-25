@@ -54,4 +54,11 @@ public class AdminController {
     service.updateProduct(id, requestDto);
     return "redirect:/admin/products";
   }
+
+  @GetMapping("/{id}/delete")
+  public String delete(@PathVariable("id") Long id) {
+    service.deleteProduct(id);
+    return "redirect:/admin/products";
+  }
+
 }
