@@ -4,6 +4,7 @@ import gift.domain.Product;
 import gift.dto.ProductRequest;
 import gift.dto.common.Page;
 import gift.service.ProductManagementService;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,8 +55,12 @@ public class ProductController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAll() {
-        productService.deleteAll();
+    public void deleteAllByIds(@RequestBody(required = false) List<Long> ids) {
+        if (ids.isEmpty()) {
+            productService.deleteAll();
+        } else {
+            productService.deleteAllByIds(ids);
+        }
     }
 
     @DeleteMapping("/{productId}")
