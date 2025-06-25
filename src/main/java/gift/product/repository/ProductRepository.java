@@ -2,6 +2,7 @@ package gift.product.repository;
 
 import gift.common.dto.PagedResult;
 import gift.common.exception.ErrorCode;
+import gift.common.exception.InvalidSortFieldException;
 import gift.product.domain.Product;
 import gift.product.exception.ProductNotFoundException;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,7 @@ public class ProductRepository {
             case "name" -> Comparator.comparing(Product::getName);
             case "price" -> Comparator.comparingInt(Product::getPrice);
             case "id" -> Comparator.comparing(Product::getId);
-            default -> throw new IllegalArgumentException("정렬 필드 오류");
+            default -> throw new InvalidSortFieldException(ErrorCode.INVALID_INPUT_VALUE);
         };
 
         if (!asc) comparator = comparator.reversed();
