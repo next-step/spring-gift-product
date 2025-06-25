@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -52,12 +53,8 @@ public class ProductRepository {
         );
     }
 
-    public Product findById(Long id) throws ProductNotFoundException {
-        Product product = productMap.get(id);
-        if (product == null) {
-            throw new ProductNotFoundException(ErrorCode.NOT_FOUND);
-        }
-        return product;
+    public Optional<Product> findById(Long id) {
+        return Optional.ofNullable(productMap.get(id));
     }
 
     public Long save(Product product) {
@@ -71,8 +68,8 @@ public class ProductRepository {
         productMap.put(id, updatedProduct);
     }
 
-    public boolean delete(Long id) {
-        return productMap.remove(id) != null;
+    public Product delete(Long id) {
+        return productMap.remove(id);
     }
 
 

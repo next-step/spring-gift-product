@@ -28,7 +28,8 @@ public class ProductService {
     }
 
     public GetProductResDto getProductById(Long id) throws ProductNotFoundException {
-        Product product = productRepository.findById(id);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(ErrorCode.NOT_FOUND));
         return GetProductResDto.from(product);
     }
 
@@ -38,15 +39,14 @@ public class ProductService {
     }
 
     public void updateProduct(Long id, UpdateProductReqDto dto) throws ProductNotFoundException {
-        Product product = productRepository.findById(id);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(ErrorCode.NOT_FOUND));
         product.updateProduct(dto);
         productRepository.update(id,product);
     }
 
     public void deleteProduct(Long id) throws ProductNotFoundException {
-        boolean result = productRepository.delete(id);
-        if (!result) {
-            throw new ProductNotFoundException(ErrorCode.NOT_FOUND);
-        }
+        Product deletedProduct = productRepository.delete(id);
+        if(deletedProduct == null) throw new ProductNotFoundException(ErrorCode.NOT_FOUND);
     }
 }
