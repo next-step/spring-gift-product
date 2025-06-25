@@ -40,4 +40,10 @@ public class AdminItemController {
         model.addAttribute("itemDTO", new ItemDTO());
         return "admin/createForm";
     }
+
+    @PostMapping("/delete")
+    public String deleteItem(@RequestParam String name) {
+        itemService.delete(name);
+        return "redirect:/admin/products";
+    }
 }
