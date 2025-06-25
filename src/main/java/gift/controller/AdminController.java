@@ -46,7 +46,7 @@ public class AdminController {
     ProductResponseDto productById = service.findProductById(id);
     ProductRequestDto productRequestDto = new ProductRequestDto(productById);
     model.addAttribute("requestDto", productRequestDto);
-    return "updateForm";
+    return "updateProductForm";
   }
 
   @PostMapping(value = "/{id}/update")
