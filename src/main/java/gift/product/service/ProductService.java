@@ -1,5 +1,6 @@
 package gift.product.service;
 
+import gift.common.exception.ErrorCode;
 import gift.product.domain.Product;
 import gift.product.dto.CreateProductReqDto;
 import gift.product.dto.GetProductResDto;
@@ -36,4 +37,10 @@ public class ProductService {
         productRepository.update(id,product);
     }
 
+    public void deleteProduct(Long id) throws ProductNotFoundException {
+        boolean result = productRepository.delete(id);
+        if (!result) {
+            throw new ProductNotFoundException(ErrorCode.NOT_FOUND);
+        }
+    }
 }

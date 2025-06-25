@@ -41,5 +41,9 @@ public class ProductRepository {
         productMap.put(id, updatedProduct);
     }
 
+    public boolean delete(Long id) {
+        return productMap.remove(id) != null;
+    }
+
 
 }

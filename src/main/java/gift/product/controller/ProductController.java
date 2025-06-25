@@ -1,7 +1,6 @@
 package gift.product.controller;
 
 import gift.common.Response;
-import gift.product.domain.Product;
 import gift.product.dto.CreateProductReqDto;
 import gift.product.dto.GetProductResDto;
 import gift.product.dto.UpdateProductReqDto;
@@ -41,6 +40,10 @@ public class ProductController {
         return Response.ok(null, "update product success");
     }
 
-
+    @DeleteMapping("/{id}")
+    public Response<Void> deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return Response.ok(null, "delete product success");
+    }
 
 }
