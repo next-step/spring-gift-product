@@ -4,6 +4,8 @@ import gift.dto.ProductRequestDto;
 import gift.entity.Product;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -14,7 +16,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 //@ResponseBody + @Controller
-@RestController
+//@RestController
+@Controller
 public class ProductController {
 
     private final Map<Long, Product> products = new HashMap<>();
@@ -50,11 +53,13 @@ public class ProductController {
     //read
     //전체 상품을 조회
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts() {
+    public String getProducts(Model model) {
         List<Product> productList = products.values()
             .stream()
             .collect(Collectors.toList());
-        return new ResponseEntity<>(productList, HttpStatus.OK);
+        model.addAttribute("productList",productList);
+        return "main";
+        //return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
     //update
