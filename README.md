@@ -19,7 +19,7 @@
 
 + [X] 이전에 요청 받았던 변경 사항 반영
 + [X] 기본 레이아웃 및 템플릿 구조 설계
-+ [ ] 관리자가 상품 목록을 조회할 수 있는 템플릿 & View Controller 구현
++ [X] 관리자가 상품 목록을 조회할 수 있는 템플릿 & View Controller 구현
 + [ ] 세부 상품 정보 조회 템플릿 & View Controller 구현
 + [ ] 상품 등록 템플릿 & View Controller 구현
 + [ ] 상품 수정 템플릿 구현 & View Controller 구현
