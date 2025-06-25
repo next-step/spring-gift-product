@@ -12,19 +12,19 @@
     <table class="table table-bordered w-50">
         <tr>
             <th>ID</th>
-            <td th:text="${product.id()}"></td>
+            <td th:text="${product.getId()}"></td>
         </tr>
         <tr>
             <th>Name</th>
-            <td th:text="${product.name()}"></td>
+            <td th:text="${product.getName()}"></td>
         </tr>
         <tr>
             <th>Price</th>
-            <td th:text="${product.price()} + '원'"></td>
+            <td th:text="${product.getPrice()} + '원'"></td>
         </tr>
         <tr>
             <th>Image</th>
-            <td th:text="${product.imageUrl()}"></td>
+            <td th:text="${product.getImageUrl()}"></td>
         </tr>
     </table>
     <a th:href="@{/admin/products}" class="btn btn-secondary">목록으로</a>
