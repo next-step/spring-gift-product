@@ -18,14 +18,14 @@ public class ProductManagementService {
         this.productRepository = productRepository;
     }
 
-    public void create(ProductRequest request) {
+    public Product create(ProductRequest request) {
         validateRequest(request);
         Product newProduct = Product.of(
                 request.name(),
                 request.validatedPrice(),
                 request.imageUrl()
         );
-        productRepository.save(newProduct);
+        return productRepository.save(newProduct);
     }
 
     public Page<Product> getAllByPage(int pageNumber, int pageSize) {
