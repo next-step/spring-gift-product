@@ -60,17 +60,18 @@ public class ProductRepositoryImpl implements ProductRepository {
             throw new NoSuchElementException("수정할 상품이 없습니다. id=" + id);
         }
 
-        Product updateProduct = new Product(id,
+        product.update(
                 productRequestDto.getName(),
                 productRequestDto.getPrice(),
                 productRequestDto.getImageUrl()
         );
-        products.put(id, updateProduct);
 
-        return new ProductResponseDto(updateProduct.getId(),
-                updateProduct.getName(),
-                updateProduct.getPrice(),
-                updateProduct.getImageUrl());
+        return new ProductResponseDto(
+                product.getId(),
+                product.getName(),
+                product.getPrice(),
+                product.getImageUrl()
+        );
     }
 
     @Override
