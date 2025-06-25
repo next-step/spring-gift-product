@@ -2,7 +2,7 @@
 > Kakao Tech Campus Step2
 
 ## 구현할 기능 목록
-- [ ] 관리자 화면을 thymeleaf로 구현
+- [x] 관리자 화면을 thymeleaf로 구현
   - [x] 상품을 리스트로 뜨도록 구현
     - [x] 각 상품에 삭제 기능
     - [x] 각 상품에 수정 기능
