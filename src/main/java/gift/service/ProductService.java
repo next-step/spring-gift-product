@@ -17,51 +17,51 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<ProductResponseDto> findAllProducts(){
+    public List<ProductResponseDto> findAllProducts() {
 
         return productRepository.findAllProducts()
                 .stream()
-                .map(ProductResponseDto::toDto)
+                .map(ProductResponseDto::from)
                 .toList();
     }
 
-    public ProductResponseDto findProductById(Long id){
+    public ProductResponseDto findProductById(Long id) {
         Product findProduct = productRepository.findProductByIdOrElseThrow(id);
 
-        return ProductResponseDto.toDto(findProduct);
+        return ProductResponseDto.from(findProduct);
     }
 
-    public ProductResponseDto createProduct(String name, Long price, String imageUrl){
+    public ProductResponseDto createProduct(String name, Long price, String imageUrl) {
         Product createdProduct = productRepository.createProduct(name, price, imageUrl);
 
-        return ProductResponseDto.toDto(createdProduct);
+        return ProductResponseDto.from(createdProduct);
     }
 
     @Transactional
-    public void deleteProduct(Long id){
+    public void deleteProduct(Long id) {
         Product findProduct = productRepository.findProductByIdOrElseThrow(id);
         productRepository.deleteProduct(id);
     }
 
     @Transactional
-    public void patchProduct(Long id, String name, Long price, String imageUrl){
+    public void patchProduct(Long id, String name, Long price, String imageUrl) {
         Product findProduct = productRepository.findProductByIdOrElseThrow(id);
 
-        if (name != null){
+        if (name != null) {
             findProduct.setName(name);
         }
 
-        if (price != null){
+        if (price != null) {
             findProduct.setPrice(price);
         }
 
-        if (imageUrl != null){
+        if (imageUrl != null) {
             findProduct.setImageUrl(imageUrl);
         }
     }
 
     @Transactional
-    public void updateProduct(Long id, String name, Long price, String imageUrl){
+    public void updateProduct(Long id, String name, Long price, String imageUrl) {
         Product findProduct = productRepository.findProductByIdOrElseThrow(id);
         findProduct.updateProduct(name, price, imageUrl);
     }

@@ -11,10 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class MyExceptionHandler {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<Map<String, String>> handleResponseStatusError(ResponseStatusException e){
+    public ResponseEntity<Map<String, String>> handleResponseStatusError(ResponseStatusException e) {
         Map<String, String> errors = new HashMap<>();
         errors.put("message", e.getReason());
 
@@ -22,7 +22,7 @@ public class MyExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationError(MethodArgumentNotValidException e){
+    public ResponseEntity<Map<String, String>> handleValidationError(MethodArgumentNotValidException e) {
         Map<String, String> errors = new HashMap<>();
         e.getBindingResult().getFieldErrors().forEach(error -> {
             errors.put(error.getField(), error.getDefaultMessage());

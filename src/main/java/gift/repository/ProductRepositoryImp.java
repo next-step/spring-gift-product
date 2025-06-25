@@ -6,12 +6,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class ProductRepositoryImp implements ProductRepository{
-    private final Map<Long, Product> products = new HashMap<>();
+public class ProductRepositoryImp implements ProductRepository {
+    private static final Map<Long, Product> products = new ConcurrentHashMap<>();
 
-    public ProductRepositoryImp(){
+    public ProductRepositoryImp() {
         // dummy data
         Product product1 = new Product(1L, "test1", 12000L, "temp1");
         Product product2 = new Product(2L, "test2", 13000L, "temp2");
@@ -29,7 +30,7 @@ public class ProductRepositoryImp implements ProductRepository{
     public Product findProductByIdOrElseThrow(Long id) {
         Product product = products.get(id);
 
-        if (product == null){
+        if (product == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 ID의 상품을 찾을 수 없습니다.");
         }
 

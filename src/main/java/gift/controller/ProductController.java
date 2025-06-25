@@ -14,7 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("api/products")
 public class ProductController {
     private final ProductService productService;
 
@@ -24,7 +24,7 @@ public class ProductController {
 
     // 상품 목록 조회
     @GetMapping
-    public ResponseEntity<List<ProductResponseDto>> findAllProducts(){
+    public ResponseEntity<List<ProductResponseDto>> findAllProducts() {
         List<ProductResponseDto> list = productService.findAllProducts();
 
         return new ResponseEntity<>(list, HttpStatus.OK);
@@ -32,7 +32,7 @@ public class ProductController {
 
     // 상품 단건 조회
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseDto> findProductById(@PathVariable Long id){
+    public ResponseEntity<ProductResponseDto> findProductById(@PathVariable Long id) {
         ProductResponseDto productResponseDto = productService.findProductById(id);
 
         return new ResponseEntity<>(productResponseDto, HttpStatus.OK);
@@ -40,7 +40,7 @@ public class ProductController {
 
     // 상품 추가
     @PostMapping
-    public ResponseEntity<ProductResponseDto> createProduct(@Valid @RequestBody CreateProductRequestDto requestDto){
+    public ResponseEntity<ProductResponseDto> createProduct(@Valid @RequestBody CreateProductRequestDto requestDto) {
         ProductResponseDto productResponseDto = productService.createProduct(
                 requestDto.getName(),
                 requestDto.getPrice(),
@@ -52,7 +52,7 @@ public class ProductController {
 
     // 상품 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id){
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -62,9 +62,9 @@ public class ProductController {
     @PatchMapping("/{id}")
     public ResponseEntity<Void> patchProduct(
             @PathVariable Long id,
-            @RequestBody PatchProductRequestDto requestDto){
+            @RequestBody PatchProductRequestDto requestDto) {
 
-        if (requestDto.getName() == null && requestDto.getPrice() == null && requestDto.getImageUrl() == null){
+        if (requestDto.getName() == null && requestDto.getPrice() == null && requestDto.getImageUrl() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정할 값이 존재하지 않습니다.");
         }
 
@@ -83,7 +83,7 @@ public class ProductController {
     public ResponseEntity<Void> updateProduct(
             @PathVariable Long id,
             @Valid @RequestBody UpdateProductRequestDto requestDto
-            ){
+    ) {
 
         productService.updateProduct(
                 id,

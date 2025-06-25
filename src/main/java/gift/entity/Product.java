@@ -7,22 +7,18 @@ public class Product {
     private String imageUrl;
 
     public Long getId() {
-
         return id;
     }
 
     public String getName() {
-
         return name;
     }
 
     public Long getPrice() {
-
         return price;
     }
 
     public String getImageUrl() {
-
         return imageUrl;
     }
 
@@ -49,7 +45,7 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public void updateProduct(String name, Long price, String imageUrl){
+    public void updateProduct(String name, Long price, String imageUrl) {
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;

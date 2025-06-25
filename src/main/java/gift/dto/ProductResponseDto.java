@@ -31,7 +31,7 @@ public class ProductResponseDto {
         this.imageUrl = imageUrl;
     }
 
-    public static ProductResponseDto toDto(Product product){
+    public static ProductResponseDto from(Product product) {
 
         return new ProductResponseDto(
                 product.getId(),
