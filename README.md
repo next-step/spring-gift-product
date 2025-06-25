@@ -9,4 +9,4 @@
 - 상품 단건 조회 (`GET /products/{id}`)
 - 상품 추가 (`POST /products`)
 - 상품 수정 (`PUT /products/{id}`)
-- 상품 삭제 (`DELETE /products`)
+- 상품 삭제 (`DELETE /products/{id}`)
