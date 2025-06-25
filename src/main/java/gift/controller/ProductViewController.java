@@ -35,4 +35,10 @@ public class ProductViewController {
         model.addAttribute("product", product);
         return "admin/view-product";
     }
+
+    @GetMapping("/create")
+    public String createProductForm(Model model) {
+        model.addAttribute("title", "상품 등록");
+        return "admin/create-product";
+    }
 }

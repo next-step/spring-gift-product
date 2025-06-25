@@ -7,7 +7,7 @@
     <main th:replace="~{layout/base :: common_content(~{::section})}">
         <section>
             <div class="flex justify-end px-5 mb-5">
-                <a class="rounded-lg bg-green-500 px-3 py-1 text-sm font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300" href="/admin/product/form">상품 등록</a>
+                <a href="/admin/products/create" class="rounded-lg bg-green-500 px-3 py-1 text-sm font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300">상품 등록</a>
             </div>
             <div class="flex flex-wrap justify-center gap-6">
                 <th:block th:each="product, stat : ${products}">
