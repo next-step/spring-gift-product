@@ -22,7 +22,7 @@ public class InMemoryProductRepository implements ProductRepository {
     private static final int DEFAULT_PAGE_SIZE = 10;
 
     @Override
-    public void save(Product product) {
+    public Product save(Product product) {
         validateProductNotNull(product);
         Long id = generateId();
         Product productWithId = Product.withId(
@@ -32,6 +32,7 @@ public class InMemoryProductRepository implements ProductRepository {
                 product.imageUrl()
         );
         products.put(id, productWithId);
+        return productWithId;
     }
 
     @Override
@@ -88,7 +89,7 @@ public class InMemoryProductRepository implements ProductRepository {
         }
 
         List<Product> allProducts = new ArrayList<>(products.values());
-        
+
         int fromIndex = (pageNumber - 1) * pageSize;
         int toIndex = Math.min(fromIndex + pageSize, total);
         List<Product> pageContent = allProducts.subList(fromIndex, toIndex);
