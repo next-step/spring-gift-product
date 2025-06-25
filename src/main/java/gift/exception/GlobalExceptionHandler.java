@@ -1,6 +1,6 @@
 package gift.exception;
 
-import gift.dto.ResErrorMessageDto;
+import gift.dto.ErrorMessageResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,12 +12,12 @@ import java.util.NoSuchElementException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<ResErrorMessageDto> handleNoSuchElementException(NoSuchElementException e) {
-        return new ResponseEntity<>(new ResErrorMessageDto(e.getMessage()), HttpStatus.NOT_FOUND);
+    public ResponseEntity<ErrorMessageResponse> handleNoSuchElementException(NoSuchElementException e) {
+        return new ResponseEntity<>(new ErrorMessageResponse(e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ResErrorMessageDto> handleIllegalArgumentException(IllegalArgumentException e) {
-        return new ResponseEntity<>(new ResErrorMessageDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorMessageResponse> handleIllegalArgumentException(IllegalArgumentException e) {
+        return new ResponseEntity<>(new ErrorMessageResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 }

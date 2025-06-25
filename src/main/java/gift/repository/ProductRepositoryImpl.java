@@ -5,12 +5,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
     // 컬렉션을 활용하여 임시로 구현
-    final private HashMap<Long, Product> productMap;
+    final private Map<Long, Product> productMap;
     private Long sequence; // ID 생성에 사용될 시퀀스
 
     public ProductRepositoryImpl() {
@@ -52,11 +53,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Long deleteById(Long productId) {
+    public Boolean deleteById(Long productId) {
         if (productMap.containsKey(productId)) {
             productMap.remove(productId); // 제품을 삭제
-            return 1L; // 영향을 받은 행 수 반환
+            return true; // 영향을 받은 행 수 반환
         }
-        return 0L; // 제품이 존재하지 않으면 0 반환
+        return false; // 제품이 존재하지 않으면 0 반환
     }
 }

@@ -1,7 +1,7 @@
 package gift.controller;
 
-import gift.dto.ReqCreateProductDto;
-import gift.dto.ReqUpdateProductDto;
+import gift.dto.ProductCreateRequest;
+import gift.dto.ProductUpdateRequest;
 import gift.entity.Product;
 import gift.service.ProductService;
 import org.springframework.http.HttpStatus;
@@ -35,13 +35,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody ReqCreateProductDto dto) {
+    public ResponseEntity<Product> createProduct(@RequestBody ProductCreateRequest dto) {
         Product product = productService.create(dto.toProduct());
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ReqUpdateProductDto dto) {
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductUpdateRequest dto) {
         if (id == null) {
             throw new IllegalArgumentException("상품 ID는 필수입니다.");
         }
