@@ -1,5 +1,6 @@
 package gift.service;
 
+import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
@@ -9,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ProductService {
-
+    private Long id = 1L;
     private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
@@ -21,5 +22,16 @@ public class ProductService {
         if (product == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found.");
         return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
+    }
+
+    public ProductResponseDto saveProduct(ProductRequestDto dto) {
+        Product product = new Product(
+                id++,
+                dto.name(),
+                dto.price(),
+                dto.imageUrl()
+        );
+        Product savedProduct = productRepository.saveProduct(product);
+        return new ProductResponseDto(savedProduct.getId(), savedProduct.getName(), product.getPrice(), product.getImageUrl());
     }
     }

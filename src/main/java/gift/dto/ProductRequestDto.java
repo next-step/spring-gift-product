@@ -1,4 +1,7 @@
 package gift.dto;
 
-public class ProductRequestDto {
-}
+public record ProductRequestDto(
+        String name,
+        int price,
+        String imageUrl
+) {}
