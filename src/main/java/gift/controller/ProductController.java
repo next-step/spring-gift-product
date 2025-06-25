@@ -33,28 +33,24 @@ public class ProductController {
 
     // 상품 등록
     @PostMapping
-    public ResponseEntity<Product> postProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> postProduct(@RequestBody Product productWithoutId) {
         Long productId = products.isEmpty() ? 1 : Collections.max(products.keySet()) + 1;
-        product.setId(productId);
-        products.put(productId, product);
+        Product newProduct = Product.createWithId(productWithoutId, productId);
+        products.put(productId, newProduct);
 
-        return new ResponseEntity<>(product, HttpStatus.CREATED);
+        return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
     }
 
     // 상품 수정
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updateProduct) {
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updateRequest) {
         Product product = products.get(id);
 
         if (product == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        product.setName(updateProduct.getName());
-        product.setPrice(updateProduct.getPrice());
-        product.setImageUrl(updateProduct.getImageUrl());
-
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        return new ResponseEntity<>(product.updateWith(updateRequest), HttpStatus.OK);
     }
 
     // 상품 삭제
