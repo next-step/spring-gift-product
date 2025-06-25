@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>상품 수정</title>
+</head>
+<body>
+<h1>상품 수정</h1>
+<form th:action="@{/admin/products/{id}(id=${id})}" method="post">
+  <input type="text" name="name" placeholder="상품명" required>
+  <input type="number" name="price" placeholder="가격" required>
+  <input type="text" name="imageUrl" placeholder="이미지 URL">
+  <button type="submit">수정</button>
+</form>
+<a th:href="@{/admin/products}">목록으로 돌아가기</a>
+</body>
+</html>
