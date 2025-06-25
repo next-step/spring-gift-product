@@ -27,7 +27,9 @@
             <button type="button"
                     class="update-btn"
                     th:attr="data-id=${p.id}, data-name=${p.name}, data-price=${p.price}, data-image-url=${p.imageUrl}">수정</button>
-            <button type="button">삭제</button>
+            <button type="button"
+                    class="delete-btn"
+                    th:attr="data-id=${p.id}">삭제</button>
         </td>
     </tr>
     </tbody>
@@ -50,6 +52,14 @@
         <label>가격<input type="number" name="price" id="update-price"></label>
         <label>이미지 URL<input type="text" name="imageUrl" id="update-image-url"></label>
         <button type="submit">저장</button>
+        <button type="button" class="cancel-btn">취소</button>
+    </form>
+</div>
+<div id="deleteModal" class="modal" style="display: none;">
+    <form th:action="@{/products/delete}" method="post">
+        <input type="hidden" name="id" id="delete-id">
+        <p>삭제하시겠습니까?</p>
+        <button type="submit">삭제</button>
         <button type="button" class="cancel-btn">취소</button>
     </form>
 </div>
@@ -80,6 +90,13 @@
             openUpdateModal(id, name, price, imageUrl);
         });
     });
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const id = this.dataset.id;
+            document.getElementById('delete-id').value = id;
+            document.getElementById('deleteModal').style.display = 'block';
+        })
+    })
     document.querySelectorAll('.cancel-btn').forEach(btn => {
         btn.addEventListener('click', function () {
             closeModal();
