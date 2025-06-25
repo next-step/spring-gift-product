@@ -1,6 +1,8 @@
 package gift;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,6 +36,9 @@ public class ProductController {
 
     @PatchMapping("/product/{id}")
     public Product updateProduct(@PathVariable Long id, @RequestBody ProductDTO updateProductdto) {
+        if(!products.containsKey(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 데이터가 존재하지 않습니다.");
+        }
         Product oldProduct = products.get(id);
         oldProduct.updateProduct(updateProductdto);
         return oldProduct;
@@ -41,6 +46,9 @@ public class ProductController {
 
     @DeleteMapping("/product/{id}")
     public String deleteProduct(@PathVariable Long id) {
+        if(!products.containsKey(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 데이터가 존재하지 않습니다.");
+        }
         products.remove(id);
         return "상품 삭제: " + id;
     }
