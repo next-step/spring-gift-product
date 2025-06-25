@@ -10,6 +10,13 @@ public class ProductRequestDto {
   public ProductRequestDto() {
   }
 
+  public ProductRequestDto(ProductResponseDto responseDto) {
+    this.id = responseDto.getId();
+    this.name = responseDto.getName();
+    this.price = responseDto.getPrice();
+    this.imageUrl = responseDto.getImageUrl();
+  }
+
   public Long getId() {
     return id;
   }
