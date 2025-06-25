@@ -1,10 +1,12 @@
 package gift.dto;
 
 import gift.entity.Item;
+import jakarta.validation.constraints.Min;
 
 public class ItemDTO {
     private Long id;
     private String name;
+    @Min(0)
     private Integer price;
     private String imageUrl;
 

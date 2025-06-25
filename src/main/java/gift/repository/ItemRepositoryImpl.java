@@ -35,12 +35,7 @@ public class ItemRepositoryImpl implements ItemRepository {
             boolean priceMatch = (price == null || item.getPrice().equals(price));
 
             if (nameMatch && priceMatch) {
-                ItemDTO dto = new ItemDTO(
-                        item.getId(),
-                        item.getName(),
-                        item.getPrice(),
-                        item.getImageUrl()
-                );
+                ItemDTO dto = new ItemDTO(item);
                 result.add(dto);
             }
         }
