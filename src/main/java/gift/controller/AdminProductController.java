@@ -1,11 +1,14 @@
 package gift.controller;
 
+import gift.dto.RequestDto;
 import gift.entity.Product;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,6 +57,39 @@ public class AdminProductController {
             model.addAttribute("products", products.values());
         }
         return "products";
+    }
+
+    @GetMapping("/update/{productId}")
+    public String updateProductPage(@PathVariable Long productId, Model model) {
+        Product product = products.get(productId);
+
+        if (product == null) {
+            return "redirect:/admin/products";
+        }
+
+        model.addAttribute("product", product);
+        return "update-product";
+    }
+
+    @PostMapping("/update/{productId}")
+    public String updateProduct(
+        @PathVariable Long productId,
+        @RequestParam String name,
+        @RequestParam Double price,
+        @RequestParam String imageUrl
+    ) {
+        Product product = products.get(productId);
+
+        if (product == null) {
+            return "redirect:/admin/products";
+        }
+
+        if (name == null || price == null || imageUrl == null) {
+            return "redirect:/admin/products/update/" + productId;
+        }
+
+        product.update(new RequestDto(name, price, imageUrl));
+        return "redirect:/admin/products";
     }
 
 
