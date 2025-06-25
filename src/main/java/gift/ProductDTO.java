@@ -1,4 +1,4 @@
-package gift
+package gift;
 
 public class ProductDTO {
     private String name;
