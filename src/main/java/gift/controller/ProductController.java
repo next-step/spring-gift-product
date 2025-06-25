@@ -1,7 +1,7 @@
 package gift.controller;
 
-import gift.dto.ProductCreateRequestDto;
-import gift.dto.ProductUpdateRequestDto;
+import gift.dto.api.ProductCreateRequestDto;
+import gift.dto.api.ProductUpdateRequestDto;
 import gift.entity.Product;
 import gift.service.ProductService;
 import java.util.List;

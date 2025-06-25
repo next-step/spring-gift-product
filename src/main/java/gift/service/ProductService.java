@@ -1,6 +1,6 @@
 package gift.service;
 
-import gift.dto.ProductUpdateRequestDto;
+import gift.dto.api.ProductUpdateRequestDto;
 import gift.entity.Product;
 
 import gift.repository.ProductRepository;
