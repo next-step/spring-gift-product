@@ -26,25 +26,24 @@ public class ProductController {
     public ResponseEntity<ProductResponseDto> createProduct(
             @Valid @RequestBody ProductRequestDto request
     ) {
-        return new ResponseEntity<>(
-                ProductResponseDto.from(
-                        productService.createProduct(
-                                request.name(),
-                                request.price(),
-                                request.imageUrl()
-                        )
-                ), HttpStatus.CREATED);
+        Product created = productService.createProduct(
+                request.name(),
+                request.price(),
+                request.imageUrl()
+        );
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(ProductResponseDto.from(created));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDto> getProductById(
             @PathVariable Long id
     ) {
-        return new ResponseEntity<>(
-                ProductResponseDto.from(
-                        productService.getProductById(id)
-                ), HttpStatus.OK
-        );
+        Product product = productService.getProductById(id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ProductResponseDto.from(product));
     }
 
     @GetMapping
@@ -53,7 +52,9 @@ public class ProductController {
         List<ProductResponseDto> response = products.stream()
                 .map(product -> ProductResponseDto.from(product))
                 .toList();
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
     }
 
     @PatchMapping("/{id}")
@@ -61,11 +62,11 @@ public class ProductController {
             @PathVariable Long id,
             @Valid @RequestBody ProductPatchDto patch
     ) {
-        return new ResponseEntity<>(
-                ProductResponseDto.from(
-                        productService.updateProductById(id, patch.getName(), patch.getPrice(), patch.getImageUrl())
-                ), HttpStatus.OK
-        );
+        Product product = productService.updateProductById(id, patch.getName(), patch.getPrice(), patch.getImageUrl());
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ProductResponseDto.from(product));
     }
 
     @DeleteMapping("/{id}")
@@ -73,7 +74,7 @@ public class ProductController {
             @PathVariable Long id
     ) {
         productService.deleteProductById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
