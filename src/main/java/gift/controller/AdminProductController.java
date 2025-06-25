@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping("/admin/products")
@@ -44,6 +45,15 @@ public class AdminProductController {
 
         products.put(productId, product);
         return "redirect:/admin/products/create-product";
+    }
+
+    @GetMapping
+    public String getProductsPage(Model model) {
+        // products가 null이 아닌지 확인
+        if (products != null) {
+            model.addAttribute("products", products.values());
+        }
+        return "products";
     }
 
 

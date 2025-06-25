@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 목록</title>
+</head>
+
+<body>
+<h1>상품 목록</h1>
+<p><a th:href="@{/admin/products/create-product}">상품 등록</a></p>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>상품명</th>
+        <th>가격</th>
+        <th>이미지 URL</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.productId}">1</td>
+        <td th:text="${product.name}">상품명</td>
+        <td th:text="${product.price}">9000</td>
+        <td th:text="${product.imageUrl}">
+            https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg
+        </td>
+
+
+    </tr>
+
+    </tbody>
+
+
+</table>
+</body>
+</html>
