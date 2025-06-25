@@ -65,4 +65,18 @@ public class ItemRepositoryImpl implements ItemRepository {
         }
         return null;
     }
+
+    @Override
+    public List<ItemDTO> getAllItems() {
+        List<ItemDTO> result = new ArrayList<>();
+        for (Item item : items.values()) {
+            result.add(new ItemDTO(item));
+        }
+        return result;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        items.remove(id);
+    }
 }

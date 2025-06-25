@@ -14,4 +14,7 @@ public interface ItemRepository {
 
     Item findById(Long id);
 
+    List<ItemDTO> getAllItems();
+
+    void deleteById(Long id);
 }

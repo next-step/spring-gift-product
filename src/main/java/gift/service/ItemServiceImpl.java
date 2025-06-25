@@ -47,4 +47,21 @@ public class ItemServiceImpl implements ItemService {
 
         return new ItemDTO(item);
     }
+
+    @Override
+    public ItemDTO findById(Long id) {
+        List<ItemDTO> items = itemRepository.getAllItems();
+
+        for(ItemDTO item : items){
+            if(item.getId().equals(id)){
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        itemRepository.deleteById(id);
+    }
 }

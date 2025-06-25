@@ -42,8 +42,11 @@ public class AdminItemController {
     }
 
     @PostMapping("/delete")
-    public String deleteItem(@RequestParam String name) {
-        itemService.delete(name);
+    public String deleteItem(@RequestParam Long id) {
+        ItemDTO item = itemService.findById(id);
+        if (item != null) {
+            itemService.deleteById(id);
+        }
         return "redirect:/admin/products";
     }
 }
