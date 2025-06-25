@@ -3,12 +3,13 @@ package gift;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping("/api")
 public class ProductController {
-    private final Map<Long, Product> products = new HashMap<>();
+    private final Map<Long, Product> products = new ConcurrentHashMap<>();
     private final AtomicLong idGenerator = new AtomicLong(1);
 
     @PostMapping("/product")
