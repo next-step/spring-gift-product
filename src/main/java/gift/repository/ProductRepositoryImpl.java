@@ -47,9 +47,9 @@ public class ProductRepositoryImpl implements ProductRepository {
     public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
         Product product = new Product(
                 currentProductId++,
-                productRequestDto.getName(),
-                productRequestDto.getPrice(),
-                productRequestDto.getImageUrl());
+                productRequestDto.name(),
+                productRequestDto.price(),
+                productRequestDto.imageUrl());
 
         products.put(product.getId(), product);
 
@@ -70,9 +70,9 @@ public class ProductRepositoryImpl implements ProductRepository {
             throw new IllegalArgumentException("해당 ID의 상품이 존재하지 않습니다: " + id);
         }
 
-        product.setName(productRequestDto.getName());
-        product.setPrice(productRequestDto.getPrice());
-        product.setImageUrl(productRequestDto.getImageUrl());
+        product.setName(productRequestDto.name());
+        product.setPrice(productRequestDto.price());
+        product.setImageUrl(productRequestDto.imageUrl());
 
         return new ProductResponseDto(
                 product.getId(),
