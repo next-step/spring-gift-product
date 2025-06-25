@@ -32,10 +32,10 @@ class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductResponseDto>> findAllProducts() {
-        return new ResponseEntity<>(productService.findAllProducts(), HttpStatus.OK);
+        return new ResponseEntity<>(productService.findAll(), HttpStatus.OK);
     }
 
-    @PatchMapping("/{productId}")
+    @PutMapping("/{productId}")
     public ResponseEntity<ProductResponseDto> updateProduct(
             @PathVariable Long productId,
             @RequestBody ProductRequestDto requestDto
