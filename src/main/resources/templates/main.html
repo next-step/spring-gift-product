@@ -30,6 +30,13 @@
     <td th:text="${product.name}"></td>
     <td th:text="${product.price}"></td>
     <td><img th:src="${product.imageUrl}" width="100px" alt = "상품 이미지"></td>
+
+    <!--pathvariable-->
+    <td><button th:onclick="|location.href='@{/products/remove/{id}(id=${product.id})}'|">상품 삭제</button></td>
+
+    <!---->
+    <td><button th:onclick="|location.href='@{/products/(id=${product.id})}'|">상품 수정</button></td>
+
   </tr>
   </tbody>
 </table>

@@ -47,7 +47,6 @@ public class ProductController {
         return "form";
     }
 
-
     //read
     //특정 상품을 조회(id)
     @GetMapping("/products/{id}")
@@ -84,13 +83,19 @@ public class ProductController {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
+    //delete.html을 불러오기 위한 메서드
+    @GetMapping("/products/remove")
+    public String deleteForm(){
+        return "delete";
+    }
+
     //delete
     //등록된 상품을 삭제
-    @DeleteMapping("/products/{id}")
-    public ResponseEntity<Void> removeProduct(@PathVariable Long id) {
+    @GetMapping("/products/remove/{id}")
+    public String removeProduct(@PathVariable Long id) {
         Long found = findProductById(id).getId();
         products.remove(found);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return "redirect:/products";
     }
 
     public boolean checkProduct(ProductRequestDto requestDto) {
