@@ -21,16 +21,16 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createProduct(@Valid @RequestBody ProductCreateRequestDto product) {
-        productService.createProduct(product);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<ProductResponseDto> createProduct(@Valid @RequestBody ProductCreateRequestDto product) {
+        var newProduct = productService.createProduct(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newProduct);
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity<Void> updateProduct(@PathVariable Long id,
+    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long id,
                                               @Valid @RequestBody ProductUpdateRequestDto product) {
-        productService.updateProduct(id, product);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        var newProduct= productService.updateProduct(id, product);
+        return ResponseEntity.status(HttpStatus.OK).body(newProduct);
     }
 
 

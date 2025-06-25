@@ -17,22 +17,20 @@ public class ProductService {
     private final Map<Long, Product> products = new HashMap<>();
     private long nextId = 0;
 
-    public void createProduct(ProductCreateRequestDto product) {
+    public ProductResponseDto createProduct(ProductCreateRequestDto product) {
         final long newProductId = ++nextId;
-        products.put(newProductId, new Product(
-                newProductId,
-                product.name(),
-                product.price(),
-                product.imageUrl()
-        ));
+        Product newProduct = new Product(newProductId, product.name(), product.price(), product.imageUrl());
+        products.put(newProductId, newProduct);
+        return newProduct.toResponseDto();
     }
 
-    public void updateProduct(Long id, ProductUpdateRequestDto product) {
+    public ProductResponseDto updateProduct(Long id, ProductUpdateRequestDto product) {
         if (!products.containsKey(id))
             throw new ProductNotFoundException("해당 상품을 찾을 수 없습니다.");
 
         Product existingProduct = products.get(id);
         existingProduct.update(product.name(), product.price(), product.imageUrl());
+        return existingProduct.toResponseDto();
     }
 
     public void deleteProduct(Long id) {
