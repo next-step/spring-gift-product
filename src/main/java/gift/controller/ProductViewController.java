@@ -19,9 +19,14 @@ public class ProductViewController {
     }
     
     @GetMapping
-    public String showList(Model model) {
+    public String showListView(Model model) {
         List<FindProductResponseDto> products = productService.findAllProducts();
         model.addAttribute("products", products);
         return "product-list";
+    }
+    
+    @GetMapping("/add")
+    public String addView() {
+        return "product-add";
     }
 }
