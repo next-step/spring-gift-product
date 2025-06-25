@@ -31,6 +31,7 @@ public class ProductService {
         return ProductResponseDto.from(findProduct);
     }
 
+    @Transactional
     public ProductResponseDto createProduct(String name, Long price, String imageUrl) {
         Product createdProduct = productRepository.createProduct(name, price, imageUrl);
 
