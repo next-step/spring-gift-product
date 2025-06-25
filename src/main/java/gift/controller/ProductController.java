@@ -26,7 +26,7 @@ public class ProductController {
     //create
     //생성한 product는 HashMap에 저장
     @PostMapping("/products")
-    public ResponseEntity<Product> createProduct(@RequestBody ProductRequestDto requestDto) {
+    public String createProduct(@ModelAttribute ProductRequestDto requestDto) {
         if (checkProduct(requestDto)) {
             Product product = new Product(
                 ++pid,
@@ -35,8 +35,7 @@ public class ProductController {
                 requestDto.getImageUrl()
             );
             products.put(product.getId(), product);
-            //ResponseEntity의 경우, 객체와 상태를 함께 반환(상태 지정 가능)
-            return new ResponseEntity<>(product, HttpStatus.CREATED);
+            return "redirect:/products";
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
             "가격은 음수가 될 수 없으며, 상품명, 가격, 이미지 주소는 필수 값입니다.");
