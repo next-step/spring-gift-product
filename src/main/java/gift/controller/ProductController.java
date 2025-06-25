@@ -35,11 +35,18 @@ public class ProductController {
                 requestDto.getImageUrl()
             );
             products.put(product.getId(), product);
-            return "redirect:/products";
+            return "redirect:/products"; //GetMapping 되어 있는 것을 호출,,,?
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
             "가격은 음수가 될 수 없으며, 상품명, 가격, 이미지 주소는 필수 값입니다.");
     }
+
+    //form.html을 불러오기 위한 메서드
+    @GetMapping("/products/new")
+    public String productForm(){
+        return "form";
+    }
+
 
     //read
     //특정 상품을 조회(id)

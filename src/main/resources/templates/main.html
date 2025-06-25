@@ -9,7 +9,7 @@
 <nav>
   <ul>
     <li><a th:href="@{/products}">전체 상품 조회하기</a></li>
-    <li><a th:href="@{templates/form.html}">상품 등록하기</a></li>
+    <li><a th:href="@{/products/new}">상품 등록하기</a></li>
   </ul>
 </nav>
 
@@ -33,27 +33,6 @@
   </tr>
   </tbody>
 </table>
-
-<form action="/products" method="post">
-  <p>
-    상품 등록하기
-  </p>
-  <p>
-    <strong>상품명</strong>
-    <input type="text" name="name" placeholder="상품명 입력">
-  </p>
-  <p>
-    <strong>가격</strong>
-    <input type="number" name="price" placeholder="상품 가격 입력">
-  </p>
-  <p>
-    <strong>이미지 주소</strong>
-    <input type="text" name="imageUrl" placeholder="상품 이미지 주소 입력">
-  </p>
-  <p>
-    <input type="submit" value="상품 등록하기">
-  </p>
-</form>
 
 </body>
 </html>
