@@ -30,7 +30,7 @@ public class ProductController {
         Integer price = requestDto.getPrice();
         String imageUrl = requestDto.getImageUrl();
 
-        ProductResponseDto responseDto = productService.createProduct(name, price, imageUrl);
+        ProductResponseDto responseDto = productService.create(name, price, imageUrl);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -42,7 +42,7 @@ public class ProductController {
 
     @GetMapping("/{productId}")
     public ResponseEntity<ProductResponseDto> getProduct(@PathVariable("productId") Long productId) {
-        return ResponseEntity.ok(productService.findById(productId));
+        return ResponseEntity.ok(productService.find(productId));
     }
 
     @PutMapping("/{productId}")
@@ -57,12 +57,12 @@ public class ProductController {
         Integer price = requestDto.getPrice();
         String imageUrl = requestDto.getImageUrl();
 
-        return ResponseEntity.ok(productService.updateProduct(productId, name, price, imageUrl));
+        return ResponseEntity.ok(productService.update(productId, name, price, imageUrl));
     }
 
     @DeleteMapping("/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable("productId") Long productId) {
-        productService.deleteById(productId);
+        productService.delete(productId);
         return ResponseEntity.noContent().build();
     }
 

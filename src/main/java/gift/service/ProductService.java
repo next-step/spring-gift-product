@@ -17,28 +17,28 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public ProductResponseDto createProduct(String name, Integer price, String imageUrl) {
+    public ProductResponseDto create(String name, Integer price, String imageUrl) {
         Product product = new Product(name, price, imageUrl);
         Product newProduct = productRepository.save(product);
 
         return new ProductResponseDto(newProduct.getId(), newProduct.getName(), newProduct.getPrice(), newProduct.getImageUrl());
     }
 
-    public ProductResponseDto findById(Long id) {
+    public ProductResponseDto find(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found: id=" + id)); // 상품이 없는 경우 예외 처리
 
         return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
     }
 
-    public ProductResponseDto updateProduct(Long productId, String name, Integer price, String imageUrl) {
+    public ProductResponseDto update(Long productId, String name, Integer price, String imageUrl) {
         Product product = productRepository.update(productId, name, price, imageUrl)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found: id=" + productId));
 
         return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
     }
 
-    public void deleteById(Long productId) {
+    public void delete(Long productId) {
         productRepository.deleteById(productId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found: id=" + productId));
     }
