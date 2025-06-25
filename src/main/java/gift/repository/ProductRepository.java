@@ -1,5 +1,6 @@
 package gift.repository;
 
+import gift.dto.ProductUpdateRequestDto;
 import gift.entity.Product;
 
 import java.util.ArrayList;
@@ -27,12 +28,12 @@ public class ProductRepository {
         return Optional.ofNullable(storage.get(id));
     }
 
-    public void update(Long id, Product updatedProduct) {
+    public void update(Long id, ProductUpdateRequestDto dto) {
         Product existing = storage.get(id);
         if (existing != null) {
-            existing.setName(updatedProduct.getName());
-            existing.setPrice(updatedProduct.getPrice());
-            existing.setImageUrl(updatedProduct.getImageUrl());
+            existing.setName(dto.getName());
+            existing.setPrice(dto.getPrice());
+            existing.setImageUrl(dto.getImageUrl());
         }
     }
 

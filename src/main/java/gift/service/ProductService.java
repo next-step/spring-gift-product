@@ -1,5 +1,6 @@
 package gift.service;
 
+import gift.dto.ProductUpdateRequestDto;
 import gift.entity.Product;
 
 import gift.repository.ProductRepository;
@@ -27,11 +28,11 @@ public class ProductService {
         return ProductValidator.validateExists(id, repository);
     }
 
-    public Product updateProduct(Long id, Product updateData) {
-        ProductValidator.validate(updateData);                     // 유효성 검사
+    public Product updateProduct(Long id, ProductUpdateRequestDto updateRequestDto) {
+        ProductValidator.validateUpdate(updateRequestDto);                     // 유효성 검사
         Product existing = ProductValidator.validateExists(id, repository); // 존재 여부 확인
 
-        repository.update(id, updateData);
+        repository.update(id, updateRequestDto);
         return existing;
     }
 

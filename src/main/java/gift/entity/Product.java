@@ -4,7 +4,7 @@ public class Product {
 
     private Long id;
     private String name;
-    private int price;
+    private Integer price;
     private String imageUrl;
 
     public void setId(Long id) {
@@ -15,7 +15,7 @@ public class Product {
         this.name = name;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
@@ -31,7 +31,7 @@ public class Product {
         return name;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 

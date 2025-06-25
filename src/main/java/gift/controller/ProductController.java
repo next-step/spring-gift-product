@@ -1,5 +1,6 @@
 package gift.controller;
 
+import gift.dto.ProductUpdateRequestDto;
 import gift.entity.Product;
 import gift.service.ProductService;
 import java.util.List;
@@ -45,8 +46,8 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updateData) {
-        Product updated = productService.updateProduct(id, updateData);
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductUpdateRequestDto updateRequestDto) {
+        Product updated = productService.updateProduct(id, updateRequestDto);
         return ResponseEntity.ok(updated); // 200 OK
     }
 
