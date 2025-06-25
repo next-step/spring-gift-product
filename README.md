@@ -20,7 +20,7 @@
     - **Response**: 201 Created
       ```json 
       {
-          "id": 8146027,
+          "productId": 8146027,
           "name": "아이스 카페 아메리카노 T",
           "price": 4500,
           "imageUrl": "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"
@@ -36,7 +36,7 @@
       ```json
       [
         {
-        "id": 8146027,
+        "productId": 8146027,
         "name": "아이스 카페 아메리카노 T",
         "price": 4500,
         "imageUrl": "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"
@@ -44,22 +44,22 @@
       ]
       ```
   - [x] 단건 상품 조회
-    - **Request**: GET /api/products/{id}
+    - **Request**: GET /api/products/{productId}
     - **Response**: 200 OK
       ```json
       {
-          "id": 8146027,
+          "productId": 8146027,
           "name": "아이스 카페 아메리카노 T",
           "price": 4500,
           "imageUrl": "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"
       }
       ```
     - [x] **예외**:
-      - 데이터베이스에 id가 존재하지 않을 때: 404 Not Found
+      - 데이터베이스에 productId가 존재하지 않을 때: 404 Not Found
 
 - [x] 상품 수정 API
   - [x] 단건 상품 전체 수정
-    - **Request**: PUT /api/products/{id}
+    - **Request**: PUT /api/products/{productId}
       ```json
       {
           "name": "아이스 카페 아메리카노 T",
@@ -70,27 +70,27 @@
     - **Response**: 200 OK
       ```json
       {
-          "id": 8146027,
+          "productId": 8146027,
           "name": "아이스 카페 아메리카노 T",
           "price": 9000,
           "imageUrl": "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"
       }
       ```
     - [x] **예외**:
-      - 데이터베이스에 id가 존재하지 않을 때: 404 Not Found
+      - 데이터베이스에 productId가 존재하지 않을 때: 404 Not Found
       - name, price, imageUrl 중 하나라도 존재하지 않을 때: ~~일부만 수정하도록 처리~~ 또는 400 Bad Request
 
 - [x] 상품 삭제 API
   - [x] 단건 상품 삭제
-    - **Request**: DELETE /api/products/{id}
+    - **Request**: DELETE /api/products/{productId}
     - **Response**: 200 OK
       ```json
       {
-          "id": 8146027,
+          "productId": 8146027,
           "name": "아이스 카페 아메리카노 T",
           "price": 4500,
           "imageUrl": "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"
       }
       ```
     - [x] **예외**:
-      - 데이터베이스에 id가 존재하지 않을 때: 404 Not Found
+      - 데이터베이스에 productId가 존재하지 않을 때: 404 Not Found
