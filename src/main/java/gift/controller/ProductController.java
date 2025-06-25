@@ -2,6 +2,7 @@ package gift.controller;
 
 import gift.domain.Product;
 import gift.dto.request.ProductRequest;
+import gift.dto.response.ProductResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,22 +17,22 @@ public class ProductController {
     private final AtomicLong idgen = new AtomicLong(1);
 
     @PostMapping // 상품 등록
-    public ResponseEntity<Product> register(@RequestBody ProductRequest request) {
+    public ResponseEntity<ProductResponse> register(@RequestBody ProductRequest request) {
         Long id = idgen.getAndIncrement();
         Product product = new Product(id, request.getName(), request.getPrice(), request.getImageUrl());
         products.put(id, product);
         return ResponseEntity
                 .created(null)
-                .body(product);
+                .body(new ProductResponse(product));
     }
 
     @GetMapping("/{productId}") // 상품 단건 조회
-    public ResponseEntity<Product> getProduct(@PathVariable Long productId) {
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId) {
         Product product = products.get(productId);
         if (product == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(product);
+        return ResponseEntity.ok(new ProductResponse(product));
     }
 
     @GetMapping // 상품 목록 전체 조회
@@ -40,7 +41,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}") // 상품 수정 - 부분수정 가능
-    public ResponseEntity<Product> updateProduct(@PathVariable Long productId, @RequestBody ProductRequest request) {
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long productId, @RequestBody ProductRequest request) {
         Product exist = products.get(productId);
         if (exist == null) {
             return ResponseEntity.notFound().build();
@@ -56,7 +57,7 @@ public class ProductController {
             exist.setImageUrl(request.getImageUrl());
         }
 
-        return ResponseEntity.ok(exist);
+        return ResponseEntity.ok(new ProductResponse(exist));
     }
 
     @DeleteMapping("/{productId}") //상품 삭제
