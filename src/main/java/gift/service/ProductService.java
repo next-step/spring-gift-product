@@ -1,47 +1,58 @@
-package gift;
+package gift.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import gift.dto.ProductRequest;
+import gift.entity.Product;
+import gift.repository.ProductRepository;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductService {
 
-    private final Map<Long, Product> products = new HashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong(1);
+    private final ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     public Product createProduct(ProductRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("Request cannot be null");
+        }
+
         if (request.name() == null || request.price() == null || request.imageUrl() == null) {
             throw new IllegalArgumentException("Required fields are missing");
         }
-        Long id = request.id();
-        if (id == null) {
-            id = idGenerator.getAndIncrement();
+
+        if (request.id() != null && productRepository.findById(request.id()).isPresent()) {
+            throw new IllegalArgumentException("ID(" + request.id() + ") already exists");
         }
-        if (products.containsKey(id)) {
-            throw new IllegalArgumentException("ID(" + id + ") already exists");
-        }
-        Product product = new Product(id, request.name(), request.price(), request.imageUrl());
-        products.put(id, product);
-        return product;
+
+        Product product = new Product(
+            request.id(),
+            request.name(),
+            request.price(),
+            request.imageUrl()
+        );
+        return productRepository.save(product);
     }
 
     public Product getProduct(Long productId) {
-        Product product = products.get(productId);
-        if (product == null) {
+        if (productRepository.findById(productId).isEmpty()) {
             throw new IllegalArgumentException("Product(id: " + productId + ") not found");
         }
-        return product;
+        return productRepository.findById(productId).get();
     }
 
     public Product updateProduct(Long productId, ProductRequest request) {
-        Product existingProduct = products.get(productId);
-        if (existingProduct == null) {
+        if (request == null) {
+            throw new IllegalArgumentException("Request cannot be null");
+        }
+
+        if (productRepository.findById(productId).isEmpty()) {
             throw new IllegalArgumentException("Product(id: " + productId + ") not found");
         }
+        Product existingProduct = productRepository.findById(productId).get();
 
         // 요청된 필드만 수정, 나머지 필드는 기존 값 유지
         String updatedName = existingProduct.getName();
@@ -59,19 +70,23 @@ public class ProductService {
             updatedImageUrl = request.imageUrl();
         }
 
-        Product updatedProduct = new Product(productId, updatedName, updatedPrice, updatedImageUrl);
-        products.put(productId, updatedProduct);
-        return updatedProduct;
+        Product updatedProduct = new Product(
+            productId,
+            updatedName,
+            updatedPrice,
+            updatedImageUrl
+        );
+        return productRepository.save(updatedProduct);
     }
 
     public void deleteProduct(Long productId) {
-        if (!products.containsKey(productId)) {
+        if (productRepository.findById(productId).isEmpty()) {
             throw new IllegalArgumentException("Product(id: " + productId + ") not found");
         }
-        products.remove(productId);
+        productRepository.delete(productId);
     }
 
     public List<Product> getAllProducts() {
-        return new ArrayList<>(products.values());
+        return productRepository.findAll();
     }
 }
