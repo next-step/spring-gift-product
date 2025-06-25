@@ -2,6 +2,8 @@ package gift.repository.impl;
 
 import gift.model.Product;
 import gift.repository.ProductRepository;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -9,13 +11,14 @@ import java.util.*;
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    private final Map<Long, Product> products = new HashMap<>();
-    private Long nextId = 1L;
+    private final Map<Long, Product> products = new ConcurrentHashMap<>();
+    private final AtomicLong nextId = new AtomicLong(1);
 
     @Override
     public Product save(Product product) {
-        product.setId(nextId);
-        products.put(nextId++, product);
+        Long id = nextId.getAndIncrement();
+        product.setId(id);
+        products.put(id, product);
         return product;
     }
 
