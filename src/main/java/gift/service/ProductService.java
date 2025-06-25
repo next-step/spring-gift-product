@@ -14,7 +14,14 @@ public class ProductService {
         this.repo = repo;
     }
 
+    // 전체 조회
     public List<Product> getAll() {
         return repo.findAll();
     }
+
+    // 단건 조회
+    public Product getById(long id) {
+        return repo.findById(id);
+    }
+
 }
