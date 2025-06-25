@@ -19,7 +19,7 @@
                             <h5 class="text-xl tracking-tight text-slate-900" th:text="${product.name}">Nike Air MX Super 2500 - Red</h5>
                             <span class="text-2xl font-bold text-slate-900 mt-2" th:text="${#numbers.formatInteger(product.price, 1,'COMMA')} + '원'">$ 199.99</span>
                             <div class="flex flex-row w-full mt-4 justify-center">
-                                <button class="rounded-lg bg-blue-500 mx-3 px-3 py-1 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300">상품 보기</button>
+                                <a th:href="@{'/admin/products/' + ${product.id}}" class="rounded-lg bg-blue-500 mx-3 px-3 py-1 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300">상품 보기</a>
                                 <button class="rounded-lg bg-red-500 mx-3 px-3 py-1 text-sm font-medium text-white hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300">상품 삭제</button>
                             </div>
                         </div>

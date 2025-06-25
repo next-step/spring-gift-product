@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="~{layout/base :: common_header(~{::title},~{})}">
+    <title>상품 보기</title>
+<body>
+
+<main th:replace="~{layout/base :: common_content(~{::section})}">
+<section>
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex flex-wrap mx-4">
+            <!-- Product Images -->
+            <div class="w-full md:w-1/2 px-4 mb-8">
+                <img th:src="${product.imageUrl}" alt="Product"
+                     class="w-full h-auto rounded-lg shadow-md mb-4" id="mainImage">
+            </div>
+
+            <!-- Product Details -->
+            <div class="w-full md:w-1/2 px-4">
+                <div class="mb-4 p-4 rounded-lg border border-gray-100">
+                    <h2 class="text-2xl font-bold text-gray-900">상품 ID:</h2>
+                    <p class="text-2xl text-gray-900 text-right" th:text="${product.id}">1</p>
+                </div>
+                <div class="mb-4 p-4 rounded-lg border border-gray-100">
+                    <h1 class="text-2xl font-bold text-gray-900">상품 이름:</h1>
+                    <div class="text-2xl text-gray-900 text-right" th:text="${product.name}">Nike Air MX Super 2500 - Red</div>
+                </div>
+                <div class="mb-4 p-4 rounded-lg border border-gray-100">
+                    <h2 class="text-2xl font-bold text-gray-900">상품 가격:</h2>
+                    <p class="text-2xl text-gray-900 text-right" th:text="${#numbers.formatInteger(product.price, 1,'COMMA')} + '원'">$ 199.99</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-center">
+            <button class="rounded-lg bg-gray-500 px-4 mx-4 py-2 text-white font-medium hover:bg-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-300" onclick="history.back()">뒤로가기</button>
+            <button class="rounded-lg bg-blue-500 px-4 mx-4 py-2 text-white font-medium hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300" onclick="history.back()" hidden>상품 수정</button>
+        </div>
+    </div>
+</section>
+ </main>
+</body>
