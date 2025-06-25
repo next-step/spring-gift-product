@@ -123,3 +123,48 @@
   - 내부 검증 방식
     - 삭제 전에 해당 상품의 존재 여부를 ProductValidator 에서 검증
       - 검증 실패 시 NoSuchElementException 발생 → GlobalExceptionHandler 가 404로 처리
+
+
+
+### Step 2
+
+Thymeleaf 기반의 HTML 뷰를 활용하여 상품을 조회, 등록, 수정, 삭제할 수 있는 **관리자용 화면**을 구현합니다.
+
+1단계에서 구현한 상품 API를 기반으로, 브라우저에서 상품을 직접 관리할 수 있도록 서버 사이드 렌더링 기반 UI를 제공합니다.
+
+- [ ] 상품 등록 페이지
+- [ ] 상품 목록 조회 페이지
+- [ ] 상품 개별 조회 페이지
+- [ ] 상품 수정 페이지
+- [ ] 상품 삭제 기능
+- [ ] 상품 이미지 출력 기능 (URL 기반)
+- [ ] 필수 필드 검증 메시지 표시
+
+
+
+### 📂 디렉터리 구조
+
+```text
+src/
+└── main/
+├── resources/
+│ ├── templates/
+│ │ └── product/
+│ │ ├── list.html
+│ │ ├── form.html
+│ ├── static/
+│ │ └── css/
+│ │ └── admin.css
+```
+
+| URL | 설명 |
+|-----|------|
+| `/admin/products` | 상품 목록 화면 |
+| `/admin/products/new` | 상품 등록 화면 |
+| `/admin/products/{id}/edit` | 상품 수정 화면 |
+| `/admin/products/{id}` | (선택) 상세보기 화면 |
+
+### 📌 참고
+
+- 상품 등록 시 이미지 업로드는 하지 않고, **URL을 직접 입력**받아 처리합니다.
+- 기존 상품 API는 `/api/products` 경로로 제공되며, 관리자 화면에서는 해당 API를 직접 사용하거나, 서버 측에서 데이터를 조회해 뷰에 바인딩합니다.
