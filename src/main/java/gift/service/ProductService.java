@@ -2,6 +2,7 @@ package gift.service;
 
 import gift.domain.Product;
 import gift.dto.product.CreateProductRequest;
+import gift.dto.product.ProductManageResponse;
 import gift.dto.product.ProductResponse;
 import gift.dto.product.UpdateProductRequest;
 import gift.repository.ProductRepository;
@@ -37,5 +38,10 @@ public class ProductService {
 
     public void deleteProduct(Long id) {
         productRepository.deleteByid(id);
+    }
+
+    public List<ProductManageResponse> getAllProductsManagement() {
+        List<Product> products = productRepository.findAll();
+        return products.stream().map(ProductManageResponse::from).toList();
     }
 }

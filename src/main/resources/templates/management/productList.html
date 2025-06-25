@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 목록 폼</title>
+</head>
+<body>
+    <h2>상품 목록</h2>
+    <table th:border="1">
+        <tr>
+            <th>아이디</th>
+            <th>이름</th>
+            <th>가격</th>
+            <th>수량</th>
+            <th>관리</th>
+        </tr>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id()}"></td>
+            <td th:text="${product.name()}"></td>
+            <td th:text="${product.price()}"></td>
+            <td th:text="${product.quantity()}"></td>
+            <td th:text="'수정 링크, 삭제 링크'"></td>
+        </tr>
+    </table>
+</body>
+</html>
