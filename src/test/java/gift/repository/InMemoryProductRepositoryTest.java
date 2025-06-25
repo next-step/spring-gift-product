@@ -96,7 +96,8 @@ class InMemoryProductRepositoryTest {
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> repository.update(nonExistentId, updatedDetails));
-        assertEquals("존재하지 않는 상품 ID입니다: " + nonExistentId, exception.getMessage());
+        assertEquals("해당 ID에 대한 상품이 존재하지 않아 업데이트할 수 없습니다: " + nonExistentId,
+                exception.getMessage());
     }
 
     @Test
@@ -113,59 +114,13 @@ class InMemoryProductRepositoryTest {
     }
 
     @Test
-    void 존재하지_않는_ID로_삭제_시_IllegalArgumentException_발생하는지_확인() {
-        repository.save(Product.of("Existing", 100, "exist.jpg"));
-        Long nonExistentId = 999L;
-
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> repository.deleteById(nonExistentId));
-        assertEquals("존재하지 않는 상품 ID입니다: " + nonExistentId, exception.getMessage());
-    }
-
-    @Test
     void 모든_상품을_삭제하는지_확인() {
         repository.save(Product.of("Product1", 10, "p1.jpg"));
         repository.save(Product.of("Product2", 20, "p2.jpg"));
         assertFalse(repository.findAll().isEmpty());
 
         repository.deleteAll();
-
         assertTrue(repository.findAll().isEmpty());
-    }
-
-    @Test
-    void save_null_상품_입력시_IllegalArgumentException_발생() {
-        assertThrows(IllegalArgumentException.class, () -> repository.save(null));
-    }
-
-    @Test
-    void update_null_ID_입력시_IllegalArgumentException_발생() {
-        Product product = Product.of("name", 100, "url");
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
-                () -> repository.update(null, product));
-        assertEquals("상품 ID가 null일 수 없습니다.", e.getMessage());
-    }
-
-    @Test
-    void update_null_상품_입력시_IllegalArgumentException_발생() {
-        Long validId = 1L;
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
-                () -> repository.update(validId, null));
-        assertEquals("상품 정보가 null일 수 없습니다.", e.getMessage());
-    }
-
-    @Test
-    void deleteById_null_입력시_IllegalArgumentException_발생() {
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
-                () -> repository.deleteById(null));
-        assertEquals("상품 ID가 null일 수 없습니다.", e.getMessage());
-    }
-
-    @Test
-    void findById_null_입력시_IllegalArgumentException_발생() {
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
-                () -> repository.findById(null));
-        assertEquals("상품 ID가 null일 수 없습니다.", e.getMessage());
     }
 
     @Test

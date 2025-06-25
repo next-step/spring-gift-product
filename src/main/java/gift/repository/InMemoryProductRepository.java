@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -23,7 +24,8 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public Product save(Product product) {
-        validateProductNotNull(product);
+        Objects.requireNonNull(product, "상품은 null일 수 없습니다.");
+
         Long id = generateId();
         Product productWithId = Product.withId(
                 id,
@@ -37,16 +39,19 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public void update(Long id, Product updatedProduct) {
-        validateIdNotNull(id);
-        validateProductNotNull(updatedProduct);
-        validateExistsById(id);
+        Objects.requireNonNull(id, "id는 null일 수 없습니다.");
+        Objects.requireNonNull(updatedProduct, "updatedProduct는 null일 수 없습니다.");
 
-        products.computeIfPresent(id, (key, existingProduct) ->
+        boolean updated = products.computeIfPresent(id, (key, existingProduct) ->
                 existingProduct.update(
                         updatedProduct.name(),
                         updatedProduct.price(),
                         updatedProduct.imageUrl())
-        );
+        ) != null;
+
+        if (!updated) {
+            throw new IllegalArgumentException("해당 ID에 대한 상품이 존재하지 않아 업데이트할 수 없습니다: " + id);
+        }
     }
 
     @Override
@@ -64,9 +69,7 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public void deleteById(Long id) {
-        validateIdNotNull(id);
-        validateExistsById(id);
-
+        Objects.requireNonNull(id, "id는 null일 수 없습니다.");
         products.remove(id);
     }
 
@@ -99,7 +102,9 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public Optional<Product> findById(Long id) {
-        validateIdNotNull(id);
+        if (id == null) {
+            return Optional.empty();
+        }
         return Optional.ofNullable(products.get(id));
     }
 
@@ -117,24 +122,6 @@ public class InMemoryProductRepository implements ProductRepository {
         }
         if (pageSize < MIN_PAGE_SIZE) {
             throw new IllegalArgumentException("pageSize는 1 이상이어야 합니다.");
-        }
-    }
-
-    private void validateIdNotNull(Long id) {
-        if (id == null) {
-            throw new IllegalArgumentException("상품 ID가 null일 수 없습니다.");
-        }
-    }
-
-    private void validateProductNotNull(Product product) {
-        if (product == null) {
-            throw new IllegalArgumentException("상품 정보가 null일 수 없습니다.");
-        }
-    }
-
-    private void validateExistsById(Long id) {
-        if (!products.containsKey(id)) {
-            throw new IllegalArgumentException("존재하지 않는 상품 ID입니다: " + id);
         }
     }
 }
