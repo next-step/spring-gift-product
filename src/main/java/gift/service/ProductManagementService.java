@@ -6,6 +6,7 @@ import gift.dto.common.Page;
 import gift.exception.BusinessException;
 import gift.exception.ErrorCode;
 import gift.repository.ProductRepository;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,7 +29,6 @@ public class ProductManagementService {
     }
 
     public Page<Product> getAllByPage(int pageNumber, int pageSize) {
-
         return productRepository.findAllByPage(pageNumber, pageSize);
     }
 
@@ -52,6 +52,10 @@ public class ProductManagementService {
 
     public void deleteAll() {
         productRepository.deleteAll();
+    }
+
+    public void deleteAllByIds(List<Long> ids) {
+        productRepository.deleteAllByIds(ids);
     }
 
     public void deleteById(Long id) {
