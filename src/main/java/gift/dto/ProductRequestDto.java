@@ -2,9 +2,9 @@ package gift.dto;
 
 public class ProductRequestDto {
 
-    String name;
-    Integer price;
-    String imageUrl;
+    private String name;
+    private Integer price;
+    private String imageUrl;
 
     public String getName() {
         return name;

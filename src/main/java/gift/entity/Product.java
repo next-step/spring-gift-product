@@ -2,13 +2,10 @@ package gift.entity;
 
 public class Product {
 
-    Long id;
-    String name;
-    Integer price;
-    String imageUrl;
-
-    public Product() {
-    }
+    private Long id;
+    private String name;
+    private Integer price;
+    private String imageUrl;
 
     public Product(String name, Integer price, String imageUrl) {
         this.name = name;
