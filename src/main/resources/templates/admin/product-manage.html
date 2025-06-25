@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
   <title>상품 목록</title>
-  <link rel="stylesheet" th:href="@{/css/product-manage.css}"/>
+  <link rel="stylesheet" th:href="@{/css/page/product-manage.css}"/>
   <link rel="stylesheet" th:href="@{/css/common.css}"/>
 </head>
 <body>
 
-<div th:replace="admin/fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <div>
   <div class="button-group">
     <button id="product-create-btn" class="btn">상품 등록</button>

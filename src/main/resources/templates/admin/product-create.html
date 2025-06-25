@@ -3,12 +3,13 @@
       lang="ko">
 <head>
   <title>상품 등록</title>
-  <link rel="stylesheet" th:href="@{/css/product-create.css}"/>
+  <link rel="stylesheet" th:href="@{/css/page/product-create.css}"/>
   <link rel="stylesheet" th:href="@{/css/common.css}"/>
+  <script src="../../static/js/product-create.js"></script>
 </head>
 <body>
 
-<div th:replace="admin/fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <div>
   <form id="product-create-form" th:action="@{/api/products}" method="post" novalidate>
     <div class="form-group">
