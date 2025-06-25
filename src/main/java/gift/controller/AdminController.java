@@ -1,12 +1,13 @@
 package gift.controller;
 
+import gift.dto.CreateProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,10 +31,31 @@ public class AdminController {
 
     // 상품 단건 조회
     @GetMapping("/{id}")
-    public String detail(@PathVariable Long id, Model model){
+    public String detail(@PathVariable Long id, Model model) {
         ProductResponseDto findProduct = productService.findProductById(id);
         model.addAttribute("product", findProduct);
 
         return "admin/product/detail";
     }
+
+    // 상품 등록 페이지
+    @GetMapping("/new")
+    public String createProduct(Model model) {
+        model.addAttribute("product", new CreateProductRequestDto("", 0L, ""));
+
+        return "admin/product/create";
+    }
+
+    // 상품 등록
+    @PostMapping("/new")
+    public String createProduct(@Valid @ModelAttribute("product") CreateProductRequestDto requestDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+
+            return "admin/product/create";
+        }
+        productService.createProduct(requestDto.name(), requestDto.price(), requestDto.imageUrl());
+
+        return "redirect:/admin/products";
+    }
+
 }
