@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>상품정보 작성</h2>
+    <form th:action="${productId == null} ? @{/admin/products/new} : @{/admin/products/{id}(id=${productId})}"
+          method="post"
+          th:object="${product}">
+        <input type="hidden" name="_method" value="put" th:if="${productId != null}" />
+        <p>
+            <label>name:</label>
+            <input type="text" th:field="*{name}" />
+        </p>
+        <p>
+            <label>price:</label>
+            <input type="number" th:field="*{price}" />
+        </p>
+        <p>
+            <label>imageUrl:</label>
+            <input type="text" th:field="*{imageUrl}" />
+        </p>
+        <button type="submit">submit</button>
+    </form>
+</body>
+</html>

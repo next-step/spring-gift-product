@@ -56,6 +56,14 @@ public class ProductService {
         return productRepository.updateProduct(product);
     }
 
+    public Product putProductById(Long id, String name, Integer price, String imageUrl) {
+        Optional<Product> optionalPuttedProduct = productRepository.putProductById(id, name, price, imageUrl);
+        if (optionalPuttedProduct.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        return optionalPuttedProduct.get();
+    }
+
     public void deleteProductById(Long id) {
         Optional<Product> optionalProduct = productRepository.getProductById(id);
         if (optionalProduct.isEmpty()) {

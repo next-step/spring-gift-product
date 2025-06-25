@@ -4,12 +4,12 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -31,6 +31,64 @@ public class AdminPageController {
                 .toList();
         model.addAttribute("products", response);
         return "admin/product-list";
+    }
+
+    // 신규상품 등록 form 제공
+    @GetMapping("/new")
+    public String newProduct(Model model) {
+        model.addAttribute("product", ProductRequestDto.empty());
+        return "admin/product-form";
+    }
+
+    // 신규상품 등록 form 받고, 검증 및 redirection 수행
+    @PostMapping("/new")
+    public String newProduct(
+            @Valid @ModelAttribute ProductRequestDto request,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
+        if (bindingResult.hasErrors()) {
+            return "admin/product-form";
+        }
+        Product created = productService.createProduct(
+                request.name(),
+                request.price(),
+                request.imageUrl()
+        );
+        redirectAttributes.addFlashAttribute("message", "Product created");
+        return "redirect:/admin/products/" + created.getId();
+    }
+
+    @GetMapping("/{id}")
+    public String getProduct(
+            @PathVariable Long id,
+            Model model
+    ) {
+        ProductRequestDto dto =
+                ProductRequestDto.from(productService.getProductById(id));
+        model.addAttribute("productId", id);
+        model.addAttribute("product", dto);
+        return "admin/product-form";
+    }
+
+    @PutMapping("/{id}")
+    public String updateProduct(
+            @PathVariable Long id,
+            @Valid @ModelAttribute ProductRequestDto request,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes
+    ) {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/admin/products/" + id;
+        }
+        Product updated = productService.putProductById(
+                id,
+                request.name(),
+                request.price(),
+                request.imageUrl()
+        );
+        redirectAttributes.addFlashAttribute("message", "Product updated");
+        return "redirect:/admin/products/" + updated.getId();
     }
 
 }
