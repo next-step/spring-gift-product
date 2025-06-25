@@ -4,6 +4,8 @@ import gift.domain.Product;
 import gift.dto.ProductRequest;
 import gift.dto.common.Page;
 import gift.service.ProductManagementService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import java.net.URI;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -28,18 +30,18 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> create(@RequestBody ProductRequest request) {
+    public ResponseEntity<Product> create(@Valid @RequestBody ProductRequest request) {
         Product createdProduct = productService.create(request);
         URI location = URI.create("/api/products/" + createdProduct.id());
-        
+
         return ResponseEntity.created(location)
                 .body(createdProduct);
     }
 
     @GetMapping
     public ResponseEntity<Page<Product>> getAllByPage(
-            @RequestParam(defaultValue = "1") Integer pageNumber,
-            @RequestParam(defaultValue = "10") Integer pageSize) {
+            @RequestParam(defaultValue = "1") @Min(1) Integer pageNumber,
+            @RequestParam(defaultValue = "10") @Min(1) Integer pageSize) {
 
         Page<Product> page = productService.getAllByPage(pageNumber, pageSize);
         return ResponseEntity.ok(page);
@@ -59,7 +61,8 @@ public class ProductController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteAllByIds(@RequestBody(required = false) List<Long> ids) {
+    public ResponseEntity<Void> deleteAllByIds(
+            @RequestBody(required = false) List<Long> ids) {
         if (ids == null || ids.isEmpty()) {
             productService.deleteAll();
         } else {
