@@ -1,5 +1,6 @@
 package gift.repository;
 
+import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import org.springframework.stereotype.Repository;
@@ -28,15 +29,15 @@ public class ProductRepository {
         return list;
     }
 
-    public ProductResponseDto saveProduct(String name, Long price) {
-        Product product = new Product(label, name, price);
+    public ProductResponseDto saveProduct(ProductRequestDto requestDto) {
+        Product product = new Product(label, requestDto.name(), requestDto.price(), requestDto.imageUrl());
         products.put(label, product);
         label++;
         return new ProductResponseDto(product);
     }
 
-    public boolean updateProduct(Long id, String name, Long price) {
-        Product product = new Product(id, name, price);
+    public boolean updateProduct(Long id, ProductRequestDto requestDto) {
+        Product product = new Product(id, requestDto.name(), requestDto.price(), requestDto.imageUrl());
         return products.replace(id, product) != null;
     }
 
