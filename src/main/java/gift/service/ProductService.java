@@ -4,9 +4,11 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 
+@Service
 public class ProductService {
     private final ProductRepository productRepository;
 
@@ -15,20 +17,19 @@ public class ProductService {
     }
 
     public ProductResponseDto addProduct(ProductRequestDto productRequestDto){
-        Product product = new Product( //Product로 만드는게 낫다
-                productRequestDto.getName(),
-                productRequestDto.getPrice(),
-                productRequestDto.getImageUrl()
-
-        );
-        Product saveProduct = productRepository.addProduct(product);
-        return new ProductResponseDto(
-                saveProduct.getId(),
-                saveProduct.getName(),
-                saveProduct.getPrice(),
-                saveProduct.getImageUrl()
-        );
+        Product product = toEntity(productRequestDto);
+        Product savedProduct = productRepository.addProduct(product);
+        return toDto(savedProduct);
     }
+
+    private Product toEntity(ProductRequestDto dto) {
+        return new Product(dto.getName(), dto.getPrice(), dto.getImageUrl());
+    }
+
+    private ProductResponseDto toDto(Product product) {
+        return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
+    }
+
 
     public ProductResponseDto findProduct(Long id){
         Product product = productRepository.findProduct(id);

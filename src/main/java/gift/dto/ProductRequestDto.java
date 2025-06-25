@@ -5,7 +5,6 @@ public class ProductRequestDto {
     private int price;
     private String imageUrl;
 
-    public ProductRequestDto() {}
 
     public ProductRequestDto(String name, int price, String imageUrl){
         this.name = name;
@@ -21,13 +20,5 @@ public class ProductRequestDto {
     public String getImageUrl(){
         return imageUrl;
     }
-    public void setName(String name){
-        this.name=name;
-    }
-    public void setPrice(int price){
-        this.price=price;
-    }
-    public void setImageUrl(String imageUrl){
-        this.imageUrl = imageUrl;
-    }
+
 }
