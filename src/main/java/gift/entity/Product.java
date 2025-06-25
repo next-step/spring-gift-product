@@ -7,14 +7,6 @@ public class Product {
     private int price;
     private String imageUrl;
 
-    Product() {}
-
-    Product(String name, int price, String imageUrl) {
-        this.name = name;
-        this.price = price;
-        this.imageUrl = imageUrl;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
