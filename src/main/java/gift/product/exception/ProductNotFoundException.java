@@ -1,7 +1,9 @@
 package gift.product.exception;
 
 import gift.common.exception.ErrorCode;
+import lombok.Getter;
 
+@Getter
 public class ProductNotFoundException extends RuntimeException {
     private final ErrorCode errorCode;
     public ProductNotFoundException(ErrorCode errorCode) {
