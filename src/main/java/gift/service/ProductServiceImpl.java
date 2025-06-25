@@ -58,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteById(Long productId) {
-        if (productRepository.deleteById(productId)) {
+        if (!productRepository.deleteById(productId)) {
             throw new NoSuchElementException(
                     String.format("Id %d에 해당하는 상품이 존재하지 않습니다.", productId));
         }
