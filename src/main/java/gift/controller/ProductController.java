@@ -5,6 +5,8 @@ import gift.service.ProductService;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +28,13 @@ public class ProductController {
 
     // 단건 상품 조회
     @GetMapping("/{id}")
-    public Product get(@PathVariable Long id) {
+    public Product getProduct(@PathVariable Long id) {
         return service.getById(id);
+    }
+
+    // 등록
+    @PostMapping
+    public Product createProduct(@RequestBody Product product) {
+        return service.createProduct(product);
     }
 }

@@ -24,4 +24,8 @@ public class ProductService {
         return repo.findById(id);
     }
 
+    // 등록
+    public Product createProduct(Product product) {
+        return repo.createProduct(product);
+    }
 }

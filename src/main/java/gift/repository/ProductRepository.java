@@ -11,14 +11,7 @@ import org.springframework.stereotype.Repository;
 public class ProductRepository {
 
     private final Map<Long, Product> products = new HashMap<>();
-
-    public ProductRepository() {
-        products.put(1L,
-                new Product(1L, "아이스 아메리카노", 4500L,
-                        "ice"));
-        products.put(2L, new Product(2L, "초코라떼", 5500L,
-                "chchch"));
-    }
+    private long tempId = 1L;
 
     // 전체 조회
     public List<Product> findAll() {
@@ -28,6 +21,13 @@ public class ProductRepository {
     // 단건 조회
     public Product findById(Long id) {
         return products.get(id);
+    }
+
+    // 등록
+    public Product createProduct(Product product) {
+        product.setId(tempId++);
+        products.put(product.getId(), product);
+        return product;
     }
 }
 
