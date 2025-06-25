@@ -120,12 +120,12 @@ HTTP/1.1 204 No Content
 → 등록된 모든 상품을 목록으로 확인할 수 있는 화면입니다.
 
 ### 특정 상품 조회
-[GET] http://localhost:8080/admin/products/{productId}
+[GET] http://localhost:8080/admin/products/{productId}  
 → 선택한 상품의 상세 정보를 확인할 수 있는 화면입니다.
 
 ## ➕ 상품 추가
 ### 상품 추가 화면
-[GET] http://localhost:8080/admin/products/new
+[GET] http://localhost:8080/admin/products/new  
 → 새 상품을 입력하는 폼으로 이동합니다.
 
 ### 상품 추가 요청
@@ -147,5 +147,5 @@ HTTP/1.1 204 No Content
 ### 상품 삭제 요청
 [DELETE] http://localhost:8080/admin/products/{productId}  
 → HTML `<form>`에서 `_method=delete`로 전송됩니다.  
-→ 실제 HTTP 메서드는 `POST`이며,
+→ 실제 HTTP 메서드는 `POST`이며,  
 → AdminController에서 `@DeleteMapping`으로 처리합니다.
