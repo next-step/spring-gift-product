@@ -16,6 +16,16 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
+    public Product(Long id, ProductDTO productdto) {
+        if(productdto.getPrice() < 0) {
+            throw new IllegalArgumentException("Price should be positive");
+        }
+        this.id = id;
+        this.name = productdto.getName();
+        this.price = productdto.getPrice();
+        this.imageUrl = productdto.getImageUrl();
+    }
+
     public Long getId() {
         return id;
     }
