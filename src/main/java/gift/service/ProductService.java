@@ -1,5 +1,6 @@
 package gift.service;
 
+import gift.dto.ProductRequestDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
@@ -27,5 +28,11 @@ public class ProductService {
     // 등록
     public Product createProduct(Product product) {
         return repo.createProduct(product);
+    }
+
+    // 수정
+    public Product updateProduct(Long id, ProductRequestDto req) {
+        Product updatedProduct = new Product(id, req.getName(), req.getPrice(), req.getImageUrl());
+        return repo.updateProduct(id, updatedProduct);
     }
 }

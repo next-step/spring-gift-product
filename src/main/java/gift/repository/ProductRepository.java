@@ -29,5 +29,15 @@ public class ProductRepository {
         products.put(product.getId(), product);
         return product;
     }
+
+    // 수정
+    public Product updateProduct(Long id, Product updatedProduct) {
+        if (!products.containsKey(id)) {
+            return null;
+        }
+        updatedProduct.setId(id);
+        products.put(id, updatedProduct);
+        return updatedProduct;
+    }
 }
 

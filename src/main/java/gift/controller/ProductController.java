@@ -1,11 +1,14 @@
 package gift.controller;
 
+import gift.dto.ProductRequestDto;
+import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.service.ProductService;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,5 +39,12 @@ public class ProductController {
     @PostMapping
     public Product createProduct(@RequestBody Product product) {
         return service.createProduct(product);
+    }
+
+    // 수정
+    @PutMapping("/{id}")
+    public ProductResponseDto update(@PathVariable Long id, @RequestBody ProductRequestDto req) {
+        Product updated = service.updateProduct(id, req);
+        return new ProductResponseDto(updated);
     }
 }
