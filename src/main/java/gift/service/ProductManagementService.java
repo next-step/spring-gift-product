@@ -2,10 +2,10 @@ package gift.service;
 
 import gift.domain.Product;
 import gift.dto.ProductRequest;
+import gift.dto.common.Page;
 import gift.exception.BusinessException;
 import gift.exception.ErrorCode;
 import gift.repository.ProductRepository;
-import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,8 +27,9 @@ public class ProductManagementService {
         productRepository.save(newProduct);
     }
 
-    public List<Product> getAll() {
-        return productRepository.findAll();
+    public Page<Product> getAllByPage(int pageNumber, int pageSize) {
+
+        return productRepository.findAllByPage(pageNumber, pageSize);
     }
 
     public Product getById(Long id) {
