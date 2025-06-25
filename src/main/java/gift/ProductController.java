@@ -3,14 +3,18 @@ package gift;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping("/api")
 public class ProductController {
     private final Map<Long, Product> products = new HashMap<>();
+    private final AtomicLong idGenerator = new AtomicLong(1);
 
     @PostMapping("/product")
-    public String createProduct(@RequestBody Product product) {
+    public String createProduct(@RequestBody ProductDTO productdto) {
+        long id = idGenerator.getAndIncrement();
+        Product product = new Product(id, productdto.getName(), productdto.getPrice(), productdto.getImageUrl());
         products.put(product.getId(), product);
         return "상품 생성: " + product.getId();
     }
