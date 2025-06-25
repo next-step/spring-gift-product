@@ -20,8 +20,8 @@ public class ProductService {
     public ProductService(ProductRepository productRepository) {this.productRepository = productRepository;}
 
     public ProductResponseDto findProductById(Long id){
-        Product product = productRepository.findProductById(id);
-
+        // null 검사 후 반환
+        Product product = productRepository.findProductById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No found Product"));
         return new ProductResponseDto(product);
     }
 
@@ -30,26 +30,20 @@ public class ProductService {
     }
 
     public ProductResponseDto saveProduct(ProductRequestDto requestDto){
-        if (requestDto.name() == null || requestDto.price() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The name and price are required values.");
-        }
-        Product product = new Product(requestDto.name(), requestDto.price());
-        return productRepository.saveProduct(product);
+        return productRepository.saveProduct(requestDto.name(), requestDto.price());
     }
 
     public ProductResponseDto updateProduct(Long id, String name, Long price){
-        // 필수값 검증
-        if (name == null || price == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The name and price are required values.");
-        }
         boolean flag = productRepository.updateProduct(id, name, price);
         
         // 수정됐는지 검증
         if(!flag) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No product found");
         }
-        
-        return new ProductResponseDto(productRepository.findProductById(id));
+
+        // null 검사 후 반환
+        Product product = productRepository.findProductById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No found Product"));
+        return new ProductResponseDto(product);
     }
 
     public void deleteProduct(Long id){
