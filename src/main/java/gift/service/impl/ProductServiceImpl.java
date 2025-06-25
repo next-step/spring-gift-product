@@ -1,5 +1,6 @@
 package gift.service.impl;
 
+import gift.dto.ProductRequestDto;
 import gift.model.Product;
 import gift.repository.ProductRepository;
 import gift.service.ProductService;
@@ -12,16 +13,14 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
-    @Override
-    public Product createProduct(Product product) {
-        if (!product.validateProduct()) {
-            throw new RuntimeException("상품 정보가 올바르지 않습니다. ID: " + product.getId());
-        }
-        return productRepository.save(product);
-    }
-
     public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
+    }
+
+    @Override
+    public Product createProduct(ProductRequestDto productDto) {
+        Product product = productDto.toEntity();
+        return productRepository.save(product);
     }
 
     @Override
@@ -36,16 +35,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Long id, Product product) {
-        if (!product.validateProduct()) {
-            throw new RuntimeException("상품 정보가 올바르지 않습니다. ID: " + id);
-        }
-
+    public Product updateProduct(Long id, ProductRequestDto productDto) {
         if (productRepository.findById(id).isEmpty()) {
             throw new RuntimeException("상품을 찾을 수 없습니다. ID: " + id);
         }
 
-        return productRepository.update(id, product);
+        Product updatedProduct = productDto.toEntity();
+        return productRepository.update(id, updatedProduct);
     }
 
     @Override

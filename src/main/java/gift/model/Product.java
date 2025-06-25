@@ -45,10 +45,6 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public boolean validateProduct() {
-        return this.id != null && this.name != null && this.price >= 0;
-    }
-
     public void updateFrom(Product updatedProduct) {
         if (updatedProduct == null) {
             throw new IllegalArgumentException("업데이트할 상품 정보가 null입니다");

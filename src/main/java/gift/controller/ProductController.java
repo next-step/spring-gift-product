@@ -1,5 +1,6 @@
 package gift.controller;
 
+import gift.dto.ProductRequestDto;
 import gift.model.Product;
 import gift.service.ProductService;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        Product createdProduct = productService.createProduct(product);
+    public ResponseEntity<Product> createProduct(@RequestBody ProductRequestDto productDto) {
+        if (!productDto.isValid()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Product createdProduct = productService.createProduct(productDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
 
@@ -37,8 +42,12 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long productId, @RequestBody Product product) {
-        Product updatedProduct = productService.updateProduct(productId, product);
+    public ResponseEntity<Product> updateProduct(@PathVariable Long productId, @RequestBody ProductRequestDto productDto) {
+        if (!productDto.isValid()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Product updatedProduct = productService.updateProduct(productId, productDto);
         return ResponseEntity.ok(updatedProduct);
     }
 
