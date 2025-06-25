@@ -14,7 +14,7 @@ public class ProductController {
     @PostMapping("/product")
     public String createProduct(@RequestBody ProductDTO productdto) {
         long id = idGenerator.getAndIncrement();
-        Product product = new Product(id, productdto.getName(), productdto.getPrice(), productdto.getImageUrl());
+        Product product = new Product(id, productdto);
         products.put(product.getId(), product);
         return "상품 생성: " + product.getId();
     }
