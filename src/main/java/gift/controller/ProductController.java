@@ -4,6 +4,7 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class ProductController {
     public ResponseEntity<ProductResponseDto> createProduct(
             @RequestBody @Valid ProductRequestDto requestDto) {
         ProductResponseDto response = productService.createProduct(requestDto);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
