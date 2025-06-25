@@ -5,5 +5,23 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>상품명</th>
+        <th>가격</th>
+        <th>이미지 URL</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p: ${products}">
+        <td th:text="${p.id}">ID</td>
+        <td th:text="${p.name}">상품명</td>
+        <td th:text="${p.price}">가격</td>
+        <td th:text="${p.imageUrl}">이미지 URL</td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>
