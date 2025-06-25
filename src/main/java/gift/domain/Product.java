@@ -19,10 +19,16 @@ public class Product {
         return new Product(id, name, price, imageUrl);
     }
 
-    public Product update(String name, int price, String imageUrl) {
-        this.name = name;
-        this.price = price;
-        this.imageUrl = imageUrl;
+    public Product update(String name, Integer price, String imageUrl) {
+
+        if(name!=null)
+            this.name = name;
+
+        if(price!=null)
+            this.price = price;
+
+        if(imageUrl!=null)
+            this.imageUrl = imageUrl;
 
         return this;
     }
