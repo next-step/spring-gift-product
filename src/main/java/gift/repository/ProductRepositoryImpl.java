@@ -3,17 +3,18 @@ package gift.repository;
 import gift.domain.Product;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    private final Map<Long, Product> products = new HashMap<>();
-    private Long currentProductId = 1L;
+    private final Map<Long, Product> products = new ConcurrentHashMap<>();
+    private final AtomicLong currentProductId = new AtomicLong(1L);
 
     @Override
     public List<ProductResponseDto> findAllProducts() {
@@ -46,7 +47,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
         Product product = new Product(
-                currentProductId++,
+                currentProductId.getAndIncrement(),
                 productRequestDto.name(),
                 productRequestDto.price(),
                 productRequestDto.imageUrl());
