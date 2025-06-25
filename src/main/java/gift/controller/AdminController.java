@@ -2,6 +2,7 @@ package gift.controller;
 
 import gift.dto.CreateProductRequestDto;
 import gift.dto.ProductResponseDto;
+import gift.dto.UpdateProductRequestDto;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -60,8 +61,39 @@ public class AdminController {
 
     // 상품 삭제
     @DeleteMapping("/{id}")
-    public String deleteProduct(@PathVariable Long id){
+    public String deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
+
+        return "redirect:/admin/products";
+    }
+
+    // 상품 수정 페이지
+    @GetMapping("/edit/{id}")
+    public String updateProduct(@PathVariable Long id, Model model) {
+        ProductResponseDto findProduct = productService.findProductById(id);
+        model.addAttribute("product", new UpdateProductRequestDto(
+                findProduct.id(),
+                findProduct.name(),
+                findProduct.price(),
+                findProduct.imageUrl())
+        );
+
+        return "admin/product/update";
+    }
+
+    // 상품 수정
+    @PutMapping("/edit/{id}")
+    public String updateProduct(@PathVariable Long id, @Valid @ModelAttribute("product") UpdateProductRequestDto updatedProduct, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+
+            return "admin/product/update";
+        }
+        productService.updateProduct(
+                updatedProduct.id(),
+                updatedProduct.name(),
+                updatedProduct.price(),
+                updatedProduct.imageUrl()
+        );
 
         return "redirect:/admin/products";
     }

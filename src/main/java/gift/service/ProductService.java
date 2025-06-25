@@ -45,23 +45,6 @@ public class ProductService {
     }
 
     @Transactional
-    public void patchProduct(Long id, String name, Long price, String imageUrl) {
-        Product findProduct = productRepository.findProductByIdOrElseThrow(id);
-
-        if (name != null) {
-            findProduct.setName(name);
-        }
-
-        if (price != null) {
-            findProduct.setPrice(price);
-        }
-
-        if (imageUrl != null) {
-            findProduct.setImageUrl(imageUrl);
-        }
-    }
-
-    @Transactional
     public void updateProduct(Long id, String name, Long price, String imageUrl) {
         Product findProduct = productRepository.findProductByIdOrElseThrow(id);
         findProduct.updateProduct(name, price, imageUrl);

@@ -14,5 +14,4 @@ public record CreateProductRequestDto(
 
         String imageUrl
 ) {
-
 }
