@@ -2,6 +2,7 @@ package gift.repository;
 
 import gift.dto.ProductUpdateRequestDto;
 import gift.entity.Product;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Repository
 public class ProductRepository {
 
     private final Map<Long, Product> storage = new HashMap<>();

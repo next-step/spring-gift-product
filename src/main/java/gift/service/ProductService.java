@@ -12,7 +12,11 @@ import java.util.List;
 @Service
 public class ProductService {
 
-    private final ProductRepository repository = new ProductRepository();
+    private final ProductRepository repository;
+
+    public ProductService(ProductRepository repository) {
+        this.repository = repository;
+    }
 
     public Product registerProduct(Product product) {
         ProductValidator.validate(product);  // 검증은 여기서 호출만
