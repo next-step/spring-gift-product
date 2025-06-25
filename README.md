@@ -14,14 +14,16 @@
 - [x] 상품 삭제 API (`DELETE api/products/{id}`)
 
 ## 3️⃣ 2단계 구현 예정 기능 목록 (관리자 화면)
-- [ ] 상품 목록 조회
-- [ ] 상품 상세 조회
-- [ ] 상품 추가
-- [ ] 상품 수정
-- [ ] 상품 삭제
+- [x] 상품 목록 조회 페이지 (`GET admin/products`)
+- [ ] 상품 단건 조회 API (`GET admin/products/{id}`)
+- [ ] 상품 추가 API (`POST admin/products`)
+- [ ] 상품 전체 수정 API (`PUT admin/products/{id}`)
+- [ ] 상품 일부 수정 API (`PATCH admin/products/{id}`)
+- [ ] 상품 삭제 API (`DELETE admin/products/{id}`)
 
 ## 4️⃣ 기술 스택
 - Java 17
 - Spring Boot 3.5.3
 - JSON
 - Java Collection
+- Thymeleaf
