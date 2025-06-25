@@ -1,17 +1,30 @@
 # spring-gift-product
 
-## 상품 API 구현
+## 1단계: 상품 API 구현
 
 ### 구현 기능 목록
 
-+ [ ] 전체 상품 조회 API 구현(`GET /api/products HTTP/1.1`)
-+ [ ] 단건 상품 조회 API 구현(`GET /api/products/{id} HTTP/1.1`)
-+ [ ] 단건 상품 생성 API 구현(`POST /api/products/ HTTP/1.1`)
-+ [ ] 단건 상품 수정 API 구현(`PUT /api/products/{id} HTTP/1.1`)
-+ [ ] 단건 상품 삭제 API 구현(`DELETE /api/products/{id} HTTP/1.1`)
++ [X] 전체 상품 조회 API 구현(`GET /api/products HTTP/1.1`)
++ [X] 단건 상품 조회 API 구현(`GET /api/products/{id} HTTP/1.1`)
++ [X] 단건 상품 생성 API 구현(`POST /api/products/ HTTP/1.1`)
++ [X] 단건 상품 수정 API 구현(`PUT /api/products/{id} HTTP/1.1`)
++ [X] 단건 상품 삭제 API 구현(`DELETE /api/products/{id} HTTP/1.1`)
 
 ### API 명세서
 + [상품 조회 API 명세서.md](document/%EC%83%81%ED%92%88%20%EC%A1%B0%ED%9A%8C%20API%20%EB%AA%85%EC%84%B8%EC%84%9C.md)
+
+## 2단계: 관리자 화면 구현
+
+### 구현 기능 목록
+
++ [ ] 이전에 요청 받았던 변경 사항 반영
++ [ ] 관련 의존성 추가 & 기본 레이아웃 및 템플릿 구조 설계
++ [ ] 관리자가 상품 목록을 조회할 수 있는 템플릿 & View Controller 구현
++ [ ] 세부 상품 정보 조회 템플릿 & View Controller 구현
++ [ ] 상품 등록 템플릿 & View Controller 구현
++ [ ] 상품 수정 템플릿 구현 & View Controller 구현
++ [ ] 상품 삭제 기능 & View Controller 구현
+
 
 
 ## 커밋 컨벤션
