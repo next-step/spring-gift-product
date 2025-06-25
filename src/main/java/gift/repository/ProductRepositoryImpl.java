@@ -40,19 +40,19 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
     
     @Override
-    public Product findProductWithDbId(Long id) {
+    public Product findProductWithId(Long id) {
         return Optional.ofNullable(products.get(id))
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
     
     @Override
-    public ModifyProductResponseDto modifyProductWithDbId(Long id, Product newProduct) {
+    public ModifyProductResponseDto modifyProductWithId(Long id, Product newProduct) {
         products.put(id, newProduct);
         return new ModifyProductResponseDto(newProduct);
     }
     
     @Override
-    public void deleteProductWithDbId(Long id) {
+    public void deleteProductWithId(Long id) {
         products.remove(id);
     }
     
@@ -60,4 +60,6 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Long getRecentId() {
         return (long) products.size() + 1;
     }
+    //기존 구현은 db size 의존 -> 겹치는 id 생성 가능
+    //어떻게 할 것인가?
 }

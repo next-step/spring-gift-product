@@ -13,11 +13,11 @@ public interface ProductRepository {
     
     List<FindProductResponseDto> findAllProducts();
     
-    Product findProductWithDbId(Long id);
+    Product findProductWithId(Long id);
     
-    ModifyProductResponseDto modifyProductWithDbId(Long id, Product newProduct);
+    ModifyProductResponseDto modifyProductWithId(Long id, Product newProduct);
     
-    void deleteProductWithDbId(Long id);
+    void deleteProductWithId(Long id);
     
     Long getRecentId();
 }

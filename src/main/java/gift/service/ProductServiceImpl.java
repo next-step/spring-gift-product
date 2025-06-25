@@ -49,16 +49,16 @@ public class ProductServiceImpl implements ProductService {
     
     //상품 단건 조회
     @Override
-    public FindProductResponseDto findProductWithDbId(Long id) {
-        Product product = productRepository.findProductWithDbId(id);
+    public FindProductResponseDto findProductWithId(Long id) {
+        Product product = productRepository.findProductWithId(id);
         return new FindProductResponseDto(product);
     }
     
     //상품 수정 (상품 자체가 다른 것으로 바뀜)
     @Override
-    public ModifyProductResponseDto modifyProductWithDbId(Long id,
+    public ModifyProductResponseDto modifyProductWithId(Long id,
         ModifyProductRequestDto requestDto) {
-        Product product = productRepository.findProductWithDbId(id);
+        Product product = productRepository.findProductWithId(id);
         
         if (requestDto.getName() == null ||
             requestDto.getPrice() == null || requestDto.getImageUrl() == null) {
@@ -72,21 +72,21 @@ public class ProductServiceImpl implements ProductService {
             requestDto.getImageUrl()
         );
         
-        return productRepository.modifyProductWithDbId(id,
+        return productRepository.modifyProductWithId(id,
             newProduct);
     }
     
     //상품 단건 삭제
     @Override
-    public void deleteProductWithDbId(Long id) {
-        Product product = productRepository.findProductWithDbId(id);
-        productRepository.deleteProductWithDbId(id);
+    public void deleteProductWithId(Long id) {
+        Product product = productRepository.findProductWithId(id);
+        productRepository.deleteProductWithId(id);
     }
     
     @Override
-    public ModifyProductResponseDto modifyProductInfoWithDbId(Long id,
+    public ModifyProductResponseDto modifyProductInfoWithId(Long id,
         ModifyProductRequestDto requestDto) {
-        Product product = productRepository.findProductWithDbId(id);
+        Product product = productRepository.findProductWithId(id);
         
         if (requestDto.getName() == null &&
             requestDto.getPrice() == null && requestDto.getImageUrl() == null) {
@@ -100,7 +100,7 @@ public class ProductServiceImpl implements ProductService {
             requestDto.getImageUrl() != null ? requestDto.getImageUrl() : product.getImageUrl()
         );
         
-        return productRepository.modifyProductWithDbId(id,
+        return productRepository.modifyProductWithId(id,
             newProduct);
     }
     
