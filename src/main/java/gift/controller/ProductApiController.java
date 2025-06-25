@@ -2,7 +2,7 @@ package gift.controller;
 
 import gift.dto.ProductRequest;
 import gift.dto.ProductResponse;
-import gift.service.ProductServiceImpl;
+import gift.service.ProductService;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/products")
 public class ProductApiController {
 
-    private final ProductServiceImpl productService;
+    private final ProductService productService;
 
-    public ProductApiController(ProductServiceImpl productService) {
+    public ProductApiController(ProductService productService) {
         this.productService = productService;
     }
 
