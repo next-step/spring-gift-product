@@ -25,6 +25,12 @@ public class ProductViewController {
         return "products";
     }
 
+    @PostMapping("/create")
+    public String createProduct(@ModelAttribute ProductRequestDTO product) {
+        productService.create(product);
+        return "redirect:/products";
+    }
+
     @PostMapping("/update")
     public String updateProduct(@ModelAttribute ProductRequestDTO product) {
         productService.update(product.getId(), product);
