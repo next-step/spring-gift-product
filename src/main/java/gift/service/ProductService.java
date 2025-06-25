@@ -20,19 +20,19 @@ public class ProductService {
     }
 
     public Product saveProduct(CreateProductRequest request) {
-        Product product = Product.of(request);
+        Product product = new Product(request.name(), request.price(), request.quantity());
         return productRepository.save(product);
     }
 
     public List<ProductResponse> getAllProducts() {
         List<Product> products = productRepository.findAll();
-        return products.stream().map(ProductResponse::new).toList();
+        return products.stream().map(ProductResponse::from).toList();
     }
 
     public Product updateProduct(Long id, UpdateProductRequest request) {
         Optional<Product> getProduct = productRepository.findById(id);
         Product product = getProduct.orElseThrow(() -> new IllegalStateException("Product를 찾을 수 없습니다."));
-        return product.update(request);
+        return product.update(request.name(), request.price(), request.quantity());
     }
 
     public void deleteProduct(Long id) {
