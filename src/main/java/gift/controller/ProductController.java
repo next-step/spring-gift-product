@@ -19,7 +19,7 @@ public class ProductController {
     @PostMapping // 상품 등록
     public ResponseEntity<ProductResponse> register(@RequestBody ProductRequest request) {
         Long id = idgen.getAndIncrement();
-        Product product = new Product(id, request.getName(), request.getPrice(), request.getImageUrl());
+        Product product = new Product(id, request.name(), request.price(), request.imageUrl());
         products.put(id, product);
         return ResponseEntity
                 .created(null)
@@ -47,14 +47,14 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
 
-        if (request.getName() != null && !request.getName().isBlank()) {
-            exist.setName(request.getName());
+        if (request.name() != null && !request.name().isBlank()) {
+            exist.setName(request.name());
         }
-        if (request.getPrice() > 0) {
-            exist.setPrice(request.getPrice());
+        if (request.price() > 0) {
+            exist.setPrice(request.price());
         }
-        if (request.getImageUrl() != null && !request.getImageUrl().isBlank()) {
-            exist.setImageUrl(request.getImageUrl());
+        if (request.imageUrl() != null && !request.imageUrl().isBlank()) {
+            exist.setImageUrl(request.imageUrl());
         }
 
         return ResponseEntity.ok(new ProductResponse(exist));
