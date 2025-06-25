@@ -3,7 +3,6 @@ package gift;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping("/api")
@@ -15,6 +14,9 @@ public class ProductController {
     public String createProduct(@RequestBody ProductDTO productdto) {
         long id = idGenerator.getAndIncrement();
         Product product = new Product(id, productdto);
+
+    @PostMapping("/product")
+    public String createProduct(@RequestBody Product product) {
         products.put(product.getId(), product);
         return "상품 생성: " + product.getId();
     }
