@@ -33,9 +33,9 @@ public class ProductController {
     }
 
     @PatchMapping("/product/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product updateProduct) {
+    public Product updateProduct(@PathVariable Long id, @RequestBody ProductDTO updateProductdto) {
         Product oldProduct = products.get(id);
-        oldProduct.updateProduct(updateProduct);
+        oldProduct.updateProduct(updateProductdto);
         return oldProduct;
     }
 
