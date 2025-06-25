@@ -1,13 +1,11 @@
 package gift.repository;
 
 import gift.domain.Product;
-import gift.dto.ProductRequestDto;
-import gift.dto.ProductResponseDto;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -17,70 +15,48 @@ public class ProductRepositoryImpl implements ProductRepository {
     private final AtomicLong currentProductId = new AtomicLong(1L);
 
     @Override
-    public List<ProductResponseDto> findAllProducts() {
-        return products.values().stream()
-                .map(product -> new ProductResponseDto(
-                        product.getId(),
-                        product.getName(),
-                        product.getPrice(),
-                        product.getImageUrl()
-                ))
-                .collect(Collectors.toList());
+    public List<Product> findAllProducts() {
+        return new ArrayList<>(products.values());
     }
 
     @Override
-    public ProductResponseDto findProductById(Long id) throws IllegalArgumentException {
+    public Product findProductById(Long id) throws IllegalArgumentException {
         Product product = products.get(id);
 
         if (product == null) {
             throw new IllegalArgumentException("해당 ID의 상품이 존재하지 않습니다: " + id);
         }
 
-        return new ProductResponseDto(
-                product.getId(),
-                product.getName(),
-                product.getPrice(),
-                product.getImageUrl()
-        );
+        return product;
     }
 
     @Override
-    public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
-        Product product = new Product(
+    public Product createProduct(Product product) {
+        Product newProduct = new Product(
                 currentProductId.getAndIncrement(),
-                productRequestDto.name(),
-                productRequestDto.price(),
-                productRequestDto.imageUrl());
-
-        products.put(product.getId(), product);
-
-        return new ProductResponseDto(
-                product.getId(),
                 product.getName(),
                 product.getPrice(),
-                product.getImageUrl()
-        );
+                product.getImageUrl());
+
+        products.put(newProduct.getId(), newProduct);
+
+        return newProduct;
     }
 
     @Override
-    public ProductResponseDto updateProduct(Long id, ProductRequestDto productRequestDto)
+    public Product updateProduct(Product product)
             throws IllegalArgumentException {
-        Product product = products.get(id);
+        Product newProduct = products.get(product.getId());
 
-        if (product == null) {
-            throw new IllegalArgumentException("해당 ID의 상품이 존재하지 않습니다: " + id);
+        if (newProduct == null) {
+            throw new IllegalArgumentException("해당 ID의 상품이 존재하지 않습니다: " + product.getId());
         }
 
-        product.setName(productRequestDto.name());
-        product.setPrice(productRequestDto.price());
-        product.setImageUrl(productRequestDto.imageUrl());
+        newProduct.setName(product.getName());
+        newProduct.setPrice(product.getPrice());
+        newProduct.setImageUrl(product.getImageUrl());
 
-        return new ProductResponseDto(
-                product.getId(),
-                product.getName(),
-                product.getPrice(),
-                product.getImageUrl()
-        );
+        return newProduct;
     }
 
     @Override
