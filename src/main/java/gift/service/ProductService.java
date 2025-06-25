@@ -4,8 +4,11 @@ import gift.entity.Product;
 
 import gift.repository.ProductRepository;
 import gift.validator.ProductValidator;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
+@Service
 public class ProductService {
 
     private final ProductRepository repository = new ProductRepository();
