@@ -22,14 +22,14 @@ public class ProductService {
         PagedResult<Product> pagedResult = productRepository.findAll(page, size, sortField, ascending);
 
         List<GetProductResDto> dtoList = pagedResult.content().stream()
-                .map(GetProductResDto::new).toList();
+                .map(GetProductResDto::from).toList();
 
         return PagedResult.from(dtoList, pagedResult);
     }
 
     public GetProductResDto getProductById(Long id) throws ProductNotFoundException {
         Product product = productRepository.findById(id);
-        return new GetProductResDto(product);
+        return GetProductResDto.from(product);
     }
 
     public Long createProduct(CreateProductReqDto dto) {
