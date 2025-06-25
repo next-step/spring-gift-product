@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Product Manager</title></head>
+<body>
+<h1>Product Manager</h1>
+<table border="1">
+  <tr>
+    <th>ID</th><th>Name</th><th>Price</th><th>Image</th><th>Manage</th>
+  </tr>
+  <tr th:each="p : ${products}">
+    <td th:text="${p.id}">1</td>
+    <td th:text="${p.name}">이름</td>
+    <td th:text="${p.price}">가격</td>
+    <td th:text="${p.imageUrl}">URL</td>
+    <td>
+      <button>수정</button>
+      <button>삭제</button>
+  </tr>
+</table>
+
+</body>
+</html>
