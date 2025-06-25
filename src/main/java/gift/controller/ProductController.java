@@ -25,7 +25,7 @@ public class ProductController {
     public ResponseEntity<ProductResponseDto> addProduct(
             @RequestBody ProductRequestDto dto
     ) {
-        return new ResponseEntity<ProductResponseDto>(productService.saveProduct(dto), HttpStatus.OK);
+        return new ResponseEntity<ProductResponseDto>(productService.saveProduct(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{productId}")
