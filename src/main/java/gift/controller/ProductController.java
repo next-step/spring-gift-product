@@ -3,10 +3,10 @@ package gift.controller;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.service.ProductService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -22,22 +22,26 @@ public class ProductController {
     public ResponseEntity<ProductResponseDto> addProduct(
             @RequestBody ProductRequestDto requestDto){
         ProductResponseDto responseDto = productService.addProduct(requestDto);
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(responseDto.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(responseDto);
     }
 
     @GetMapping
     public ResponseEntity<List<ProductResponseDto>> getProducts(){
         List<ProductResponseDto> responseDtos = productService.getProducts();
-        return new ResponseEntity<>(responseDtos, HttpStatus.OK);
+        return ResponseEntity.ok(responseDtos);
     }
 
     @GetMapping("{id}")
     public ResponseEntity<ProductResponseDto> getProduct(@PathVariable Long id){
         try{
             ProductResponseDto responseDto = productService.getProduct(id);
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+            return ResponseEntity.ok(responseDto);
         }catch(IllegalArgumentException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -47,9 +51,9 @@ public class ProductController {
             @RequestBody ProductRequestDto requestDto) {
         try {
             ProductResponseDto responseDto = productService.updateProduct(id, requestDto);
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+            return ResponseEntity.ok(responseDto);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -57,9 +61,9 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         try {
             productService.deleteProduct(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 성공 시 204
+            return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 실패 시 404
+            return ResponseEntity.notFound().build();
         }
     }
 
