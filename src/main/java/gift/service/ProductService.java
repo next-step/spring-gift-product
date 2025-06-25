@@ -21,7 +21,7 @@ public class ProductService {
         Product product = productRepository.findById(productId);
         if (product == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found.");
-        return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
+        return new ProductResponseDto(product.id(), product.name(), product.price(), product.imageUrl());
     }
 
     public ProductResponseDto saveProduct(ProductRequestDto dto) {
@@ -32,6 +32,6 @@ public class ProductService {
                 dto.imageUrl()
         );
         Product savedProduct = productRepository.saveProduct(product);
-        return new ProductResponseDto(savedProduct.getId(), savedProduct.getName(), product.getPrice(), product.getImageUrl());
+        return new ProductResponseDto(savedProduct.id(), savedProduct.name(), product.price(), product.imageUrl());
     }
     }

@@ -14,7 +14,7 @@ public class ProductRepository {
     public Product findById(Long id) {
         for (int i = 0; i < products.size(); i++) {
             Product product = products.get(i);
-            if (product.getId().equals(id))
+            if (product.id().equals(id))
                 return product;
         }
         return null;
