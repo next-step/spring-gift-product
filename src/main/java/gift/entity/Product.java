@@ -1,51 +1,58 @@
 package gift.entity;
 
 public class Product {
-    private Long id;
-    private String name;
-    private Integer price;
-    private String imageUrl;
 
-    public Product(){
+  private Long id;
+  private String name;
+  private Integer price;
+  private String imageUrl;
 
-    }
+  public Product() {
 
-    public Product(Long id, String name, Integer price, String imageUrl){
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.imageUrl = imageUrl;
-    }
+  }
 
-    public Long getId(){
-        return this.id;
-    }
+  public Product(Long id, String name, Integer price, String imageUrl) {
+    this.id = id;
+    this.name = name;
+    this.price = price;
+    this.imageUrl = imageUrl;
+  }
 
-    public String getName(){
-        return this.name;
-    }
+  public void updateInfo(String name, Integer price, String imageUrl) {
+    this.name = name;
+    this.price = price;
+    this.imageUrl = imageUrl;
+  }
 
-    public Integer getPrice(){
-        return this.price;
-    }
+  public Long getId() {
+    return this.id;
+  }
 
-    public String getImageUrl(){
-        return this.imageUrl;
-    }
+  public String getName() {
+    return this.name;
+  }
 
-    public void setId(Long id){
-        this.id = id;
-    }
+  public Integer getPrice() {
+    return this.price;
+  }
 
-    public void setName(String name){
-        this.name = name;
-    }
+  public String getImageUrl() {
+    return this.imageUrl;
+  }
 
-    public void setPrice(Integer price){
-        this.price = price;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public void setImageUrl(String imageUrl){
-        this.imageUrl = imageUrl;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setPrice(Integer price) {
+    this.price = price;
+  }
+
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
+  }
 }
