@@ -10,7 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ProductService {
-    private Long id = 1L;
+
     private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
@@ -25,14 +25,8 @@ public class ProductService {
     }
 
     public ProductResponseDto saveProduct(ProductRequestDto dto) {
-        Product product = new Product(
-                id++,
-                dto.name(),
-                dto.price(),
-                dto.imageUrl()
-        );
-        Product savedProduct = productRepository.saveProduct(product);
-        return savedProduct.toDto();
+        Product product = productRepository.saveProduct(dto.name(),dto.price(),dto.imageUrl());
+        return product.toDto();
     }
 
     public ProductResponseDto updateProduct(Long productId, ProductRequestDto dto) {
