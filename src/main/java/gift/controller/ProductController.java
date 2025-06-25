@@ -6,6 +6,7 @@ import gift.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -49,10 +50,10 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        boolean deleted = productService.deleteProduct(id);
-        if (deleted) {
+        try {
+            productService.deleteProduct(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
+        } catch (ResponseStatusException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

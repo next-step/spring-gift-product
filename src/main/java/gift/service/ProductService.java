@@ -4,7 +4,9 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepositoryInterface;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,8 +58,11 @@ public class ProductService implements ProductServiceInterface {
     }
 
     @Override
-    public boolean deleteProduct(Long id) {
-        return productRepository.deleteProduct(id);
+    public void deleteProduct(Long id) {
+        boolean deleted = productRepository.deleteProduct(id);
+        if (!deleted) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

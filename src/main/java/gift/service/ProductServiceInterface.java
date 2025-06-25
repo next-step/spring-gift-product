@@ -21,5 +21,5 @@ public interface ProductServiceInterface {
     Optional<ProductResponseDto> updateProduct(Long id, ProductRequestDto requestDto);
 
     // 상품 삭제
-    boolean deleteProduct(Long id);
+    void deleteProduct(Long id);
 }
