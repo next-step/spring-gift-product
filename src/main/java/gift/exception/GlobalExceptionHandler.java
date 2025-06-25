@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<String> handleBodyMissing(HttpMessageNotReadableException exception) {
+    public ResponseEntity<Void> handleBodyMissing(HttpMessageNotReadableException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
