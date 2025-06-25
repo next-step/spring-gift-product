@@ -1,6 +1,7 @@
 package gift.controller;
 
 import gift.dto.Product;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -17,5 +18,10 @@ public class ProductController {
         return products.values();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
+        Product product = products.get(id);
+        return (product != null) ? ResponseEntity.ok(product) : ResponseEntity.notFound().build();
+    }
 
 }
