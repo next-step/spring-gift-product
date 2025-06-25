@@ -1,5 +1,6 @@
 package gift.service;
 
+import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
@@ -17,8 +18,8 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public ProductResponseDto create(String name, Integer price, String imageUrl) {
-        Product product = new Product(name, price, imageUrl);
+    public ProductResponseDto create(ProductRequestDto requestDto) {
+        Product product = new Product(requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
         Product newProduct = productRepository.save(product);
 
         return new ProductResponseDto(newProduct.getId(), newProduct.getName(), newProduct.getPrice(), newProduct.getImageUrl());
@@ -31,8 +32,8 @@ public class ProductService {
         return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
     }
 
-    public ProductResponseDto update(Long productId, String name, Integer price, String imageUrl) {
-        Product product = productRepository.update(productId, name, price, imageUrl)
+    public ProductResponseDto update(Long productId, ProductRequestDto requestDto) {
+        Product product = productRepository.update(productId, requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found: id=" + productId));
 
         return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());

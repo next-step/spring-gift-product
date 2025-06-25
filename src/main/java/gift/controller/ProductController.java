@@ -26,11 +26,7 @@ public class ProductController {
             return ResponseEntity.badRequest().build();
         }
 
-        String name = requestDto.getName();
-        Integer price = requestDto.getPrice();
-        String imageUrl = requestDto.getImageUrl();
-
-        ProductResponseDto responseDto = productService.create(name, price, imageUrl);
+        ProductResponseDto responseDto = productService.create(requestDto);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -53,11 +49,8 @@ public class ProductController {
         if (requestDto == null) {
             return ResponseEntity.badRequest().build();
         }
-        String name = requestDto.getName();
-        Integer price = requestDto.getPrice();
-        String imageUrl = requestDto.getImageUrl();
 
-        return ResponseEntity.ok(productService.update(productId, name, price, imageUrl));
+        return ResponseEntity.ok(productService.update(productId, requestDto));
     }
 
     @DeleteMapping("/{productId}")
