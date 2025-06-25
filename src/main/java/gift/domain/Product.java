@@ -13,16 +13,12 @@ public record Product(Long id, String name, Integer price, String imageUrl) {
     }
 
     public static Product withId(Long id, String name, Integer price, String imageUrl) {
-        if (id == null) {
-            throw new IllegalArgumentException("ID는 null일 수 없습니다.");
-        }
+        validateId(id);
         return new Product(id, name, price, imageUrl);
     }
 
     public Product update(String name, Integer price, String imageUrl) {
-        if (isAllFieldsBlankOrInvalid(name, price, imageUrl)) {
-            throw new IllegalArgumentException("최소 하나 이상의 필드를 변경해야 합니다.");
-        }
+        requireAtLeastOneFieldChanged(name, price, imageUrl);
 
         return new Product(
                 this.id,
@@ -42,6 +38,21 @@ public record Product(Long id, String name, Integer price, String imageUrl) {
 
     private static boolean isAllFieldsBlankOrInvalid(String name, Integer price, String imageUrl) {
         return !isNotBlank(name) && !isValidPrice(price) && !isNotBlank(imageUrl);
+    }
+
+    private static void requireAtLeastOneFieldChanged(String name, Integer price, String imageUrl) {
+        if (isAllFieldsBlankOrInvalid(name, price, imageUrl)) {
+            throw new IllegalArgumentException("최소 하나 이상의 필드를 변경해야 합니다.");
+        }
+    }
+
+    private static void validateId(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID는 null일 수 없습니다.");
+        }
+        if (id < 0) {
+            throw new IllegalArgumentException("ID는 음수일 수 없습니다.");
+        }
     }
 
     private static void validateName(String name) {
