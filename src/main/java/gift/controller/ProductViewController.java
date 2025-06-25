@@ -100,4 +100,11 @@ public class ProductViewController {
         return "redirect:/admin/products";
     }
 
+    // 상품 삭제 요청 처리
+    @PostMapping("/{id}/delete")
+    public String deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id); // 서비스 재사용
+        return "redirect:/admin/products"; // 삭제 후 목록 페이지로 이동
+    }
+
 }

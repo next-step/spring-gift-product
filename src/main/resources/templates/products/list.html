@@ -19,6 +19,7 @@
     <th>이미지</th>
     <th>상세</th>
     <th>수정</th>
+    <th>삭제</th>
   </tr>
   </thead>
   <tbody>
@@ -37,6 +38,12 @@
     </td>
     <td>
       <a th:href="@{'/admin/products/' + ${product.id} + '/edit'}">수정</a>
+    </td>
+    <td>
+      <form th:action="@{'/admin/products/' + ${product.id} + '/delete'}"
+            method="post">
+        <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+      </form>
     </td>
   </tr>
   </tbody>
