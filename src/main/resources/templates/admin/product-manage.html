@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}" lang="ko">
+<head>
+  <title>상품 목록</title>
+  <link rel="stylesheet" th:href="@{/css/product-manage.css}" layout:fragment="styles"/>
+  <script src="../../static/js/product-manage.js"></script>
+</head>
+<body>
+<div th:fragment="content">
+  <h1>Product Management System</h1>
+  <div class="button-group">
+    <button id="product-create-btn" class="btn">상품 등록</button>
+    <button id="product-delete-all-btn" class="btn">선택 요소 삭제</button>
+  </div>
+
+  <table border="1" id="product-list-table">
+    <thead>
+    <tr>
+      <th><input type="checkbox" id="product-all-select"/></th>
+      <th>ID</th>
+      <th>이미지</th>
+      <th>상품명</th>
+      <th>가격</th>
+      <th>액션</th>
+    </tr>
+    </thead>
+    <tbody id="product-list-body"></tbody>
+  </table>
+</div>
+
+<script th:src="@{/js/product-manage.js}" layout:fragment="scripts"></script>
+</body>
+</html>
