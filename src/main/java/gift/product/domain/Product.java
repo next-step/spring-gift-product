@@ -1,5 +1,6 @@
 package gift.product.domain;
 
+import gift.product.dto.UpdateProductReqDto;
 import lombok.Getter;
 
 @Getter
@@ -14,5 +15,11 @@ public class Product {
         this.name = name;
         this.price = price;
         this.description = description;
+    }
+
+    public void updateProduct(UpdateProductReqDto dto) {
+        this.name = dto.name();
+        this.price = dto.price();
+        this.description = dto.description();
     }
 }

@@ -3,6 +3,7 @@ package gift.product.repository;
 import gift.common.exception.ErrorCode;
 import gift.product.domain.Product;
 import gift.product.dto.CreateProductReqDto;
+import gift.product.dto.UpdateProductReqDto;
 import gift.product.exception.ProductNotFoundException;
 import org.springframework.stereotype.Repository;
 
@@ -34,6 +35,10 @@ public class ProductRepository {
         Product newProduct = new Product(id, dto.name(), dto.price(), dto.description());
         productMap.put(id, newProduct);
         return id;
+    }
+
+    public void update(Long id, Product updatedProduct) {
+        productMap.put(id, updatedProduct);
     }
 
 
