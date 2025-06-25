@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,11 +27,11 @@ public class ProductController {
             @Valid @RequestBody ProductRequestDto request
     ) {
         return new ResponseEntity<>(
-                new ProductResponseDto(
+                ProductResponseDto.from(
                         productService.createProduct(
-                                request.getName(),
-                                request.getPrice(),
-                                request.getImageUrl()
+                                request.name(),
+                                request.price(),
+                                request.imageUrl()
                         )
                 ), HttpStatus.CREATED);
     }
@@ -42,7 +41,7 @@ public class ProductController {
             @PathVariable Long id
     ) {
         return new ResponseEntity<>(
-                new ProductResponseDto(
+                ProductResponseDto.from(
                         productService.getProductById(id)
                 ), HttpStatus.OK
         );
@@ -52,7 +51,7 @@ public class ProductController {
     public ResponseEntity<List<ProductResponseDto>> getAllProducts() {
         List<Product> products = productService.getProductList();
         List<ProductResponseDto> response = products.stream()
-                .map(product -> new ProductResponseDto(product))
+                .map(product -> ProductResponseDto.from(product))
                 .toList();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -63,7 +62,7 @@ public class ProductController {
             @Valid @RequestBody ProductPatchDto patch
     ) {
         return new ResponseEntity<>(
-                new ProductResponseDto(
+                ProductResponseDto.from(
                         productService.updateProductById(id, patch.getName(), patch.getPrice(), patch.getImageUrl())
                 ), HttpStatus.OK
         );
