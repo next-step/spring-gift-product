@@ -15,8 +15,8 @@
 ## 3️⃣ 2단계 구현 예정 기능 목록 (관리자 화면)
 - [x] 관리자 상품 목록 조회 페이지 (`GET admin/products`)
 - [x] 관리자 상품 단건 조회 페이지 (`GET admin/products/{id}`)
-- [x] 관리자 상품 등록 페이지 및 등록 (`POST admin/products`)
-- [x] 관리자 상품 수정 페이지 및 수정 (`PUT admin/products/{id}`)
+- [x] 관리자 상품 등록 페이지 및 등록 (`GET/POST admin/products/new`)
+- [x] 관리자 상품 수정 페이지 및 수정 (`GET/PUT admin/products/edit/{id}`)
 - [x] 관리자 상품 삭제 (`DELETE admin/products/{id}`)
 
 ## 4️⃣ 기술 스택
