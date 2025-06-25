@@ -2,17 +2,17 @@ package gift.common.exception;
 
 public class ErrorResponseDto {
 
-    private final int status;
+    private final int httpStatusCode;
     private final String message;
 
 
-    public ErrorResponseDto(int status, String message) {
-        this.status = status;
+    public ErrorResponseDto(int httpStatusCode, String message) {
+        this.httpStatusCode = httpStatusCode;
         this.message = message;
     }
 
-    public int getStatus() {
-        return status;
+    public int getHttpStatusCode() {
+        return httpStatusCode;
     }
 
     public String getMessage() {
