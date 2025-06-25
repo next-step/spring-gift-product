@@ -14,12 +14,7 @@ public class ProductRepository {
     public Product save(Product product){
         long newId = ++sequence;
 
-        Product newProduct = new Product(
-                newId,
-                product.getName(),
-                product.getPrice(),
-                product.getImageUrl()
-        );
+        Product newProduct = product.withId(newId);
         products.put(newId, newProduct);
         return newProduct;
     }

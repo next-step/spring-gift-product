@@ -17,9 +17,9 @@ public class ProductService {
     }
 
     public ProductResponseDto addProduct(ProductRequestDto requestDto){
-        Product product = requestDto.toEntity();
+        Product product = new Product(requestDto.name(), requestDto.price(), requestDto.imageUrl());
         Product savedProduct = productRepository.save(product);
-        return new ProductResponseDto(savedProduct);
+        return ProductResponseDto.from(savedProduct);
     }
 
     public List<ProductResponseDto> getProducts(){
@@ -28,7 +28,7 @@ public class ProductService {
         List<ProductResponseDto> responseDtos = new ArrayList<>();
 
         for(Product product : products){
-            ProductResponseDto dto = new ProductResponseDto(product);
+            ProductResponseDto dto = ProductResponseDto.from(product);
             responseDtos.add(dto);
         }
         return responseDtos;
@@ -37,7 +37,7 @@ public class ProductService {
     public ProductResponseDto getProduct(Long id){
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다. id = " + id));
-        return new ProductResponseDto(product);
+        return ProductResponseDto.from(product);
     }
 
     public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
@@ -49,7 +49,7 @@ public class ProductService {
                 requestDto.price(),
                 requestDto.imageUrl()
         );
-        return new ProductResponseDto(product);
+        return ProductResponseDto.from(product);
     }
 
     public void deleteProduct(Long id) {

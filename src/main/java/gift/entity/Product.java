@@ -4,41 +4,34 @@ public class Product {
     private Long id;
     private String name;
     private Long price;
-    private String imageURL;
+    private String imageUrl;
 
-    public Product(){}
-    public Product(Long id, String name, Long price, String imageURL){
+    public Product(Long id, String name, Long price, String imageUrl){
         this.id = id;
         this.name = name;
         this.price = price;
-        this.imageURL = imageURL;
-    }
-    public Long getId(){
-        return id;
-    }
-    public String getName(){
-        return name;
-    }
-    public void setName(String name){
-        this.name = name;
-    }
-    public Long getPrice(){
-        return price;
-    }
-    public void setPrice(Long price){
-        this.price = price;
-    }
-    public String getImageUrl(){
-        return imageURL;
-    }
-    public void setImageUrl(){
-        this.imageURL = imageURL;
+        this.imageUrl = imageUrl;
     }
 
-    public void update(String name, Long price, String imageURL){
+    public Product(String name, Long price, String imageUrl){
         this.name = name;
         this.price = price;
-        this.imageURL = imageURL;
+        this.imageUrl = imageUrl;
+    }
+
+    public Long getId(){return id;}
+    public String getName(){return name;}
+    public Long getPrice(){return price;}
+    public String getImageUrl(){return imageUrl;}
+
+    public void update(String name, Long price, String imageUrl){
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
+    }
+
+    public Product withId(Long newId){
+        return new Product(newId, this.name, this.price, this.imageUrl);
     }
 
 }
