@@ -1,4 +1,4 @@
-_# spring-gift-product
+# spring-gift-product
 
 ## step1 - 상품 API
 
@@ -17,12 +17,12 @@ _# spring-gift-product
 
     * 객체 생성 시 다음 조건을 엄격하게 검증하며, 조건을 위반하면 `IllegalArgumentException`을 발생시킨다.
 
-      | 필드명      | 타입        | 제약 조건                                 |
-                      | -------- | --------- | ------------------------------------- |
-      | id       | `Long`    | null일 수 있으나, 명시적 생성 시에는 null 불가 (필수값) |
-      | name     | `String`  | null 또는 빈 문자열, 공백 문자만 포함할 수 없음        |
-      | price    | `Integer` | null 불가, 0 이상인 정수만 가능                 |
-      | imageUrl | `String`  | null 또는 빈 문자열, 공백 문자만 포함할 수 없음        |
+      | 필드명 | 타입 | 제약 조건 |
+      | -------- | --------- | ------------------------------------- |
+      | id | `Long`    | null일 수 있으나, 명시적 생성 시에는 null 불가 (필수값) |
+      | name | `String`  | null 또는 빈 문자열, 공백 문자만 포함할 수 없음 |
+      | price | `Integer` | null 불가, 0 이상인 정수만 가능 |
+      | imageUrl | `String`  | null 또는 빈 문자열, 공백 문자만 포함할 수 없음 |
 
     * **객체 생성 메서드**
 
