@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>상품 등록</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<div class="container">
+  <h1>상품 등록</h1>
+
+  <form id="createForm">
+    <label>이름:
+      <input type="text" name="name" required />
+    </label>
+    <label>가격:
+      <input type="number" name="price" required />
+    </label>
+    <label>이미지 URL:
+      <input type="text" name="imageUrl" required />
+    </label>
+    <button type="submit">등록</button>
+  </form>
+
+  <a href="/products" class="back-link">← 목록으로</a>
+</div>
+
+<script>
+  document.getElementById('createForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+
+    const requestBody = {
+      name: formData.get('name'),
+      price: parseInt(formData.get('price')),
+      imageUrl: formData.get('imageUrl')
+    };
+
+    await fetch('/api/products', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody)
+    });
+
+    location.href = '/products';
+  });
+</script>
+</body>
+</html>
