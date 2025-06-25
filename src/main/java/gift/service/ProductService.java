@@ -4,7 +4,7 @@ import gift.dto.ProductUpdateRequestDto;
 import gift.entity.Product;
 
 import gift.repository.ProductRepository;
-import gift.validator.ProductValidator;
+import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +19,6 @@ public class ProductService {
     }
 
     public Product registerProduct(Product product) {
-        ProductValidator.validate(product);  // 검증은 여기서 호출만
-
         return repository.save(product);
     }
 
@@ -29,19 +27,22 @@ public class ProductService {
     }
 
     public Product getProductById(long id) {
-        return ProductValidator.validateExists(id, repository);
+        return repository.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("상품을 찾을 수 없습니다."));
     }
 
     public Product updateProduct(long id, ProductUpdateRequestDto updateRequestDto) {
-        ProductValidator.validateUpdate(updateRequestDto);                     // 유효성 검사
-        Product existing = ProductValidator.validateExists(id, repository); // 존재 여부 확인
+        Product existing = repository.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("상품을 찾을 수 없습니다."));
 
         repository.update(id, updateRequestDto);
         return existing;
     }
 
     public void deleteProduct(Long id) {
-        ProductValidator.validateExists(id, repository); // 존재 여부 검증
+        if (repository.findById(id).isEmpty()) {
+            throw new NoSuchElementException("상품을 찾을 수 없습니다.");
+        }
         repository.delete(id);
     }
 

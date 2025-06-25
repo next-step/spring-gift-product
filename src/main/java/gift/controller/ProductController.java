@@ -1,5 +1,6 @@
 package gift.controller;
 
+import gift.dto.ProductCreateRequestDto;
 import gift.dto.ProductUpdateRequestDto;
 import gift.entity.Product;
 import gift.service.ProductService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/products")
@@ -26,7 +28,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+    public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductCreateRequestDto dto) {
+        Product product = new Product(dto.getName(), dto.getPrice(), dto.getImageUrl());
         Product saved = productService.registerProduct(product);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
@@ -46,7 +49,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable long id, @RequestBody ProductUpdateRequestDto updateRequestDto) {
+    public ResponseEntity<Product> updateProduct(@PathVariable long id, @RequestBody @Valid ProductUpdateRequestDto updateRequestDto) {
         Product updated = productService.updateProduct(id, updateRequestDto);
         return ResponseEntity.ok(updated); // 200 OK
     }
