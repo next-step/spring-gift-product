@@ -25,7 +25,7 @@ public class ProductViewController {
         return "products";
     }
 
-    @PostMapping("/edit")
+    @PostMapping("/update")
     public String updateProduct(@ModelAttribute ProductRequestDTO product) {
         productService.update(product.getId(), product);
         return "redirect:/products";
