@@ -26,19 +26,18 @@ public class Product {
         this.imageUrl = productdto.getImageUrl();
     }
 
-    public Product updateProduct(Product oldProduct, Product newProduct) {
+    public void updateProduct(Product newProduct) {
         if(newProduct.getName() != null) {
-            oldProduct.setName(newProduct.getName());
+            this.setName(newProduct.getName());
         }
 
         if(newProduct.getPrice() != 0) {
-            oldProduct.setPrice(newProduct.getPrice());
+            this.setPrice(newProduct.getPrice());
         }
 
         if(newProduct.getImageUrl() != null) {
-            oldProduct.setImageUrl(newProduct.getImageUrl());
+            this.setImageUrl(newProduct.getImageUrl());
         }
-        return oldProduct;
     }
 
     public Long getId() {
