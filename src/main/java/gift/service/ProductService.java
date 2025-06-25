@@ -2,12 +2,14 @@ package gift.service;
 
 import gift.domain.Product;
 import org.springframework.stereotype.Service;
+import java.util.concurrent.ConcurrentHashMap;
+
 
 import java.util.*;
 
 @Service
 public class ProductService {
-    private final Map<Long, Product> productStore = new HashMap<>();
+    private final Map<Long, Product> productStore = new ConcurrentHashMap<>();
     private long idSequence = 1;
 
     public List<Product> findAll() {
@@ -35,5 +37,4 @@ public class ProductService {
         return productStore.remove(id) != null;
     }
 
-    //for commit
 }
