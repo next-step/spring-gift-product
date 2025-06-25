@@ -25,7 +25,7 @@ public class ItemController {
     public ResponseEntity<ItemDTO> addItems(
             @RequestBody @Valid ItemDTO dto
     ) {
-        ItemDTO item = itemService.saveItem(dto);
+        ItemDTO item = itemService.saveItem(dto);;
         return new ResponseEntity<>(item, HttpStatus.CREATED);
     }
 

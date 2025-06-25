@@ -20,13 +20,24 @@ public class AdminItemController {
     }
 
     @GetMapping
-    public String list(
+    public String getItem(
             Model model,
-            @RequestParam String name,
-            @RequestParam Integer price) {
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Integer price) {
         List<ItemDTO> items = itemService.getItems(name, price);
         model.addAttribute("items", items);
         return "admin/list";
     }
 
+    @PostMapping
+    public String saveItem(@ModelAttribute ItemDTO itemDTO) {
+        ItemDTO itemDTO1 = itemService.saveItem(itemDTO);
+        return "redirect:/admin/products";
+    }
+
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("itemDTO", new ItemDTO());
+        return "admin/createForm";
+    }
 }

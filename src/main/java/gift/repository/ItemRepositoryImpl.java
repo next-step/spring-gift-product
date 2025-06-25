@@ -14,9 +14,13 @@ import java.util.Map;
 public class ItemRepositoryImpl implements ItemRepository {
 
     private final Map<Long, Item> items = new HashMap<>();
+    private static Long sequence = 1L;
     @Override
     public Item saveItem(ItemDTO dto) {
         Long id = dto.getId();
+        if (id == null) {
+            id = sequence++;
+        }
         String itemName = dto.getName();
         Integer itemPrice = dto.getPrice();
         String itemImageUrl = dto.getImageUrl();
