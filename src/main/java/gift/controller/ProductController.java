@@ -19,40 +19,49 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
+
     private final ProductService productService;
-    public ProductController(ProductService productService){
-        this.productService =  productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDto> createProduct(@RequestBody CreateProductRequestDto requestDto){
-        if(requestDto.getName() != null && requestDto.getPrice()>=0 && requestDto.getImageUrl() != null){
-            return new ResponseEntity<>(productService.createProduct(requestDto), HttpStatus.CREATED);
-        }else{
+    public ResponseEntity<ProductResponseDto> createProduct(
+            @RequestBody CreateProductRequestDto requestDto) {
+        if (requestDto.getName() != null && requestDto.getPrice() >= 0
+                && requestDto.getImageUrl() != null) {
+            return new ResponseEntity<>(productService.createProduct(requestDto),
+                    HttpStatus.CREATED);
+        } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping
-    public ResponseEntity<List<ProductResponseDto>> findAllProducts(){
+    public ResponseEntity<List<ProductResponseDto>> findAllProducts() {
         return new ResponseEntity<>(productService.findAllProducts(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponseDto> findProductById(@PathVariable Long id){
+    public ResponseEntity<ProductResponseDto> findProductById(@PathVariable Long id) {
         return new ResponseEntity<>(productService.findProductById(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDto> updateProductById(@PathVariable Long id, @RequestBody CreateProductRequestDto requestDto){
-        if(requestDto.getName() != null && requestDto.getPrice()>=0 && requestDto.getImageUrl() != null){
-            return new ResponseEntity<>(productService.updateProductById(id, requestDto), HttpStatus.OK);
-        }else{
+    public ResponseEntity<ProductResponseDto> updateProductById(@PathVariable Long id,
+            @RequestBody CreateProductRequestDto requestDto) {
+        if (requestDto.getName() != null && requestDto.getPrice() >= 0
+                && requestDto.getImageUrl() != null) {
+            return new ResponseEntity<>(productService.updateProductById(id, requestDto),
+                    HttpStatus.OK);
+        } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProductById(@PathVariable Long id){
+    public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
         productService.deleteProductById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

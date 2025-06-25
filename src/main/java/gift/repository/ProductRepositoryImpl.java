@@ -10,8 +10,10 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ProductRepositoryImpl implements ProductRepository{
+public class ProductRepositoryImpl implements ProductRepository {
+
     private final Map<Long, Product> products = new HashMap<>();
+
     @Override
     public Product createProduct(Product newProduct) {
         products.put(newProduct.getId(), newProduct);
@@ -21,8 +23,9 @@ public class ProductRepositoryImpl implements ProductRepository{
     @Override
     public List<ProductResponseDto> findAllProducts() {
         List<ProductResponseDto> productsList = new ArrayList<>();
-        for (Product product : products.values()){
-            ProductResponseDto responseDto = new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
+        for (Product product : products.values()) {
+            ProductResponseDto responseDto = new ProductResponseDto(product.getId(),
+                    product.getName(), product.getPrice(), product.getImageUrl());
             productsList.add(responseDto);
         }
         return productsList;
