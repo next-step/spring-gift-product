@@ -22,7 +22,7 @@ public class ProductManagementService {
         validateRequest(request);
         Product newProduct = Product.of(
                 request.name(),
-                request.price(),
+                request.validatedPrice(),
                 request.imageUrl()
         );
         productRepository.save(newProduct);
@@ -44,7 +44,7 @@ public class ProductManagementService {
         }
         Product updatedProduct = Product.of(
                 request.name(),
-                request.price(),
+                request.validatedPrice(),
                 request.imageUrl()
         );
         productRepository.update(id, updatedProduct);
