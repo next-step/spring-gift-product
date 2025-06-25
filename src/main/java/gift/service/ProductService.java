@@ -17,9 +17,9 @@ public class ProductService {
 
     public ProductResponseDto addProduct(ProductRequestDto productRequestDto) {
         Product product = new Product(
-                productRequestDto.getName(),
-                productRequestDto.getPrice(),
-                productRequestDto.getImageUrl()
+                productRequestDto.name(),
+                productRequestDto.price(),
+                productRequestDto.imageUrl()
         );
 
         Product saveProduct = productRepository.addProduct(product);
@@ -49,7 +49,7 @@ public class ProductService {
         if (product == null) {
             throw new NoSuchElementException("Invalid id = " + id);
         }
-        product.updateProduct(productRequestDto.getName(), productRequestDto.getPrice(), productRequestDto.getImageUrl());
+        product.updateProduct(productRequestDto.name(), productRequestDto.price(), productRequestDto.imageUrl());
         Product updateProduct = productRepository.updateProduct(product);
 
         return new ProductResponseDto(
