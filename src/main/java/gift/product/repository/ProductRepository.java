@@ -4,12 +4,14 @@ import org.springframework.stereotype.Repository;
 import gift.product.entity.Product;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class ProductRepository {
     //임시 저장소
-    private final Map<Long, Product> products = new HashMap<>();
-    private Long id = 1L;
+    private final Map<Long, Product> products = new ConcurrentHashMap<>();
+    private final AtomicLong id = new AtomicLong(1L);
 
     //단건 조회
     public Optional<Product> findById(Long id) {
@@ -23,8 +25,8 @@ public class ProductRepository {
 
     //추가
     public Product save(Product product) {
-        product.setId(id);
-        id++;
+        Long getId = id.incrementAndGet();
+        product.setId(getId);
         products.put(product.getId(), product);
         return products.get(product.getId());
     }
