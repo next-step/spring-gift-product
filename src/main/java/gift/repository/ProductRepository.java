@@ -23,7 +23,7 @@ public class ProductRepository {
         return products.get(id);
     }
 
-    // 등록
+    // 추가
     public Product createProduct(Product product) {
         product.setId(tempId++);
         products.put(product.getId(), product);
@@ -38,6 +38,11 @@ public class ProductRepository {
         updatedProduct.setId(id);
         products.put(id, updatedProduct);
         return updatedProduct;
+    }
+
+    // 삭제
+    public void delete(Long id) {
+        products.remove(id);
     }
 }
 

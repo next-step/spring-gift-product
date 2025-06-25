@@ -25,7 +25,7 @@ public class ProductService {
         return repo.findById(id);
     }
 
-    // 등록
+    // 추가
     public Product createProduct(Product product) {
         return repo.createProduct(product);
     }
@@ -34,5 +34,10 @@ public class ProductService {
     public Product updateProduct(Long id, ProductRequestDto req) {
         Product updatedProduct = new Product(id, req.getName(), req.getPrice(), req.getImageUrl());
         return repo.updateProduct(id, updatedProduct);
+    }
+
+    // 삭제
+    public void deleteProduct(Long id) {
+        repo.delete(id);
     }
 }
