@@ -4,6 +4,7 @@ import gift.exception.BusinessException;
 import gift.exception.ErrorCode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import java.math.BigInteger;
 
 public record ProductRequest(
 
@@ -22,12 +23,12 @@ public record ProductRequest(
 
     public Integer validatedPrice() {
         try {
-            var bigInt = new java.math.BigInteger(price);
-            if (bigInt.compareTo(java.math.BigInteger.ZERO) < 0 ||
-                    bigInt.compareTo(java.math.BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
+            var parsedPrice = new BigInteger(price);
+            if (parsedPrice.compareTo(BigInteger.ZERO) < 0 ||
+                    parsedPrice.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) > 0) {
                 throw new BusinessException(ErrorCode.PRICE_OUT_OF_RANGE);
             }
-            return bigInt.intValue();
+            return parsedPrice.intValue();
         } catch (NumberFormatException e) {
             throw new BusinessException(ErrorCode.INVALID_PRICE_FORMAT);
         }
