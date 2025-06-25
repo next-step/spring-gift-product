@@ -44,21 +44,6 @@ public class ProductRepositoryV1 implements ProductRepository{
     public void update(UUID id, ProductUpdateRequest dto) {
         if (!products.containsKey(id)) throw new NotFoundProductException("수정 실패 - 존재하지 않는 상품입니다");
 
-        Product oldProduct = products.get(id);
-        String name = oldProduct.getName();
-        int price = oldProduct.getPrice();
-        String imageURL = oldProduct.getImageURL();
-
-        if (StringValidator.isNotBlank(dto.getName())) {
-            name = dto.getName();
-        }
-        if (StringValidator.isNotBlank(dto.getImageURL())) {
-            imageURL = dto.getImageURL();
-        }
-        if (dto.getPrice() > 0) {
-            price = dto.getPrice();
-        }
-
-        products.put(id, new Product(id, name, price, imageURL));
+        products.put(id, new Product(id, dto.getName(), dto.getPrice(), dto.getImageURL()));
     }
 }

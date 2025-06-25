@@ -57,7 +57,6 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable UUID id) {
-
         productService.deleteProduct(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -65,6 +64,10 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateProduct(@PathVariable UUID id, @RequestBody ProductUpdateRequest dto) {
+
+        if (!StringValidator.isNotBlank(dto.getName()) ||
+                !StringValidator.isNotBlank(dto.getImageURL()) || dto.getPrice() <= 0)
+            throw new BadProductRequestException("이름, 가격, 이미지 주소는 필수입니다.");
 
         productService.updateProduct(id, dto);
 
