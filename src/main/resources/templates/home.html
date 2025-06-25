@@ -1,0 +1,38 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>상품 페이지</title>
+</head>
+<body>
+<h1>Manage <b>Products</b></h1>
+
+<table class="product-table">
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th>Price</th>
+    <th>ImageUrl</th>
+  </tr>
+  </thead>
+
+  <tbody th:if="${productMap == null or productMap.isEmpty()}">
+  <tr>
+    <td>등록된 상품이 없습니다.</td>
+  </tr>
+  </tbody>
+
+  <tbody th:if="${productMap != null and !productMap.isEmpty()}">
+    <tr th:each="entry : ${productEntries}">
+      <td th:text="${entry.key}"></td>
+      <td th:text="${entry.value.id}"></td>
+      <td th:text="${entry.value.name}"></td>
+      <td th:text="${entry.value.price}"></td>
+      <td th:text="${entry.value.imageUrl}"></td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
