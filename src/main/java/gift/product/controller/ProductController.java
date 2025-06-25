@@ -8,6 +8,8 @@ import gift.product.dto.UpdateProductReqDto;
 import gift.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,13 +19,13 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/{productId}")
-    public Response<GetProductResDto> getProductById(@PathVariable Long productId) {
+    public ResponseEntity<Response<GetProductResDto>> getProductById(@PathVariable Long productId) {
         GetProductResDto dto = productService.getProductById(productId);
-        return Response.ok(dto, "find product success");
+        return ResponseEntity.status(HttpStatus.OK).body(Response.ok(dto, "find product success"));
     }
 
     @GetMapping
-    public Response<PagedResult<GetProductResDto>> getAllProducts(
+    public ResponseEntity<Response<PagedResult<GetProductResDto>>> getAllProducts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id,asc") String sort
@@ -34,25 +36,25 @@ public class ProductController {
         boolean ascending = sortParams.length < 2 || sortParams[1].equalsIgnoreCase("asc");
 
         PagedResult<GetProductResDto> pagedResult = productService.getAllProducts(page, size, sortField, ascending);
-        return Response.ok(pagedResult, "find product list success");
+        return ResponseEntity.status(HttpStatus.OK).body(Response.ok(pagedResult, "find product list success"));
     }
 
     @PostMapping
-    public Response<Long> createProduct(@Valid @RequestBody CreateProductReqDto dto) {
+    public ResponseEntity<Response<Long>> createProduct(@Valid @RequestBody CreateProductReqDto dto) {
         Long productId = productService.createProduct(dto);
-        return Response.ok(productId, "create product success");
+        return ResponseEntity.status(HttpStatus.CREATED).body(Response.ok(productId, "create product success"));
     }
 
     @PutMapping("/{id}")
-    public Response<Void> updateProduct(@PathVariable Long id, @Valid @RequestBody UpdateProductReqDto dto) {
+    public ResponseEntity<Response<Void>> updateProduct(@PathVariable Long id, @Valid @RequestBody UpdateProductReqDto dto) {
         productService.updateProduct(id, dto);
-        return Response.ok(null, "update product success");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/{id}")
-    public Response<Void> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<Response<Void>> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
-        return Response.ok(null, "delete product success");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
