@@ -1,117 +1,147 @@
-body {
-  margin: 0;
-  background: linear-gradient(135deg, #e2e8f0, #f9fafb);
-  font-family: 'Noto Sans KR', sans-serif;
-  color: #222;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-form {
+#product-create-form {
   background: #fff;
-  max-width: 480px;
+  max-width: 500px;
   width: 100%;
-  padding: 32px 28px;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 28px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 0 auto; /* 상단 마진 제거 */
   transition: box-shadow 0.3s ease;
 }
 
-form:hover {
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
+#product-create-form:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .form-group {
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
 label {
   display: block;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 8px;
-  font-size: 1.1rem;
-  color: #1e293b;
+  font-size: 1rem;
+  color: #2c3e50;
 }
 
 input[type="text"],
 input[type="number"],
 input[type="url"] {
   width: 100%;
-  padding: 14px 16px;
-  font-size: 1rem;
-  border: 1.8px solid #cbd5e1;
-  border-radius: 8px;
-  background-color: #f7fafc;
-  color: #334155;
+  padding: 12px;
+  font-size: 0.95rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  color: #2c3e50;
   font-weight: 500;
   box-sizing: border-box;
-  transition: border-color 0.25s ease, background-color 0.25s ease;
-  height: 48px;
+  transition: border-color 0.2s, background-color 0.2s;
+  height: 46px;
 }
 
 input[type="text"]:focus,
 input[type="number"]:focus,
 input[type="url"]:focus {
-  border-color: #3b82f6;
+  border-color: #3498db;
   background-color: #fff;
   outline: none;
-  box-shadow: 0 0 6px #3b82f6aa;
+  box-shadow: 0 0 4px rgba(52, 152, 219, 0.4);
 }
 
 .button-group {
   display: flex;
   justify-content: flex-end;
-  gap: 14px;
-  margin-top: 28px;
+  gap: 12px;
+  margin-top: 24px;
 }
 
 .btn {
-  padding: 12px 24px;
-  font-size: 1.1rem;
-  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 4px;
   cursor: pointer;
-  font-weight: 700;
+  font-weight: 600;
   user-select: none;
   border: none;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  transition: background-color 0.2s;
   min-width: 100px;
 }
 
 .btn.primary {
-  background-color: #2563eb;
+  background-color: #3498db;
   color: white;
-  box-shadow: 0 6px 12px #2563ebaa;
 }
 
 .btn.primary:hover {
-  background-color: #1d4ed8;
-  box-shadow: 0 8px 16px #1d4ed8cc;
+  background-color: #2980b9;
 }
 
 .btn.secondary {
-  background-color: #e2e8f0;
-  color: #475569;
-  box-shadow: none;
+  background-color: #95a5a6;
+  color: white;
 }
 
 .btn.secondary:hover {
-  background-color: #cbd5e1;
-  color: #1e293b;
+  background-color: #7f8c8d;
 }
 
-/* 반응형 */
-@media (max-width: 520px) {
-  form {
-    padding: 24px 20px;
+@media (max-width: 768px) {
+  #product-create-form {
+    padding: 20px 16px;
+    margin: 0 auto;
+    max-width: 100%;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  label {
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="url"] {
+    height: 42px;
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .button-group {
+    margin-top: 20px;
+    flex-direction: row;
   }
 
   .btn {
     min-width: 80px;
-    padding: 10px 16px;
-    font-size: 1rem;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #product-create-form {
+    padding: 16px 14px;
+    margin: 0 auto;
+  }
+
+  .button-group {
+    gap: 8px;
+  }
+
+  .btn {
+    min-width: 70px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="url"] {
+    height: 40px;
   }
 }

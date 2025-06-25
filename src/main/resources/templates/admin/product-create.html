@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default.html}" lang="ko">
+      lang="ko">
 <head>
   <title>상품 등록</title>
-  <link rel="stylesheet" th:href="@{/css/product-create.css}" layout:fragment="styles">
+  <link rel="stylesheet" th:href="@{/css/product-create.css}"/>
+  <link rel="stylesheet" th:href="@{/css/common.css}"/>
 </head>
 <body>
-<div layout:fragment="content">
-  <h1>Product Create</h1>
+
+<div th:replace="admin/fragments/header :: header"></div>
+<div>
   <form id="product-create-form" th:action="@{/api/products}" method="post" novalidate>
     <div class="form-group">
       <label for="name">상품명:</label>
@@ -33,7 +34,7 @@
   </form>
 </div>
 
-<script th:src="@{/js/product-create.js}" layout:fragment="scripts"></script>
+<script th:src="@{/js/product-create.js}"></script>
 
 </body>
 </html>

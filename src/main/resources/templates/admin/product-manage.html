@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default}" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
   <title>상품 목록</title>
-  <link rel="stylesheet" th:href="@{/css/product-manage.css}" layout:fragment="styles"/>
-  <script src="../../static/js/product-manage.js"></script>
+  <link rel="stylesheet" th:href="@{/css/product-manage.css}"/>
+  <link rel="stylesheet" th:href="@{/css/common.css}"/>
 </head>
 <body>
-<div th:fragment="content">
-  <h1>Product Management System</h1>
+
+<div th:replace="admin/fragments/header :: header"></div>
+<div>
   <div class="button-group">
     <button id="product-create-btn" class="btn">상품 등록</button>
     <button id="product-delete-all-btn" class="btn">선택 요소 삭제</button>
@@ -28,8 +27,9 @@
     </thead>
     <tbody id="product-list-body"></tbody>
   </table>
+
 </div>
 
-<script th:src="@{/js/product-manage.js}" layout:fragment="scripts"></script>
+<script th:src="@{/js/product-manage.js}"></script>
 </body>
 </html>
