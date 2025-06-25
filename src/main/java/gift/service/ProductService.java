@@ -21,7 +21,7 @@ public class ProductService {
         Product product = productRepository.findById(productId);
         if (product == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found.");
-        return new ProductResponseDto(product.id(), product.name(), product.price(), product.imageUrl());
+        return product.toDto();
     }
 
     public ProductResponseDto saveProduct(ProductRequestDto dto) {
@@ -32,7 +32,7 @@ public class ProductService {
                 dto.imageUrl()
         );
         Product savedProduct = productRepository.saveProduct(product);
-        return new ProductResponseDto(savedProduct.id(), savedProduct.name(), product.price(), product.imageUrl());
+        return savedProduct.toDto();
     }
 
     public ProductResponseDto updateProduct(Long productId, ProductRequestDto dto) {
@@ -40,9 +40,18 @@ public class ProductService {
         if(product == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found.");
         }
-        Product updatedProduct = new Product(productId, dto.name(), dto.price(), dto.imageUrl());
-        Product savedProduct = productRepository.updateProduct(productId,updatedProduct);
-        return new ProductResponseDto(savedProduct.id(), savedProduct.name(), savedProduct.price(), savedProduct.imageUrl());
+        product.updateProductInfo(dto.name(), dto.price(), dto.imageUrl());
+        return product.toDto();
+    }
+
+    //가격만 수정하는 것은 꽤 합리적이라고 생각
+    public ProductResponseDto updateProductPrice(Long productId, int price) {
+        Product product = productRepository.findById(productId);
+        if(product == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found.");
+        }
+        product.updatePrice(price);
+        return product.toDto();
     }
 
     public void deleteProduct(Long productId) {

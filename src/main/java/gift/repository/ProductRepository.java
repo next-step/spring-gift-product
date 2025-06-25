@@ -14,7 +14,7 @@ public class ProductRepository {
     public Product findById(Long id) {
         for (int i = 0; i < products.size(); i++) {
             Product product = products.get(i);
-            if (product.id().equals(id))
+            if (product.getId().equals(id))
                 return product;
         }
         return null;
@@ -27,7 +27,7 @@ public class ProductRepository {
 
     public Product updateProduct(Long id,Product product) {
         for(int i = 0; i < products.size(); i++) {
-            if(products.get(i).id().equals(id)) {
+            if(products.get(i).getId().equals(id)) {
                 products.set(i, product);
                 return product;
             }
@@ -37,7 +37,7 @@ public class ProductRepository {
 
     public void deleteById(Long id) {
         for(int i = 0; i < products.size(); i++) {
-            if(products.get(i).id().equals(id)) {
+            if(products.get(i).getId().equals(id)) {
                 products.remove(i);
                 break;
             }
