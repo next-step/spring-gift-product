@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<form action="/admin/products" method="post">
+  <label>상품 이름</label>
+  <input type="text" name="name" th:value="${product.name}"/>
+
+  <label>가격</label>
+  <input type="number" name="price" th:value="${product.price}"/>
+
+  <label>이미지 URL</label>
+  <input type="text" name="imageUrl" th:value="${product.imageUrl}"/>
+
+  <button type="submit">등록</button>
+</form>
+</body>
+</html>
