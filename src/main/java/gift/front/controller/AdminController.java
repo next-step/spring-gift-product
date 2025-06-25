@@ -9,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -101,6 +102,18 @@ public class AdminController {
         try {
             productService.updateProduct(id, productRequestDto);
             return "redirect:/admin/products/" + id;
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "error";
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteProduct(
+            @PathVariable Long id, Model model) {
+        try {
+            productService.deleteProduct(id);
+            return "redirect:/admin/products";
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "error";

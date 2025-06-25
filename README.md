@@ -138,14 +138,14 @@ HTTP/1.1 204 No Content
 → 선택한 상품의 정보를 수정할 수 있는 화면입니다.
 
 ### 상품 수정 요청
-[POST] http://localhost:8080/admin/products/{productId}  
-→ HTML `<form>`에서 전송되는 요청입니다.  
+[PUT] http://localhost:8080/admin/products/{productId}  
+→ HTML `<form>`에서 `_method=put`로 전송되는 요청입니다.  
 → 실제 HTTP 메서드는 `POST`이며,  
-→ Spring에서 `_method=put` 방식이나 `@PostMapping`으로 처리합니다.
+→ AdminController에서 `@PutMapping`으로 처리합니다.
 
 ## ❌ 상품 삭제
 ### 상품 삭제 요청
-[POST] http://localhost:8080/admin/products/{productId}  
+[DELETE] http://localhost:8080/admin/products/{productId}  
 → HTML `<form>`에서 `_method=delete`로 전송됩니다.  
-→ Spring Boot의 `HiddenHttpMethodFilter`를 통해 내부적으로 `DELETE`로 처리됩니다.  
-→ 컨트롤러는 `@DeleteMapping("/admin/products/{id}")`로 매핑되어 있습니다.
+→ 실제 HTTP 메서드는 `POST`이며,
+→ AdminController에서 `@DeleteMapping`으로 처리합니다.
