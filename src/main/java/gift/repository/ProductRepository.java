@@ -27,7 +27,7 @@ public class ProductRepository {
 
     public Product updateProduct(Long id,Product product) {
         for(int i = 0; i < products.size(); i++) {
-            if(product.id().equals(id)) {
+            if(products.get(i).id().equals(id)) {
                 products.set(i, product);
                 return product;
             }
