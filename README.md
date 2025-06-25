@@ -125,7 +125,7 @@ HTTP/1.1 204 No Content
 
 ## ➕ 상품 추가
 ### 상품 추가 화면
-[GET] http://localhost:8080/admin/products/new  
+[GET] http://localhost:8080/admin/products/new
 → 새 상품을 입력하는 폼으로 이동합니다.
 
 ### 상품 추가 요청

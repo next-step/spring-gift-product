@@ -156,3 +156,9 @@ form input[type="number"] {
   border-radius: 6px;
   font-size: 14px;
 }
+
+.error {
+  color: red;
+  font-size: 13px;
+  margin-top: 4px;
+}
