@@ -62,4 +62,11 @@ public class AdminProductController {
                 requestDto.imageUrl());
         return "redirect:/admin/products";
     }
+
+    // 삭제 처리
+    @PostMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return "redirect:/admin/products";
+    }
 }
