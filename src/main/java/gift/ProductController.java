@@ -63,11 +63,21 @@ public class ProductController {
         }
 
         // 요청된 필드만 수정, 나머지 필드는 기존 값 유지
-        String updatedName = request.name() != null ? request.name() : existingProduct.name();
-        int updatedPrice = request.price() != null ? request.price() : existingProduct.price();
-        String updatedImageUrl =
-            request.imageUrl() != null ? request.imageUrl() : existingProduct.imageUrl();
+        String updatedName = existingProduct.getName();
+        if (request.name() != null) {
+            updatedName = request.name();
+        }
 
+        int updatedPrice = existingProduct.getPrice();
+        if (request.price() != null) {
+            updatedPrice = request.price();
+        }
+
+        String updatedImageUrl = existingProduct.getImageUrl();
+        if (request.imageUrl() != null) {
+            updatedImageUrl = request.imageUrl();
+        }
+        
         Product updatedProduct = new Product(productId, updatedName, updatedPrice, updatedImageUrl);
         products.put(productId, updatedProduct);
         return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
@@ -89,5 +99,5 @@ public class ProductController {
         List<Product> productList = new ArrayList<>(products.values());
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
-    
+
 }
