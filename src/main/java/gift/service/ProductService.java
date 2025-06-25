@@ -4,7 +4,9 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,6 +31,12 @@ public class ProductService {
                 saveProduct.getPrice(),
                 saveProduct.getImageUrl()
         );
+    }
+
+    public List<ProductResponseDto> findAllProduct() {
+        return productRepository.findAllProduct().stream()
+            .map(p -> new ProductResponseDto(p.getId(), p.getName(), p.getPrice(), p.getImageUrl()))
+            .collect(Collectors.toList());
     }
 
     public ProductResponseDto findProductById(Long id) {

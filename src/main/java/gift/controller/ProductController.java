@@ -3,6 +3,7 @@ package gift.controller;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.service.ProductService;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +27,11 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductResponseDto> addProduct(@RequestBody ProductRequestDto productRequestDto) {
         return new ResponseEntity<>(productService.addProduct(productRequestDto), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDto>> findAllProduct() {
+        return new ResponseEntity<>(productService.findAllProduct(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
