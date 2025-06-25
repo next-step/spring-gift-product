@@ -18,18 +18,18 @@
             <div class="w-full md:w-1/2 px-4">
                 <div class="mb-4 p-4 rounded-lg border border-gray-100">
                     <h2 class="text-2xl font-bold text-gray-900">상품 ID:</h2>
-                    <p class="text-2xl text-gray-900 text-right" th:text="${product.id}">1</p>
+                    <p id="prod-id" class="text-2xl text-gray-900 text-right" th:text="${product.id}">1</p>
                 </div>
                 <div class="mb-4 p-4 rounded-lg border border-gray-100">
                     <div class="flex flex-row justify-between">
                         <span class="text-2xl font-bold text-gray-900">상품 이름:</span>
                         <button
                                 class="text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 rounded-lg px-2 py-1"
-                                onclick="">수정하기</button>
+                                onclick="enableEdit('prod-name')">수정하기</button>
                     </div>
                     <div id="prod-name" class="m-1">
-                        <div class="text-2xl text-gray-900 text-right" th:text="${product.name}">Nike Air MX Super 2500 - Red</div>
-                        <input type="hidden" id="prod-name-input" class="text-2xl text-right" th:value="${product.name}" />
+                        <p class="text-2xl text-gray-900 text-right" th:text="${product.name}">Nike Air MX Super 2500 - Red</p>
+                        <input type="hidden" id="prod-name-input" class="w-full text-2xl text-right" th:value="${product.name}" />
                     </div>
                 </div>
                 <div class="mb-4 p-4 rounded-lg border border-gray-100">
@@ -37,11 +37,11 @@
                         <span class="text-2xl font-bold text-gray-900">상품 가격:</span>
                         <button
                                 class="text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 rounded-lg px-2 py-1"
-                                onclick="">수정하기</button>
+                                onclick="enableEdit('prod-price')">수정하기</button>
                     </div>
                     <div id="prod-price" class="m-1">
                         <p class="text-2xl text-gray-900 text-right" th:text="${#numbers.formatInteger(product.price, 1,'COMMA')} + '원'">$ 199.99</p>
-                        <input type="hidden" id="prod-price-input" class="text-2xl text-right" th:value="${product.price}" />
+                        <input type="hidden" id="prod-price-input" class="w-full text-2xl text-right" th:value="${product.price}" />
                     </div>
                 </div>
                 <div class="mb-4 p-4 rounded-lg border border-gray-100">
@@ -49,20 +49,21 @@
                         <span class="text-2xl font-bold text-gray-900">이미지 URL:</span>
                         <button
                                 class="text-blue-600 hover:text-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 rounded-lg px-2 py-1"
-                                onclick="">수정하기</button>
+                                onclick="enableEdit('prod-url')">수정하기</button>
                     </div>
                     <div id="prod-url" class="m-1">
                         <p class="p-2 text-gray-900 text-right overflow-x-auto whitespace-nowrap" th:text="${product.imageUrl}"></p>
-                        <input type="hidden" id="prod-url-input" class="p-2 text-right" th:value="${product.imageUrl}" />
+                        <input type="hidden" id="prod-url-input" class="w-full p-2 text-right" th:value="${product.imageUrl}" />
                     </div>
                 </div>
             </div>
         </div>
         <div class="flex justify-center w-full">
-            <button class="rounded-lg bg-gray-500 px-4 mx-4 py-2 text-white font-medium hover:bg-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-300" onclick="history.back()">뒤로가기</button>
-            <button class="rounded-lg bg-blue-500 px-4 mx-4 py-2 text-white font-medium hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300" onclick="history.back()" hidden>상품 수정</button>
+            <a class="rounded-lg bg-gray-500 px-4 mx-4 py-2 text-white font-medium hover:bg-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-300" href="admin/products">뒤로가기</a>
+            <button id="btn-edit" class="rounded-lg bg-blue-500 px-4 mx-4 py-2 text-white font-medium hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300" onclick="requestEditProduct()" hidden>상품 수정</button>
         </div>
     </div>
 </section>
  </main>
+    <script th:src="@{/js/admin/product-edit.js}"></script>
 </body>
