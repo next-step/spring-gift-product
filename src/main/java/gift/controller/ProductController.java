@@ -3,6 +3,7 @@ package gift.controller;
 import gift.dto.RequestDto;
 import gift.dto.ResponseDto;
 import gift.entity.Product;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,12 +33,9 @@ public class ProductController {
     @GetMapping
     public List<ResponseDto> getProducts() {
 
-        List<ResponseDto> responseList = new ArrayList<>();
-
-        for (Product product : products.values()) {
-            ResponseDto responseDto = new ResponseDto(product);
-            responseList.add(responseDto);
-        }
+        List<ResponseDto> responseList = products.values().stream()
+            .map(product -> new ResponseDto(product))
+            .collect(Collectors.toList());
 
         return responseList;
     }
