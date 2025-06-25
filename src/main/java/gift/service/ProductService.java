@@ -4,10 +4,16 @@ import gift.model.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ProductService {
 
-    private final ProductRepository productRepository = new ProductRepository();
+    private final ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     // 상품 저장
     public Product addProduct(Product product) {

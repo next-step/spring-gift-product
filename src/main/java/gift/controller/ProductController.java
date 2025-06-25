@@ -20,7 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private final ProductService productService = new ProductService();
+    private final ProductService productService;
+
+    // 의존성 주입
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     // 상품 저장
     @PostMapping
