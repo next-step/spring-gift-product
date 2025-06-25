@@ -143,7 +143,7 @@ class InMemoryProductRepositoryTest {
         Product product = Product.of("name", 100, "url");
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
                 () -> repository.update(null, product));
-        assertEquals("수정할 상품 ID가 null입니다.", e.getMessage());
+        assertEquals("상품 ID가 null일 수 없습니다.", e.getMessage());
     }
 
     @Test
@@ -151,21 +151,21 @@ class InMemoryProductRepositoryTest {
         Long validId = 1L;
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
                 () -> repository.update(validId, null));
-        assertEquals("수정할 상품 정보가 null입니다.", e.getMessage());
+        assertEquals("상품 정보가 null일 수 없습니다.", e.getMessage());
     }
 
     @Test
     void deleteById_null_입력시_IllegalArgumentException_발생() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
                 () -> repository.deleteById(null));
-        assertEquals("삭제할 상품 ID가 null입니다.", e.getMessage());
+        assertEquals("상품 ID가 null일 수 없습니다.", e.getMessage());
     }
 
     @Test
     void findById_null_입력시_IllegalArgumentException_발생() {
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
                 () -> repository.findById(null));
-        assertEquals("조회할 상품 ID가 null입니다.", e.getMessage());
+        assertEquals("상품 ID가 null일 수 없습니다.", e.getMessage());
     }
 
     @Test

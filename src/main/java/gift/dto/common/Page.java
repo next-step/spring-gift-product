@@ -21,16 +21,4 @@ public record Page<T>(
                 (long) page * size < totalElements
         );
     }
-
-    @Override
-    public String toString() {
-        return "Page{" +
-                "content=" + content +
-                ", page=" + page +
-                ", size=" + size +
-                ", totalElements=" + totalElements +
-                ", totalPages=" + totalPages +
-                ", hasNext=" + hasNext +
-                '}';
-    }
 }
