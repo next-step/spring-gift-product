@@ -36,7 +36,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void update(ProductRequest request) {
-        validateRequest(request);
+        if(request==null || request.id()==null)
+            throw new InvalidProductException(ErrorCode.INVALID_PRODUCT_UPDATE_REQUEST);
 
         Product product = productRepository.findById(request.id())
             .orElseThrow(() -> new InvalidProductException(ErrorCode.NOT_EXISTS_PRODUCT));
