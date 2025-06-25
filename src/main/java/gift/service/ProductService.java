@@ -34,4 +34,14 @@ public class ProductService {
         Product savedProduct = productRepository.saveProduct(product);
         return new ProductResponseDto(savedProduct.id(), savedProduct.name(), product.price(), product.imageUrl());
     }
+
+    public ProductResponseDto updateProduct(Long productId, ProductRequestDto dto) {
+        Product product = productRepository.findById(productId);
+        if(product == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found.");
+        }
+        Product updatedProduct = new Product(productId, dto.name(), dto.price(), dto.imageUrl());
+        Product savedProduct = productRepository.updateProduct(productId,updatedProduct);
+        return new ProductResponseDto(savedProduct.id(), savedProduct.name(), savedProduct.price(), savedProduct.imageUrl());
+    }
     }

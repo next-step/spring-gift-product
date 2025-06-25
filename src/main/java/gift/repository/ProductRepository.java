@@ -24,4 +24,14 @@ public class ProductRepository {
         products.add(product);
         return product;
     }
+
+    public Product updateProduct(Long id,Product product) {
+        for(int i = 0; i < products.size(); i++) {
+            if(product.id().equals(id)) {
+                products.set(i, product);
+                return product;
+            }
+        }
+        return null;
+    }
 }
