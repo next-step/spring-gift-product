@@ -1,0 +1,117 @@
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #e2e8f0, #f9fafb);
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #222;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+form {
+  background: #fff;
+  max-width: 480px;
+  width: 100%;
+  padding: 32px 28px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+form:hover {
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
+}
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+  color: #1e293b;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="url"] {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 1rem;
+  border: 1.8px solid #cbd5e1;
+  border-radius: 8px;
+  background-color: #f7fafc;
+  color: #334155;
+  font-weight: 500;
+  box-sizing: border-box;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+  height: 48px;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="url"]:focus {
+  border-color: #3b82f6;
+  background-color: #fff;
+  outline: none;
+  box-shadow: 0 0 6px #3b82f6aa;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.btn {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  user-select: none;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  min-width: 100px;
+}
+
+.btn.primary {
+  background-color: #2563eb;
+  color: white;
+  box-shadow: 0 6px 12px #2563ebaa;
+}
+
+.btn.primary:hover {
+  background-color: #1d4ed8;
+  box-shadow: 0 8px 16px #1d4ed8cc;
+}
+
+.btn.secondary {
+  background-color: #e2e8f0;
+  color: #475569;
+  box-shadow: none;
+}
+
+.btn.secondary:hover {
+  background-color: #cbd5e1;
+  color: #1e293b;
+}
+
+/* 반응형 */
+@media (max-width: 520px) {
+  form {
+    padding: 24px 20px;
+  }
+
+  .btn {
+    min-width: 80px;
+    padding: 10px 16px;
+    font-size: 1rem;
+  }
+}
