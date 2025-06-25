@@ -60,6 +60,11 @@ public class InMemoryProductRepository implements ProductRepository {
     }
 
     @Override
+    public void deleteAllByIds(List<Long> ids) {
+        ids.forEach(products::remove);
+    }
+
+    @Override
     public void deleteById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("삭제할 상품 ID가 null입니다.");
