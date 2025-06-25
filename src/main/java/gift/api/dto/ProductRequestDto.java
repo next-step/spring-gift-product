@@ -1,4 +1,4 @@
-package gift.dto;
+package gift.api.dto;
 
 import jakarta.validation.constraints.Min;
 

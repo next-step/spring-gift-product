@@ -1,0 +1,79 @@
+body {
+  font-family: "Apple SD Gothic Neo", "맑은 고딕", sans-serif;
+  background-color: #fffbea;
+  color: #3c2a1e;
+  margin: 40px;
+}
+
+h1 {
+  font-size: 24px;
+  color: #3c2a1e;
+  margin-bottom: 20px;
+}
+
+.top-bar {
+  margin-bottom: 16px;
+}
+
+a.button, button {
+  background-color: #fee500;
+  color: #3c1e1e;
+  padding: 6px 14px;
+  border: 1px solid #d9c300;
+  border-radius: 18px;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+a.button:hover, button:hover {
+  background-color: #fadb00;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+th, td {
+  padding: 14px;
+  text-align: center;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+th {
+  background-color: #fff2b6;
+  color: #3c2a1e;
+  font-weight: bold;
+}
+
+img {
+  max-width: 80px;
+  max-height: 80px;
+  border-radius: 8px;
+}
+
+.pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.pagination a {
+  margin: 0 10px;
+  color: #3c2a1e;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.pagination a:hover {
+  text-decoration: underline;
+}
+
+form {
+  display: inline;
+}

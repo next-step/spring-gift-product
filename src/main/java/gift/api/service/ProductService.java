@@ -1,10 +1,11 @@
-package gift.service;
+package gift.api.service;
 
-import gift.domain.Product;
-import gift.dto.ProductRequestDto;
-import gift.dto.ProductResponseDto;
-import gift.repository.ProductRepository;
-import java.util.List;
+import gift.api.domain.Product;
+import gift.api.dto.ProductRequestDto;
+import gift.api.dto.ProductResponseDto;
+import gift.api.repository.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,15 +17,12 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<ProductResponseDto> findAllProducts() {
-        return productRepository.findAllProducts()
-                .stream()
-                .map(product -> new ProductResponseDto(
-                        product.getId(),
-                        product.getName(),
-                        product.getPrice(),
-                        product.getImageUrl()))
-                .toList();
+    public Page<ProductResponseDto> findAllProducts(Pageable pageable, Long categoryId) {
+        Page<Product> page = productRepository.findAllProducts(pageable, categoryId);
+
+        return page.map(product -> new ProductResponseDto(
+                product.getId(), product.getName(), product.getPrice(), product.getImageUrl()
+        ));
     }
 
     public ProductResponseDto findProductById(Long id) throws IllegalArgumentException {

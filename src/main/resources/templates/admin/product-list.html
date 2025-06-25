@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>상품 목록</title>
+  <link rel="stylesheet" th:href="@{/css/product-list.css}" />
+</head>
+<body>
+
+<h1>상품 목록</h1>
+
+<div class="top-bar">
+  <a href="/products/new" class="button">＋ 상품 등록</a>
+</div>
+
+<table>
+  <thead>
+  <tr>
+    <th>상품명</th>
+    <th>가격</th>
+    <th>이미지</th>
+    <th>관리</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="product : ${products}">
+    <td th:text="${product.name}">상품명</td>
+    <td th:text="${product.price}">가격</td>
+    <td><img th:src="${product.imageUrl}" alt="이미지 없음"/></td>
+    <td>
+      <a th:href="@{/products/{id}/edit(id=${product.id})}" class="button">수정</a>
+
+      <form th:action="@{/products/{id}(id=${product.id})}" method="post"
+            onsubmit="return confirm('정말 삭제하시겠습니까?')">
+        <input type="hidden" name="_method" value="delete"/>
+        <button type="submit">삭제</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div class="pagination">
+  <span th:if="${products.hasPrevious()}">
+    <a th:href="@{/products(page=${products.number - 1})}">&laquo; 이전</a>
+  </span>
+
+  <span>페이지 <b th:text="${products.number + 1}"></b></span>
+
+  <span th:if="${products.hasNext()}">
+    <a th:href="@{/products(page=${products.number + 1})}">다음 &raquo;</a>
+  </span>
+</div>
+
+</body>
+</html>

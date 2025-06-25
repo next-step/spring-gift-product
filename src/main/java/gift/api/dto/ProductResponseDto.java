@@ -1,4 +1,4 @@
-package gift.dto;
+package gift.api.dto;
 
 public record ProductResponseDto(
         Long id,
