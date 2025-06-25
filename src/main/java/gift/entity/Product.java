@@ -2,6 +2,9 @@ package gift.entity;
 
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
+import gift.exception.InvalidImageUrlException;
+import gift.exception.InvalidNameException;
+import gift.exception.InvalidPriceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -23,18 +26,18 @@ public class Product {
 
     public void updatePrice(int price) {
         if(price < 0)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Price will be over 0");
+            throw new InvalidPriceException();
         this.price = price;
     }
     public void updateProductInfo(String name, int price, String imageUrl) {
         if(name == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Name is required");
+            throw new InvalidNameException();
         }
         if(price < 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Price will be over 0");
+            throw new InvalidPriceException();
         }
         if(imageUrl == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Image url is required");
+            throw new InvalidImageUrlException();
         }
         this.name = name;
         this.price = price;

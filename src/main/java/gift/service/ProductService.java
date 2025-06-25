@@ -3,6 +3,7 @@ package gift.service;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
+import gift.exception.ProductNotFoundException;
 import gift.repository.ProductRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class ProductService {
     public ProductResponseDto findProductById(Long productId) {
         Product product = productRepository.findById(productId);
         if (product == null)
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found.");
+            throw new ProductNotFoundException();
         return product.toDto();
     }
 
@@ -32,7 +33,7 @@ public class ProductService {
     public ProductResponseDto updateProduct(Long productId, ProductRequestDto dto) {
         Product product = productRepository.findById(productId);
         if(product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found.");
+            throw new ProductNotFoundException();
         }
         product.updateProductInfo(dto.name(), dto.price(), dto.imageUrl());
         return product.toDto();
@@ -42,7 +43,7 @@ public class ProductService {
     public ProductResponseDto updateProductPrice(Long productId, int price) {
         Product product = productRepository.findById(productId);
         if(product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found.");
+            throw new ProductNotFoundException();
         }
         product.updatePrice(price);
         return product.toDto();
@@ -51,7 +52,7 @@ public class ProductService {
     public void deleteProduct(Long productId) {
         Product product = productRepository.findById(productId);
         if(product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found.");
+            throw new ProductNotFoundException();
         }
         productRepository.deleteById(productId);
     }
