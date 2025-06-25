@@ -30,11 +30,11 @@ public class ProductService {
     }
 
     public ProductResponseDto saveProduct(ProductRequestDto requestDto){
-        return productRepository.saveProduct(requestDto.name(), requestDto.price());
+        return productRepository.saveProduct(requestDto);
     }
 
-    public ProductResponseDto updateProduct(Long id, String name, Long price){
-        boolean flag = productRepository.updateProduct(id, name, price);
+    public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto){
+        boolean flag = productRepository.updateProduct(id, requestDto);
         
         // 수정됐는지 검증
         if(!flag) {
