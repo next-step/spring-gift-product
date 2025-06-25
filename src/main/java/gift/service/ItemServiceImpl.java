@@ -3,6 +3,7 @@ package gift.service;
 
 import gift.dto.ItemDTO;
 import gift.entity.Item;
+import gift.exception.ItemNotFoundException;
 import gift.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,9 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemDTO> getItems(String name, Integer price) {
 
         List<ItemDTO> items = itemRepository.getItems(name, price);
-
+        if(items.isEmpty()){
+            throw new ItemNotFoundException();
+        }
         return items;
     }
 
