@@ -12,4 +12,4 @@
 | `/api/products/{productId}` | GET | 상품 조회 | 특정 상품의 정보를 조회한다. |
 | `/api/products/{productId}` | PUT | 상품 수정 | 기존 상품의 정보를 수정한다. |
 | `/api/products/{productId}` | DELETE | 상품 삭제 | 특정 상품을 삭제한다. |
-| `/api/products?page=0&size=10&sort=name,<br/>asc&categoryId=1` | GET | 상품 목록 조회 (페이지네이션 적용) | 모든 상품의 목록을 페이지 단위로 조회한다. |
+| `/api/products?page=0&size=10&sort=name,asc&categoryId=1` | GET | 상품 목록 조회 (페이지네이션 적용) | 모든 상품의 목록을 페이지 단위로 조회한다. |
