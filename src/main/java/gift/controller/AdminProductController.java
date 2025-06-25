@@ -76,5 +76,12 @@ public class AdminProductController {
         return "admin/product-form";
     }
 
-    // 등록 / 수정 / 삭제 POST 핸들러는 여기 밑에 이어서 구현
+    @PostMapping("/{id}/edit")
+    public String updateProduct(@PathVariable Long id,
+                                @ModelAttribute("form") ProductRequestDto requestDto) {
+        productService.updateProduct(id, requestDto);
+        return "redirect:/admin/products";
+    }
+
+    // 삭제 POST 핸들러는 여기 밑에 이어서 구현
 }
