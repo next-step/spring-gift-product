@@ -1,6 +1,6 @@
 package gift.product.service;
 
-import gift.exception.ProductNotFoundException;
+import gift.exception.EntityNotFoundException;
 import gift.product.dto.ProductCreateRequestDto;
 import gift.product.dto.ProductResponseDto;
 import gift.product.dto.ProductUpdateRequestDto;
@@ -26,7 +26,7 @@ public class ProductService {
 
     public ProductResponseDto updateProduct(Long id, ProductUpdateRequestDto product) {
         if (!products.containsKey(id))
-            throw new ProductNotFoundException("해당 상품을 찾을 수 없습니다.");
+            throw new EntityNotFoundException("해당 상품을 찾을 수 없습니다.");
 
         Product existingProduct = products.get(id);
         existingProduct.update(product.name(), product.price(), product.imageUrl());
@@ -35,7 +35,7 @@ public class ProductService {
 
     public void deleteProduct(Long id) {
         if (!products.containsKey(id))
-            throw new ProductNotFoundException("해당 상품을 찾을 수 없습니다.");
+            throw new EntityNotFoundException("해당 상품을 찾을 수 없습니다.");
 
         products.remove(id);
     }
@@ -47,7 +47,7 @@ public class ProductService {
 
     public ProductResponseDto getProduct(Long id) {
         if (!products.containsKey(id))
-            throw new ProductNotFoundException("해당 상품을 찾을 수 없습니다.");
+            throw new EntityNotFoundException("해당 상품을 찾을 수 없습니다.");
 
         return products.get(id).toResponseDto();
     }
