@@ -32,15 +32,7 @@ public class ProductService {
             throw new ProductNotFoundException("해당 상품을 찾을 수 없습니다.");
 
         Product existingProduct = products.get(id);
-        if (product.name() != null) {
-            existingProduct.setName(product.name());
-        }
-        if (product.price() != null) {
-            existingProduct.setPrice(product.price());
-        }
-        if (product.imageUrl() != null) {
-            existingProduct.setImageUrl(product.imageUrl());
-        }
+        existingProduct.update(product.name(), product.price(), product.imageUrl());
     }
 
     public void deleteProduct(Long id) {

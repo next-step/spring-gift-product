@@ -3,6 +3,7 @@ package gift.product.entity;
 import gift.product.dto.ProductResponseDto;
 
 public class Product {
+
     private final Long id;
     private String name;
     private Long price;
@@ -15,16 +16,16 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPrice(Long price) {
-        this.price = price;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void update(String name, Long price, String imageUrl) {
+        if (name != null) {
+            this.name = name;
+        }
+        if (price != null) {
+            this.price = price;
+        }
+        if (imageUrl != null) {
+            this.imageUrl = imageUrl;
+        }
     }
 
     public ProductResponseDto toResponseDto() {
