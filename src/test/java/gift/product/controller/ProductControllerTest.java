@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
+@Transactional
 @AutoConfigureMockMvc
 @DisplayName("ProductController 테스트")
 public class ProductControllerTest {
@@ -41,7 +42,7 @@ public class ProductControllerTest {
 
     @BeforeEach
     void setUp() {
-        productService.deleteAllProducts();
+        //productService.deleteAllProducts();
         ProductRequestDto requestDto1 = new ProductRequestDto("Test1", 1000, "Test1.jpg");
         ProductRequestDto requestDto2 = new ProductRequestDto("Test2", 1200, "Test2.jpg");
 
