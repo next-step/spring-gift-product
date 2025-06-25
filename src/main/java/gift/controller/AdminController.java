@@ -4,6 +4,7 @@ import gift.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -21,6 +22,17 @@ public class AdminController {
     public String listProducts(Model model) {
         model.addAttribute("products", productService.findAllProducts());
         return "admin/products/list";
+    }
+
+    // 상품 단건 조회
+    @GetMapping("/{id}")
+    public String detailProduct(@PathVariable Long id, Model model) {
+        try {
+            model.addAttribute("product", productService.findProduct(id));
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", "상품을 찾을 수 없습니다.");
+        }
+        return "admin/products/detail";
     }
 
 }
