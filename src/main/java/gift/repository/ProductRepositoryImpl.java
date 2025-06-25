@@ -5,26 +5,26 @@ import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    private final Map<Long, Product> products = new HashMap<>();
-    private Long initId = 1L;
+    private final ConcurrentHashMap<Long, Product> products = new ConcurrentHashMap<>();
+    private AtomicLong initId = new AtomicLong();
 
     @Override
     public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
-        Product product = new Product(initId++,
+        Product product = new Product(initId.incrementAndGet(),
                 productRequestDto.getName(),
                 productRequestDto.getPrice(),
                 productRequestDto.getImageUrl()
         );
-        products.put(initId, product);
+        products.put(initId.get(), product);
         return new ProductResponseDto(product.getId(),
                 product.getName(),
                 product.getPrice(),
