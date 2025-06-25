@@ -68,12 +68,11 @@ public class ProductController {
     }
 
     //modify.html을 불러오기 위한 메서드
-    @GetMapping("/products/modify/{id}")
+    @GetMapping("/products/modify")
     public String modifyForm(
-        @PathVariable Long id,
+        @RequestParam Long id,
         Model model
     ){
-        //String test = "test" + id.toString();
         Product product = products.get(id);
         model.addAttribute("product",product);
         return "modify";
@@ -86,12 +85,11 @@ public class ProductController {
         @ModelAttribute ProductRequestDto requestDto,
         @RequestParam Long id
     ) {
-        Long found = findProductById(id).getId();
-        Product product = new Product(found,
+        Product product = new Product(id,
             requestDto.getName(),
             requestDto.getPrice(),
             requestDto.getImageUrl());
-        products.put(found, product);
+        products.put(id, product);
         return "redirect:/products";
     }
 

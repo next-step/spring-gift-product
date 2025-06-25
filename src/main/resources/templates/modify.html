@@ -5,9 +5,11 @@
   <title>Title</title>
 </head>
 <body>
-<form th:action="@{/products}" method="put">
+
+
+<form th:action="@{/products(id=${product.id})}" th:method="put">
   <p>
-    상품 등록하기
+    상품 수정하기
   </p>
   <p>
     <strong>상품명</strong>
