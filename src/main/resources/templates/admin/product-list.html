@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
   <meta charset="UTF-8">
   <title>상품 목록</title>
-  <link rel="stylesheet" th:href="@{/css/product-list.css}" />
+  <link rel="stylesheet" th:href="@{/css/kakao-style.css}" />
 </head>
 <body>
 
@@ -23,14 +23,16 @@
   </tr>
   </thead>
   <tbody>
-  <tr th:each="product : ${products}">
+  <tr th:each="product : ${products}"
+  th:onclick="'location.href=\'/admin/products/' + ${product.id} + '\' '"
+  style="cursor: pointer;">
     <td th:text="${product.name}">상품명</td>
     <td th:text="${product.price}">가격</td>
     <td><img th:src="${product.imageUrl}" alt="이미지 없음"/></td>
     <td>
-      <a th:href="@{/products/{id}/edit(id=${product.id})}" class="button">수정</a>
+      <a th:href="@{/admin/products/{id}/edit(id=${product.id})}" class="button">수정</a>
 
-      <form th:action="@{/products/{id}(id=${product.id})}" method="post"
+      <form th:action="@{/admin/products/{id}(id=${product.id})}" method="post"
             onsubmit="return confirm('정말 삭제하시겠습니까?')">
         <input type="hidden" name="_method" value="delete"/>
         <button type="submit">삭제</button>
