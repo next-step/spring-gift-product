@@ -4,6 +4,7 @@ import gift.product.dto.ProductRequest;
 import gift.product.dto.ProductResponse;
 import gift.product.dto.ProductUpdateRequest;
 import gift.product.service.ProductService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,22 +20,23 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest productRequest) {
-        return productService.addProduct(productRequest);
+        return new ResponseEntity<>(productService.addProduct(productRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("/{productId}")
     public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId) {
-        return productService.getProduct(productId);
+        return new ResponseEntity<>(productService.getProduct(productId), HttpStatus.OK);
     }
 
     @PutMapping("/{productId}")
     public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long productId, @RequestBody ProductUpdateRequest productUpdateRequest) {
-        return productService.updateProduct(productId, productUpdateRequest);
+        return new ResponseEntity<>(productService.updateProduct(productId, productUpdateRequest), HttpStatus.OK);
     }
 
     @DeleteMapping("/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
-        return productService.deleteProduct(productId);
+        productService.deleteProduct(productId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

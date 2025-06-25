@@ -17,38 +17,37 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public ResponseEntity<ProductResponse> addProduct(ProductRequest req) {
+    public ProductResponse addProduct(ProductRequest req) {
         Product product = new Product(req.name(), req.price(), req.imageUrl());
         boolean result = productRepository.save(product);
         if (result) {
-            return new ResponseEntity<>(ProductResponse.from(product), HttpStatus.CREATED);
+            return ProductResponse.from(product);
         }
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        throw new RuntimeException("ProductService : addProduct() failed - 500 Internal Server Error");
     }
 
-    public ResponseEntity<ProductResponse> getProduct(Long id) {
+    public ProductResponse getProduct(Long id) {
         Product product = productRepository.get(id);
         if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new RuntimeException("ProductService : getProduct() failed - 404 Not Found Error");
         }
-        return new ResponseEntity<>(ProductResponse.from(product), HttpStatus.OK);
+        return ProductResponse.from(product);
     }
 
-    public ResponseEntity<ProductResponse> updateProduct(Long id, ProductUpdateRequest req) {
+    public ProductResponse updateProduct(Long id, ProductUpdateRequest req) {
         Product product = productRepository.get(id);
         if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new RuntimeException("ProductService : updateProduct() failed - 404 Not Found Error");
         }
         product.update(req);
-        return new ResponseEntity<>(ProductResponse.from(product), HttpStatus.OK);
+        return ProductResponse.from(product);
     }
 
-    public ResponseEntity<Void> deleteProduct(Long id) {
+    public void deleteProduct(Long id) {
         Product product = productRepository.get(id);
         if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new RuntimeException("ProductService : deleteProduct() failed - 404 Not Found Error");
         }
         productRepository.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
