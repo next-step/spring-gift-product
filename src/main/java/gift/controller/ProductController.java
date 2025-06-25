@@ -5,11 +5,13 @@ import gift.dto.request.ProductRequestDto;
 import gift.dto.response.ProductResponseDto;
 import gift.entity.Product;
 import gift.service.ProductService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
+
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/products")
@@ -25,7 +27,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductResponseDto> addProduct(@RequestBody ProductRequestDto requestDto) {
         Product saved = productService.createProduct(requestDto);
-        return ResponseEntity.status(201).body(new ProductResponseDto(saved));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ProductResponseDto(saved)); //피드백 반영
     }
 
     @GetMapping
@@ -49,9 +51,13 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
 
-
         return ResponseEntity.status(204).build();
-
     }
 
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<String> handleNoSuchElementException(NoSuchElementException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
+    }
 }
