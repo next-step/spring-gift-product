@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -21,6 +22,7 @@ public class ProductViewController {
         this.productService = productService;
     }
     
+    //main 화면, 상품 목록
     @GetMapping
     public String showListView(Model model) {
         List<FindProductResponseDto> products = productService.findAllProducts();
@@ -28,12 +30,25 @@ public class ProductViewController {
         return "product-list";
     }
     
+    //특정 상품 상세 조회
+    @GetMapping("{id}")
+    public String showProductView(
+        @PathVariable Long id,
+        Model model
+    ) {
+        FindProductResponseDto product = productService.findProductWithId(id);
+        model.addAttribute("product", product);
+        return "product-detail";
+    }
+    
+    //상품 추가 화면, 이름 / 가격 / 이미지 링크 입력 받도록 구성
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("productForm", new AddProductRequestDto());
         return "product-add";
     }
     
+    //상품 추가 화면에서 제출 버튼 누르면 동작
     @PostMapping("/add")
     public String addProduct(@ModelAttribute AddProductRequestDto productForm) {
         productService.addProduct(productForm);
