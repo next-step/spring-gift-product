@@ -92,5 +92,16 @@ public class AdminProductController {
         return "redirect:/admin/products";
     }
 
+    @PostMapping("/delete/{productId}")
+    public String deleteProduct(@PathVariable Long productId) {
+        Product product = products.get(productId);
+
+        if (product == null) {
+            return "redirect:/admin/products";
+        }
+
+        products.remove(productId);
+        return "redirect:/admin/products";
+    }
 
 }
