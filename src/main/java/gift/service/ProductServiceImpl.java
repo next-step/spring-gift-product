@@ -1,6 +1,8 @@
 package gift.service;
 
+import gift.dto.ProductAddRequestDto;
 import gift.dto.ProductResponseDto;
+import gift.dto.ProductUpdateRequestDto;
 import gift.entity.Product;
 import gift.exception.ProductNotFoundException;
 import gift.repository.ProductRepositoryImpl;
@@ -16,8 +18,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ProductResponseDto addProduct(String name, Long price, String url) {
-        Product product = productRepositoryImpl.addProduct(name, price, url);
+    public ProductResponseDto addProduct(ProductAddRequestDto requestDto) {
+        Product product = productRepositoryImpl.addProduct(requestDto.name(), requestDto.price(), requestDto.url());
         return new ProductResponseDto(product);
     }
 
@@ -31,21 +33,22 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ProductResponseDto updateProduct(Long id, String name, Long price, String url) {
+    public ProductResponseDto updateProductById(Long id, ProductUpdateRequestDto requestDto) {
         Product product = productRepositoryImpl.findProductById(id);
         if (product == null) {
             throw new ProductNotFoundException(id);
         }
-        Product newProduct = productRepositoryImpl.updateProduct(id, name, price, url);
+        Product newProduct = new Product(product.id(), requestDto.name(), requestDto.price(), requestDto.url());
+        productRepositoryImpl.updateProductById(newProduct);
         return new ProductResponseDto(newProduct);
     }
 
     @Override
-    public void deleteProduct(Long id) {
+    public void deleteProductById(Long id) {
         Product product = productRepositoryImpl.findProductById(id);
         if (product == null) {
             throw new ProductNotFoundException(id);
         }
-        productRepositoryImpl.deleteProduct(product.id());
+        productRepositoryImpl.deleteProductById(product.id());
     }
 }

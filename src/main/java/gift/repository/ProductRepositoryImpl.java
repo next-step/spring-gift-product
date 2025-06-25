@@ -26,14 +26,12 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product updateProduct(Long id, String name, Long price, String url) {
-        Product product = new Product (id, name, price, url);
-        products.put(id, product);
-        return product;
+    public void updateProductById(Product newProduct) {
+        products.put(newProduct.id(), newProduct);
     }
 
     @Override
-    public void deleteProduct(Long id) {
+    public void deleteProductById(Long id) {
         products.remove(id);
     }
 }
