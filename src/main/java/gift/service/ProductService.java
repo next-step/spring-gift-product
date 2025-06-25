@@ -5,7 +5,6 @@ import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,14 +39,15 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다. id = " + id));
         return new ProductResponseDto(product);
     }
+
     public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다. id=" + id));
 
         product.update(
-                requestDto.getName(),
-                requestDto.getPrice(),
-                requestDto.getImageUrl()
+                requestDto.name(),
+                requestDto.price(),
+                requestDto.imageUrl()
         );
         return new ProductResponseDto(product);
     }
