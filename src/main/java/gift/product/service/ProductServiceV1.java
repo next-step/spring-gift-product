@@ -9,18 +9,19 @@ import gift.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
-public class PostServiceV1 implements ProductService{
+public class ProductServiceV1 implements ProductService{
 
     private final ProductRepository productRepository;
 
-    public PostServiceV1(ProductRepository productRepository) {
+    public ProductServiceV1(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
 
-    public String addProduct(ProductCreateRequest dto) {
+    public UUID addProduct(ProductCreateRequest dto) {
         return productRepository.save(dto);
     }
 
@@ -31,17 +32,17 @@ public class PostServiceV1 implements ProductService{
     }
 
 
-    public ProductResponse findProduct(String id) {
+    public ProductResponse findProduct(UUID id) {
         Product findProduct = productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundProductException("상품이 존재하지 않습니다."));
         return new ProductResponse(findProduct);
     }
 
-    public void deleteProduct(String id) {
+    public void deleteProduct(UUID id) {
         productRepository.deleteById(id);
     }
 
-    public void updateProduct(String id, ProductUpdateRequest dto) {
+    public void updateProduct(UUID id, ProductUpdateRequest dto) {
         productRepository.update(id, dto);
     }
 }

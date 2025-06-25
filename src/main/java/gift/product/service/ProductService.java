@@ -7,12 +7,13 @@ import gift.product.dto.ProductResponse;
 import gift.product.dto.ProductUpdateRequest;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ProductService {
 
-    String addProduct(ProductCreateRequest dto);
+    UUID addProduct(ProductCreateRequest dto);
     List<ProductResponse> findAllProducts();
-    ProductResponse findProduct(String id);
-    void deleteProduct(String id);
-    void updateProduct(String id, ProductUpdateRequest dto);
+    ProductResponse findProduct(UUID id);
+    void deleteProduct(UUID id);
+    void updateProduct(UUID id, ProductUpdateRequest dto);
 }

@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class Product {
 
-    private String id;
+    private UUID id;
     private String name;
     private int price;
     private String imageURL;
@@ -12,20 +12,20 @@ public class Product {
     protected Product() {}
 
     public Product(String name, int price, String imageURL) {
-        this.id = UUID.randomUUID().toString();
+        this.id = UUID.randomUUID();
         this.name = name;
         this.price = price;
         this.imageURL = imageURL;
     }
 
-    public Product(String id, String name, int price, String imageURL) {
+    public Product(UUID id, String name, int price, String imageURL) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.imageURL = imageURL;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
