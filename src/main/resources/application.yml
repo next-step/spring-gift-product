@@ -1,0 +1,8 @@
+ spring:
+  application:
+    name: spring-gift
+  thymeleaf:
+    prefix:
+      classpath:/templates/
+    suffix:
+      .html
