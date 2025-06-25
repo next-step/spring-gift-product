@@ -7,51 +7,54 @@ import gift.product.dto.ProductUpdateRequestDto;
 import gift.product.entity.Product;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class ProductService {
 
-    private final Map<Long, Product> products = new HashMap<>();
-    private long nextId = 0;
+    private final ConcurrentHashMap<Long, Product> products = new ConcurrentHashMap<>();
+    private final AtomicLong nextId = new AtomicLong(0);
 
-    private void validateProduct(Long id) {
-        if (!products.containsKey(id)) {
+    private void validateProduct(Product product) {
+        if (product == null) {
             throw new EntityNotFoundException("해당 상품을 찾을 수 없습니다.");
         }
     }
 
     public ProductResponseDto createProduct(ProductCreateRequestDto product) {
-        final long newProductId = ++nextId;
+        final long newProductId = nextId.incrementAndGet();
+
         Product newProduct = new Product(newProductId, product.name(), product.price(), product.imageUrl());
         products.put(newProductId, newProduct);
         return newProduct.toResponseDto();
     }
 
     public ProductResponseDto updateProduct(Long id, ProductUpdateRequestDto product) {
-        validateProduct(id);
-
         Product existingProduct = products.get(id);
-        existingProduct.update(product.name(), product.price(), product.imageUrl());
-        return existingProduct.toResponseDto();
+        validateProduct(existingProduct);
+
+        synchronized (existingProduct) {
+            existingProduct.update(product.name(), product.price(), product.imageUrl());
+            return existingProduct.toResponseDto();
+        }
     }
 
     public void deleteProduct(Long id) {
-        validateProduct(id);
-        products.remove(id);
+        Product removedProduct = products.remove(id);
+        validateProduct(removedProduct);
     }
 
     public List<ProductResponseDto> getProducts() {
         return products.values().stream()
-                .map(Product::toResponseDto).collect(Collectors.toList());
+                .map(Product::toResponseDto)
+                .toList();
     }
 
     public ProductResponseDto getProduct(Long id) {
-        validateProduct(id);
-
-        return products.get(id).toResponseDto();
+        Product product = products.get(id);
+        validateProduct(product);
+        return product.toResponseDto();
     }
 }
