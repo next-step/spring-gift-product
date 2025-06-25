@@ -5,7 +5,6 @@ import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,15 +22,10 @@ public class ProductService {
     }
 
     public List<ProductResponseDto> getProducts(){
-        List<Product> products = productRepository.findAll();
-
-        List<ProductResponseDto> responseDtos = new ArrayList<>();
-
-        for(Product product : products){
-            ProductResponseDto dto = ProductResponseDto.from(product);
-            responseDtos.add(dto);
-        }
-        return responseDtos;
+        return productRepository.findAll()
+                .stream()
+                .map(ProductResponseDto::from)
+                .toList();
     }
 
     public ProductResponseDto getProduct(Long id){
