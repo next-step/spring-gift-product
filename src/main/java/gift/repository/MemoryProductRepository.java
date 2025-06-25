@@ -2,48 +2,56 @@ package gift.repository;
 
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
-
 @Repository
-public class MemoryProductRepository implements ProductRepository{
-    private final Map<Long, Product> productList = new HashMap<>();
+public class MemoryProductRepository implements ProductRepository {
 
-    public ProductResponseDto createProduct(Product product){
-        Long productId = productList.isEmpty() ? 1 : Collections.max(productList.keySet()) + 1;
-        product.setId(productId);
+  private final Map<Long, Product> productMap = new HashMap<>();
 
-        productList.put(productId, product);
+  public ProductResponseDto createProduct(Product product) {
+    Long productId = productMap.isEmpty() ? 1 : Collections.max(productMap.keySet()) + 1;
+    product.setId(productId);
 
-        return new ProductResponseDto(product);
+    productMap.put(productId, product);
+
+    return new ProductResponseDto(product);
+  }
+
+  public List<ProductResponseDto> searchAllProducts() {
+    List<ProductResponseDto> allProducts = new ArrayList<>();
+
+    for (Product product : productMap.values()) {
+      ProductResponseDto productResponseDto = new ProductResponseDto(product);
+      allProducts.add(productResponseDto);
     }
-    public List<ProductResponseDto> searchAllProducts(){
-        List<ProductResponseDto> allProducts = new ArrayList<>();
 
-        for(Product product : productList.values()){
-            ProductResponseDto productResponseDto = new ProductResponseDto(product);
-            allProducts.add(productResponseDto);
-        }
+    return allProducts;
+  }
 
-        return allProducts;
-    }
-    public Optional<Product> searchProductById(Long id){
-        return Optional.ofNullable(productList.get(id));
-    }
-    public Product updateProduct(Long id, String name, Integer price, String imageUrl){
-        Product product = productList.get(id);
-        if (product == null) {
-            throw new NoSuchElementException("해당 ID의 상품이 존재하지 않습니다.");
-        }
+  public Optional<Product> searchProductById(Long id) {
+    return Optional.ofNullable(productMap.get(id));
+  }
 
-        product.setName(name);
-        product.setPrice(price);
-        product.setImageUrl(imageUrl);
+  public Product updateProduct(Long id, String name, Integer price, String imageUrl) {
+    if (!productMap.containsKey(id)) {
+      throw new NoSuchElementException("해당 ID = " + id + " 의 상품이 존재하지 않습니다.");
+    }
+    Product product = productMap.get(id);
 
-        return product;
-    }
-    public void deleteProduct(Long id){
-        productList.remove(id);
-    }
+    product.updateInfo(name, price, imageUrl);
+
+    return product;
+  }
+
+  public void deleteProduct(Long id) {
+    productMap.remove(id);
+  }
 }
