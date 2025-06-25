@@ -2,10 +2,12 @@ package gift.product.repository;
 
 import gift.product.Product;
 import gift.product.dto.ProductUpdateRequest;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Repository
 public class ProductRepository {
     private final Map<Long, Product> products = new HashMap<>();
 

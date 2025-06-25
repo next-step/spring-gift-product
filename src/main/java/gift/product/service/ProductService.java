@@ -13,8 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
-    public ProductService() {
-        this.productRepository = new ProductRepository();
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
     public ResponseEntity<ProductResponse> addProduct(ProductRequest req) {
