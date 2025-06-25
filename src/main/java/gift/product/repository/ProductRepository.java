@@ -3,7 +3,6 @@ package gift.product.repository;
 import gift.common.dto.PagedResult;
 import gift.common.exception.ErrorCode;
 import gift.product.domain.Product;
-import gift.product.dto.GetProductResDto;
 import gift.product.exception.ProductNotFoundException;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +10,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 @Repository
 public class ProductRepository {

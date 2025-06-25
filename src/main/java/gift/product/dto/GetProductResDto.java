@@ -1,7 +1,6 @@
 package gift.product.dto;
 
 import gift.product.domain.Product;
-import lombok.Getter;
 
 public record GetProductResDto (
     Long id,

@@ -6,6 +6,7 @@ import gift.product.dto.CreateProductReqDto;
 import gift.product.dto.GetProductResDto;
 import gift.product.dto.UpdateProductReqDto;
 import gift.product.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,13 +38,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public Response<Long> createProduct(@RequestBody CreateProductReqDto product) {
-        Long productId = productService.createProduct(product);
+    public Response<Long> createProduct(@Valid @RequestBody CreateProductReqDto dto) {
+        Long productId = productService.createProduct(dto);
         return Response.ok(productId, "create product success");
     }
 
     @PutMapping("/{id}")
-    public Response<Void> updateProduct(@PathVariable Long id, @RequestBody UpdateProductReqDto dto) {
+    public Response<Void> updateProduct(@PathVariable Long id, @Valid @RequestBody UpdateProductReqDto dto) {
         productService.updateProduct(id, dto);
         return Response.ok(null, "update product success");
     }
