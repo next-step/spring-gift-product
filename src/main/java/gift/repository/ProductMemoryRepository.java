@@ -15,10 +15,11 @@ public class ProductMemoryRepository implements ProductRepository {
     @Override
     public Product save(Product product) {
         Long id = idGenerator.getAndIncrement();
-        product.setId(id);
-        store.put(id, product);
-        return product;
+        Product savedProduct = new Product(id, product.getName(), product.getPrice(), product.getImageUrl());
+        store.put(id, savedProduct);
+        return savedProduct;
     }
+
 
     @Override
     public List<Product> findAll() {

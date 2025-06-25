@@ -40,8 +40,12 @@ public class ProductService {
         if (!productRepository.existsById(id)) {
             throw new NoSuchElementException("해당 상품이 존재하지 않습니다.");
         }
-
-        updatedProduct.setId(id); // ID 유지
+        Product updated = new Product(
+                id,
+                updatedProduct.getName(),
+                updatedProduct.getPrice(),
+                updatedProduct.getImageUrl()
+        );
         productRepository.save(updatedProduct);
     }
 
