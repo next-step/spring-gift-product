@@ -1,5 +1,6 @@
 package gift.product.service;
 
+import gift.common.dto.PagedResult;
 import gift.common.exception.ErrorCode;
 import gift.product.domain.Product;
 import gift.product.dto.CreateProductReqDto;
@@ -17,9 +18,13 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public List<GetProductResDto> getAllProducts() {
-        return productRepository.findAll().stream()
+    public PagedResult<GetProductResDto> getAllProducts(int page, int size, String sortField, boolean ascending) throws IllegalArgumentException{
+        PagedResult<Product> pagedResult = productRepository.findAll(page, size, sortField, ascending);
+
+        List<GetProductResDto> dtoList = pagedResult.content().stream()
                 .map(GetProductResDto::new).toList();
+
+        return PagedResult.from(dtoList, pagedResult);
     }
 
     public GetProductResDto getProductById(Long id) throws ProductNotFoundException {
@@ -28,7 +33,8 @@ public class ProductService {
     }
 
     public Long createProduct(CreateProductReqDto dto) {
-        return productRepository.save(dto);
+        Product newProduct = new Product(null, dto.name(), dto.price(), dto.description());
+        return productRepository.save(newProduct);
     }
 
     public void updateProduct(Long id, UpdateProductReqDto dto) throws ProductNotFoundException {

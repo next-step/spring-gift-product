@@ -1,16 +1,17 @@
 package gift.product.repository;
 
+import gift.common.dto.PagedResult;
 import gift.common.exception.ErrorCode;
 import gift.product.domain.Product;
-import gift.product.dto.CreateProductReqDto;
-import gift.product.dto.UpdateProductReqDto;
+import gift.product.dto.GetProductResDto;
 import gift.product.exception.ProductNotFoundException;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 @Repository
 public class ProductRepository {
@@ -18,8 +19,39 @@ public class ProductRepository {
     private final ConcurrentHashMap<Long, Product> productMap = new ConcurrentHashMap<>();
     private final AtomicLong idGenerator = new AtomicLong();
 
-    public List<Product> findAll() {
-        return new ArrayList<>(productMap.values());
+    public PagedResult<Product> findAll(int page, int size, String sortField, boolean asc) {
+        Comparator<Product> comparator = switch (sortField) {
+            case "name" -> Comparator.comparing(Product::getName);
+            case "price" -> Comparator.comparingInt(Product::getPrice);
+            case "id" -> Comparator.comparing(Product::getId);
+            default -> throw new IllegalArgumentException("정렬 필드 오류");
+        };
+
+        if (!asc) comparator = comparator.reversed();
+
+        List<Product> filtered = productMap.values().stream()
+                .sorted(comparator)
+                .toList();
+
+        long total = filtered.size();
+        int totalPages = (int) Math.ceil((double) total / size);
+        boolean isFirst = page == 0;
+        boolean isLast = page >= totalPages - 1;
+
+        List<Product> pageContent = filtered.stream()
+                .skip((long) page * size)
+                .limit(size)
+                .toList();
+
+        return new PagedResult<>(
+                pageContent,
+                page,
+                size,
+                total,
+                totalPages,
+                isFirst,
+                isLast
+        );
     }
 
     public Product findById(Long id) throws ProductNotFoundException {
@@ -30,10 +62,10 @@ public class ProductRepository {
         return product;
     }
 
-    public Long save(CreateProductReqDto dto) {
+    public Long save(Product product) {
         Long id = idGenerator.incrementAndGet();
-        Product newProduct = new Product(id, dto.name(), dto.price(), dto.description());
-        productMap.put(id, newProduct);
+
+        productMap.put(id, product);
         return id;
     }
 
