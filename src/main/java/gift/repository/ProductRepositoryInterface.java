@@ -2,14 +2,18 @@ package gift.repository;
 
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
+import gift.entity.Product;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepositoryInterface {
 
+    // 상품 생성을 위한 ID 얻기
+    long getNewProductId();
+
     // 상품 생성
-    ProductResponseDto addProduct(ProductRequestDto requestDto);
+    ProductResponseDto addProduct(Product product);
 
     // 전체 상품 목록 조회
     List<ProductResponseDto> findAllProducts();

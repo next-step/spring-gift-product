@@ -13,23 +13,24 @@ public class ProductRepository implements ProductRepositoryInterface {
     private final Map<Long, Product> products = new HashMap<>();
     private long productId = 1L;
 
+    @Override
+    public long getNewProductId() {
+        return productId;
+    }
+
     @Transactional
     @Override
-    public ProductResponseDto addProduct(ProductRequestDto requestDto) {
-        Product product = new Product(
-                productId, // 서버에서 id 할당
-                requestDto.getName(),
-                requestDto.getPrice(),
-                requestDto.getImageUrl()
-        );
+    public ProductResponseDto addProduct(Product product) {
+
         products.put(productId, product);
+        productId++;
         ProductResponseDto responseDto = new ProductResponseDto(
                 product.getId(),
                 product.getName(),
                 product.getPrice(),
                 product.getImageUrl()
         );
-        productId++; // id 값 1 증가
+
         return responseDto;
     }
 

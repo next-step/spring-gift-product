@@ -2,6 +2,7 @@ package gift.service;
 
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
+import gift.entity.Product;
 import gift.repository.ProductRepositoryInterface;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,16 @@ public class ProductService implements ProductServiceInterface {
 
     @Override
     public ProductResponseDto addProduct(ProductRequestDto requestDto) {
-        return productRepository.addProduct(requestDto);
+
+        long productId = productRepository.getNewProductId();
+        Product product = new Product(
+                productId,
+                requestDto.getName(),
+                requestDto.getPrice(),
+                requestDto.getImageUrl()
+        );
+
+        return productRepository.addProduct(product);
     }
 
     @Override
