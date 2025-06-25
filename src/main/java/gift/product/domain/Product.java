@@ -22,4 +22,13 @@ public class Product {
         this.price = dto.price();
         this.description = dto.description();
     }
+
+    public static Product of(Long id, Product original) {
+        return new Product(
+                id,
+                original.getName(),
+                original.getPrice(),
+                original.getDescription()
+        );
+    }
 }

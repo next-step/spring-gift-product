@@ -64,8 +64,8 @@ public class ProductRepository {
 
     public Long save(Product product) {
         Long id = idGenerator.incrementAndGet();
-
-        productMap.put(id, product);
+        Product newProduct = Product.of(id, product);
+        productMap.put(id, newProduct);
         return id;
     }
 
