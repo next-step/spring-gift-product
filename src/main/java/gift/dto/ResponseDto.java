@@ -5,8 +5,9 @@ import gift.entity.Product;
 public record ResponseDto(Long productId,
                           String name,
                           Double price,
-                          String imageUrl){
+                          String imageUrl) {
+
     public ResponseDto(Product product) {
-        this(product.getproductId(), product.getName(), product.getPrice(), product.getImageUrl());
+        this(product.getProductId(), product.getName(), product.getPrice(), product.getImageUrl());
     }
 }

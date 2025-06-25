@@ -3,19 +3,22 @@ package gift.entity;
 import gift.dto.RequestDto;
 
 public class Product {
+
     private final Long productId;
     private String name;
     private Double price;
     private String imageUrl;
 
-    public Product(Long productId, String name,Double price, String imageUrl) {
+    public Product(Long productId, String name, Double price, String imageUrl) {
         this.productId = productId;
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;
     }
 
-    public Long getproductId() { return productId; }
+    public Long getProductId() {
+        return productId;
+    }
 
     public String getName() {
         return name;
