@@ -35,19 +35,7 @@ public class ProductController {
     @PatchMapping("/product/{id}")
     public Product updateProduct(@PathVariable Long id, @RequestBody Product updateProduct) {
         Product oldProduct = products.get(id);
-
-        if(updateProduct.getName() != null) {
-            oldProduct.setName(updateProduct.getName());
-        }
-
-        if(updateProduct.getPrice() != 0) {
-            oldProduct.setPrice(updateProduct.getPrice());
-        }
-
-        if(updateProduct.getImageUrl() != null) {
-            oldProduct.setImageUrl(updateProduct.getImageUrl());
-        }
-
+        oldProduct.updateProduct(updateProduct);
         return oldProduct;
     }
 
