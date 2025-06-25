@@ -1,0 +1,48 @@
+package gift.service;
+
+import gift.dto.ProductUpdateRequestDto;
+import gift.entity.Product;
+
+import gift.repository.ProductRepository;
+import gift.validator.ProductValidator;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ProductService {
+
+    private final ProductRepository repository;
+
+    public ProductService(ProductRepository repository) {
+        this.repository = repository;
+    }
+
+    public Product registerProduct(Product product) {
+        ProductValidator.validate(product);  // 검증은 여기서 호출만
+
+        return repository.save(product);
+    }
+
+    public List<Product> getAllProducts() {
+        return repository.findAll();
+    }
+
+    public Product getProductById(long id) {
+        return ProductValidator.validateExists(id, repository);
+    }
+
+    public Product updateProduct(long id, ProductUpdateRequestDto updateRequestDto) {
+        ProductValidator.validateUpdate(updateRequestDto);                     // 유효성 검사
+        Product existing = ProductValidator.validateExists(id, repository); // 존재 여부 확인
+
+        repository.update(id, updateRequestDto);
+        return existing;
+    }
+
+    public void deleteProduct(Long id) {
+        ProductValidator.validateExists(id, repository); // 존재 여부 검증
+        repository.delete(id);
+    }
+
+}
