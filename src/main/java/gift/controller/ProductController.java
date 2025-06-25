@@ -56,7 +56,7 @@ public class ProductController {
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAllByIds(@RequestBody(required = false) List<Long> ids) {
-        if (ids.isEmpty()) {
+        if (ids == null || ids.isEmpty()) {
             productService.deleteAll();
         } else {
             productService.deleteAllByIds(ids);
