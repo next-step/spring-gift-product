@@ -9,7 +9,7 @@ public interface ProductRepository {
 
     List<ProductResponseDto> findAllProducts();
     Product findProductByIdElseThrow(Long id);
-    ProductResponseDto saveProduct(String name, Long price, String imageUrl);
+    Product saveProduct(String name, Long price, String imageUrl);
     Product updateProduct(Long id, String name, Long price, String imageUrl);
     void deleteProduct(Long id);
 }

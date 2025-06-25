@@ -32,7 +32,11 @@ public class ProductServiceImpl implements ProductService{
 
         Product product = productRepository.findProductByIdElseThrow(id);
 
-        return new ProductResponseDto(product);
+        return new ProductResponseDto(
+                product.getId(),
+                product.getName(),
+                product.getPrice(),
+                product.getImageUrl());
     }
 
     @Override
@@ -42,7 +46,9 @@ public class ProductServiceImpl implements ProductService{
         Long price = dto.getPrice();
         String imageUrl = dto.getImageUrl();
 
-        return productRepository.saveProduct(name, price, imageUrl);
+        Product product = productRepository.saveProduct(name, price, imageUrl);
+
+        return new ProductResponseDto(product.getId(), name, price, imageUrl);
     }
 
     @Transactional
@@ -57,7 +63,12 @@ public class ProductServiceImpl implements ProductService{
                 dto.getImageUrl()
         );
 
-        return new ProductResponseDto(updatedProduct);
+        return new ProductResponseDto(
+                updatedProduct.getId(),
+                updatedProduct.getName(),
+                updatedProduct.getPrice(),
+                updatedProduct.getImageUrl()
+        );
     }
 
     @Override

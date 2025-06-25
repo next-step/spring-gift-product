@@ -23,7 +23,12 @@ public class ProductRepositoryImpl implements ProductRepository{
 
         return productList.values()
                 .stream()
-                .map(ProductResponseDto::new)
+                .map(product -> new ProductResponseDto(
+                        product.getId(),
+                        product.getName(),
+                        product.getPrice(),
+                        product.getImageUrl()
+                ))
                 .toList();
     }
 
@@ -39,14 +44,14 @@ public class ProductRepositoryImpl implements ProductRepository{
     }
 
     @Override
-    public ProductResponseDto saveProduct(String name, Long price, String imageUrl) {
+    public Product saveProduct(String name, Long price, String imageUrl) {
 
         listId++;
 
         Product product = new Product(listId, name, price, imageUrl);
         productList.put(listId, product);
 
-        return new ProductResponseDto(product);
+        return product;
     }
 
     @Override
