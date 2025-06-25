@@ -54,7 +54,7 @@ public class ProductController {
         return new ResponseEntity<>(new ResponseDto(product), HttpStatus.OK);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ResponseDto> updateProduct(@PathVariable Long id,
                                                      @RequestBody RequestDto requestDto) {
 

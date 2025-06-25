@@ -59,7 +59,7 @@
 
 - [x] 상품 수정 API
   - [x] 단건 상품 전체 수정
-    - **Request**: PATCH /api/products/{id}
+    - **Request**: PUT /api/products/{id}
       ```json
       {
           "name": "아이스 카페 아메리카노 T",
