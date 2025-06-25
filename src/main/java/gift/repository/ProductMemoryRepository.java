@@ -16,11 +16,9 @@ public class ProductMemoryRepository implements ProductRepository{
     @Override
     public Product save(CreateProductRequest request) {
         Long id = ++sequence;
-        Product product = new Product(id, request.getName(), request.getPrice(), request.getImageUrl());
+        Product product = new Product(id, request.name(), request.price(), request.imageUrl());
         products.put(id, product);
-
         return product;
-
     }
 
     @Override
@@ -30,10 +28,8 @@ public class ProductMemoryRepository implements ProductRepository{
 
     @Override
     public List<Product> findAll() {
-
         List<Product> productList = new ArrayList<>();
         Collection<Product> values = products.values();
-
         for (Product value : values) {
             productList.add(value);
         }
@@ -42,7 +38,7 @@ public class ProductMemoryRepository implements ProductRepository{
 
     @Override
     public Product update(Long id, UpdateProductRequest request) {
-        Product updateProduct = new Product(id, request.getName(), request.getPrice(), request.getImageUrl());
+        Product updateProduct = new Product(id, request.name(), request.price(), request.imageUrl());
         products.remove(id);
         products.put(id, updateProduct);
         return updateProduct;
