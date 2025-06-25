@@ -34,4 +34,17 @@ public class ProductController {
         return product;
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+        if(products.containsKey(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        Product oldProduct = products.get(id);
+        oldProduct.setName(product.getName());
+        oldProduct.setPrice(product.getPrice());
+        return ResponseEntity.ok(oldProduct);
+    }
+
+
+
 }
