@@ -49,4 +49,17 @@ public class AdminItemController {
         }
         return "redirect:/admin/products";
     }
+
+    @PostMapping("/{id}/edit")
+    public String updateItem(@PathVariable Long id, @ModelAttribute ItemDTO dto) {
+        itemService.updateItem(id, dto);
+        return "redirect:/admin/products";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        ItemDTO item = itemService.findById(id);
+        model.addAttribute("itemDTO", item);
+        return "admin/editForm";
+    }
 }
