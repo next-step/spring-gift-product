@@ -1,7 +1,5 @@
 package gift.product.entity;
 
-import gift.product.dto.ProductResponseDto;
-
 public class Product {
 
     private final Long id;
@@ -28,7 +26,19 @@ public class Product {
         }
     }
 
-    public ProductResponseDto toResponseDto() {
-        return new ProductResponseDto(id, name, price, imageUrl);
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

@@ -28,7 +28,7 @@ public class ProductService {
 
         Product newProduct = new Product(newProductId, product.name(), product.price(), product.imageUrl());
         products.put(newProductId, newProduct);
-        return newProduct.toResponseDto();
+        return new ProductResponseDto(newProduct);
     }
 
     public ProductResponseDto updateProduct(Long id, ProductUpdateRequestDto product) {
@@ -37,7 +37,7 @@ public class ProductService {
 
         synchronized (existingProduct) {
             existingProduct.update(product.name(), product.price(), product.imageUrl());
-            return existingProduct.toResponseDto();
+            return new ProductResponseDto(existingProduct);
         }
     }
 
@@ -48,13 +48,13 @@ public class ProductService {
 
     public List<ProductResponseDto> getProducts() {
         return products.values().stream()
-                .map(Product::toResponseDto)
+                .map(ProductResponseDto::new)
                 .toList();
     }
 
     public ProductResponseDto getProduct(Long id) {
         Product product = products.get(id);
         validateProduct(product);
-        return product.toResponseDto();
+        return new ProductResponseDto(product);
     }
 }
