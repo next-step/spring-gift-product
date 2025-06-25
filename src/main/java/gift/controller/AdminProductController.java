@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -33,6 +34,7 @@ public class AdminProductController {
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("product", new ProductRequestDto("", 0, ""));
+        model.addAttribute("isEdit", false);
         return "product/form";
     }
 
@@ -40,6 +42,24 @@ public class AdminProductController {
     @PostMapping
     public String createProduct(@ModelAttribute ProductRequestDto requestDto) {
         productService.saveProduct(requestDto);
+        return "redirect:/admin/products";
+    }
+
+    // 상품 수정
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        ProductResponseDto product = productService.findProductById(id);
+        model.addAttribute("product", product);
+        model.addAttribute("isEdit", true);
+        return "product/form";
+    }
+
+    // 수정 처리
+    @PostMapping("/edit/{id}")
+    public String updateProduct(@PathVariable Long id,
+            @ModelAttribute ProductResponseDto requestDto) {
+        productService.updateProduct(id, requestDto.name(), requestDto.price(),
+                requestDto.imageUrl());
         return "redirect:/admin/products";
     }
 }
