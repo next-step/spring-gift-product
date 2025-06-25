@@ -31,7 +31,7 @@ public class ProductServiceImpl implements ProductService{
     public ProductResponseDto findProductById(Long id) {
 
         Product product = productRepository.findProductByIdElseThrow(id);
-
+      
         return new ProductResponseDto(
                 product.getId(),
                 product.getName(),

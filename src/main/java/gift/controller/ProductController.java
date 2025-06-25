@@ -3,8 +3,6 @@ package gift.controller;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.service.ProductService;
-import gift.service.ProductService;
-import gift.service.ProductServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
+
 
     private final ProductService productService;
 
@@ -43,6 +42,7 @@ public class ProductController {
 
         return ResponseEntity.status(HttpStatus.CREATED).
                 body(productService.saveProduct(dto));
+
     }
 
     @PutMapping("{id}")
@@ -56,7 +56,7 @@ public class ProductController {
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
-
+      
         return ResponseEntity.noContent().build();
     }
 
