@@ -56,6 +56,7 @@ public class ProductViewController {
         return "redirect:/products";
     }
     
+    //삭제 버튼 누를 시 동작
     @DeleteMapping("/{id}")
     public String deleteProduct(@PathVariable Long id) {
         productService.deleteProductWithId(id);
