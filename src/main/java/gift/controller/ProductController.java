@@ -40,19 +40,19 @@ public class ProductController {
 
     // 상품 개별 조회
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
+    public ResponseEntity<Product> getProduct(@PathVariable long id) {
         Product product = productService.getProductById(id);
         return ResponseEntity.ok(product); // 200 OK
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductUpdateRequestDto updateRequestDto) {
+    public ResponseEntity<Product> updateProduct(@PathVariable long id, @RequestBody ProductUpdateRequestDto updateRequestDto) {
         Product updated = productService.updateProduct(id, updateRequestDto);
         return ResponseEntity.ok(updated); // 200 OK
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable long id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build(); // 204 No Content
     }

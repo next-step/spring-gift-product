@@ -2,12 +2,12 @@ package gift.entity;
 
 public class Product {
 
-    private Long id;
+    private long id;
     private String name;
-    private Integer price;
+    private int price;
     private String imageUrl;
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -15,7 +15,7 @@ public class Product {
         this.name = name;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -23,7 +23,7 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -31,7 +31,7 @@ public class Product {
         return name;
     }
 
-    public Integer getPrice() {
+    public int getPrice() {
         return price;
     }
 

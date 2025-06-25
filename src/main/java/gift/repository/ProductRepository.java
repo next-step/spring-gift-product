@@ -24,7 +24,7 @@ public class ProductRepository {
         return new ArrayList<>(storage.values());
     }
 
-    public Optional<Product> findById(Long id) {
+    public Optional<Product> findById(long id) {
         return Optional.ofNullable(storage.get(id));
     }
 

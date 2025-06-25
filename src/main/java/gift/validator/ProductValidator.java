@@ -46,7 +46,7 @@ public class ProductValidator {
         }
     }
 
-    public static Product validateExists(Long id, ProductRepository repository) {
+    public static Product validateExists(long id, ProductRepository repository) {
         return repository.findById(id)
             .orElseThrow(() -> new NoSuchElementException("상품을 찾을 수 없습니다."));
     }
