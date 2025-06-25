@@ -27,13 +27,13 @@
   </tr>
   </thead>
 
-  <tbody th:if="${productMap == null or productMap.isEmpty()}">
+  <tbody class="product-table-body" th:if="${productMap == null or productMap.isEmpty()}">
   <tr>
     <td colspan="5">등록된 상품이 없습니다.</td>
   </tr>
   </tbody>
 
-  <tbody th:if="${productMap != null and !productMap.isEmpty()}">
+  <tbody class="product-table-body" th:if="${productMap != null and !productMap.isEmpty()}">
     <tr th:each="entry : ${productEntries}">
       <td><input type="checkbox" name="selectedKey" th:value="${entry.key}"></td>
       <td th:text="${entry.key}"></td>
