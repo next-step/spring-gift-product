@@ -12,6 +12,7 @@
         <th>상품명</th>
         <th>가격</th>
         <th>이미지 URL</th>
+        <th>액션</th>
     </tr>
     </thead>
     <tbody>
@@ -20,8 +21,54 @@
         <td th:text="${p.name}">상품명</td>
         <td th:text="${p.price}">가격</td>
         <td th:text="${p.imageUrl}">이미지 URL</td>
+        <td>
+            <button type="button"
+                    class="edit-btn"
+                    th:attr="data-id=${p.id}, data-name=${p.name}, data-price=${p.price}, data-image-url=${p.imageUrl}">수정</button>
+            <button type="button">삭제</button>
+        </td>
     </tr>
     </tbody>
 </table>
+
+<div id="editModal" class="modal" style="display: none;">
+    <form th:action="@{/products/edit}" method="post">
+        <input type="hidden" name="id" id="modal-id">
+        <label>이름<input type="text" name="name" id="modal-name"></label>
+        <label>가격<input type="number" name="price" id="modal-price"></label>
+        <label>이미지 URL<input type="text" name="imageUrl" id="modal-image-url"></label>
+        <button type="submit">저장</button>
+        <button type="button" class="cancel-btn">취소</button>
+    </form>
+</div>
 </body>
+<script>
+    function openEditModal(id, name, price, imageUrl) {
+        document.getElementById('modal-id').value = id;
+        document.getElementById('modal-name').value = name;
+        document.getElementById('modal-price').value = price;
+        document.getElementById('modal-image-url').value = imageUrl;
+        document.getElementById('editModal').style.display = 'block';
+    }
+    function closeModal() {
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.style.display = 'none';
+        });
+    }
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const id = this.dataset.id;
+            const name = this.dataset.name;
+            const price = this.dataset.price;
+            const imageUrl = this.dataset.imageUrl;
+
+            openEditModal(id, name, price, imageUrl);
+        });
+    });
+    document.querySelectorAll('.cancel-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            closeModal();
+        });
+    });
+</script>
 </html>

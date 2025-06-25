@@ -1,12 +1,12 @@
 package gift.controller;
 
+import gift.dto.ProductRequestDTO;
 import gift.dto.ProductResponseDTO;
 import gift.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +25,9 @@ public class ProductViewController {
         return "products";
     }
 
-
+    @PostMapping("/edit")
+    public String updateProduct(@ModelAttribute ProductRequestDTO product) {
+        productService.update(product.getId(), product);
+        return "redirect:/products";
+    }
 }
