@@ -8,11 +8,8 @@ public class Product {
     private Long price;
     private String imageUrl;
 
-    public static Long nextId = 1L;
-
-    public Product(String name, Long price, String imageUrl) {
-        this.id = nextId;
-        nextId = nextId + 1;
+    public Product(Long id, String name, Long price, String imageUrl) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;
