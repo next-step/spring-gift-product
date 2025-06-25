@@ -65,14 +65,14 @@ public class ProductRepository implements ProductRepositoryInterface {
 
     @Transactional
     @Override
-    public Optional<ProductResponseDto> updateProduct(Long id, ProductRequestDto requestDto) {
-        Product product = products.get(id);
-        if (product != null) {
-            product.setName(requestDto.getName());
-            product.setPrice(requestDto.getPrice());
-            product.setImageUrl(requestDto.getImageUrl());
+    public Optional<ProductResponseDto> updateProduct(Long id, Product product) {
+        Product originProduct = products.get(id);
+        if (originProduct != null) {
+            originProduct.setName(product.getName());
+            originProduct.setPrice(product.getPrice());
+            originProduct.setImageUrl(product.getImageUrl());
             return Optional.of(new ProductResponseDto(
-                    product.getId(),
+                    id,
                     product.getName(),
                     product.getPrice(),
                     product.getImageUrl()

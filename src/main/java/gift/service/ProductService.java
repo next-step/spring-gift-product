@@ -44,7 +44,15 @@ public class ProductService implements ProductServiceInterface {
 
     @Override
     public Optional<ProductResponseDto> updateProduct(Long id, ProductRequestDto requestDto) {
-        return productRepository.updateProduct(id, requestDto);
+
+        Product product = new Product(
+                id,
+                requestDto.getName(),
+                requestDto.getPrice(),
+                requestDto.getImageUrl()
+        );
+
+        return productRepository.updateProduct(id, product);
     }
 
     @Override

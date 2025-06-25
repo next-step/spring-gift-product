@@ -22,7 +22,7 @@ public interface ProductRepositoryInterface {
     Optional<ProductResponseDto> findProductById(Long id);
 
     // 상품 수정
-    Optional<ProductResponseDto> updateProduct(Long id, ProductRequestDto requestDto);
+    Optional<ProductResponseDto> updateProduct(Long id, Product product);
 
     // 상품 삭제 (성공시 true, 없으면 false)
     boolean deleteProduct(Long id);
