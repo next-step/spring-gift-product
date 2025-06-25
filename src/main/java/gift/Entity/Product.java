@@ -1,4 +1,4 @@
-package gift.Model;
+package gift.Entity;
 
 public class Product {
 

@@ -1,8 +1,7 @@
 package gift.Controller;
 
 import gift.Dto.*;
-import gift.Exception.*;
-import gift.Model.*;
+import gift.Entity.*;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +16,6 @@ public class ProductController {
     private final Map<Long, Product> products = new HashMap<>();
     private long nextId = 1;
 
-    public ProductController() {
-        addSampleProduct();
-    }
-
     @GetMapping
     public ResponseEntity<List<Product>> getAll() {
         List<Product> allProducts = new ArrayList<>(products.values());
@@ -28,22 +23,26 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> get(@PathVariable Long id) {
+    public ResponseEntity<?> get(@PathVariable Long id) {
         Product product = products.get(id);
         if (product == null) {
-            throw new ProductNotFoundException(id);
+            return ResponseEntity.status(404).body("해당 상품을 찾을 수 없습니다: " + id);
         }
         return ResponseEntity.ok(product);
     }
 
     @PostMapping
-    public ResponseEntity<Product> add(@RequestBody ProductRequest request) {
+    public ResponseEntity<?> add(@RequestBody ProductRequest request) {
+        String error = validate(request);
+        if (error != null) {
+            return ResponseEntity.badRequest().body(error);
+        }
         Long id = nextId++;
         Product product = new Product(
                 id,
-                request.toName().getValue(),
-                request.toPrice().getValue(),
-                request.toImgUrl().getValue()
+                request.getName(),
+                request.getPrice(),
+                request.getImgUrl()
         );
         products.put(id, product);
 
@@ -52,40 +51,45 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody ProductRequest request) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ProductRequest request) {
         Product existing = products.get(id);
         if (existing == null) {
-            throw new ProductNotFoundException(id);
+            return ResponseEntity.status(404).body("해당 상품을 찾을 수 없습니다: " + id);
+        }
+
+        String error = validate(request);
+        if (error != null) {
+            return ResponseEntity.badRequest().body(error);
         }
 
         Product updated = new Product(
                 id,
-                request.toName().getValue(),
-                request.toPrice().getValue(),
-                request.toImgUrl().getValue()
+                request.getName(),
+                request.getPrice(),
+                request.getImgUrl()
         );
         products.put(id, updated);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         Product removed = products.remove(id);
         if (removed == null) {
-            throw new ProductNotFoundException(id);
+            return ResponseEntity.status(404).body("해당 상품을 찾을 수 없습니다: " + id);
         }
         return ResponseEntity.noContent().build();
     }
-
-    private void addSampleProduct() {
-        ProductRequest sample = new ProductRequestSample();
-        Product product = new Product(
-                nextId,
-                sample.toName().getValue(),
-                sample.toPrice().getValue(),
-                sample.toImgUrl().getValue()
-        );
-        products.put(nextId, product);
-        nextId++;
+    private String validate(ProductRequest request) {
+        if (request.getName() == null || request.getName().isBlank()) {
+            return "상품 이름은 비어 있을 수 없습니다.";
+        }
+        if (request.getPrice() < 0) {
+            return "가격은 0 이상이어야 합니다.";
+        }
+        if (request.getImgUrl() == null || request.getImgUrl().isBlank()) {
+            return "이미지 URL은 비어 있을 수 없습니다.";
+        }
+        return null;
     }
 }
