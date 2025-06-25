@@ -19,11 +19,9 @@ public class ProductRepositoryImpl implements ProductRepository {
     private long productId = 1L;
 
     @Override
-    public List<ProductResponseDto> findAllProducts() {
+    public List<ProductResponseDto> findAll() {
         List<ProductResponseDto> productList = new ArrayList<>();
 
-        // 지금까지 담은 물품들이 담긴 HashMap인 products 변수를 for loop를 돌면서 productList에 add 한다.
-        // 파이썬 습관 때문에 products를 그냥 넣으면 loop를 돌 수 있을 것이라고 생각했는데, 아예 다르게 Map.Entry<>로 나오는 것을 알았음.
         for (Map.Entry<Long, Product> entry : products.entrySet()) {
             productList.add(
                 new ProductResponseDto(entry.getValue())); // Product -> ProductResponseDto
@@ -69,5 +67,10 @@ public class ProductRepositoryImpl implements ProductRepository {
         if (products.remove(productId) == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Override
+    public Map<Long, Product> findAllMap() {
+        return products;
     }
 }

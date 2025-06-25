@@ -8,31 +8,44 @@
 <body>
 <h1>Manage <b>Products</b></h1>
 
+<div id="top-button-container">
+  <button id="deleteButton">선택 항목 삭제</button>
+</div>
+
 <table class="product-table">
   <thead>
   <tr>
-    <th>Id</th>
-    <th>Name</th>
-    <th>Price</th>
-    <th>ImageUrl</th>
+    <th>선택</th>
+    <th>Key</th>
+    <th>아이디</th>
+    <th>상품명</th>
+    <th>가격</th>
+    <th>이미지URL</th>
+    <th>수정</th>
+    <th>삭제</th>
   </tr>
   </thead>
 
   <tbody th:if="${productMap == null or productMap.isEmpty()}">
   <tr>
-    <td>등록된 상품이 없습니다.</td>
+    <td colspan="5">등록된 상품이 없습니다.</td>
   </tr>
   </tbody>
 
   <tbody th:if="${productMap != null and !productMap.isEmpty()}">
     <tr th:each="entry : ${productEntries}">
+      <td><input type="checkbox" name="selectedKey" th:value="${entry.key}"></td>
       <td th:text="${entry.key}"></td>
       <td th:text="${entry.value.id}"></td>
       <td th:text="${entry.value.name}"></td>
       <td th:text="${entry.value.price}"></td>
       <td th:text="${entry.value.imageUrl}"></td>
+      <td><button th:text="삭제"></button></td>
+      <td><button th:text="수정"></button></td>
     </tr>
   </tbody>
 </table>
+
+<script th:src="@{/js/home.js}"></script>
 </body>
 </html>
