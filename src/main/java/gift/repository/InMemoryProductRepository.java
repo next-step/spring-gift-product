@@ -1,6 +1,8 @@
 package gift.repository;
 
 import gift.domain.Product;
+import gift.dto.common.Page;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -73,6 +75,35 @@ public class InMemoryProductRepository implements ProductRepository {
     public List<Product> findAll() {
         return List.copyOf(products.values());
     }
+
+    @Override
+    public Page<Product> findAllByPage(int pageNumber, int pageSize) {
+        if (pageNumber < 1) {
+            return new Page<>(Collections.emptyList(), pageNumber, pageSize,
+                    products.size());
+        }
+
+        if (pageSize < 1) {
+            pageSize = 10;
+        }
+
+        int total = products.size();
+        int totalPages = (int) Math.ceil((double) total / pageSize);
+
+        if (pageNumber > totalPages) {
+            return new Page<>(Collections.emptyList(), pageNumber, pageSize, total);
+        }
+
+        List<Product> allProducts = List.copyOf(products.values()); // 정렬된 상태라 가정
+
+        int fromIndex = (pageNumber - 1) * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, total);
+
+        List<Product> pageContent = allProducts.subList(fromIndex, toIndex);
+
+        return new Page<>(pageContent, pageNumber, pageSize, total);
+    }
+
 
     @Override
     public Optional<Product> findById(Long id) {
