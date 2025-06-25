@@ -2,13 +2,11 @@ package gift.controller;
 
 import gift.dto.product.CreateProductRequest;
 import gift.dto.product.ProductManageResponse;
+import gift.dto.product.UpdateProductRequest;
 import gift.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,6 +37,20 @@ public class ProductManageController {
     @PostMapping
     public String createProduct(@ModelAttribute CreateProductRequest request) {
         productService.saveProduct(request);
+        return "redirect:/management/products";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String updateProduct(@PathVariable Long id, Model model) {
+        ProductManageResponse product = productService.getProductManagement(id);
+        model.addAttribute("id", id);
+        model.addAttribute("request", new UpdateProductRequest(product.name(), product.price(), product.quantity()));
+        return "/management/productUpdate";
+    }
+
+    @PostMapping("/{id}")
+    public String updateProduct(@PathVariable Long id, @ModelAttribute UpdateProductRequest request) {
+        productService.updateProduct(id, request);
         return "redirect:/management/products";
     }
 }

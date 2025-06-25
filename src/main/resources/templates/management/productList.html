@@ -20,7 +20,9 @@
             <td th:text="${product.name()}"></td>
             <td th:text="${product.price()}"></td>
             <td th:text="${product.quantity()}"></td>
-            <td th:text="'수정 링크, 삭제 링크'"></td>
+            <td>
+                <a th:href="@{'/management/products/' + ${product.id()} +'/edit'}">수정</a>
+            </td>
         </tr>
     </table>
 </body>
