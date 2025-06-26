@@ -64,4 +64,11 @@ public class AdminController {
         return "redirect:/admin/products";
     }
 
+    // 상품 삭제  기능 구현
+    @DeleteMapping("{id}")
+    public String deleteProduct(@PathVariable Long id) {
+
+        productService.deleteProduct(id);
+        return "admin/products";
+    }
 }
