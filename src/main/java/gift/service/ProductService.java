@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,17 +32,35 @@ public class ProductService implements ProductServiceInterface {
                 requestDto.getImageUrl()
         );
 
-        return productRepository.addProduct(product);
+        Product addedProduct = productRepository.addProduct(product);
+
+        return new ProductResponseDto(addedProduct.getId(), addedProduct.getName(), addedProduct.getPrice(), addedProduct.getImageUrl());
     }
 
     @Override
     public List<ProductResponseDto> findAllProducts() {
-        return productRepository.findAllProducts();
+        List<Product> productList = productRepository.findAllProducts();
+        List<ProductResponseDto> products = new ArrayList<>();
+        for (Product product : productList) {
+            products.add(new ProductResponseDto(
+                    product.getId(),
+                    product.getName(),
+                    product.getPrice(),
+                    product.getImageUrl()
+            ));
+        }
+        return products;
     }
 
     @Override
     public Optional<ProductResponseDto> findProductById(Long id) {
-        return productRepository.findProductById(id);
+        return productRepository.findProductById(id)
+                .map(product -> new ProductResponseDto(
+                        product.getId(),
+                        product.getName(),
+                        product.getPrice(),
+                        product.getImageUrl()
+                ));
     }
 
     @Override
@@ -54,7 +73,13 @@ public class ProductService implements ProductServiceInterface {
                 requestDto.getImageUrl()
         );
 
-        return productRepository.updateProduct(id, product);
+        return productRepository.updateProduct(id, product)
+                .map(updated -> new ProductResponseDto(
+                        updated.getId(),
+                        updated.getName(),
+                        updated.getPrice(),
+                        updated.getImageUrl()
+                ));
     }
 
     @Override

@@ -13,16 +13,16 @@ public interface ProductRepositoryInterface {
     long getNewProductId();
 
     // 상품 생성
-    ProductResponseDto addProduct(Product product);
+    Product addProduct(Product product);
 
     // 전체 상품 목록 조회
-    List<ProductResponseDto> findAllProducts();
+    List<Product> findAllProducts();
 
     // 선택 상품 조회
-    Optional<ProductResponseDto> findProductById(Long id);
+    Optional<Product> findProductById(Long id);
 
     // 상품 수정
-    Optional<ProductResponseDto> updateProduct(Long id, Product product);
+    Optional<Product> updateProduct(Long id, Product product);
 
     // 상품 삭제 (성공시 true, 없으면 false)
     boolean deleteProduct(Long id);

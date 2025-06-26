@@ -20,39 +20,30 @@ public class ProductRepository implements ProductRepositoryInterface {
 
     @Transactional
     @Override
-    public ProductResponseDto addProduct(Product product) {
+    public Product addProduct(Product product) {
 
         products.put(productId, product);
         productId++;
-        ProductResponseDto responseDto = new ProductResponseDto(
+        Product addedProduct = new Product(
                 product.getId(),
                 product.getName(),
                 product.getPrice(),
                 product.getImageUrl()
         );
 
-        return responseDto;
+        return addedProduct;
     }
 
     @Override
-    public List<ProductResponseDto> findAllProducts() {
-        List<ProductResponseDto> productList = new ArrayList<>();
-        for (Product product : products.values()) {
-            productList.add(new ProductResponseDto(
-                    product.getId(),
-                    product.getName(),
-                    product.getPrice(),
-                    product.getImageUrl()
-            ));
-        }
-        return productList;
+    public List<Product> findAllProducts() {
+        return new ArrayList<>(products.values());
     }
 
     @Override
-    public Optional<ProductResponseDto> findProductById(Long id) {
+    public Optional<Product> findProductById(Long id) {
         Product product = products.get(id);
         if (product != null) {
-            return Optional.of(new ProductResponseDto(
+            return Optional.of(new Product(
                     product.getId(),
                     product.getName(),
                     product.getPrice(),
@@ -65,13 +56,13 @@ public class ProductRepository implements ProductRepositoryInterface {
 
     @Transactional
     @Override
-    public Optional<ProductResponseDto> updateProduct(Long id, Product product) {
+    public Optional<Product> updateProduct(Long id, Product product) {
         Product originProduct = products.get(id);
         if (originProduct != null) {
             originProduct.setName(product.getName());
             originProduct.setPrice(product.getPrice());
             originProduct.setImageUrl(product.getImageUrl());
-            return Optional.of(new ProductResponseDto(
+            return Optional.of(new Product(
                     id,
                     product.getName(),
                     product.getPrice(),
