@@ -1,12 +1,11 @@
 package gift.controller;
 
+import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,4 +47,17 @@ public class ProductViewController {
 
         return "view";
     }
+
+    @GetMapping("/add")
+    public String addProduct(Model model) {
+        model.addAttribute("product", new ProductRequestDto());
+        return "add";
+    }
+
+    @PostMapping("/add")
+    public String addProduct(@ModelAttribute ProductRequestDto requestDto) {
+        productService.addProduct(requestDto);
+        return "redirect:/products/add";
+    }
+
 }
