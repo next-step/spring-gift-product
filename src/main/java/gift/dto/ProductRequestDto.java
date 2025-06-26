@@ -7,7 +7,6 @@ public class ProductRequestDto {
     private Integer price;
     private String imageUrl;
 
-
     //setter를 추가 : modelAttribute(html form)...
     public void setName(String name){
         this.name = name;
@@ -20,6 +19,7 @@ public class ProductRequestDto {
     public void setImageUrl(String imageUrl){
         this.imageUrl = imageUrl;
     }
+
 
     //getter
     public String getName() {

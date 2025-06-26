@@ -80,6 +80,7 @@ public class ProductController {
         Product product = products.get(id);
         model.addAttribute("product",product);
         return "modify";
+
     }
 
     //update
