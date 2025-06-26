@@ -22,7 +22,9 @@ public class ProductServiceImpl implements ProductService {
     // 1. 상품 등록
     @Override
     public ResponseDto create(RequestDto dto) {
-        Product product = new Product(null, dto.getName());
+        Product product = new Product(); // 기본 생성자 사용
+        product.setName(dto.getName());
+        product.setImageUrl(dto.getImageUrl());
 
         Product saved = productRepository.save(product);
 

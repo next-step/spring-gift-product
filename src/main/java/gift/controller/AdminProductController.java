@@ -30,10 +30,10 @@ public class AdminProductController {
     }
 
     // 1-2.상품 등록 처리
-    @PostMapping
+    @PostMapping("/new")
     public String create(RequestDto dto) {
         productService.create(dto);
-        return "admin/products";
+        return "redirect:/admin/products";
     }
 
     // 2. 상품 목록
@@ -53,16 +53,16 @@ public class AdminProductController {
     }
 
     // 3-2. 상품 수정 처리
-    @PostMapping
+    @PostMapping("/{id}/edit")
     public String update(@PathVariable Long id, @ModelAttribute RequestDto dto) {
         productService.update(id, dto);
-        return "admin/products";
+        return "redirect:/admin/products";
     }
 
     // 4. 상품 삭제
     @PostMapping("{id}/delete")
     public String delete(@PathVariable Long id) {
         productService.delete(id);
-        return "admin/products";
+        return "redirect:/admin/products";
     }
 }

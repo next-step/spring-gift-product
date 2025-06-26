@@ -15,4 +15,13 @@ public class RequestDto {
     }
 
     public String getImageUrl() {return imageUrl;}
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
 }
