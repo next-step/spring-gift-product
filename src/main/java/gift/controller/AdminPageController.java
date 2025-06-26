@@ -91,4 +91,14 @@ public class AdminPageController {
         return "redirect:/admin/products/" + updated.getId();
     }
 
+    @DeleteMapping("/{id}")
+    public String deleteProduct(
+            @PathVariable Long id,
+            RedirectAttributes redirectAttributes
+    ) {
+        productService.deleteProductById(id);
+        redirectAttributes.addFlashAttribute("message", "Product deleted");
+        return "redirect:/admin/products";
+    }
+
 }

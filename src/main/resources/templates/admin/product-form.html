@@ -24,5 +24,12 @@
         </p>
         <button type="submit">submit</button>
     </form>
+    <form th:if="${productId != null}"
+          th:action="@{/admin/products/{id}(id=${productId})}"
+          method="post" style="display:inline"
+          onsubmit="return confirm('Are you sure to delete?');">
+        <input type="hidden" name="_method" value="delete" />
+        <button type="submit">Delete</button>
+    </form>
 </body>
 </html>

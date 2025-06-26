@@ -13,6 +13,7 @@
                 <th>image</th>
                 <th>name</th>
                 <th>price</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +24,14 @@
                 </td>
                 <td th:text="${product.name}">상품명</td>
                 <td th:text="${product.price}">1000</td>
+                <td>
+                    <form th:action="@{/admin/products/{id}(id=${product.id})}"
+                          method="post" style="display:inline"
+                          onsubmit="return confirm('Are you sure to delete?');">
+                        <input type="hidden" name="_method" value="delete" />
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>
