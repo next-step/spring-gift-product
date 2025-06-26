@@ -22,4 +22,19 @@ public class ProductRepository {
         return product;
     }
 
+    public void update(Long id, Product updatedProduct) {
+        Product existing = store.get(id);
+        if (existing != null) {
+            existing.setName(updatedProduct.getName());
+            existing.setPrice(updatedProduct.getPrice());
+            existing.setImageUrl(updatedProduct.getImageUrl());
+        }
+    }
+
+    public Product findById(Long id) {
+        return store.get(id);
+    }
+
+
+
 }
