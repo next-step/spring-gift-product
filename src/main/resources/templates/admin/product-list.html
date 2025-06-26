@@ -24,7 +24,10 @@
     <td th:text="${product.price}">가격</td>
     <td><img th:src="${product.imageUrl}" width="100"/></td>
     <td>
-      <a th:href="@{/admin/products/edit/{id}(id=${product.id})}">수정</a>
+      <form th:action="@{/admin/products/edit/{id}(id=${product.id})}" method="get">
+        <button type="submit">수정</button>
+      </form>
+
     </td>
   </tr>
   </tbody>
