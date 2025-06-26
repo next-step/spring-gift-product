@@ -6,6 +6,9 @@ public class ModifyProductRequestDto {
     private Long price; //상품의 가격
     private String imageUrl; //상품의 이미지 URL
     
+    public ModifyProductRequestDto() {
+    }
+    
     public ModifyProductRequestDto(String name, Long price, String imageUrl) {
         this.name = name;
         this.price = price;
@@ -22,5 +25,17 @@ public class ModifyProductRequestDto {
     
     public String getImageUrl() {
         return imageUrl;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+    
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

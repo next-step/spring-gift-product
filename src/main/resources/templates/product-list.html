@@ -69,7 +69,7 @@
     <td th:text="${product.getImageUrl()}">이미지</td>
     <td>
       <a th:href="@{/products/{id}(id=${product.getId()})}" class="button">조회</a>
-      <button class="button">수정</button>
+      <a th:href="@{/products/edit/{id}(id=${product.getId()})}" class="button">수정</a>
       <form th:action="@{/products/{id}(id=${product.getId()})}" th:method="delete"
             style="display:inline;">
         <button type="submit" class="button">삭제</button>

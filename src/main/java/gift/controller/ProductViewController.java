@@ -2,6 +2,7 @@ package gift.controller;
 
 import gift.dto.AddProductRequestDto;
 import gift.dto.FindProductResponseDto;
+import gift.dto.ModifyProductRequestDto;
 import gift.service.ProductService;
 import java.util.List;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -53,6 +55,21 @@ public class ProductViewController {
     @PostMapping("/add")
     public String addProduct(@ModelAttribute AddProductRequestDto productForm) {
         productService.addProduct(productForm);
+        return "redirect:/products";
+    }
+    
+    //상품 목록에서 수정 버튼 누를 시 수정화면 불러옴, 구성은 추가와 유사
+    @GetMapping("/edit/{id}")
+    public String showModifyForm(@PathVariable Long id, Model model) {
+        model.addAttribute("productId", id);
+        model.addAttribute("productForm", new ModifyProductRequestDto());
+        return "product-edit";
+    }
+    
+    @PutMapping("/edit/{id}")
+    public String modifyProduct(@PathVariable Long id,
+        @ModelAttribute ModifyProductRequestDto productForm) {
+        productService.modifyProductWithId(id, productForm);
         return "redirect:/products";
     }
     
