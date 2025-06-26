@@ -53,6 +53,4 @@ public class ProductRepository {
         products.remove(id);
         return true;
     }
-
-
 }
