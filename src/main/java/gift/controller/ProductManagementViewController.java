@@ -21,4 +21,15 @@ public class ProductManagementViewController {
         model.addAttribute("products",productService.getAllProduct());
         return "management/home";
     }
+
+    @GetMapping("/create")
+    public String create(Model model) {
+        //
+        return "management/create";
+    }
+
+    /*@GetMapping("/{id}")
+    public String home(Model model) {
+
+    }*/
 }
