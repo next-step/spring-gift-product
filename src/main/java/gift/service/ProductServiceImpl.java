@@ -4,6 +4,7 @@ import gift.dto.ResponseDto;
 import gift.dto.request.ProductCreateRequestDto;
 import gift.dto.response.ProductCreateResponseDto;
 import gift.dto.response.ProductGetResponseDto;
+import gift.dto.response.ProductUpdateResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
@@ -49,7 +50,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponseDto updateProductByProductId(Long productId, String name, Double price,
+    public ProductUpdateResponseDto updateProductByProductId(Long productId, String name,
+        Double price,
         String imageUrl) {
         Product product = productRepository.findProductByProductId(productId);
 
@@ -66,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
         // 메모리 상(products)에 존재하는 Product를 직접 수정하기 때문에, 데이터베이스 접근을 하지 않았다.
         product.update(name, price, imageUrl);
 
-        return new ResponseDto(product);
+        return new ProductUpdateResponseDto(product);
     }
 
     @Override

@@ -4,6 +4,7 @@ import gift.dto.ResponseDto;
 import gift.dto.request.ProductCreateRequestDto;
 import gift.dto.response.ProductCreateResponseDto;
 import gift.dto.response.ProductGetResponseDto;
+import gift.dto.response.ProductUpdateResponseDto;
 import java.util.List;
 
 public interface ProductService {
@@ -14,7 +15,7 @@ public interface ProductService {
 
     ProductGetResponseDto findProductByProductId(Long productId);
 
-    ResponseDto updateProductByProductId(Long productId, String name, Double price,
+    ProductUpdateResponseDto updateProductByProductId(Long productId, String name, Double price,
         String imageUrl);
 
     ResponseDto deleteProductByProductId(Long productId);
