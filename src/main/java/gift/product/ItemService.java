@@ -15,14 +15,17 @@ public class ItemService {
 
 	private final Map<Long, Item> db = new HashMap<>();
 
-	// 테스트위해 서버 재실행마다 항상 2개는 채워놓기
+	// 테스트를 위해 서버 재실행마다 15개의 아이템을 채워놓기
 	@PostConstruct
 	public void init() {
-		Item item1 = new Item("egg", 7900, "url1");
-		Item item2 = new Item("Nvidia Geforce 5060ti", 700000, "url2");
-
-		db.put(item1.getId(), item1);
-		db.put(item2.getId(), item2);
+		for (int i = 1; i <= 15; i++) {
+			Item item = new Item(
+				"Item " + i,
+				i * 1000,
+				"url" + i
+			);
+			db.put(item.getId(), item);
+		}
 	}
 
 	public Long createItem(ItemRequest req) {
