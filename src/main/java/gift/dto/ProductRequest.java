@@ -13,12 +13,5 @@ public record ProductRequest(
     String imageUrl
 
 ) {
-
-    public static ProductRequest from(ProductResponse response) {
-        return new ProductRequest(
-            response.name(),
-            response.price(),
-            response.imageUrl()
-        );
-    }
+    
 }

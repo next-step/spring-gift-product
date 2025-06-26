@@ -1,7 +1,6 @@
 package gift.controller;
 
 import gift.dto.ProductForm;
-import gift.dto.ProductRequest;
 import gift.dto.ProductResponse;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
@@ -34,7 +33,7 @@ public class AdminProductController {
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
-        model.addAttribute("product", new ProductRequest(null, null, null));
+        model.addAttribute("product", new ProductForm());
         return "admin/product-form";
     }
 
@@ -52,7 +51,7 @@ public class AdminProductController {
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Long id, Model model) {
         ProductResponse product = productService.getProduct(id);
-        model.addAttribute("product", ProductRequest.from(product));
+        model.addAttribute("product", ProductForm.from(product));
         model.addAttribute("productId", id);
         return "admin/product-form";
     }
