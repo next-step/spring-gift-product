@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 추가</title>
+</head>
+<body>
+    <div class="container">
+        <form id="add-product-form">
+            <div>
+                <label for="name">상품명</label>
+                <input type="text" id="name" name="name" th:value="${product.getName()}" placeholder="상품명을 입력해주세요" required>
+            </div>
+            <div>
+                <label for="price">가격</label>
+                <input type="number" id="price" name="price" th:value="${product.getPrice()}" placeholder="숫자만 입력해주세요" required>
+            </div>
+            <div>
+                <label for="imageUrl">이미지 URL</label>
+                <input type="text" id="imageUrl" name="imageUrl" th:value="${product.getImageUrl()}" placeholder="https://example.com/image.jpg" required>
+            </div>
+            <div>
+                <button type="submit">상품 업데이트</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+<script>
+    document.getElementById("add-product-form").addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const form = event.target;
+
+        const formData = new FormData(form);
+        const productData = {};
+
+        formData.forEach((value, key) => {
+            productData[key] = value;
+        });
+        try {
+            const res = await fetch("/api/products", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(productData)
+            });
+            if (res.ok) {
+                alert("상품이 성공적으로 업데이트 되었습니다.");
+                window.location.href = "/admin"
+            } else {
+                alert("상품 업데이트에 실패했습니다. 다시 시도해주세요. ");
+            }
+        } catch (error) {
+            alert("상품 업데이트에 실패했습니다. 다시 시도해주세요. " + error.message);
+        }
+    })
+</script>
+</html>
