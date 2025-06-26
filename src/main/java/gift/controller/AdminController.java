@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -38,10 +39,22 @@ public class AdminController {
 
     // 상품 목록 조회 기능
     @GetMapping
-    public String findAllProducts(Model model) {
+    public String findProducts(
+            @RequestParam(value = "id", required = false) Long id,
+            Model model)
+    {
+        if (id == null) {
+            List<ProductResponseDto> dtoList = productService.findAllProducts();
+            model.addAttribute("products", dtoList);
+        }
+        else {
+            ProductResponseDto dto = productService.findProductById(id);
 
-        List<ProductResponseDto> dtoList = productService.findAllProducts();
-        model.addAttribute("products", dtoList);
+            if (dto != null)
+                model.addAttribute("products", List.of(dto));
+            else
+                model.addAttribute("products", Collections.emptyList());
+        }
 
         return "admin/products";
     }
