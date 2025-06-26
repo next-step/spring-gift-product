@@ -20,9 +20,7 @@ public class ProductService {
     public Page<ProductResponseDto> findAllProducts(Pageable pageable, Long categoryId) {
         Page<Product> page = productRepository.findAllProducts(pageable, categoryId);
 
-        return page.map(product -> new ProductResponseDto(
-                product.getId(), product.getName(), product.getPrice(), product.getImageUrl()
-        ));
+        return page.map(ProductResponseDto::from);
     }
 
     public ProductResponseDto findProductById(Long id) throws IllegalArgumentException {
