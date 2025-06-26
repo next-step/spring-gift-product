@@ -105,6 +105,15 @@ public class ProductAdminController {
         return "admin/product-edit-form";
     }
 
+    /**
+     * 상품 수정 처리
+     *
+     * @param id
+     * @param editDto
+     * @param bindingResult
+     * @param model
+     * @return
+     */
     @PostMapping("/edit/{id}")
     public String editProduct(
             @PathVariable("id") Long id,
@@ -121,5 +130,18 @@ public class ProductAdminController {
         productService.update(id, requestDto);
 
         return "redirect:/admin/products/" + id;
+    }
+
+    /**
+     * 상품 삭제
+     *
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/{id}")
+    public String deleteProduct(@PathVariable("id") Long id) {
+        productService.delete(id);
+
+        return "redirect:/admin/products";
     }
 }

@@ -12,9 +12,9 @@
     </style>
 </head>
 <body>
-<div class="container">
+<div class="container" th:object="${product}">
     <h1>상품 상세 정보</h1>
-    <div class="product-info" th:object="${product}">
+    <div class="product-info">
         <p><strong>ID:</strong> <span th:text="*{id}">1</span></p>
         <p><strong>상품명:</strong> <span th:text="*{name}">1</span></p>
         <p><strong>가격:</strong> <span th:text="*{price}">1</span></p>
