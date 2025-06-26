@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Controller
 @RequestMapping("/products")
 
-public class ProductController {
+public class ProductControllerForm {
 
     private final Map<Long, Product> products = new HashMap<>();
     private final AtomicLong idGenerator = new AtomicLong(1);
@@ -41,6 +41,7 @@ public class ProductController {
         model.addAttribute("product", product);
         return "Productform";
     }
+
     @PostMapping("/{id}")
     public String edit(@PathVariable Long id, @ModelAttribute Product updated) {
         updated.setId(id);
