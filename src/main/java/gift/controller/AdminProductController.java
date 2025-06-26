@@ -21,9 +21,7 @@ public class AdminProductController {
 
     // 목록 조회 화면
     @GetMapping
-    public String showList(Model model) {
-        List<ProductResponse> products = productService.getAllProducts();
-        model.addAttribute("products", products);
+    public String showList() {
         return "admin/product-list";
     }
 

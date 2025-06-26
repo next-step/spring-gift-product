@@ -2,11 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>상품 목록</title>
+    <title>상품 관리</title>
     <link rel="stylesheet" th:href="@{/css/product.css}">
 </head>
 <body>
-<h1>상품 목록</h1>
+<h1>상품 관리</h1>
+
+<div id="search-message" class="search-message"></div>
 
 <div class="table-container">
     <table>
@@ -18,17 +20,8 @@
             <th>관리</th>
         </tr>
         </thead>
-        <tbody>
-        <tr th:each="product : ${products}">
-            <td th:text="${product.name}">상품명</td>
-            <td th:text="${product.price}">가격</td>
-            <td><img th:src="${product.imageUrl}" alt="상품 이미지" width="100"></td>
-            <td>
-                <a th:href="@{'/admin/products/edit/' + ${product.id}}">수정</a> |
-                <button type="button" th:onclick="'deleteProduct(' + ${product.id} + ')'">삭제</button>
-                </form>
-            </td>
-        </tr>
+        <tbody id="product-table-body">
+
         </tbody>
     </table>
 
@@ -37,21 +30,50 @@
     </div>
 </div>
 <script>
-    function deleteProduct(productId) {
-      if (!confirm("정말 삭제하시겠습니까?")) return;
+    function loadAllProducts() {
+    fetch("/api/products")
+      .then(res => res.json())
+      .then(data => renderProducts(data, "전체 상품 목록"))
+      .catch(err => alert("불러오기 실패: " + err.message));
+  }
 
-      fetch(`/api/products/${productId}`, {
-        method: "DELETE"
-      })
-      .then(res => {
-        if (!res.ok) throw new Error("삭제 실패");
-        alert("삭제 완료!");
-        location.reload(); // 현재 페이지 새로고침
-      })
-      .catch(err => {
-        alert("오류 발생: " + err.message);
-      });
-    }
+  window.onload = loadAllProducts;
+
+  function renderProducts(products, message) {
+    const tbody = document.getElementById("product-table-body");
+    const messageBox = document.getElementById("search-message");
+    tbody.innerHTML = "";
+    messageBox.innerText = message;
+
+    products.forEach(product => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${product.name}</td>
+        <td>${product.price}</td>
+        <td><img src="${product.imageUrl}" width="100"></td>
+        <td>
+          <a href="/admin/products/edit/${product.id}">수정</a> |
+          <button type="button" onclick="deleteProduct(${product.id})">삭제</button>
+        </td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+   function deleteProduct(productId) {
+     if (!confirm("정말 삭제하시겠습니까?")) return;
+
+     fetch(`/api/products/${productId}`, {
+       method: "DELETE"
+     })
+     .then(res => {
+       if (!res.ok) throw new Error("삭제 실패");
+       alert("삭제 완료!");
+       location.reload(); // 현재 페이지 새로고침
+     })
+     .catch(err => {
+       alert("오류 발생: " + err.message);
+     });
+   }
 </script>
 
 </body>
