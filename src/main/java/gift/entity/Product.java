@@ -20,7 +20,11 @@ public class Product {
         return name;
     }
 
-    public void update(RequestDto dto){
-        this.name = dto.getName();
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
