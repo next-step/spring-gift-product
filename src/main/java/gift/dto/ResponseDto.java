@@ -11,4 +11,5 @@ public class ResponseDto {
         this.id = product.getId();
         this.name = product.getName();
     }
+
 }
