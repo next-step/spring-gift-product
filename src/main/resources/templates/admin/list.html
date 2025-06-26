@@ -23,8 +23,10 @@
       <tr th:each="product : ${products}">
         <td th:text="${product.id}">1</td>
         <td th:text="${product.name}">상품명</td>
-        <td th:text="${product.price}">1000</td>
-        <td th:text="${product.url}">url</td>
+        <td th:text="${product.price}">가격</td>
+        <td>
+          <img th:src="${product.url}" alt="이미지" style="max-width: 20px; display: block; margin-top: 10px;" />
+        </td>
         <td>
           <form th:action="@{/api/admin/products/edit/{id}(id=${product.id})}" method="get" style="display:inline;">
             <button type="submit">수정</button>

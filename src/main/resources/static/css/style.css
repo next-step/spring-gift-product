@@ -1,0 +1,25 @@
+form {
+width: 280px;
+}
+
+.form-row {
+display: flex;
+align-items: center;
+margin-bottom: 10px;
+}
+
+.form-row label {
+width: 70px;
+text-align: right;
+font-weight: bold;
+margin-right: 10px;
+}
+
+.form-row input {
+width: 200px;
+padding: 4px;
+}
+
+.form-row button {
+margin-left: auto;
+}
