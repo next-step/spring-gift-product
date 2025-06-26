@@ -2,11 +2,10 @@ package gift.service;
 
 import gift.dto.GiftRequestDto;
 import gift.dto.GiftResponseDto;
+import gift.dto.GiftUpdateDto;
 import gift.entity.Gift;
 import gift.repository.GiftRepository;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,34 +33,10 @@ public class GiftServiceImpl implements GiftService {
   }
 
   @Override
-  public Optional<GiftResponseDto> findById(Long id) {
-    return giftRepository.findById(id)
-                         .map(gift -> new GiftResponseDto(
-                             gift.getId(),
-                             gift.getName(),
-                             gift.getPrice(),
-                             gift.getImageUrl()
-                         ));
-  }
-
-  @Override
-  public GiftResponseDto update(Long id, Map<String, Object> updates) {
+  public GiftResponseDto findById(Long id) {
     Gift gift = giftRepository.findById(id)
                               .orElseThrow(() -> new IllegalArgumentException(
                                   "해당 ID의 선물이 존재하지 않습니다: " + id));
-
-    if (updates.containsKey("name")) {
-      gift.setName((String) updates.get("name"));
-    }
-    if (updates.containsKey("price")) {
-      gift.setPrice((Integer) updates.get("price"));
-    }
-    if (updates.containsKey("imageUrl")) {
-      gift.setImageUrl((String) updates.get("imageUrl"));
-    }
-
-    giftRepository.updateGift(gift);
-
     return new GiftResponseDto(
         gift.getId(),
         gift.getName(),
@@ -69,6 +44,34 @@ public class GiftServiceImpl implements GiftService {
         gift.getImageUrl()
     );
   }
+
+
+  @Override
+  public GiftResponseDto update(Long id, GiftUpdateDto dto) {
+    Gift gift = giftRepository.findById(id)
+                              .orElseThrow(() -> new IllegalArgumentException(
+                                  "해당 ID의 선물이 존재하지 않습니다: " + id));
+
+    // dto 값이 null이 아니면 기존 값 덮어쓰기
+    if (dto.getName() != null) {
+      gift.setName(dto.getName());
+    }
+    if (dto.getPrice() != null) {
+      gift.setPrice(dto.getPrice());
+    }
+    if (dto.getImageUrl() != null) {
+      gift.setImageUrl(dto.getImageUrl());
+    }
+
+    giftRepository.updateGift(gift);
+    return new GiftResponseDto(
+        gift.getId(),
+        gift.getName(),
+        gift.getPrice(),
+        gift.getImageUrl()
+    );
+  }
+
 
   @Override
   public void deleteGift(Long id) {

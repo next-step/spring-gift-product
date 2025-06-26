@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Gift List</title>
+</head>
+<body>
+<h1>Gift List</h1>
+<hr>
+<a href="/gift-page/new">Add New Gift</a>
+
+<table border="1">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Price</th>
+    <th>ImageUrl</th>
+    <th>Edit/Delete</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="gift : ${gifts}">
+    <td th:text="${gift.id}"></td>
+    <td th:text="${gift.name}"></td>
+    <td th:text="${gift.price} + '원'"></td>
+    <td><img th:src="${gift.imageUrl}" alt="image" width="150"></td>
+    <td>
+      <form th:action="@{'/gift-page/' + ${gift.id}}" method="get" style="display:inline;">
+        <button type="submit">Edit</button>
+      </form>
+      <form th:action="@{'/gift-page/' + ${gift.id} + '/delete'}" method="post"
+            style="display:inline;">
+        <button type="submit">Delete</button>
+      </form>
+    </td>
+
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
