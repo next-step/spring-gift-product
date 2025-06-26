@@ -47,4 +47,16 @@ public class ProductViewController {
         model.addAttribute("product", dto);
         return "detail";
     }
+    @GetMapping("/products/{id}/update")
+    public String moveUpdateForm(@PathVariable Long id, Model model) {
+        ProductResponseDto product = productService.findProductById(id);
+        model.addAttribute("product", product);
+        return "update";
+    }
+    @PostMapping("/products/{id}")
+    public String updateProduct(@PathVariable Long id,@RequestParam String name,@RequestParam int price, @RequestParam String imageUrl) {
+        ProductRequestDto dto = new ProductRequestDto(name, price, imageUrl);
+        productService.updateProduct(id, dto);
+        return "redirect:/products/" + id;
+    }
 }
