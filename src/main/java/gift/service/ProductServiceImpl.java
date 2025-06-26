@@ -1,8 +1,8 @@
 package gift.service;
 
-import gift.dto.ResponseDto;
 import gift.dto.request.ProductCreateRequestDto;
 import gift.dto.response.ProductCreateResponseDto;
+import gift.dto.response.ProductDeleteResponseDto;
 import gift.dto.response.ProductGetResponseDto;
 import gift.dto.response.ProductUpdateResponseDto;
 import gift.entity.Product;
@@ -72,7 +72,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponseDto deleteProductByProductId(Long productId) {
+    public ProductDeleteResponseDto deleteProductByProductId(Long productId) {
         Product product = productRepository.findProductByProductId(productId);
 
         if (product == null) {
@@ -82,6 +82,6 @@ public class ProductServiceImpl implements ProductService {
 
         Product deletedProduct = productRepository.deleteProductByProductId(productId);
 
-        return new ResponseDto(deletedProduct);
+        return new ProductDeleteResponseDto(deletedProduct);
     }
 }

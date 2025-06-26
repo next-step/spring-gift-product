@@ -1,8 +1,8 @@
 package gift.service;
 
-import gift.dto.ResponseDto;
 import gift.dto.request.ProductCreateRequestDto;
 import gift.dto.response.ProductCreateResponseDto;
+import gift.dto.response.ProductDeleteResponseDto;
 import gift.dto.response.ProductGetResponseDto;
 import gift.dto.response.ProductUpdateResponseDto;
 import java.util.List;
@@ -18,5 +18,5 @@ public interface ProductService {
     ProductUpdateResponseDto updateProductByProductId(Long productId, String name, Double price,
         String imageUrl);
 
-    ResponseDto deleteProductByProductId(Long productId);
+    ProductDeleteResponseDto deleteProductByProductId(Long productId);
 }
