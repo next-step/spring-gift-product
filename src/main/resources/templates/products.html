@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 리스트</title>
+</head>
+<body>
+<h1>상품 리스트</h1>
+<table>
+    <tr><th>ID</th><th>상품명</th><th>가격</th><th>이미지 주소</th></tr>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.id}"></td>
+        <td th:text="${product.name}"></td>
+        <td th:text="${product.price}"></td>
+        <td th:text="${product.imageUrl}"></td>
+    </tr>
+</table>
+</body>
+</html>
