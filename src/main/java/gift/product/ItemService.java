@@ -26,6 +26,9 @@ public class ItemService {
 	}
 
 	public Long createItem(ItemRequest req) {
+		if(req.name() == null || req.price() == null || req.imageUrl() == null)
+			throw new RuntimeException("요청 데이터가 잘못됐습니다.");
+
 		Item item = new Item(req.name(), req.price(), req.imageUrl());
 		db.put(item.getId(), item);
 		return item.getId();

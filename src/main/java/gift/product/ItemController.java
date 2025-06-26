@@ -19,9 +19,6 @@ public class ItemController {
 	// 게시글 생성
 	@PostMapping()
 	public Long createItem(@RequestBody ItemRequest req) {
-		if(req.name() == null || req.price() == null || req.imageUrl() == null)
-			throw new RuntimeException("요청 데이터가 잘못됐습니다.");
-
 		return itemService.createItem(req);
 	}
 
