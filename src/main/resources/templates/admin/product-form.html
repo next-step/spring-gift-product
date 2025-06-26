@@ -5,21 +5,13 @@
 </head>
 <body>
 <h1>상품 등록</h1>
-<form th:action="@{/admin/products}" th:object="${product}" method="post">
-  <div>
-    <label>이름:</label>
-    <input type="text" th:field="*{name}" />
-  </div>
-  <div>
-    <label>가격:</label>
-    <input type="number" th:field="*{price}" />
-  </div>
-  <div>
-    <label>이미지 URL:</label>
-    <input type="text" th:field="*{imageUrl}" />
-  </div>
+<form th:action="@{/admin/products}" th:object="${productCreateRequest}" method="post">
+  <input type="text" th:field="*{name}" />
+  <input type="number" th:field="*{price}" />
+  <input type="text" th:field="*{imageUrl}" />
   <button type="submit">등록</button>
 </form>
+
 <a th:href="@{/admin/products}">← 목록으로</a>
 </body>
 </html>

@@ -6,7 +6,8 @@ public class Product {
     private int price;
     private String imageUrl;
 
-    public Product() {}
+    public Product() {
+    }
 
     public Product(Long id, String name, int price, String imageUrl) {
         this.id = id;
@@ -19,12 +20,19 @@ public class Product {
         this(null, name, price, imageUrl);
     }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public int getPrice() { return price; }
+    public int getPrice() {
+        return price;
+    }
 
-    public String getImageUrl() { return imageUrl; }
-
+    public String getImageUrl() {
+        return imageUrl;
+    }
 }

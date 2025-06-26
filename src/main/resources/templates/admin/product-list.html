@@ -15,7 +15,6 @@
     </tr>
     </thead>
     <tbody>
-    <a th:href="@{/admin/products/new}">상품 등록</a>
     <tr th:each="product : ${products}">
         <td th:text="${product.id}">1</td>
         <td th:text="${product.name}">이름</td>
