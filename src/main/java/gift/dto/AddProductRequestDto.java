@@ -41,4 +41,9 @@ public class AddProductRequestDto {
     
     //html form의 내용을 binding 하기 위해서는 setter의 존재 필수
     //즉 불변객체가 아닌 가변 객체여야 함
+    
+    //유효성 검사 묶기
+    public Boolean isNotValid() {
+        return (name == null || price == null || imageUrl == null);
+    }
 }

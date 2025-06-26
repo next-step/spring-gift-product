@@ -38,4 +38,12 @@ public class ModifyProductRequestDto {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+    
+    public Boolean isNotValidForModify() {
+        return (name == null || price == null || imageUrl == null);
+    }
+    
+    public Boolean isNotValidForModifyInfo() {
+        return (name == null && price == null && imageUrl == null);
+    }
 }

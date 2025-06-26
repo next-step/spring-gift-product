@@ -43,6 +43,9 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<FindProductResponseDto>> findAllProducts() {
         List<FindProductResponseDto> responseDtoList = productService.findAllProducts();
+        if (responseDtoList.isEmpty()) {
+            return new ResponseEntity<>(responseDtoList, HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(responseDtoList, HttpStatus.OK);
     }
     

@@ -26,8 +26,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public AddProductResponseDto addProduct(AddProductRequestDto requestDto) {
         
-        if (requestDto.getName() == null ||
-            requestDto.getPrice() == null || requestDto.getImageUrl() == null) {
+        if (requestDto.isNotValid()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         
@@ -60,8 +59,7 @@ public class ProductServiceImpl implements ProductService {
         ModifyProductRequestDto requestDto) {
         Product product = productRepository.findProductWithId(id);
         
-        if (requestDto.getName() == null ||
-            requestDto.getPrice() == null || requestDto.getImageUrl() == null) {
+        if (requestDto.isNotValidForModify()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         
@@ -88,8 +86,7 @@ public class ProductServiceImpl implements ProductService {
         ModifyProductRequestDto requestDto) {
         Product product = productRepository.findProductWithId(id);
         
-        if (requestDto.getName() == null &&
-            requestDto.getPrice() == null && requestDto.getImageUrl() == null) {
+        if (requestDto.isNotValidForModifyInfo()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         
