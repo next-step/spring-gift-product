@@ -8,11 +8,20 @@
 <h1>상품 등록</h1>
 
 <form th:action="@{/admin/boards}" th:object="${requestDto}" method="post">
-  <input type="text" th:field="*{name}" placeholder="이름">
-  <input type="number" th:field="*{price}" placeholder="가격">
-  <input type="text" th:field="*{imageUrl}" placeholder="이미지 Url">
-  <button type="button" th:onclick="|location.href='@{admin/boards}'|">취소</button>
-  <button type="submit">등록</button>
+  <div>
+    <input type="text" th:field="*{name}" placeholder="이름">
+  </div>
+  <div>
+    <input type="number" th:field="*{price}" placeholder="가격">
+  </div>
+  <div>
+    <input type="text" th:field="*{imageUrl}" placeholder="이미지 Url">
+  </div>
+  <div>
+    <button type="button" th:onclick="|location.href='@{admin/boards}'|">취소</button>
+    <button type="submit">등록</button>
+  </div>
+
 </form>
 </body>
 </html>

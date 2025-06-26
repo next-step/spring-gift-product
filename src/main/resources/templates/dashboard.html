@@ -3,11 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <title>Product Management System</title>
+  <style>
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid black;
+    }
+
+    th {
+      background-color: steelblue;
+      color: white;
+    }
+
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 15%;
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 55%;
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+      width: 30%;
+    }
+
+    tr:nth-child(even) {
+      background-color: lightgray;
+    }
+  </style>
 </head>
 <body>
 <h1>Product Management System</h1>
 <button th:onclick="|location.href='@{boards/add}'|">상품 등록</button>
-<table style="width: 500px;background-color: white">
+<table style="width: 100vw;background-color: white">
   <thead>
   <tr>
     <th>id</th>
