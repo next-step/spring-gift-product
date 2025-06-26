@@ -32,15 +32,6 @@ public class Product {
         );
     }
 
-    public Product updateWith(Product updateRequest) {
-        return new Product(
-                this.id,
-                updateRequest.getName() != null ? updateRequest.getName() : this.name,
-                updateRequest.getPrice() != 0 ? updateRequest.getPrice() : this.price,
-                updateRequest.getImageUrl() != null ? updateRequest.getImageUrl() : this.imageUrl
-        );
-    }
-
     public Long getId() {
         return id;
     }

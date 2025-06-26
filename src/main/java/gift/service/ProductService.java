@@ -33,7 +33,11 @@ public class ProductService {
             return null;
         }
 
-        return product.updateWith(updateRequest);
+        product.setName(updateRequest.getName() != null ? updateRequest.getName() : product.getName());
+        product.setPrice(updateRequest.getPrice() != 0 ? updateRequest.getPrice() : product.getPrice());
+        product.setImageUrl(updateRequest.getImageUrl() != null ? updateRequest.getImageUrl() : product.getImageUrl());
+
+        return product;
     }
 
     public boolean deleteProduct(Long id) {
