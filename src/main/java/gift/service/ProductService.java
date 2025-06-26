@@ -1,6 +1,7 @@
 package gift.service;
 
-import gift.dto.ProductRequestDto;
+import gift.dto.CreateProductRequestDto;
+import gift.dto.UpdateProductRequestDto;
 import gift.entity.Product;
 import org.springframework.stereotype.Service;
 import gift.repository.ProductRepository;
@@ -23,11 +24,14 @@ public class ProductService {
     public Optional<Product> getById(Long id) {
         return repository.findById(id);
     }
-    public Product create(ProductRequestDto dto) {
+
+    public Product create(CreateProductRequestDto dto) {
         return repository.save(new Product(null, dto.getName(), dto.getPrice(), dto.getImageUrl()));
     }
-    public Optional<Product> update(Long id, ProductRequestDto dto) {
-        if (repository.findById(id).isEmpty()) {
+
+    public Optional<Product> update(Long id, UpdateProductRequestDto dto) {
+        if (repository.findById(id).isEmpty())
+        {
             return Optional.empty();
         }
         Product updated = new Product(id, dto.getName(), dto.getPrice(), dto.getImageUrl());
@@ -36,12 +40,12 @@ public class ProductService {
     }
 
     public boolean delete(Long id) {
-        if (repository.findById(id).isEmpty()) {
+        if (repository.findById(id).isEmpty())
+        {
             return false;
         }
         repository.delete(id);
         return true;
     }
-
 
 }
