@@ -5,6 +5,7 @@ import gift.item.service.ItemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,9 +21,16 @@ public class AdminController {
 
     //상품 전체 목록 조회
     @GetMapping("/api/admin/products")
-    public String getProducts(Model model) {
+    public String getAllProducts(Model model) {
         model.addAttribute("products", itemService.findAllItems());
         return "list";
+    }
+
+    //특정 상품 조회 (단건 조회)
+    @GetMapping("/api/admin/products/{id}")
+    public String getProductById(@PathVariable Long id, Model model) {
+        model.addAttribute("product", itemService.findItem(id));
+        return "detail";
     }
 
 
