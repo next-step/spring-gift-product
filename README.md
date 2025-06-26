@@ -26,3 +26,12 @@
 | **상품 추가** | `POST` | `/api/products` | `ProductRequestDto` | **성공**: `201 Created` (`ProductResponseDto`) <br> **실패**: `400 Bad Request` (요청 형식이 잘못됐을 때) |
 | **상품 수정** | `PUT` | `/api/products/{id}` | `ProductRequestDto` | **성공**: `200 OK` (`ProductResponseDto`) <br> **실패**: `404 Not Found` (해당 id의 상품이 없을 때) |
 | **상품 삭제** | `DELETE`| `/api/products/{id}` | 없음 | **성공**: `204 No Content` (Body 없음) <br> **실패**: `404 Not Found` (해당 id의 상품이 없을 때) |
+
+# 2단계: 관리자 화면
+
+## 기능 목록
+
+- [ ] **상품 목록 조회**
+  - `feat`: Controller에서 Thymeleaf로 전달한 DTO인 ProductView 생성 (`ProductView`)
+  - `feat`: 상품 목록 조회 컨트롤러 로직 구현 (`GET /admin/products`)
+  - `feat`: 상품 목록 조회 HTML 템플릿 작성 (`admin/products.html`)
