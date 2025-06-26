@@ -1,7 +1,8 @@
 package gift.controller;
 
 import gift.dto.Product;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -9,48 +10,53 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-@RestController
-@RequestMapping("/products")
+@Controller
+@RequestMapping("/admin/products")
 public class ProductController {
     private final Map<Long, Product> products = new ConcurrentHashMap<>();
     private final AtomicLong idGenerator = new AtomicLong();
 
     @GetMapping // 전체 상품 조회 API
-    public Collection<Product> getProducts() {
-        return products.values();
+    public String getProducts(Model model) {
+        Collection<Product> list = products.values();
+        model.addAttribute("products", list);
+        return "admin/product_list";
     }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
-        Product product = products.get(id);
-        return (product != null) ? ResponseEntity.ok(product) : ResponseEntity.notFound().build();
+    @GetMapping("/new")
+    public String createForm(Model model) {
+        model.addAttribute("product",new Product());
+        model.addAttribute("editMode",false);
+        return "admin/product_form";
     }
 
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
+    public String createProduct(@ModelAttribute Product product) {
         long id = idGenerator.incrementAndGet();
         product.setId(id);
         products.put(id, product);
-        return product;
+        return "redirect:/admin/products";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        if(products.containsKey(id)) {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/{id}/edit")
+    public String editProduct(@PathVariable Long id, Model model) {
+        Product product = products.get(id);
+        model.addAttribute("product", product);
+        model.addAttribute("editMode", true);
+        return "/admin/product_form";
+    }
+
+    @PostMapping("/{id}")
+    public String updateProduct(@PathVariable Long id, @ModelAttribute Product product) {
         Product oldProduct = products.get(id);
         oldProduct.setName(product.getName());
         oldProduct.setPrice(product.getPrice());
-        return ResponseEntity.ok(oldProduct);
+        return "redirect:/admin/products";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
-        if(products.remove(id)==null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.noContent().build();
+    @PostMapping("/{id}/delete")
+    public String deleteProduct(@PathVariable Long id) {
+        products.remove(id);
+        return "redirect:/admin/products";
     }
 
 }
