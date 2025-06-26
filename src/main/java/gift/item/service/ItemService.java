@@ -1,5 +1,6 @@
 package gift.item.service;
 
+import gift.item.dto.CreateItemDto;
 import gift.item.dto.ItemDto;
 import gift.item.entity.Item;
 import gift.item.exception.ItemNotFoundException;
@@ -17,22 +18,25 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    public ItemDto saveItem(ItemDto dto) {
+    public ItemDto saveItem(CreateItemDto dto) {
         Item item = itemRepository.saveItem(dto);
         return new ItemDto(item);
     }
 
-    public List<ItemDto> findItems(String name) {
-        List<ItemDto> items = itemRepository.findItems(name);
-
-        if (items.isEmpty()) {
-            throw new ItemNotFoundException("상품이 존재하지 않습니다: " + name);
+    public ItemDto findItem(Long id) {
+        Item item = itemRepository.findItem(id);
+        if (item == null) {
+            throw new ItemNotFoundException("상품이 존재하지 않습니다: " + id);
         }
-        return items;
+        return new ItemDto(item);
     }
 
-    public void deleteItem(String name) {
-        itemRepository.deleteItem(name);
+    public List<ItemDto> findAllItems() {
+        return itemRepository.findAllItems();
+    }
+
+    public void deleteItem(Long id) {
+        itemRepository.deleteItem(id);
     }
 
     public ItemDto updateItem(Long id, ItemDto dto) {
