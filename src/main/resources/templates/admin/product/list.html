@@ -23,7 +23,16 @@
     <td th:text="${product.name}">상품명</td>
     <td th:text="${product.price}">1000</td>
     <td><img th:src="${product.imageUrl}" alt="image" width="100"/></td>
-    <td><a th:href="@{'/admin/products/' + ${product.id} + '/edit'}">수정</a></td>
+    <td>
+      <form th:action="@{'/admin/products/' + ${product.id} + '/edit'}" method="get"
+            style="display:inline">
+        <button type="submit">수정</button>
+      </form>
+      <form th:action="@{'/admin/products/' + ${product.id} + '/delete'}" method="post"
+            style="display:inline">
+        <button type="submit">삭제</button>
+      </form>
+    </td>
   </tr>
   </tbody>
 </table>
