@@ -3,10 +3,10 @@ package gift.model;
 public class Product {
     private Long id;
     private String name;
-    private int price;
+    private Integer price;
     private String image;
 
-    public Product(Long id, String name, int price, String imageUrl) {
+    public Product(Long id, String name, Integer price, String imageUrl) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -14,6 +14,21 @@ public class Product {
     }
     public Long getId() { return id; }
     public String getName() { return name; }
-    public int getPrice() { return price; }
+    public Integer getPrice() { return price; }
     public String getImage() { return image; }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

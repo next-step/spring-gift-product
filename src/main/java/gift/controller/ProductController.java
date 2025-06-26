@@ -1,9 +1,7 @@
 package gift.controller;
 
 import gift.model.Product;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import gift.service.ProductService;
 
 import java.util.List;
@@ -18,7 +16,18 @@ public class ProductController {
     }
     @GetMapping("/products")
     public List<Product> getAllProducts() {
-        System.out.println(productService.getAllProducts());
         return productService.getAllProducts();
+    }
+    @PostMapping("/products")
+    public void addProduct(@RequestBody Product product) {
+        productService.addProduct(product);
+    }
+    @DeleteMapping("products/{id}")
+    public void deleteProduct(@PathVariable Long id) {
+        productService.removeProduct(id);
+    }
+    @PatchMapping("/products/{id}")
+    public void updateProduct(@PathVariable Long id, @RequestBody Product product) {
+        productService.updateProduct(id, product);
     }
 }
