@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-     <link rel="stylesheet" th:href="@{/webjars/bootstrap/dist/css/bootstrap.min.css}">
-   <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/dist/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
   <title>관리자 화면</title>
 </head>
 <body>
@@ -19,11 +19,11 @@
   <div class="card">
     <div class="card-header bg-dark text-light">
       <div class="d-flex flex-row">
-        <span class="flex-grow-1 display-5">제품 관리</span>
+        <span class="flex-grow-1 display-5">상품 관리</span>
         <div class="align-self-end">
           <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
                   data-bs-target="#addProductModal">
-            <i class="bi bi-plus-circle-fill"></i>제품 추가
+            <i class="bi bi-plus-circle-fill"></i>상품 추가
           </button>
         </div>
       </div>
@@ -76,7 +76,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="modalLabel">제품 추가</h5>
+            <h5 class="modal-title" id="modalLabel">상품 추가</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal"
                     aria-label="Close"></button>
           </div>
@@ -85,11 +85,11 @@
                 id="productForm">
             <div class="modal-body">
               <div class="input-group mb-3">
-                <span class="input-group-text">제품명</span>
+                <span class="input-group-text">상품명</span>
                 <input type="text" class="form-control" th:field="*{name}" required>
               </div>
               <div class="input-group mb-3">
-                <span class="input-group-text">제품 가격</span>
+                <span class="input-group-text">상품 가격</span>
                 <input type="number" class="form-control" th:field="*{price}" min="0" required>
               </div>
               <div class="input-group mb-3">
@@ -111,18 +111,18 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">제품 편집</h5>
+          <h5 class="modal-title">상품 편집</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"
                   aria-label="Close"></button>
         </div>
         <form method="post" id="editProductForm">
           <div class="modal-body">
             <div class="input-group mb-3">
-              <span class="input-group-text">제품명</span>
+              <span class="input-group-text">상품명</span>
               <input type="text" class="form-control" name="name" required>
             </div>
             <div class="input-group mb-3">
-              <span class="input-group-text">제품 가격</span>
+              <span class="input-group-text">상품 가격</span>
               <input type="number" class="form-control" name="price" min="0" required>
             </div>
             <div class="input-group mb-3">
