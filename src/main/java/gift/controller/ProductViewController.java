@@ -15,11 +15,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping("/admin/products")
-public class AdminProductController {
+public class ProductViewController {
 
     private final ProductService productService;
 
-    public AdminProductController(ProductService productService) {
+    public ProductViewController(ProductService productService) {
         this.productService = productService;
     }
 
