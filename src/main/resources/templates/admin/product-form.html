@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>상품 등록</title>
+    <link rel="stylesheet" th:href="@{/css/product-form.css}">
 </head>
 <body>
 <h1> 상품 등록</h1>
-
+<div class="form-wrapper">
 <form th:action="@{/admin/products}" th:object="${product}" method="post">
 
     <label> 상품 이름:</label>
@@ -22,6 +23,6 @@
     <button type="submit">등록</button>
 
 </form>
-
+</div>
 </body>
 </html>
