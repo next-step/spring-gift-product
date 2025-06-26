@@ -20,24 +20,33 @@
     </div>
     <div class="card-body">
       <table class="table table-bordered table-hover">
+        <colgroup>
+          <col style="width: 5%;">   <!-- ID -->
+          <col style="width: 10%;">   <!-- IMG-URL -->
+          <col style="width: 35%;">   <!-- NAME -->
+          <col style="width: 35%;">   <!-- PRICE -->
+          <col style="width: 15%;">   <!-- OPTION -->
+        </colgroup>
         <thead class="table-dark">
           <tr>
             <th>ID</th>
+            <th>IMG-URL</th>
             <th>NAME</th>
             <th>PRICE</th>
-            <th>IMG-URL</th>
             <th>OPTION</th>
           </tr>
         </thead>
         <tbody>
         <tr th:each="product : ${products}">
           <td th:text="${product.id}"></td>
+          <td class="text-center">
+            <img th:src="${product.imageUrl}" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
+          </td>
           <td th:text="${product.name}"></td>
-          <td th:text="${product.price} + ' ₩'"></td>
-          <td th:text="${product.imageUrl}"></td>
-          <td>
+          <td th:text="|${product.price} ₩|"></td>
+          <td class="text-center">
             <!-- 수정 버튼 -->
-            <a th:href="@{'/admin/products/edit/' + ${product.id}}" class="btn btn-sm btn-warning">Edit</a>
+            <a th:href="@{'/admin/products/edit/' + ${product.id}}" class="btn btn-sm btn-warning me-2">Edit</a>
             <!-- 삭제 버튼 -->
             <a th:href="@{'/admin/products/delete/' + ${product.id}}" class="btn btn-sm btn-danger"
                onclick="return confirm('Are you sure you want to delete it?');">Delete</a>
