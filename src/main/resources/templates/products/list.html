@@ -22,7 +22,7 @@
       <table class="table table-bordered table-hover">
         <colgroup>
           <col style="width: 5%;">   <!-- ID -->
-          <col style="width: 10%;">   <!-- IMG-URL -->
+          <col style="width: 10%;">   <!-- IMG -->
           <col style="width: 35%;">   <!-- NAME -->
           <col style="width: 35%;">   <!-- PRICE -->
           <col style="width: 15%;">   <!-- OPTION -->
@@ -30,7 +30,7 @@
         <thead class="table-dark">
           <tr>
             <th>ID</th>
-            <th>IMG-URL</th>
+            <th>IMG</th>
             <th>NAME</th>
             <th>PRICE</th>
             <th>OPTION</th>
@@ -38,7 +38,7 @@
         </thead>
         <tbody>
         <tr th:each="product : ${products}">
-          <td th:text="${product.id}"></td>
+          <td th:text="${product.id}" class="text-center"></td>
           <td class="text-center">
             <img th:src="${product.imageUrl}" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
           </td>
