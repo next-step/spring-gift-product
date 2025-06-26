@@ -1,8 +1,6 @@
 package gift.product.repository;
 
 import gift.product.domain.Product;
-import gift.product.dto.ProductRequestDto;
-import gift.product.exception.ProductNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
