@@ -2,22 +2,22 @@ package gift.dto;
 
 public class ProductRequest {
 
-  private String name;
-  private int price;
-  private String imageUrl;
+    private String name;
+    private int price;
+    private String imageUrl;
 
-  public ProductRequest() {
-  }
+    public ProductRequest() {
+    }
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public int getPrice() {
-    return price;
-  }
+    public int getPrice() {
+        return price;
+    }
 
-  public String getImageUrl() {
-    return imageUrl;
-  }
+    public String getImageUrl() {
+        return imageUrl;
+    }
 }
