@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Management</title>
+    <link th:href="@{/styles/index.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="~{/fragments/header.html :: headerFragment}"></div>
+<div class="create-button">
+    <button th:onclick="|location.href='@{/create}'|">+ 상품 추가하기</button>
+</div>
+<div class="table">
+    <table class="items">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>PRODUCT</th>
+            <th>NAME</th>
+            <th>PRICE</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${productResDTOList}">
+            <td th:text="${product.id()}"/>
+            <td>
+                <img th:src="${product.imageURL()}" alt="Product Image" class="product-img"/>
+            </td>
+            <td>
+                <span class="product-name" th:text="${product.name()}"/>
+            </td>
+            <td th:text="|${product.price()}원|"/>
+            <td>
+                <img
+                    src="/assets/edit-icon.svg"
+                    alt="edit"
+                    th:onclick="|location.href='@{/edit/{id}(id=${product.id})}'|"
+                    class="icon edit"
+                />
+            </td>
+            <td>
+                <img
+                    src="/assets/delete-icon.svg"
+                    alt="delete"
+                    th:product-id="${product.id()}"
+                    class="icon delete"
+                />
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="/scripts/index.js"></script>
+</body>
+</html>
