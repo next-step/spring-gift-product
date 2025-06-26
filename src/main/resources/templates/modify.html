@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>상품 관리 ADMIN</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/gift.css}">
+</head>
+<body>
+<main class="container">
+    <div class="container">
+        <div class="py-5 text-center">
+            <h2>상품 수정 폼</h2>
+        </div>
+        <form action="singleGift.html" th:action="@{/{id}/edit(id=${gift.id})}" method="post">
+            <div>
+                <label for="giftId">상품 ID</label>
+                <input type="text" id="giftId" name="giftId" class="form-control" value="1" th:value="${gift.giftId}">
+            </div>
+            <div>
+                <label for="giftName">상품명</label>
+                <input type="text" id="giftName" name="giftName" class="form-control" value="상품A" th:value="${gift.giftName}">
+            </div>
+            <div>
+                <label for="giftPrice">가격</label>
+                <input type="text" id="giftPrice" name="giftPrice" class="form-control" value="1000" th:value="${gift.giftPrice}">
+            </div>
+            <div>
+                <label for="giftPhotoUrl">상품 사진 URL</label>
+                <input type="text" id="giftPhotoUrl" name="giftPhotoUrl" class="formcontrol" value="10" th:value="${gift.giftPhotoUrl}">
+            </div>
+
+            <hr class="my-4">
+            <div class="row">
+                <div class="col">
+                    <button type="submit">
+                        저장
+                    </button>
+                </div>
+                <div class="col">
+                    <button
+                            onclick="location.href='admin.html'"
+                            th:onclick="|location.href='@{/admin}'|"
+                            type="button"
+                    >
+                        취소
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

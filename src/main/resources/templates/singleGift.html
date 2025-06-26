@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>상품 관리 ADMIN</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/singleGift.css}">
+</head>
+<body>
+<main class="container">
+    <section>
+        <div>
+            <label for="itemId">상품 ID</label>
+            <input type="text" id="itemId"
+                   th:value="${gift.giftId}"
+                   name="giftId" class="form-control" readonly>
+        </div>
+        <div>
+            <label for="itemName">상품명</label>
+            <input type="text" id="itemName"
+                   th:value="${gift.giftName}"
+                   name="giftName" class="form-control" readonly>
+        </div>
+        <div>
+            <label for="price">가격</label>
+            <input type="text" id="price"
+                   th:value="${gift.giftPrice}"
+                   name="giftPrice" class="form-control" readonly>
+        </div>
+        <div>
+            <label for="quantity">상품 이미지 URL</label>
+            <input type="text" id="quantity"
+                   th:value="${gift.giftPhotoUrl}"
+                   name="giftPhotoUrl" class="form-control" readonly>
+        </div>
+    </section>
+    <section>
+        <div class="row">
+            <div class="col">
+                <button
+                        onclick="location.href='modify.html'"
+                        th:onclick="|location.href='@{/gift/{giftId}/edit(giftId=${gift.id})}'|"
+                        type="button"
+                >
+                    상품 수정
+                </button>
+            </div>
+            <div class="col">
+                <button
+                        onclick="location.href='admin.html'"
+                        th:onclick="|location.href='@{/admin}'|"
+                        type="button"
+                >
+                    목록으로
+                </button>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

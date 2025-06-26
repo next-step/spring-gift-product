@@ -1,0 +1,146 @@
+
+
+.table-container{
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.table{
+    width: 100%;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.column{
+    box-sizing: border-box;
+    padding: 0.75rem;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.column.header{
+    background-color: #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.column.header-text{
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: black;
+}
+
+.checkbox-box{
+    box-sizing: border-box;
+    padding: 0.75rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.column-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.column-text{
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: black;
+}
+
+.modify-button{
+    box-sizing: border-box;
+    padding: 0.5rem;
+    border-radius: 8px;
+    background-color: #8dff80;
+    transition: 0.15s all ease;
+    border: none;
+}
+
+.modify-button:hover{
+    background-color: #cfffc9;
+}
+
+.delete-button{
+    box-sizing: border-box;
+    padding: 0.5rem;
+    border-radius: 8px;
+    background-color: #ff8080;
+    transition: 0.15s all ease;
+    border: none;
+}
+
+.delete-button:hover{
+    background-color: #ffb2b2;
+}
+
+.pagination-container{
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-info-box{
+    min-width: 20rem;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #494949;
+}
+
+.emphasize-text{
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #4f89ff;
+}
+
+.pagination{
+    min-width: 30rem;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination .pagination-button{
+    box-sizing: border-box;
+    padding: 1rem 1rem;
+    min-width: 1rem;
+    min-height: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    background: none;
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: black;
+    transition: 0.15s all ease;
+    border: none;
+}
+
+.pagination .pagination-button:hover{
+    background: #74a1ff;
+    color: white;
+}
+
+.pagination .pagination-button:active{
+    background: #3877ff;
+    color: white;
+}
