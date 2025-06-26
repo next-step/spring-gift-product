@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>상품관리 페이지</title>
+    <link rel="stylesheet" href="/css/management/home.css">
+</head>
+<body>
+
+<header class="topbar">
+    <span>상품관리 페이지</span>
+    <span>
+        <button class="btn-green" onclick="handleCreateButtonClick()">추가</button>
+        <button class="btn-red" onclick="handleDeleteButtonClick()">삭제</button>
+    </span>
+</header>
+
+<main class="product-list">
+    <ul class="product-container">
+        <li th:each="product : ${products}" class="item">
+            <input type="checkbox" th:value="${product.id}" class="item-check" th:onchange="|handleCheckboxClick(${product.id}, this.checked)|"/>
+            <span class="item-id" th:text="${product.id}">0</span>
+            <a th:href="@{/products/management/{id}(id=${product.id})}" class="item-name">
+                <span th:text="${product.name}">상품명</span>
+            </a>
+            <span class="item-price" th:text="${product.price + '원'}">가격</span>
+            <button class="btn-sky" th:onclick="|handleSingleUpdateClick(${product.id})|">수정</button>
+            <button class="btn-red" th:onclick="|handleSingleDeleteClick(${product.id})|">삭제</button>
+        </li>
+    </ul>
+</main>
+
+<script src="/js/management/home.js"></script>
+</body>
+</html>

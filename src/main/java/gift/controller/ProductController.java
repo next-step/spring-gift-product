@@ -1,8 +1,9 @@
-package gift;
+package gift.controller;
 
-import gift.dto.CreateProductDto;
-import gift.dto.ProductDto;
-import gift.dto.UpdateProductDto;
+import gift.dto.request.CreateProductDto;
+import gift.dto.request.UpdateProductDto;
+import gift.dto.response.ProductDto;
+import gift.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductDto> createProduct(@RequestBody CreateProductDto body) {
         ProductDto response = productService.createProduct(body);
-        URI location = URI.create("/products/"+response.id());
+        URI location = URI.create("/api/products/" + response.id());
         return ResponseEntity.created(location).body(response);
     }
 
@@ -38,7 +39,7 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ProductDto> updateProduct(@PathVariable Long id,
                                                     @RequestBody UpdateProductDto body) {
         ProductDto response = productService.updateProduct(id, body);

@@ -1,0 +1,149 @@
+/* ===============================
+   📌 기본 리셋 및 공통 설정
+================================== */
+body, ul, li, h1, h2, h3, p, span {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+ul {
+    list-style: none;
+}
+
+
+/* ===============================
+   📌 상단바 (Topbar)
+================================== */
+.topbar {
+    position: fixed;          /* 최상단 고정 */
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: #2c3e50;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+.topbar button {
+    margin-left: 8px;
+}
+
+
+/* ===============================
+   📌 메인 컨텐츠 영역
+================================== */
+.product-list {
+    padding: 80px 20px 20px 20px; /* 상단바 높이만큼 여백 줌 */
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+
+/* ===============================
+   📌 상품 리스트 아이템 (한 줄 정렬)
+================================== */
+.product-container .item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: white;
+    border-bottom: 1px solid #eee;
+}
+
+.product-container .item input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.product-container .item .item-id {
+    width: 40px;
+    text-align: center;
+    margin-right: 10px;
+    color: #888;
+}
+
+.product-container .item .item-name {
+    flex: 1;  /* 남은 공간 차지 */
+    color: #3498db;
+    text-decoration: none;
+}
+
+.product-container .item .item-price {
+    width: 80px;
+    text-align: right;
+    margin-right: 10px;
+    color: #2c3e50;
+}
+
+.product-container .item button {
+    margin-left: 6px;
+    padding: 6px 10px;
+    font-size: 13px;
+}
+
+
+/* ===============================
+   📌 버튼 색상 스타일
+================================== */
+.btn-green {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.btn-green:hover {
+    background-color: #219150;
+}
+
+.btn-red {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.btn-red:hover {
+    background-color: #c0392b;
+}
+
+.btn-sky {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.btn-sky:hover {
+    background-color: #2980b9;
+}
+
+
+/* ===============================
+   📌 반응형 (작은 화면에서 여백 조정)
+================================== */
+@media (max-width: 600px) {
+    .product-container .item {
+        flex-wrap: wrap;
+        padding: 10px;
+    }
+
+    .product-container .item .item-price,
+    .product-container .item .item-id {
+        width: auto;
+        text-align: left;
+        margin-right: 8px;
+    }
+}

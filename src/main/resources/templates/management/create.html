@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>상품생성</title>
+    <link rel="stylesheet" href="/css/management/create.css">
+</head>
+<body>
+
+<header class="topbar">
+    <span>상품생성 페이지</span>
+    <span>
+        <button class="btn-red" onclick="handleExitButtonClick()">취소</button>
+    </span>
+</header>
+
+<main class="form-container">
+    <form method="post" action="/api/products" onsubmit="return handleSubmit(event)">
+        <div class="form-group">
+            <label for="name">상품명:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="price">가격:</label>
+            <input type="number" id="price" name="price" required>
+        </div>
+
+        <div class="form-group">
+            <label for="imageUrl">이미지 URL:</label>
+            <input type="text" id="imageUrl" name="imageUrl">
+        </div>
+
+        <button type="submit" class="btn-green">등록</button>
+    </form>
+</main>
+
+<script src="/js/management/create.js"></script>
+</body>
+</html>

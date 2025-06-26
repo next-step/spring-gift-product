@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>상품조회</title>
+    <link rel="stylesheet" href="/css/management/product.css">
+</head>
+<body>
+
+<header class="topbar">
+    <span>상품관리 페이지</span>
+    <span>
+        <button id="editButton" class="btn-sky" onclick="handleChangeMode()">수정</button>
+        <button class="btn-red" onclick="handleExit()">나가기</button>
+    </span>
+</header>
+
+<main class="product-detail">
+    <div class="image-container">
+        <img id="productImage" th:src="${product.imageUrl}" alt="이미지 미리보기">
+    </div>
+
+    <form id="productForm">
+
+        <div class="form-group">
+            <label for="name">상품명:</label>
+            <input type="text" id="name" name="name" th:value="${product.name}" disabled>
+        </div>
+
+        <div class="form-group">
+            <label for="price">가격:</label>
+            <input type="number" id="price" name="price" th:value="${product.price}" disabled>
+        </div>
+
+        <div class="form-group">
+            <label for="imageUrl">이미지 URL:</label>
+            <input type="text" id="imageUrl" name="imageUrl" th:value="${product.imageUrl}" disabled>
+        </div>
+
+        <div class="button-group">
+            <button type="button" id="saveButton" class="btn-green" style="display: none;" th:onclick="|saveProduct(${product.id})|">저장</button>
+        </div>
+
+    </form>
+</main>
+
+
+<script src="/js/management/product.js"></script>
+</body>
+</html>
