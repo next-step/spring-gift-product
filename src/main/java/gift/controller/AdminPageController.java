@@ -36,6 +36,7 @@ public class AdminPageController {
     // 신규상품 등록 form 제공
     @GetMapping("/new")
     public String newProduct(Model model) {
+        model.addAttribute("productId", null);
         model.addAttribute("product", ProductRequestDto.empty());
         return "admin/product-form";
     }

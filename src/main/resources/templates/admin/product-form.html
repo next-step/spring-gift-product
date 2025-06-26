@@ -6,6 +6,8 @@
 </head>
 <body>
     <h2>상품정보 작성</h2>
+    <h3 th:if="${productId != null}" th:inline="text">- [[${productId}]]번 상품</h3>
+    <h3 th:if="${productId == null}">- 신규 상품</h3>
     <form th:action="${productId == null} ? @{/admin/products/new} : @{/admin/products/{id}(id=${productId})}"
           method="post"
           th:object="${product}">
@@ -22,7 +24,8 @@
             <label>imageUrl:</label>
             <input type="text" th:field="*{imageUrl}" />
         </p>
-        <button type="submit">submit</button>
+        <button type="submit" th:if="${productId == null}" >Create</button>
+        <button type="submit" th:if="${productId != null}" >Apply Changes</button>
     </form>
     <form th:if="${productId != null}"
           th:action="@{/admin/products/{id}(id=${productId})}"
@@ -30,6 +33,10 @@
           onsubmit="return confirm('Are you sure to delete?');">
         <input type="hidden" name="_method" value="delete" />
         <button type="submit">Delete</button>
+    </form>
+    <form action="/admin/products"
+          method="get" style="display:inline">
+        <button type="submit">Go to Product List</button>
     </form>
 </body>
 </html>

@@ -6,6 +6,10 @@
 </head>
 <body>
     <h2>상품목록</h2>
+    <form action="/admin/products/new"
+          method="get" style="display:inline">
+        <button type="submit">Create New Product</button>
+    </form>
     <table>
         <thead>
             <tr>
@@ -13,17 +17,24 @@
                 <th>image</th>
                 <th>name</th>
                 <th>price</th>
+                <th>View/Edit</th>
                 <th>Delete</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="product: ${products}">
-                <td th:text="${product.id}">1</td>
+                <td th:text="${product.id}" />
                 <td>
                     <img th:src="${product.imageUrl}" width="50" />
                 </td>
-                <td th:text="${product.name}">상품명</td>
-                <td th:text="${product.price}">1000</td>
+                <td th:text="${product.name}" />
+                <td th:text="${product.price}" />
+                <td>
+                    <form th:action="@{/admin/products/{id}(id=${product.id})}"
+                          method="get" style="display:inline">
+                        <button type="submit">View/Edit</button>
+                    </form>
+                </td>
                 <td>
                     <form th:action="@{/admin/products/{id}(id=${product.id})}"
                           method="post" style="display:inline"
