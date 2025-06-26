@@ -2,21 +2,22 @@ package gift.repository;
 
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
-import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class ProductRepository {
-    private final Map<Long, Product> products = new HashMap<>();
 
-    private Long idCounter = 1L;
+    private final Map<Long, Product> products = new ConcurrentHashMap<>();
+
+    private final AtomicLong idCounter = new AtomicLong(1);
 
     public Product saveProduct(Product product) {
-        product.setId(idCounter++);
+        product.setId(idCounter.getAndIncrement());
         products.put(product.getId(), product);
         return product;
     }
