@@ -17,7 +17,10 @@
         <td th:text="${product.name}">상품명</td>
         <td th:text="${product.price}">상품 가격</td>
         <td><img th:src="${product.imageUrl}" alt="사진"></td>
-        <td><a th:href="@{/admin/products/{id}/edit(id=${product.id})}">상품 수정</a></td>
+        <td>
+            <a th:href="@{/admin/products/{id}/edit(id=${product.id})}">상품 수정</a>
+            <a th:href="@{/admin/products/{id}/delete(id=${product.id})}">상품 삭제</a>
+        </td>
     </tr>
 </table>
 <br>
