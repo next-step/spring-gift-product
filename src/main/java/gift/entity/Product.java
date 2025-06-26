@@ -1,4 +1,6 @@
 package gift.entity;
+import gift.dto.ProductRequestDto;
+
 
 public class Product {
 
@@ -29,4 +31,9 @@ public class Product {
     public String getImageUrl() {
         return imageUrl;
     }
+
+    public static Product from(ProductRequestDto dto) {
+        return new Product(null, dto.getName(), dto.getPrice(), dto.getImageUrl());
+    }
+
 }
