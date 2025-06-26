@@ -1,8 +1,13 @@
-# spring-gift-product
-
-### Product API
+# 상품 관리
+### Product API (1단계)
 1. 전체 상품 조회
 2. 단건 상품 조회
 3. 상품 추가
 4. 상품 수정
 5. 상품 삭제
+
+### Adimin Screen (2단계)
+1. 상품 조회 
+2. 상품 추가
+3. 상품 수정 
+4. 상품 삭제 
