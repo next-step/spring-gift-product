@@ -59,4 +59,11 @@ public class AdminController {
 	}
 
 
+	// 6. 게시글 삭제처리
+	@DeleteMapping("/{id}")
+	public String delete(@PathVariable Long id) {
+		itemService.deleteItem(id);
+		return "redirect:/admin/products";
+	}
+
 }

@@ -21,8 +21,7 @@
     <td th:text="${prod.imageUrl}">이미지주소</td>
     <td>
       <a th:href="@{|/admin/products/${prod.id}/edit|}">수정</a>
-      <form th:action="@{|/admin/products/${prod.id}|}" th:method="delete"
-            method="post" style="display:inline">
+      <form th:action="@{|/admin/products/${prod.id}|}" method="post" style="display:inline" th:method="delete">
         <button type="submit" onclick="return confirm('삭제하시겠습니까?')">삭제</button>
       </form>
     </td>
