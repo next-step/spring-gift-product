@@ -4,11 +4,11 @@ import gift.dto.ProductRequestDTO;
 import gift.dto.ProductResponseDTO;
 import gift.entity.Product;
 import gift.service.ProductService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")
@@ -21,7 +21,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductResponseDTO> create(@RequestBody ProductRequestDTO dto) {
-        return ResponseEntity.status(201).body(productService.create(dto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.create(dto));
     }
 
     @PutMapping("/{id}")
