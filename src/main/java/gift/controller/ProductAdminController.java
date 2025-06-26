@@ -63,4 +63,17 @@ public class ProductAdminController {
 
         return "admin/edit-form";
     }
+
+    @PostMapping("/edit/{id}")
+    public String updateProduct(@PathVariable Long id,
+                                @Valid @ModelAttribute("product") ProductRequestDto requestDto,
+                                BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "admin/edit-form";
+        }
+
+        productService.updateProduct(id, requestDto);
+
+        return "redirect:/admin/products";
+    }
 }
