@@ -2,6 +2,7 @@ package gift.service;
 
 import gift.domain.Product;
 import gift.dto.ProductRequest;
+import gift.dto.common.Page;
 import gift.exception.BusinessException;
 import gift.exception.ErrorCode;
 import gift.repository.ProductRepository;
@@ -17,18 +18,17 @@ public class ProductManagementService {
         this.productRepository = productRepository;
     }
 
-    public void create(ProductRequest request) {
-        validateRequest(request);
+    public Product create(ProductRequest request) {
         Product newProduct = Product.of(
                 request.name(),
-                request.price(),
+                request.validatedPrice(),
                 request.imageUrl()
         );
-        productRepository.save(newProduct);
+        return productRepository.save(newProduct);
     }
 
-    public List<Product> getAll() {
-        return productRepository.findAll();
+    public Page<Product> getAllByPage(int pageNumber, int pageSize) {
+        return productRepository.findAllByPage(pageNumber, pageSize);
     }
 
     public Product getById(Long id) {
@@ -37,13 +37,12 @@ public class ProductManagementService {
     }
 
     public void update(Long id, ProductRequest request) {
-        validateRequest(request);
         if (productRepository.findById(id).isEmpty()) {
             throw new BusinessException(ErrorCode.PRODUCT_NOT_FOUND);
         }
         Product updatedProduct = Product.of(
                 request.name(),
-                request.price(),
+                request.validatedPrice(),
                 request.imageUrl()
         );
         productRepository.update(id, updatedProduct);
@@ -53,19 +52,15 @@ public class ProductManagementService {
         productRepository.deleteAll();
     }
 
+    public void deleteAllByIds(List<Long> ids) {
+        productRepository.deleteAllByIds(ids);
+    }
+
     public void deleteById(Long id) {
         if (productRepository.findById(id).isEmpty()) {
             throw new BusinessException(ErrorCode.PRODUCT_NOT_FOUND);
         }
         productRepository.deleteById(id);
-    }
-
-    private void validateRequest(ProductRequest request) {
-        if (request == null
-                || request.name() == null || request.name().isBlank()
-                || request.price() == null) {
-            throw new BusinessException(ErrorCode.INVALID_PRODUCT_DATA);
-        }
     }
 }
 

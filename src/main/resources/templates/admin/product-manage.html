@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <title>상품 목록</title>
+  <link rel="stylesheet" th:href="@{/css/page/product-manage.css}"/>
+  <link rel="stylesheet" th:href="@{/css/common.css}"/>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+<div>
+  <div class="button-group">
+    <button id="product-create-btn" class="btn">상품 등록</button>
+    <button id="product-delete-all-btn" class="btn">선택 요소 삭제</button>
+  </div>
+
+  <table border="1" id="product-list-table">
+    <thead>
+    <tr>
+      <th><input type="checkbox" id="product-all-select"/></th>
+      <th>ID</th>
+      <th>이미지</th>
+      <th>상품명</th>
+      <th>가격</th>
+      <th>액션</th>
+    </tr>
+    </thead>
+    <tbody id="product-list-body"></tbody>
+  </table>
+
+</div>
+
+<script th:src="@{/js/product-manage.js}"></script>
+</body>
+</html>
