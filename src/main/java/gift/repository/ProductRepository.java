@@ -13,12 +13,9 @@ import org.springframework.stereotype.Repository;
 public class ProductRepository {
 
     private final Map<Long, Product> products = new HashMap<>();
-    private Long sequence = 2L; // ID 자동 증가용 (초기값 2, 이미 1번 있음)
+    private Long sequence = 1L;
 
     public ProductRepository() {
-        // 초기 더미 데이터
-        products.put(1L, new Product(1L, " 아이스 카페 아메리카노 T", 4500,
-                "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"));
     }
 
     public List<Product> findAll() {
