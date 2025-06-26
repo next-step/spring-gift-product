@@ -14,4 +14,6 @@ public interface ProductService {
 
     ResponseDto updateProductByProductId(Long productId, String name, Double price,
         String imageUrl);
+
+    ResponseDto deleteProductByProductId(Long productId);
 }

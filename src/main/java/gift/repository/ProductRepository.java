@@ -11,4 +11,6 @@ public interface ProductRepository {
     List<ResponseDto> findAllProducts();
 
     Product findProductByProductId(Long productId);
+
+    Product deleteProductByProductId(Long productId);
 }

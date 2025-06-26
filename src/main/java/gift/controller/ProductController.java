@@ -55,14 +55,8 @@ public class ProductController {
 
     @DeleteMapping("/{productId}")
     public ResponseEntity<ResponseDto> deleteProduct(@PathVariable Long productId) {
-        Product product = products.get(productId);
 
-        if (product == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        products.remove(productId);
-
-        return new ResponseEntity<>(new ResponseDto(product), HttpStatus.OK);
+        return new ResponseEntity<>(productService.deleteProductByProductId(productId),
+            HttpStatus.OK);
     }
 }

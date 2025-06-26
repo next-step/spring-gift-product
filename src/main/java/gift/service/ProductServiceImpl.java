@@ -71,5 +71,19 @@ public class ProductServiceImpl implements ProductService {
         return new ResponseDto(product);
     }
 
+    @Override
+    public ResponseDto deleteProductByProductId(Long productId) {
+        Product product = productRepository.findProductByProductId(productId);
+
+        if (product == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "Does not exist productId = " + productId);
+        }
+
+        Product deletedProduct = productRepository.deleteProductByProductId(productId);
+
+        return new ResponseDto(product);
+    }
+
 
 }

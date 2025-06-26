@@ -41,5 +41,10 @@ public class ProductRepositoryImpl implements ProductRepository {
         return products.get(productId);
     }
 
+    @Override
+    public Product deleteProductByProductId(Long productId) {
+        return products.remove(productId);
+    }
+
 
 }
