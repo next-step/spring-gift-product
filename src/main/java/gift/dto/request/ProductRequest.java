@@ -8,4 +8,3 @@ public record ProductRequest(
         @Positive int price,
         @NotBlank String imageUrl
 ) {}
-

@@ -1,5 +1,6 @@
 package gift.controller;
 
+
 import gift.dto.request.ProductRequest;
 import gift.dto.response.ProductResponse;
 import gift.service.ProductService;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/products")
@@ -47,7 +49,7 @@ public class ProductController {
 
     @GetMapping("/search")
     public List<ProductResponse> searchByName(@RequestParam String name) {
-        System.out.println("🔥 검색 요청 도착: " + name);
         return productService.searchByName(name);
     }
+
 }
