@@ -21,12 +21,14 @@ public class AdminController {
     this.productService = productService;
   }
 
+  // 전체 상품 조회 page
   @GetMapping
   public String adminGetAllProducts(Model model) {
     model.addAttribute("products", productService.findAll());
     return "admin/products";
   }
 
+  // 상품 추가 page
   @GetMapping("/add")
   public String showAddForm(Model model) {
     model.addAttribute("product", new Product());
@@ -34,6 +36,18 @@ public class AdminController {
     return "admin/product-form";
   }
 
+  // 상품 수정 page
+  @GetMapping("/{id}/edit")
+  public String showEditForm(@PathVariable Long id, Model model) {
+    Product product = productService.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+    model.addAttribute("product", product);
+    model.addAttribute("mode", "edit");
+    return "admin/product-form";
+  }
+
+  // 상품 추가-add, 수정-mode -> 기능 후 전체 상품 page로 이동
+  // 두 페이지 모두 form을 사용해야 한다는 점이 동일해 함께 처리
   @PostMapping
   public String saveProduct(@ModelAttribute Product product, @RequestParam String mode) {
     if ("add".equals(mode)) {
@@ -42,14 +56,5 @@ public class AdminController {
       productService.update(product.getId(), product);
     }
     return "redirect:/admin/products";
-  }
-
-  @GetMapping("/{id}/edit")
-  public String showEditForm(@PathVariable Long id, Model model) {
-    Product product = productService.findById(id)
-        .orElseThrow(() -> new IllegalArgumentException("Product not found"));
-    model.addAttribute("product", product);
-    model.addAttribute("mode", "edit");
-    return "admin/product-form";
   }
 }
