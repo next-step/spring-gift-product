@@ -36,3 +36,15 @@ ___
     - 성공적으로 삭제되면 204 No Content
     - 없는 ID면 404 Not Found
     - DELETE /api/products/{id}
+
+### 관리자 페이지 구현
+1. 상품 목록 페이지
+   - /products/view
+2. 상품 등록 페이지
+   - /product/add
+3. 상품 상세 페이지
+   - /product/{id}
+4. 상품 수정 페이지
+   - /product/edit/{id}
+5. 상품 삭제는 별다른 페이지 없이
+   - /delete/{id}
