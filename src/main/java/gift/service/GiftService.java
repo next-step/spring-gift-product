@@ -4,6 +4,8 @@ import gift.dto.GiftRequestDto;
 import gift.dto.GiftResponseDto;
 import gift.dto.GiftUpdateDto;
 import java.util.List;
+import java.util.Optional;
+import java.util.Map;
 
 public interface GiftService {
 
@@ -11,7 +13,9 @@ public interface GiftService {
 
   List<GiftResponseDto> findAll();
 
-  GiftResponseDto findById(Long id);
+  Optional<GiftResponseDto> findById(Long id);
+
+  GiftResponseDto update(Long id, Map<String, Object> updates);
 
   GiftResponseDto update(Long id, GiftUpdateDto updateDto);
 
