@@ -1,5 +1,5 @@
 document.getElementById("create-product-form").addEventListener("submit", async function(e) {
-    e.preventDefault(); // 폼 기본 제출 막기
+    e.preventDefault();
 
     const data = {
         name: document.getElementById("create-name").value,
@@ -24,7 +24,7 @@ document.getElementById("create-product-form").addEventListener("submit", async 
 });
 
 document.getElementById("patch-product-form").addEventListener("submit", async function(e) {
-    e.preventDefault(); // 폼 기본 제출 막기
+    e.preventDefault();
 
     const productId = document.getElementById("patch-id").value
 
@@ -79,13 +79,11 @@ document.querySelectorAll('.patch-btn').forEach(button => {
         const productPrice = patchButton.getAttribute('data-product-price');
         const productImageUrl = patchButton.getAttribute('data-product-image-url');
 
-        // 예: 폼에 채워넣기
         document.getElementById('patch-id').value = productId;
         document.getElementById('patch-name').value = productName;
         document.getElementById('patch-price').value = productPrice;
         document.getElementById('patch-imageUrl').value = productImageUrl;
 
-        // 폼 보이기
         document.getElementById('patch-product-form').style.display = 'block';
     });
 });
