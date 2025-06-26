@@ -19,6 +19,7 @@
 <h1>상품 등록 페이지</h1>
 
 <form id="productForm">
+    <input type="hidden" id="productId">
     <input type="text" id="productName" placeholder="상품명" required>
     <input type="number" id="productPrice" placeholder="가격" required>
     <input type="text" id="productImageUrl" placeholder="이미지 URL">
@@ -33,6 +34,7 @@
         <th>가격</th>
         <th>이미지</th>
         <th>삭제</th>
+        <th>수정</th>
     </tr>
     </thead>
     <tbody></tbody>
@@ -42,7 +44,14 @@
 
     document.getElementById('productForm').addEventListener('submit', function (e) {
         e.preventDefault();
-        addProduct();
+
+        const id = document.getElementById('productId').value;
+
+        if(id){
+            updateProduct();
+        }else{
+            addProduct();
+        }
     });
 
     // 상품 등록
@@ -80,6 +89,7 @@
                         <td>${p.price}</td>
                         <td><img src="${p.imageUrl}" width="50" /></td>
                         <td><button onclick="deleteProduct(${p.id})">삭제</button></td>
+                        <td><button onclick="fillForm(${p.id}, '${p.name}', ${p.price}, '${p.imageUrl}')">수정</button></td>
                     `;
                     tbody.appendChild(row);
                 });
@@ -94,6 +104,39 @@
             body: JSON.stringify({ id })
         })
             .then(() => fetchProducts())
+    }
+
+    // 상품 수정
+    function updateProduct() {
+        const id = document.getElementById('productId').value;
+        const name = document.getElementById('productName').value;
+        const price = document.getElementById('productPrice').value;
+        const imageUrl = document.getElementById('productImageUrl').value;
+
+        const payload = { name, price, imageUrl };
+
+        fetch(`/api/products/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+            .then(res => res.json())
+            .then(() => {
+                fetchProducts();
+                document.getElementById('productForm').reset();
+                document.getElementById('productId').value = '';
+                document.querySelector('button[type="submit"]').textContent = '상품 등록';
+
+            })
+    }
+
+    function fillForm(id, name, price, imageUrl) {
+        document.getElementById('productId').value = id;
+        document.getElementById('productName').value = name;
+        document.getElementById('productPrice').value = price;
+        document.getElementById('productImageUrl').value = imageUrl;
+
+        document.querySelector('button[type="submit"]').textContent = '상품 수정';
     }
 
     window.onload = fetchProducts;
