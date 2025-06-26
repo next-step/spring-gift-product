@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class ProductServiceImpl implements ProductService {
+public class DefaultProductService implements ProductService {
 
     // 임시 DB
     private final Map<Long, Product> productList = new HashMap<>();
