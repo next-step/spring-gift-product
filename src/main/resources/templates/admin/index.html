@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -20,8 +21,11 @@
                 <td th:text="${product.id}">1</td>
                 <td th:text="${product.name}">기본 상품명</td>
                 <td th:text="${product.price}">10000</td>
-                <td th:text="${product.imageUrl}">https://example.com/image.jpg</td>
+                <td>
+                    <img th:src="${product.imageUrl}" alt="상품 이미지" style="width: 100px; height: 100px;">
+                </td>
                 <td><a th:href="@{/admin/update/{id}(id=${product.id})}">수정하기</a></td>
+                <td><button th:onclick="deleteProduct([[${product.id}]])">삭제하기</button></td>
             </tr>
             </tbody>
         </table>
@@ -31,3 +35,21 @@
     </div>
 </div>
 </body>
+<script>
+    async function deleteProduct(productId) {
+        try {
+            const res = await fetch(`/api/products/`+ productId, {
+                method: "DELETE"
+            });
+            if (res.ok) {
+                alert("상품이 성공적으로 삭제되었습니다.");
+                window.location.reload();
+            } else {
+                alert("상품 삭제에 실패했습니다. 다시 시도해주세요.");
+            }
+        } catch (error) {
+            alert("상품 삭제에 실패했습니다. 다시 시도해주세요. " + error.message);
+        }
+    }
+</script>
+</html>
