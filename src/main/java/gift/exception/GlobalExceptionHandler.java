@@ -1,15 +1,22 @@
 package gift.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.ModelAndView;
 
-@RestControllerAdvice
+import java.util.HashMap;
+import java.util.Map;
+
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ProductNotExistException.class)
-    public ResponseEntity<Void> handleProductNotExist(ProductNotExistException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    public ModelAndView handleProductNotExist() {
+
+        Map<String, String> model = new HashMap<>();
+        model.put("errorMessage", "상품이 존재하지 않습니다.");
+
+        return new ModelAndView("error/product-not-found", model);
     }
 }
