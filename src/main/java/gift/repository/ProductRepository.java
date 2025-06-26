@@ -47,7 +47,19 @@ public class ProductRepository {
         return res.stream().findFirst();
     }
 
+    //기존 상품 수정하기
+    public void update(Long id,Product product)
+    {
+        String sql = "update products set name = ?, price = ?, image_url = ? where id = ?";
+        jdbcTemplate.update(sql,product.getName(),product.getPrice(),product.getImageUrl(),id);
+    }
 
+    //기존 상품 삭제하기
+    public void delete(Long id)
+    {
+        String sql = "delete from products where id = ?";
+        jdbcTemplate.update(sql,id);
+    }
 
     private RowMapper<Product> rowMapper()
     {
