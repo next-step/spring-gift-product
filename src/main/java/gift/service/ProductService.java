@@ -5,6 +5,7 @@ import gift.dto.ProductResponse;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class ProductService {
     public ProductResponse findProductById(Long id) {
         return productRepository.findById(id)
                 .map(ProductResponse::new)
-                .orElse(null);
+                .orElseThrow(() -> new NoSuchElementException("해당 상품이 존재하지 않습니다."));
     }
 
     public ProductResponse addProduct(ProductRequest request) {
