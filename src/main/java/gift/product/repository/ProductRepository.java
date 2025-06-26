@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface ProductRepository {
 
-    UUID save(ProductCreateRequest dto);
+    UUID save(Product product);
 
     List<Product> findAll();
 
@@ -19,5 +19,5 @@ public interface ProductRepository {
 
     void deleteById(UUID id);
 
-    void update(UUID id, ProductUpdateRequest dto);
+    void update(Product product);
 }

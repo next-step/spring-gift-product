@@ -2,21 +2,16 @@ package gift.product.repository;
 
 import gift.domain.Product;
 import gift.global.exception.NotFoundProductException;
-import gift.product.dto.ProductCreateRequest;
-import gift.product.dto.ProductUpdateRequest;
-import gift.util.StringValidator;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Repository
 public class ProductRepositoryV1 implements ProductRepository{
     private final Map<UUID, Product> products = new HashMap<>();
 
-    public UUID save(ProductCreateRequest dto) {
-        Product product = new Product(dto.getName(), dto.getPrice(), dto.getImageURL());
+    public UUID save(Product product) {
 
         products.put(product.getId(), product);
 
@@ -41,9 +36,10 @@ public class ProductRepositoryV1 implements ProductRepository{
     }
 
 
-    public void update(UUID id, ProductUpdateRequest dto) {
+    public void update(Product product) {
+        UUID id = product.getId();
         if (!products.containsKey(id)) throw new NotFoundProductException("수정 실패 - 존재하지 않는 상품입니다");
 
-        products.put(id, new Product(id, dto.getName(), dto.getPrice(), dto.getImageURL()));
+        products.put(id, product);
     }
 }

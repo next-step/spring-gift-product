@@ -22,7 +22,8 @@ public class ProductServiceV1 implements ProductService{
 
 
     public UUID addProduct(ProductCreateRequest dto) {
-        return productRepository.save(dto);
+
+        return productRepository.save(new Product(dto.getName(), dto.getPrice(), dto.getImageURL()));
     }
 
     public List<ProductResponse> findAllProducts() {
@@ -43,6 +44,6 @@ public class ProductServiceV1 implements ProductService{
     }
 
     public void updateProduct(UUID id, ProductUpdateRequest dto) {
-        productRepository.update(id, dto);
+        productRepository.update(new Product(id, dto.getName(), dto.getPrice(), dto.getImageURL()));
     }
 }
