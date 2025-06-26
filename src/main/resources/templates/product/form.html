@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>상품 관리</title>
+</head>
+<body>
+<div th:with="actionUrl=${isEdit} ? '/admin/products/edit/' + ${product.id} : '/admin/products'">
+  <form th:action="@{__${actionUrl}__}" method="post">
+    <label>상품 이름</label>
+    <input type="text" name="name" th:value="${product.name}"/>
+
+    <label>가격</label>
+    <input type="number" name="price" th:value="${product.price}"/>
+
+    <label>이미지 URL</label>
+    <input type="text" name="imageUrl" th:value="${product.imageUrl}"/>
+
+    <button type="submit" th:text="${isEdit} ? '수정' : '등록'">버튼</button>
+  </form>
+</div>
+</body>
+</html>
