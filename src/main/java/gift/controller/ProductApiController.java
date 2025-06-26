@@ -12,35 +12,35 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
-public class ProductController {
+@RequestMapping("/api/products")
+public class ProductApiController {
 
     private final ProductService productService;
 
-    public ProductController(ProductService productService) {
+    public ProductApiController(ProductService productService) {
         this.productService = productService;
     }
 
-    @PostMapping("/products")
+    @PostMapping
     public ResponseEntity<ProductResponse> createProduct(@RequestBody CreateProductRequest request) {
         Product product = productService.saveProduct(request);
-        ProductResponse response = new ProductResponse(product);
+        ProductResponse response = ProductResponse.from(product);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping("/products")
+    @GetMapping
     public ResponseEntity<List<ProductResponse>> getProducts() {
         List<ProductResponse> products = productService.getAllProducts();
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    @PutMapping("/products/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Void> updateProduct(@PathVariable Long id, @RequestBody UpdateProductRequest request) {
         productService.updateProduct(id, request);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/products/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
