@@ -1,7 +1,9 @@
 package gift.controller;
 
 import gift.dto.RequestDto;
+import gift.dto.ResponseDto;
 import gift.service.ProductService;
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
@@ -32,5 +34,12 @@ public class AdminProductController {
         return "admin/products";
     }
 
+    // 2. 상품 목록
+    @GetMapping
+    public String list(Model model) {
+        List<ResponseDto> products = productService.findAll();
+        model.addAttribute("products", products);
+        return "admin/list";
+    }
 
 }
