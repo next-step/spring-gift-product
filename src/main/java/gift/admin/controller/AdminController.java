@@ -5,10 +5,7 @@ import gift.item.entity.Item;
 import gift.item.service.ItemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,6 +43,13 @@ public class AdminController {
     @PostMapping("/api/admin/products/create")
     public String createProduct(CreateItemDto dto) {
         itemService.saveItem(dto);
+        return "redirect:/api/admin/products";
+    }
+
+    //상품 삭제하기 기능
+    @DeleteMapping("/api/admin/products/{id}")
+    public String deleteProduct(@PathVariable Long id) {
+        itemService.deleteItem(id);
         return "redirect:/api/admin/products";
     }
 
