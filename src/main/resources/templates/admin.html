@@ -11,11 +11,13 @@
         <th>상품명</th>
         <th>상품 가격</th>
         <th>상품 사진</th>
+        <th>상품 관리</th>
     </tr>
     <tr th:each="product : ${products}">
         <td th:text="${product.name}">상품명</td>
         <td th:text="${product.price}">상품 가격</td>
         <td><img th:src="${product.imageUrl}" alt="사진"></td>
+        <td><a th:href="@{/admin/products/{id}/edit(id=${product.id})}">상품 수정</a></td>
     </tr>
 </table>
 <br>
