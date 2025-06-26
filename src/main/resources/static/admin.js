@@ -2,9 +2,9 @@ document.getElementById("create-product-form").addEventListener("submit", async 
     e.preventDefault(); // 폼 기본 제출 막기
 
     const data = {
-        name: document.getElementById("name").value,
-        price: parseFloat(document.getElementById("price").value),
-        imageUrl: document.getElementById("imageUrl").value
+        name: document.getElementById("create-name").value,
+        price: parseFloat(document.getElementById("create-price").value),
+        imageUrl: document.getElementById("create-imageUrl").value
     };
 
     const response = await fetch("/api/products", {
@@ -20,6 +20,34 @@ document.getElementById("create-product-form").addEventListener("submit", async 
         window.location.reload();
     } else {
         alert("등록에 실패했습니다.");
+    }
+});
+
+document.getElementById("patch-product-form").addEventListener("submit", async function(e) {
+    e.preventDefault(); // 폼 기본 제출 막기
+
+    const productId = document.getElementById("patch-id").value
+
+    const data = {
+        id : document.getElementById("patch-id").value,
+        name: document.getElementById("patch-name").value,
+        price: parseFloat(document.getElementById("patch-price").value),
+        imageUrl: document.getElementById("patch-imageUrl").value
+    };
+
+    const response = await fetch(`/api/products/${productId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (response.ok) {
+        alert("상품이 수정되었습니다");
+        window.location.reload();
+    } else {
+        alert("수정에 실패했습니다.");
     }
 });
 
@@ -39,4 +67,24 @@ document.getElementById("delete-btn").addEventListener('click', async function (
         alert("삭제를 실패했습니다.");
     }
 
+});
+
+document.querySelectorAll('.patch-btn').forEach(button => {
+    button.addEventListener('click', function (event) {
+        const patchButton = event.target;
+
+        const productId = patchButton.getAttribute('data-product-id');
+        const productName = patchButton.getAttribute('data-product-name');
+        const productPrice = patchButton.getAttribute('data-product-price');
+        const productImageUrl = patchButton.getAttribute('data-product-image-url');
+
+        // 예: 폼에 채워넣기
+        document.getElementById('patch-id').value = productId;
+        document.getElementById('patch-name').value = productName;
+        document.getElementById('patch-price').value = productPrice;
+        document.getElementById('patch-imageUrl').value = productImageUrl;
+
+        // 폼 보이기
+        document.getElementById('patch-product-form').style.display = 'block';
+    });
 });
