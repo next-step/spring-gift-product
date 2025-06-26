@@ -26,15 +26,11 @@ public class ProductController {
             return ResponseEntity.badRequest().build();
         }
 
-        String name = requestDto.getName();
-        Integer price = requestDto.getPrice();
-        String imageUrl = requestDto.getImageUrl();
-
-        ProductResponseDto responseDto = productService.createProduct(name, price, imageUrl);
+        ProductResponseDto responseDto = productService.create(requestDto);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(responseDto.getId())
+                .buildAndExpand(responseDto.id())
                 .toUri(); // location 생성
 
         return ResponseEntity.created(location).body(responseDto); // 201 created 반환
@@ -42,7 +38,7 @@ public class ProductController {
 
     @GetMapping("/{productId}")
     public ResponseEntity<ProductResponseDto> getProduct(@PathVariable("productId") Long productId) {
-        return ResponseEntity.ok(productService.findById(productId));
+        return ResponseEntity.ok(productService.find(productId));
     }
 
     @PutMapping("/{productId}")
@@ -53,16 +49,13 @@ public class ProductController {
         if (requestDto == null) {
             return ResponseEntity.badRequest().build();
         }
-        String name = requestDto.getName();
-        Integer price = requestDto.getPrice();
-        String imageUrl = requestDto.getImageUrl();
 
-        return ResponseEntity.ok(productService.updateProduct(productId, name, price, imageUrl));
+        return ResponseEntity.ok(productService.update(productId, requestDto));
     }
 
     @DeleteMapping("/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable("productId") Long productId) {
-        productService.deleteById(productId);
+        productService.delete(productId);
         return ResponseEntity.noContent().build();
     }
 

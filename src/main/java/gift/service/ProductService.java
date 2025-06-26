@@ -1,11 +1,11 @@
 package gift.service;
 
+import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
+import gift.exception.ProductNotExistException;
 import gift.repository.ProductRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -17,30 +17,30 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public ProductResponseDto createProduct(String name, Integer price, String imageUrl) {
-        Product product = new Product(name, price, imageUrl);
+    public ProductResponseDto create(ProductRequestDto requestDto) {
+        Product product = new Product(requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
         Product newProduct = productRepository.save(product);
 
         return new ProductResponseDto(newProduct.getId(), newProduct.getName(), newProduct.getPrice(), newProduct.getImageUrl());
     }
 
-    public ProductResponseDto findById(Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found: id=" + id)); // 상품이 없는 경우 예외 처리
+    public ProductResponseDto find(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotExistException(productId)); // 상품이 없는 경우 예외 처리
 
         return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
     }
 
-    public ProductResponseDto updateProduct(Long productId, String name, Integer price, String imageUrl) {
-        Product product = productRepository.update(productId, name, price, imageUrl)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found: id=" + productId));
+    public ProductResponseDto update(Long productId, ProductRequestDto requestDto) {
+        Product product = productRepository.update(productId, requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl())
+                .orElseThrow(() -> new ProductNotExistException(productId));
 
         return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
     }
 
-    public void deleteById(Long productId) {
+    public void delete(Long productId) {
         productRepository.deleteById(productId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found: id=" + productId));
+                .orElseThrow(() -> new ProductNotExistException(productId));
     }
 
     public List<ProductResponseDto> findAll(int page, int size, String sort) {

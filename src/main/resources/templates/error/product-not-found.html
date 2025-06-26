@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>상품 없음</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<div class="container">
+  <h1>상품을 찾을 수 없습니다 😢</h1>
+  <p th:text="${errorMessage}">해당 상품이 존재하지 않습니다.</p>
+  <a href="/products">← 상품 목록으로</a>
+</div>
+</body>
+</html>
