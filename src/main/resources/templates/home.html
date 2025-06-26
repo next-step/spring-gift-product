@@ -7,12 +7,31 @@
   <link rel="stylesheet" href="/css/home.css" type="text/css">
 </head>
 <body>
-<h1>Manage <b>Products</b></h1>
+<div class="page-header">
+  <h1 class="page-title">Manage <b>Products</b></h1>
 
-<div class="top-action-buttons">
-  <button id="delete-button">선택 항목 삭제</button>
+  <!--product create/delete button-->
+  <div class="top-action-buttons">
+    <button id="create-button" onclick="openCreateModal('물품 등록 창', 'create-product.html')"
+            data-bs-target="#product-modal">
+      물품 등록</button>
+    <button id="delete-button">선택 항목 삭제</button>
+  </div>
 </div>
 
+<!--Modal-->
+<div id="product-modal" class="product-modal">
+  <div class="product-modal-content">
+    <div class="product-modal-header">
+      <h5 class="product-modal-title">모달 제목</h5>
+      <button class="product-modal-close-button" onclick="closeModal()">✖</button>
+    </div>
+    <div class="product-modal-body">
+    </div>
+  </div>
+</div>
+
+<!--Product Table-->
 <table class="product-table">
   <thead>
   <tr>
@@ -29,7 +48,7 @@
 
   <tbody class="product-table-body" th:if="${productMap == null or productMap.isEmpty()}">
   <tr>
-    <td colspan="5">등록된 상품이 없습니다.</td>
+    <td colspan="8">등록된 상품이 없습니다.</td>
   </tr>
   </tbody>
 
@@ -41,8 +60,8 @@
       <td th:text="${entry.value.name}"></td>
       <td th:text="${entry.value.price}"></td>
       <td th:text="${entry.value.imageUrl}"></td>
-      <td><button th:text="삭제"></button></td>
       <td><button th:text="수정"></button></td>
+      <td><button th:text="삭제"></button></td>
     </tr>
   </tbody>
 </table>

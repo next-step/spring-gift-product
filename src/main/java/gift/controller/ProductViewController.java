@@ -1,5 +1,6 @@
 package gift.controller;
 
+import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.service.ProductService;
@@ -12,10 +13,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/view/products")
+@RequestMapping("/view")
 public class ProductViewController {
     private final ProductService productService;
 
@@ -23,7 +28,7 @@ public class ProductViewController {
         this.productService = productService;
     }
 
-    @GetMapping
+    @GetMapping("/products")
     public String showProducts(Model model) {
         Map<Long, Product> productMap = productService.findAllMap();
 
@@ -32,7 +37,24 @@ public class ProductViewController {
         return "home";
     }
 
-    @DeleteMapping("/{productId}")
+    @GetMapping("/create-product.html")
+    public String showCreateProductView() {
+        return "create-product";
+    }
+
+    @PostMapping("/products")
+    public String createProduct(
+        @RequestParam Long id,
+        @RequestParam String name,
+        @RequestParam int price,
+        @RequestParam String imageUrl
+    ) {
+        productService.createProduct(new ProductRequestDto(id, name, price, imageUrl));
+
+        return "redirect:/view/products";
+    }
+
+    @DeleteMapping("/products/{productId}")
     public String deleteProduct(@PathVariable Long productId) {
         productService.deleteProduct(productId);
 
