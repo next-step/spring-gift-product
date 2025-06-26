@@ -5,6 +5,8 @@ public class ProductDTO {
     private int price;
     private String imageUrl;
 
+    public ProductDTO() {};
+
     public ProductDTO(String name, int price, String imageUrl) {
         if(price < 0) {
             throw new IllegalArgumentException("Price should be positive");

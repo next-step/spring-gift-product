@@ -16,13 +16,25 @@ public class ProductController {
     private final Map<Long, Product> products = new ConcurrentHashMap<>();
     private final AtomicLong idGenerator = new AtomicLong(1);
 
-    @ResponseBody
-    @PostMapping("/product")
-    public Product createProduct(@RequestBody ProductDTO productdto) {
+    @GetMapping("/products")
+    public String listProducts(Model model) {
+        Collection<Product> productList = products.values();
+        model.addAttribute("products", productList);
+        return "products";
+    }
+
+    @GetMapping("/product/add")
+    public String addForm(Model model) {
+        model.addAttribute("productdto", new ProductDTO());
+        return "addForm";
+    }
+
+    @PostMapping("/product/add")
+    public String createProduct(@ModelAttribute ProductDTO productdto) {
         long id = idGenerator.getAndIncrement();
         Product product = new Product(id, productdto);
         products.put(product.getId(), product);
-        return product;
+        return "redirect:/api/products";
     }
 
     @ResponseBody
@@ -30,13 +42,6 @@ public class ProductController {
     public Product getProduct(@PathVariable Long id) {
         Product product = products.get(id);
         return product;
-    }
-
-    @GetMapping("/products")
-    public String listProducts(Model model) {
-        Collection<Product> productList = products.values();
-        model.addAttribute("products", productList);
-        return "products";
     }
 
     @ResponseBody
