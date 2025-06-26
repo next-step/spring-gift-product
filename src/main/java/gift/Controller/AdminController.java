@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,5 +42,14 @@ public class AdminController {
       productService.update(product.getId(), product);
     }
     return "redirect:/admin/products";
+  }
+
+  @GetMapping("/{id}/edit")
+  public String showEditForm(@PathVariable Long id, Model model) {
+    Product product = productService.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+    model.addAttribute("product", product);
+    model.addAttribute("mode", "edit");
+    return "admin/product-form";
   }
 }
