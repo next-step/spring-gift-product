@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>관리자 상품 목록</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #333; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    img { max-width: 100px; height: auto; display: block; margin: 0 auto; }
+    .action-links a { margin-right: 10px; text-decoration: none; color: #007bff; }
+    .action-links a:hover { text-decoration: underline; }
+    .add-product-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 15px;
+      background-color: #28a745;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .add-product-btn:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+<h1>상품 목록 (관리자)</h1>
+
+<a href="/admin/products/new" class="add-product-btn">상품 추가</a> <table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>이름</th>
+    <th>가격</th>
+    <th>이미지</th>
+    <th>관리</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="product : ${products}">
+    <td th:text="${product.id}">1</td>
+    <td th:text="${product.name}">아이스 카페 아메리카노 T</td>
+    <td th:text="${product.price}">4500</td>
+    <td><img th:src="${product.imageUrl}" alt="상품 이미지"></td>
+    <td class="action-links">
+      <a href="#" th:href="@{/admin/products/{id}/edit(id=${product.id})}">수정</a> <a href="#">삭제</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
