@@ -32,8 +32,10 @@ public class ProductViewController {
     }
 
     @PostMapping("/update")
-    public String updateProduct(@ModelAttribute ProductRequestDTO product) {
-        productService.update(product.getId(), product);
+    public String updateProduct(
+            @RequestParam("id") Integer id,
+            @ModelAttribute ProductRequestDTO product) {
+        productService.update(id, product);
         return "redirect:/products";
     }
 
