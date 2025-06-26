@@ -79,8 +79,8 @@ public class ProductViewController {
     
     @PatchMapping("/edit/{id}")
     public String modifyInfoProduct(@PathVariable Long id,
-        @ModelAttribute ModifyProductRequestDto productForm) {
-        productService.modifyProductInfoWithId(id, productForm);
+        @ModelAttribute ModifyProductRequestDto modifyForm) {
+        productService.modifyProductInfoWithId(id, modifyForm);
         return "redirect:/products";
     }
     
