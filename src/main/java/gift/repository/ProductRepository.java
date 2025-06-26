@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
@@ -39,7 +40,7 @@ public class ProductRepository {
     public Product update(Long id, String name, int price, String imageUrl) {
         Product product = products.get(id);
         if (product == null) {
-            return null; // 없는 ID는 무시
+            throw new NoSuchElementException("해당 ID의 상품이 존재하지 않습니다...");
         }
 
         Product updated = new Product(name, price, imageUrl);
