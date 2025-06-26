@@ -2,12 +2,14 @@ package gift.admin;
 
 import gift.item.dto.ItemCreateDto;
 import gift.item.dto.ItemResponseDto;
+import gift.item.dto.ItemUpdateDto;
 import gift.item.service.ItemService;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -36,11 +38,29 @@ public class AdminItemController {
         return "admin-item-new";
     }
 
+    @GetMapping("admin/items/update/{id}")
+    public String updateItemPage(@PathVariable("id") Long id, Model model) {
+        ItemResponseDto item = itemService.findItem(id);
+        ItemUpdateDto updateDto = new ItemUpdateDto(item.name(), item.price(), item.imageUrl());
+        model.addAttribute("item", updateDto);
+        model.addAttribute("id", id);
+        return "admin-item-update";
+    }
+
     // 상품 요청 처리
 
     @PostMapping("/admin/items")
     public String newItem(@ModelAttribute ItemCreateDto item) {
         itemService.createItem(item);
+        return "redirect:/admin/items";
+    }
+
+    @PostMapping("/admin/items/{id}")
+    public String updateItem(
+        @PathVariable("id") Long id,
+        @ModelAttribute ItemUpdateDto item
+    ) {
+        itemService.updateItem(id, item);
         return "redirect:/admin/items";
     }
 

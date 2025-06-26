@@ -25,6 +25,9 @@
         <td th:text="${item.name}"></td>
         <td th:text="${item.price} + '원'"></td>
         <td th:text="${item.imageUrl}"></td>
+        <td>
+          <a th:href="@{/admin/items/update/{id}(id=${item.id})}">수정</a>
+        </td>
       </tr>
       </tbody>
     </table>
