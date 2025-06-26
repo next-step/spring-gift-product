@@ -34,7 +34,7 @@
           <td th:text="${product.id}"></td>
           <td th:text="${product.name}"></td>
           <td th:text="${product.price} + '₩'"></td>
-          <td th:src="${product.imageUrl}"></td>
+          <td th:text="${product.imageUrl}"></td>
           <td>
             <!-- 수정 버튼 -->
             <a th:href="@{'/admin/products/edit/' + ${product.id}}" class="btn btn-sm btn-warning">Edit</a>

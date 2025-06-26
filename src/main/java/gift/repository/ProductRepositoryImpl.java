@@ -16,11 +16,12 @@ import org.springframework.web.server.ResponseStatusException;
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
     private final Map<Long, Product> products = new HashMap<>();
-    private Long nextId = 0L;
+    private final Random random = new Random();
+    private Long nextId = 1L;
 
     @Override
     public ProductResponseDto createProduct(ProductRequestDto requestDto) {
-        Long id = nextId + 1; // jpa 사용 전까지 임시 번호 부여(여러 스레드 사용시 문제 발생 가능)
+        Long id = nextId++; // jpa 사용 전까지 임시 번호 부여(여러 스레드 사용시 문제 발생 가능)
         String name = requestDto.name();
         Integer price = requestDto.price();
         String imageUrl = requestDto.imageUrl();
