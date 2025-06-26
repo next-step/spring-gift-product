@@ -40,4 +40,4 @@ public class ProductResponse {
     public String getImageUrl() {
         return imageUrl;
     }
-} 
+}
