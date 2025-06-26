@@ -31,12 +31,12 @@
 
 ### 구현할 관리자 화면 기능 목록
 
-- 관리자 상품 목록 조회 화면 구현 (`GET /admin/products`)
-- 관리자 상품 등록 화면 구현 (`GET /admin/products/new`)
-- 관리자 상품 등록 기능 구현 (`POST /admin/products`)
-- 관리자 상품 상세 조회 화면 구현 (`GET /admin/products/{id}`)
-- 관리자 상품 수정 화면 구현 (`GET /admin/products/{id}/edit`)
-- 관리자 상품 수정 기능 구현 (`POST /admin/products/{id}/edit`)
-- 관리자 상품 삭제 기능 구현 (`POST /admin/products/{id}/delete`)
+- 관리자 상품 목록 조회 화면 구현
+- 관리자 상품 등록 화면 구현
+- 관리자 상품 등록 기능 구현
+- 관리자 상품 상세 조회 화면 구현
+- 관리자 상품 수정 화면 구현
+- 관리자 상품 수정 기능 구현
+- 관리자 상품 삭제 기능 구현
 
 
