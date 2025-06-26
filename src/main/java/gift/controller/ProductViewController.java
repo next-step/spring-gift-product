@@ -25,9 +25,6 @@ public class ProductViewController {
     @GetMapping("/new")
     public String createForm(Model model) {
         model.addAttribute("product", new ProductRequestDto());
-        System.out.println(
-                "hdy"
-        );
         return "product/create";
     }
 
