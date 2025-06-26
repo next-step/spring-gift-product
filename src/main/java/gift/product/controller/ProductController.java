@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/products")
@@ -25,12 +26,12 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Void> addProduct(@RequestBody ProductCreateRequest dto) {
-        if (!StringValidator.validate(dto.getName()) ||
-                !StringValidator.validate(dto.getImageURL()) || dto.getPrice() <= 0)
+        if (!StringValidator.isNotBlank(dto.getName()) ||
+                !StringValidator.isNotBlank(dto.getImageURL()) || dto.getPrice() <= 0)
             throw new BadProductRequestException("이름, 가격, 이미지 주소는 필수입니다.");
 
 
-        String savedId = productService.addProduct(dto);
+        UUID savedId = productService.addProduct(dto);
 
 
         return ResponseEntity.status(HttpStatus.CREATED).location(
@@ -47,7 +48,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductResponse> getProduct(@PathVariable String id) {
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable UUID id) {
 
         ProductResponse response = productService.findProduct(id);
 
@@ -55,15 +56,18 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
-
+    public ResponseEntity<Void> deleteProduct(@PathVariable UUID id) {
         productService.deleteProduct(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateProduct(@PathVariable String id, @RequestBody ProductUpdateRequest dto) {
+    public ResponseEntity<Void> updateProduct(@PathVariable UUID id, @RequestBody ProductUpdateRequest dto) {
+
+        if (!StringValidator.isNotBlank(dto.getName()) ||
+                !StringValidator.isNotBlank(dto.getImageURL()) || dto.getPrice() <= 0)
+            throw new BadProductRequestException("이름, 가격, 이미지 주소는 필수입니다.");
 
         productService.updateProduct(id, dto);
 

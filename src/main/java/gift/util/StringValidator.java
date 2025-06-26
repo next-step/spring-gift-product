@@ -1,8 +1,12 @@
 package gift.util;
 
-public abstract class StringValidator {
+public final class StringValidator {
 
-    public static boolean validate(String str) {
+    private StringValidator() {
+        throw new AssertionError("utility class");
+    }
+
+    public static boolean isNotBlank(String str) {
         if (str != null && !str.isBlank()) {
             return true;
         }

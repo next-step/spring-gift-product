@@ -2,24 +2,16 @@ package gift.product.repository;
 
 import gift.domain.Product;
 import gift.global.exception.NotFoundProductException;
-import gift.product.dto.ProductCreateRequest;
-import gift.product.dto.ProductUpdateRequest;
-import gift.util.StringValidator;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 
 @Repository
 public class ProductRepositoryV1 implements ProductRepository{
-    private final Map<String, Product> products = new HashMap<>();
+    private final Map<UUID, Product> products = new HashMap<>();
 
-    public String save(ProductCreateRequest dto) {
-        Product product = new Product(dto.getName(), dto.getPrice(), dto.getImageURL());
+    public UUID save(Product product) {
 
         products.put(product.getId(), product);
 
@@ -32,36 +24,21 @@ public class ProductRepositoryV1 implements ProductRepository{
                 .toList();
     }
 
-
-    public Optional<Product> findById(String id) {
+    public Optional<Product> findById(UUID id) {
         return Optional.ofNullable(products.get(id));
     }
 
 
-    public void deleteById(String id) {
-        if (products.get(id) != null) products.remove(id);
+    public void deleteById(UUID id) {
+        if (products.containsKey(id)) products.remove(id);
         else throw new NotFoundProductException("삭제 실패 - 존재하지 않는 상품입니다");
     }
 
 
-    public void update(String id, ProductUpdateRequest dto) {
-        if (products.get(id) == null) throw new NotFoundProductException("수정 실패 - 존재하지 않는 상품입니다");
+    public void update(Product product) {
+        UUID id = product.getId();
+        if (!products.containsKey(id)) throw new NotFoundProductException("수정 실패 - 존재하지 않는 상품입니다");
 
-        Product oldProduct = products.get(id);
-        String name = oldProduct.getName();
-        int price = oldProduct.getPrice();
-        String imageURL = oldProduct.getImageURL();
-
-        if (StringValidator.validate(dto.getName())) {
-            name = dto.getName();
-        }
-        if (StringValidator.validate(dto.getImageURL())) {
-            imageURL = dto.getImageURL();
-        }
-        if (dto.getPrice() > 0) {
-            price = dto.getPrice();
-        }
-
-        products.put(id, new Product(id, name, price, imageURL));
+        products.put(id, product);
     }
 }

@@ -6,17 +6,18 @@ import gift.product.dto.ProductUpdateRequest;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 public interface ProductRepository {
 
-    String save(ProductCreateRequest dto);
+    UUID save(Product product);
 
     List<Product> findAll();
 
-    Optional<Product> findById(String id);
+    Optional<Product> findById(UUID id);
 
-    void deleteById(String id);
+    void deleteById(UUID id);
 
-    void update(String id, ProductUpdateRequest dto);
+    void update(Product product);
 }
