@@ -2,11 +2,15 @@ package gift.controller;
 
 import gift.dto.RequestDto;
 import gift.dto.ResponseDto;
+import gift.entity.Product;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import gift.service.ProductService;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")
@@ -35,7 +39,6 @@ public class ProductController {
     }
 
     // 3. 상품 수정
-    // 4. 상품 삭제
 
     @PutMapping("/{id}")
     public ResponseEntity<ResponseDto> updateProduct(
@@ -47,6 +50,7 @@ public class ProductController {
         return new ResponseEntity<>(response, HttpStatus.OK);
      }
 
+    // 4. 상품 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.delete(id);
