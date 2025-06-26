@@ -1,0 +1,82 @@
+package gift.controller;
+
+import gift.entity.Product;
+import gift.repository.ProductRepository;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+@Controller
+public class ProductManagerViewController {
+
+  private final ProductRepository products;
+
+  public ProductManagerViewController(ProductRepository products) {
+    this.products = products;
+  }
+
+  //상품 조회
+  @GetMapping("/home")
+  public String getProduct(Model model) {
+    model.addAttribute("allProducts", products.findAll());
+    return "products";
+  }
+
+  //상품 단건 조회
+  @GetMapping("/home/{productId}")
+  public String getProductById(@PathVariable long productId, Model model,
+      RedirectAttributes redirectAttributes) {
+    Product product = products.get(productId);
+    if (product == null) {
+      redirectAttributes.addFlashAttribute("errorMessage", "상품이 존재하지 않습니다.");
+      return "redirect:/home";
+    }
+    model.addAttribute("product", product);
+    return "product"; // product.html로 이동
+  }
+
+  //상품 추가
+  @PostMapping("/home")
+  public String createProduct(
+      @RequestParam long productId,
+      @RequestParam String name,
+      @RequestParam int price,
+      @RequestParam String imageURL) {
+    Product product = new Product(productId, name, price, imageURL);
+    products.add(product);
+    return "redirect:/home";
+  }
+
+
+  //상품 수정(수정 페이지 이동)
+  @PostMapping("/home/{productId}")
+  public String updateProduct(
+      @PathVariable long productId,
+      @RequestParam String name,
+      @RequestParam int price,
+      @RequestParam String imageURL,
+      RedirectAttributes redirectAttributes) {
+    if (products.get(productId) == null) {
+      redirectAttributes.addFlashAttribute("errorMessage", "상품이 존재하지 않음");
+      return "redirect:/home";
+    }
+    Product product = new Product(productId, name, price, imageURL);
+    products.add(product);
+    return "redirect:/home";
+  }
+
+  //상품 삭제
+  @PostMapping("/home/delete")
+  public String deleteProduct(@RequestParam long productId, RedirectAttributes redirectAttributes) {
+    if (products.get(productId) == null) {
+      redirectAttributes.addFlashAttribute("errorMessage", "상품이 존재하지 않음");
+      return "redirect:/home";
+    }
+    products.delete(productId);
+    return "redirect:/home";
+  }
+}
