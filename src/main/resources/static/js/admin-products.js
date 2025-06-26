@@ -164,6 +164,11 @@ function openEditModal(id) {
 
             productModal.style.display = 'block';
         })
+        .catch(error => {
+            console.error('상품 정보 조회 실패:', error);
+            const errorMessage = error.response?.data?.message || '상품 정보를 불러오는 데 실패했습니다.';
+            alert(errorMessage);
+        });
 }
 
 function updateProduct(id, productData) {
@@ -175,6 +180,11 @@ function updateProduct(id, productData) {
                 getProducts();
             }
         })
+        .catch(error => {
+            console.error('상품 수정 실패:', error);
+            const errorMessage = error.response?.data?.message || '상품 수정에 실패했습니다.';
+            alert(errorMessage);
+        });
 }
 
 function deleteProduct(id) {
@@ -186,5 +196,10 @@ function deleteProduct(id) {
                     getProducts();
                 }
             })
+            .catch(error => {
+                console.error('상품 삭제 실패:', error);
+                const errorMessage = error.response?.data?.message || '상품 삭제에 실패했습니다.';
+                alert(errorMessage);
+            });
     }
 }
