@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <title th:text="${editId} != null ? '상품 수정' : '상품 생성'">폼</title>
+</head>
+<body>
+<form th:action="${editId} != null ? @{|/admin/products/${editId}/edit|} : @{/admin/products}"
+      th:object="${itemRequest}" method="post">
+
+  <div>
+    <label>상품명:</label>
+    <input type="text" th:field="*{name}" placeholder="상품명"/>
+  </div>
+  <div>
+    <label>가격:</label>
+    <input type="number" th:field="*{price}" placeholder="가격"/>
+  </div>
+  <div>
+    <label>이미지 URL:</label>
+    <input type="text" th:field="*{imageUrl}" placeholder="http://..."/>
+  </div>
+
+  <button type="submit"
+          th:text="${editId} != null ? '수정하기' : '등록하기'">제출</button>
+</form>
+
+<a th:href="@{/admin/products}">목록으로 돌아가기</a>
+</body>
+</html>
