@@ -58,4 +58,11 @@ public class AdminProductController {
         productService.update(id, dto);
         return "admin/products";
     }
+
+    // 4. 상품 삭제
+    @PostMapping("{id}/delete")
+    public String delete(@PathVariable Long id) {
+        productService.delete(id);
+        return "admin/products";
+    }
 }
