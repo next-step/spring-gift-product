@@ -3,7 +3,7 @@ package gift.service;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
-import gift.repository.ProductRepositoryImp;
+import gift.repository.ProductRepositoryImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public ProductService(ProductRepositoryImp productRepository) {
+    public ProductService(ProductRepositoryImpl productRepository) {
         this.productRepository = productRepository;
     }
 
@@ -47,6 +47,9 @@ public class ProductService {
     @Transactional
     public void updateProduct(Long id, String name, Long price, String imageUrl) {
         Product findProduct = productRepository.findProductByIdOrElseThrow(id);
-        findProduct.updateProduct(name, price, imageUrl);
+        findProduct.setName(name);
+        findProduct.setPrice(price);
+        findProduct.setImageUrl(imageUrl);
+        productRepository.updateProduct(findProduct);
     }
 }

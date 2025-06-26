@@ -12,4 +12,6 @@ public interface ProductRepository {
     Product createProduct(String name, Long price, String imageUrl);
 
     void deleteProduct(Long id);
+
+    void updateProduct(Product product);
 }

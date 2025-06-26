@@ -23,8 +23,8 @@
 ## 4️⃣ 3단계 구현 예정 기능 목록
 - [x] H2 DB 설정
 - [x] schema.sql, data.sql 작성 및 로드 설정
-- [ ] JdbcTemplate 기반의 ProductRepository 구현
-- [ ] 서비스 및 컨트롤러에서 DB 기반 Repository로 전환
+- [x] JdbcTemplate 기반의 ProductRepository 구현
+- [ ] 에러 응답용 전용 DTO 적용
 
 ## 4️⃣ 기술 스택
 - Java 17
