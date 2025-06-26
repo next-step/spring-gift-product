@@ -19,7 +19,7 @@
         <label for="imageUrl">이미지 URL:</label>
         <input type="url" id="imageUrl" name="imageUrl" required/>
     </div>
-    <button type="submit">등록</button>
+    <button type="submit" onclick="return confirm('상품을 등록하시겠습니까?')">등록</button>
 </form>
 <a th:href="@{/admin/products}">목록으로 돌아가기</a>
 
