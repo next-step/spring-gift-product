@@ -1,9 +1,9 @@
 package gift.dto;
 
-// 유효성 검증을 위한 어노테이션들을 import 합니다.
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.URL;
 
 public class ProductRequestDto {
     @NotBlank(message = "상품 이름을 반드시 입력해야 합니다.")
@@ -14,6 +14,7 @@ public class ProductRequestDto {
     private int price;
 
     @NotBlank(message = "상품 이미지 URL을 반드시 입력해야 합니다.")
+    @URL(message = "유효한 URL 형식이 아닙니다.")
     private String imageUrl;
 
     public ProductRequestDto() {
