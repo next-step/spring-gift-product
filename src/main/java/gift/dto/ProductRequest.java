@@ -1,6 +1,7 @@
 package gift.dto;
 
 public class ProductRequest {
+    private Long id;
     private String name;
     private int price;
     private String imageUrl;
@@ -22,5 +23,12 @@ public class ProductRequest {
     }
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 }
