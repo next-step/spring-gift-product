@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,10 +16,11 @@ import org.springframework.web.server.ResponseStatusException;
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
     private final Map<Long, Product> products = new HashMap<>();
+    private Long nextId = 0L;
 
     @Override
     public ProductResponseDto createProduct(ProductRequestDto requestDto) {
-        Long id = requestDto.id();
+        Long id = nextId + 1; // jpa 사용 전까지 임시 번호 부여(여러 스레드 사용시 문제 발생 가능)
         String name = requestDto.name();
         Integer price = requestDto.price();
         String imageUrl = requestDto.imageUrl();
