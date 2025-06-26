@@ -30,7 +30,7 @@ public class ProductService {
     }
 
     public ProductResponse addProduct(ProductRequest request) {
-        Product product = new Product(null, request.getName(), request.getPrice(),
+        Product product = new Product(request.getName(), request.getPrice(),
                 request.getImageUrl());
         Product saved = productRepository.save(product);
         return new ProductResponse(saved);

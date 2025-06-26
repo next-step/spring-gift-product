@@ -29,8 +29,9 @@ public class ProductRepository {
 
     public Product save(Product product) {
         Long id = sequence++;
-        Product newProduct = new Product(id, product.getName(), product.getPrice(),
+        Product newProduct = new Product(product.getName(), product.getPrice(),
                 product.getImageUrl());
+        newProduct.setId(id);
         products.put(id, newProduct);
         return newProduct;
     }
@@ -41,7 +42,7 @@ public class ProductRepository {
             return null; // 없는 ID는 무시
         }
 
-        Product updated = new Product(id, name, price, imageUrl);
+        Product updated = new Product(name, price, imageUrl);
         products.put(id, updated);
         return updated;
     }
