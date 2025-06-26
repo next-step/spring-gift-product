@@ -1,0 +1,103 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  background: #f4f7fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 30px 0;
+}
+.main-container {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  max-width: 500px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.main-header {
+  background: #4a5a7a;
+  padding: 24px 32px 18px 32px;
+  text-align: center;
+}
+.main-header h2 {
+  color: #fff;
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 1px;
+}
+.main-header p {
+  color: #e0e6ed;
+  font-size: 1rem;
+  margin-top: 8px;
+}
+.form-container {
+  padding: 32px;
+}
+.form-element {
+  margin-bottom: 22px;
+}
+.form-element label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #4a5a7a;
+  font-size: 1rem;
+}
+.form-element input[type="text"],
+.form-element input[type="number"],
+.form-element input[type="url"] {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e0e6ed;
+  border-radius: 7px;
+  font-size: 1rem;
+  background: #f8f9fa;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+.form-element input:focus {
+  outline: none;
+  border-color: #4a5a7a;
+  background: #fff;
+  box-shadow: 0 0 0 2px #4a5a7a22;
+}
+.error-message {
+  color: #e74c3c;
+  font-size: 0.92rem;
+  margin-top: 5px;
+}
+.button-container {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 30px;
+}
+.btn {
+  border: none;
+  border-radius: 5px;
+  padding: 11px 28px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.btn-submit {
+  background: #27ae60;
+}
+.btn-submit:hover {
+  background: #219150;
+}
+.btn-cancel {
+  background: #e74c3c;
+}
+.btn-cancel:hover {
+  background: #c0392b;
+}
+@media (max-width: 600px) {
+  .main-container, .form-container, .main-header { padding-left: 10px; padding-right: 10px; }
+  .form-container { padding: 18px; }
+  .button-container { flex-direction: column; gap: 8px; }
+} 

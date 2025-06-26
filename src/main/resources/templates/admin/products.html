@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>상품 목록</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/css/admin-products.css}">
+</head>
+<body>
+<div class="main-container">
+  <div class="main-header">
+    <h2>Manage <b>Products</b></h2>
+    <div class="header-actions">
+      <a href="/admin/products/new" class="btn btn-add"><i class="fa fa-plus-circle"></i> Add New Product</a>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+      <tr>
+        <th>상품 이미지</th>
+        <th>상품명</th>
+        <th>가격</th>
+        <th>관리</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:if="${#lists.isEmpty(products)}">
+        <td colspan="4" style="text-align:center; color:#888; padding:40px 0;">등록된 상품이 없습니다.</td>
+      </tr>
+      <tr th:each="product : ${products}">
+        <td><img th:src="${product.imageUrl}" alt="상품 이미지" class="product-image"></td>
+        <td th:text="${product.name}">상품명</td>
+        <td th:text="${#numbers.formatInteger(product.price, 3, 'COMMA')} + '원'">10,000원</td>
+        <td class="actions-col">
+          <a th:href="@{'/admin/products/' + ${product.id} + '/edit'}" class="action-btn edit"
+             title="수정"><i class="fa fa-pencil-alt"></i></a>
+          <form th:action="@{'/admin/products/' + ${product.id} + '/delete'}" method="post"
+                style="display:inline;">
+            <button type="submit" class="action-btn delete" title="삭제"
+                    onclick="return confirm('정말 삭제하시겠습니까?')"><i class="fa fa-trash"></i></button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>
