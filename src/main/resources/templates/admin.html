@@ -21,6 +21,7 @@
                 <th>상품명</th>
                 <th>가격</th>
                 <th>이미지 URL</th>
+                <th>수정</th>
             </tr>
             </thead>
             <tbody>
@@ -29,6 +30,9 @@
                 <td th:text="${product.name}">이름</td>
                 <td th:text="${product.price}">가격</td>
                 <td th:text="${product.imageUrl}">이미지 URL</td>
+                <td>
+                    <button id="delete-btn" class="delete-btn" th:data-product-id="${product.id}">삭제</button>
+                </td>
             </tr>
             </tbody>
         </table>

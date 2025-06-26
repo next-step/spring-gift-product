@@ -90,3 +90,15 @@ thead {
 .product-form button:hover {
     background-color: #0056b3;
 }
+.delete-btn {
+    padding: 5px 10px;
+    background-color: #dc3545; /* 빨간색 계열 */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
