@@ -64,7 +64,7 @@ public class AdminProductController {
     @PostMapping("/{id}")
     public String update(@PathVariable Long id, @ModelAttribute Product product) {
         productService.update(id, product);
-        return "redirect:/admin/products/" + id;
+        return "redirect:/admin/products";
     }
 
     @PostMapping("/{id}/delete")

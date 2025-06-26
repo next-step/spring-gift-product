@@ -2,21 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
   <title>상품 상세</title>
-  <style>
-    img { max-width: 200px; }
-  </style>
+  <link rel="stylesheet" th:href="@{/css/product-detail.css}">
 </head>
 <body>
-<h1>상품 상세 정보</h1>
-<ul>
-  <li><strong>ID:</strong> <span th:text="${product.id}">1</span></li>
-  <li><strong>이름:</strong> <span th:text="${product.name}">상품명</span></li>
-  <li><strong>가격:</strong> <span th:text="${product.price}">10000</span></li>
-  <li><strong>이미지:</strong><br/>
-    <img th:src="${product.imageUrl}" alt="상품 이미지"/>
-  </li>
-</ul>
+<div class="detail-container">
+  <h1>📦 상품 상세 정보</h1>
+  <div class="product-card">
+    <div class="product-image">
+      <img th:src="${product.imageUrl}" alt="상품 이미지"/>
+    </div>
+    <div class="product-info">
+      <p><strong>ID:</strong> <span th:text="${product.id}">1</span></p>
+      <p><strong>이름:</strong> <span th:text="${product.name}">상품명</span></p>
+      <p><strong>가격:</strong> <span th:text="${product.price} + '원'">가격</span></p>
+    </div>
+  </div>
 
-<a th:href="@{/admin/products}">← 목록으로</a>
+  <div class="button-group">
+    <a class="btn-secondary" th:href="@{/admin/products}">← 목록으로</a>
+    <a class="btn-primary" th:href="@{/admin/products/{id}/edit(id=${product.id})}">✏️ 수정하기</a>
+  </div>
+</div>
 </body>
 </html>
+

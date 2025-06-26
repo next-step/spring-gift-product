@@ -2,33 +2,45 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <title>상품 목록</title>
-    <style>
-        table, th, td { border: 1px solid black; border-collapse: collapse; }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/product-list.css}">
 </head>
 <body>
-<h1>관리자 상품 목록</h1>
+
+<div class="top-bar">
+    <h1>관리자 상품 목록</h1>
+    <a th:href="@{/admin/products/new}">
+        <button>➕ 상품 등록</button>
+    </a>
+</div>
+
 <table>
     <thead>
     <tr>
-        <th>ID</th><th>이름</th><th>가격</th><th>이미지</th><th>관리</th>
+        <th>ID</th>
+        <th>이름</th>
+        <th>가격</th>
+        <th>이미지</th>
+        <th>관리</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="product : ${products}">
         <td th:text="${product.id}"></td>
         <td>
-            <a th:href="@{/admin/products/{id}(id=${product.id})}" th:text="${product.name}">상품명</a>
+            <a th:href="@{/admin/products/{id}(id=${product.id})}"
+               th:text="${product.name}">상품명</a>
         </td>
-        <td th:text="${product.price}"></td>
+        <td th:text="${product.price} + '원'">가격</td>
         <td>
-            <img th:src="${product.imageUrl}" alt="상품 이미지" width="100"/>
+            <img th:src="${product.imageUrl}" alt="상품 이미지"/>
         </td>
-        <td>
-            <a th:href="@{/admin/products/{id}/edit(id=${product.id})}">✏️ 수정</a>
-            <form th:action="@{/admin/products/{id}/delete(id=${product.id})}" method="post" style="display:inline"
+        <td class="action-buttons">
+            <a th:href="@{/admin/products/{id}/edit(id=${product.id})}">
+                <button>✏️ 수정</button>
+            </a>
+            <form th:action="@{/admin/products/{id}/delete(id=${product.id})}" method="post"
                   onsubmit="return confirm('정말 삭제할까요?');">
-                <button type="submit">🗑️ 삭제</button>
+                <button class="btn-delete" type="submit">🗑️ 삭제</button>
             </form>
         </td>
     </tr>
@@ -37,3 +49,4 @@
 
 </body>
 </html>
+
