@@ -4,7 +4,9 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,9 +19,9 @@ public class ProductService {
 
     public ProductResponseDto addProduct(ProductRequestDto productRequestDto) {
         Product product = new Product(
-                productRequestDto.getName(),
-                productRequestDto.getPrice(),
-                productRequestDto.getImageUrl()
+                productRequestDto.name(),
+                productRequestDto.price(),
+                productRequestDto.imageUrl()
         );
 
         Product saveProduct = productRepository.addProduct(product);
@@ -29,6 +31,12 @@ public class ProductService {
                 saveProduct.getPrice(),
                 saveProduct.getImageUrl()
         );
+    }
+
+    public List<ProductResponseDto> findAllProduct() {
+        return productRepository.findAllProduct().stream()
+            .map(p -> new ProductResponseDto(p.getId(), p.getName(), p.getPrice(), p.getImageUrl()))
+            .collect(Collectors.toList());
     }
 
     public ProductResponseDto findProductById(Long id) {
@@ -49,7 +57,7 @@ public class ProductService {
         if (product == null) {
             throw new NoSuchElementException("Invalid id = " + id);
         }
-        product.updateProduct(productRequestDto.getName(), productRequestDto.getPrice(), productRequestDto.getImageUrl());
+        product.updateProduct(productRequestDto.name(), productRequestDto.price(), productRequestDto.imageUrl());
         Product updateProduct = productRepository.updateProduct(product);
 
         return new ProductResponseDto(

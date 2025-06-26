@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Product Add/Edit</title>
+</head>
+<body>
+<h2 th:text="${mode == 'edit'} ? 'Product Edit' : 'Product Add'">Product Add</h2>
+
+<form method="post"
+      th:action="${mode} == 'edit' ? @{/admin/edit/{id}(id=${productId})} : @{/admin/add}"
+      th:object="${product}">
+  <label>Name: <input th:field="*{name}" type="text" /></label><br/>
+  <label>Price: <input th:field="*{price}" type="number" /></label><br/>
+  <label>ImageURL: <input th:field="*{imageUrl}" type="text" /></label><br/>
+  <button th:text="${mode} == 'edit' ? 'Edit' : 'Add'" type="submit">Add</button>
+</form>
+
+<a href="/admin">Back</a>
+</body>
+</html>

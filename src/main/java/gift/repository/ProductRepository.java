@@ -1,7 +1,9 @@
 package gift.repository;
 
 import gift.entity.Product;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +16,10 @@ public class ProductRepository {
         product.setId(nextId++);
         productMap.put(product.getId(), product);
         return product;
+    }
+
+    public List<Product> findAllProduct() {
+        return new ArrayList<>(productMap.values());
     }
 
     public Product findProductById(Long id) {
