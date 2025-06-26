@@ -1,5 +1,6 @@
 package gift.controller;
 
+import gift.dto.ProductRequestDto;
 import gift.entity.Product;
 import gift.service.ProductService;
 import org.springframework.stereotype.Controller;
@@ -30,26 +31,28 @@ public class ProductController {
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
-        model.addAttribute("product", new Product());
+        model.addAttribute("product", new ProductRequestDto());
         return "product/form";
     }
 
     @PostMapping
-    public String createProduct(@ModelAttribute Product product){
-        productService.save(product);
+    public String createProduct(@ModelAttribute ProductRequestDto dto){
+        productService.save(dto);
         return "redirect:/admin/products";
     }
 
-    @GetMapping("/{id},edit")
-    public String showEditForm(Long id, Model model){
+    @GetMapping("/{id}/edit")
+     public String showEditForm(@PathVariable Long id, Model model) {
         Product product = productService.findById(id);
-        model.addAttribute("product",product);
+        ProductRequestDto dto = new ProductRequestDto(product.getName(), product.getPrice(), product.getImageUrl());
+        model.addAttribute("product", dto);
+        model.addAttribute("id", id);
         return "product/edit";
     }
 
     @PostMapping("/{id}")
-    public String updateProduct(@PathVariable Long id, @ModelAttribute Product updatedProduct) {
-        productService.update(id, updatedProduct);
+    public String updateProduct(@PathVariable Long id, @ModelAttribute ProductRequestDto dto) {
+        productService.update(id, dto);
         return "redirect:/admin/products";
     }
 

@@ -9,7 +9,9 @@
 
 <h1>상품 수정</h1>
 
-<form th:action="@{'/admin/products/' + ${product.id}}" th:object="${product}" method="post">
+<form th:action="@{/admin/products/{id}(id=${id})}"
+      th:object="${product}"
+      method="post">
   <label>상품명:
     <input type="text" th:field="*{name}" />
   </label>
