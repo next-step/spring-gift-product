@@ -12,4 +12,16 @@ public record GiftResponseDto(
   public GiftResponseDto(Gift gift) {
     this(gift.getId(), gift.getName(), gift.getPrice(), gift.getImageUrl());
   }
+
+  public String getName() {
+    return this.name;
+  }
+
+  public int getPrice() {
+    return this.price;
+  }
+
+  public String getImageUrl() {
+    return this.imageUrl;
+  }
 }

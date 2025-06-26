@@ -27,15 +27,4 @@ public class GiftRequestDto {
     return imageUrl;
   }
 
-  void setName(String name) {
-    this.name = name;
-  }
-
-  void setPrice(int price) {
-    this.price = price;
-  }
-
-  void setImageUrl(String imageUrl) {
-    this.imageUrl = imageUrl;
-  }
 }
