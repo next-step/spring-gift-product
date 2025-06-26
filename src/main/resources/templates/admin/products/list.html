@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.tymeleaf.org">
+<html lang="en" xmlns:th="http://www.tymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>상품목록</title>
@@ -7,7 +7,7 @@
 <body>
 <h1>상품목록</h1>
 
-<a th:href="@{/api/admin/products/new}">+ 새 상품 등록</a>
+<a th:href="@{/admin/products/new}">+ 새 상품 등록</a>
 <table border="1">
   <thead>
   <tr>
@@ -26,8 +26,8 @@
       <img th:src="${product.imageUrl}" width="100" alt="이미지"/>
     </td>
     <td>
-      <a th:href="@{'/api/admin/products/' + ${product.id} + '/edit'}">수정</a>
-      <form th:action="@{'/api/admin/products/' + ${product.id} + '/delete'}" method="post" style="display:inline;">
+      <a th:href="@{'/admin/products/' + ${product.id} + '/edit'}">수정</a>
+      <form th:action="@{'/admin/products/' + ${product.id} + '/delete'}" method="post" style="display:inline;">
         <button type="submit">삭제</button>
       </form>
     </td>
