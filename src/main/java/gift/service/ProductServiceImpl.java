@@ -51,7 +51,7 @@ public class ProductServiceImpl implements ProductService{
 
         Product product = productRepository.saveProduct(name, price, imageUrl);
 
-        return new ProductResponseDto(product.getId(), name, price, imageUrl);
+        return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
     }
 
     @Transactional
