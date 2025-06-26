@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ProductRepository {
 
-    Product createProduct(Product newProduct);
+    Product createProduct(CreateProductRequestDto newProduct);
 
     List<ProductResponseDto> findAllProducts();
 

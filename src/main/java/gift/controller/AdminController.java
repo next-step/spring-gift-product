@@ -65,5 +65,4 @@ public class AdminController {
         productService.deleteProductById(id);
         return "redirect:/admin/boards";
     }
-
 }
