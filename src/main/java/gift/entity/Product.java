@@ -30,6 +30,10 @@ public class Product {
         return imageUrl;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void update(String name, int price, String imageUrl) {
         this.name = name;
         this.price = price;
