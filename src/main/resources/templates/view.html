@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>상품 목록</title>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<h1>상품 목록</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>이름</th>
+        <th>가격</th>
+        <th>이미지</th>
+        <th>상세</th>
+        <th>수정</th>
+        <th>삭제</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.getId()}"></td>
+        <td th:text="${product.getName()}"></td>
+        <td th:text="${product.getPrice()}"></td>
+        <td>
+            <img th:src="${product.getImageUrl()}" alt="이미지 없음" width="80" height="80"/>
+        </td>
+        <td><a th:href="@{/products/{id}(id=${product.getId()})}">조회</a></td>
+        <td><a th:href="@{/products/edit/{id}(id=${product.getId()})}">수정</a></td>
+        <td>
+            <form th:action="@{/products/{id}(id=${product.getId()})}" th:method="delete"
+                  style="display:inline;">
+                <button type="submit" class="button">삭제</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:if="${not #lists.isEmpty(products)}">
+    <span th:if="${currentPage > 1}">
+        <a th:href="@{/products/view(page=${currentPage - 1})}">이전</a>
+    </span>
+    <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+        <a th:href="@{/products/view(page=${i})}"
+           th:text="${i}"
+           th:classappend="${i == currentPage} ? 'active' : ''"></a>
+    </span>
+    <span th:if="${currentPage < totalPages}">
+        <a th:href="@{/products/view(page=${currentPage + 1})}">다음</a>
+    </span>
+</div>
+
+<button onclick="location.href='/products/new'">상품 등록</button>
+</body>
+</html>
