@@ -9,17 +9,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class ItemRepositoryImpl implements ItemRepository {
 
-    private final Map<Long, Item> items = new HashMap<>();
-    private static Long sequence = 1L;
+    private final Map<Long, Item> items = new ConcurrentHashMap<>();
+    private static final AtomicLong sequence = new AtomicLong(1);
+
+
     @Override
     public Item saveItem(ItemDTO dto) {
         Long id = dto.getId();
         if (id == null) {
-            id = sequence++;
+            id = sequence.getAndIncrement();
         }
         String itemName = dto.getName();
         Integer itemPrice = dto.getPrice();
