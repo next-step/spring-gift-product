@@ -40,7 +40,7 @@
 
 <form th:action="@{/admin/products}" method="get">
     <label for="id">조회할 ID:</label>
-    <input type="number" id="id" name="id"><br><br>
+    <input type="number" id="id" name="id" th:value="${param.id}"><br><br>
 </form>
 <a th:href="@{/admin/products/new}">
     <button type="button">상품 추가</button>

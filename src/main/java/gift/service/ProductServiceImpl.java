@@ -30,8 +30,11 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public ProductResponseDto findProductById(Long id) {
 
-        Product product = productRepository.findProductByIdElseThrow(id);
+        Product product = productRepository.findProductById(id);
 
+        if (product == null)
+            return null;
+        
         return new ProductResponseDto(
                 product.getId(),
                 product.getName(),

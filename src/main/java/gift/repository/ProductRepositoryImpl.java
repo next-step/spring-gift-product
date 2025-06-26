@@ -33,6 +33,12 @@ public class ProductRepositoryImpl implements ProductRepository{
     }
 
     @Override
+    public Product findProductById (Long id) {
+
+        return productList.get(id);
+    }
+
+    @Override
     public Product findProductByIdElseThrow(Long id) {
 
         Product product = productList.get(id);
