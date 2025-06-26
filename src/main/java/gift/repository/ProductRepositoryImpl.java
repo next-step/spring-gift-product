@@ -82,7 +82,6 @@ public class ProductRepositoryImpl implements ProductRepository {
                 productRequestDto.getPrice(),
                 productRequestDto.getImageUrl()
         );
-
         return new ProductResponseDto(
                 product.getId(),
                 product.getName(),
