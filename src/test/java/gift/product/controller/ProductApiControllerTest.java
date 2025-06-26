@@ -14,8 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -25,8 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 @AutoConfigureMockMvc
-@DisplayName("ProductController 테스트")
-public class ProductControllerTest {
+@DisplayName("ProductApiController 테스트")
+public class ProductApiControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -42,7 +40,6 @@ public class ProductControllerTest {
 
     @BeforeEach
     void setUp() {
-        //productService.deleteAllProducts();
         ProductRequestDto requestDto1 = new ProductRequestDto("Test1", 1000, "Test1.jpg");
         ProductRequestDto requestDto2 = new ProductRequestDto("Test2", 1200, "Test2.jpg");
 
