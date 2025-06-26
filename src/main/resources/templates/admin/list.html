@@ -13,8 +13,16 @@
     <td th:text="${p.price}">가격</td>
     <td th:text="${p.imageUrl}">URL</td>
     <td>
-      <button>수정</button>
-      <button>삭제</button>
+      <a th:href="@{'/admin/products/' + ${p.id} + '/edit'}">수정</a>
+      <form th:action="@{'/admin/products/' + ${p.id} + '/delete'}" method="post" style = "display: inline">
+        <button type = "submit">삭제</button>
+        </form>
+    </td>
+  </tr>
+</table>
+<table border="1">
+  <tr>
+    <p><a th:href="@{/admin/products/add}">상품 추가</a></p>
   </tr>
 </table>
 
