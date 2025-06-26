@@ -165,3 +165,36 @@
 .product-table tbody tr:nth-child(even) {
     background-color: #B9E5E8;
 }
+
+/* 테이블 내 액션 버튼들 */
+.edit-button {
+  background-color: #82c8a0;
+  color: white;
+  font-size: 12px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-width: 50px;
+}
+
+.edit-button:hover {
+  background-color: #69b88a;
+}
+
+.delete-button {
+  background-color: #ff6b6b;
+  color: white;
+  font-size: 12px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-width: 50px;
+}
+
+.delete-button:hover {
+  background-color: #ff5252;
+}
