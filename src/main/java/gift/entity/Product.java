@@ -7,6 +7,7 @@ public class Product {
     private int price;
     private String imageUrl;
 
+
     public Product() {
 
     }
@@ -55,6 +56,7 @@ public class Product {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
 
 
 }

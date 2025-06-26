@@ -1,5 +1,6 @@
 package gift.controller;
 
+
 import gift.dto.ProductRequestDto;
 import gift.entity.Product;
 import gift.service.ProductService;
@@ -19,9 +20,11 @@ public class ProductController {
     private final ProductService productService;
 
     //생성자 주입
+
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
+
 
     @GetMapping
     public String list(Model model) {
@@ -65,3 +68,4 @@ public class ProductController {
 
 
 }
+
