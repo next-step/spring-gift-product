@@ -64,3 +64,40 @@ src
 │       ├── 400.html
 │       ├── 404.html
 │       └── 500.html
+
+## Step 3 – 데이터베이스 적용 (H2 + JDBC)
+
+**기존 메모리 저장 방식을 제거하고, H2 데이터베이스를 이용해 상품 정보를 영속적으로 저장하도록 변경했다.**
+
+### 기능 요약
+
+- `schema.sql`, `data.sql`을 통해 애플리케이션 실행 시 DB 자동 초기화
+- 모든 상품 CRUD 작업은 실제 데이터베이스와 연동하여 처리
+- `JdbcTemplate`, `SimpleJdbcInsert`를 사용하여 SQL 기반 Repository 구현
+- 메모리 저장소 관련 코드는 완전히 제거
+
+### 설정 파일
+
+`application.properties` 설정:
+```properties
+spring.datasource.url=jdbc:h2:mem:test
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+spring.sql.init.mode=always
+spring.sql.init.schema-locations=classpath:sql/schema.sql
+spring.sql.init.data-locations=classpath:sql/data.sql
+
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+```
+
+### 디렉토리 구조 (step3에서 추가된 부분만 언급함)
+src
+├── repository
+│   └── ProductRepository.java
+├── resources
+│   └── sql/
+│       ├── schema.sql
+│       └── data.sql
