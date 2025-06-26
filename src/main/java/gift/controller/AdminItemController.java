@@ -112,4 +112,17 @@ public class AdminItemController {
         }
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public String deleteItem(
+        @PathVariable("id") Long id,
+        RedirectAttributes redirectAttributes
+    ) {
+        try {
+            itemService.deleteItem(id);
+            redirectAttributes.addFlashAttribute("message", "상품이 성공적으로 삭제되었습니다!");
+        } catch (ResponseStatusException ex) {
+            redirectAttributes.addFlashAttribute("errorMessage", ex.getReason());
+        }
+        return "redirect:/admin/items";
+    }
 }
