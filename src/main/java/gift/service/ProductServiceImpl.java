@@ -30,7 +30,6 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public ProductResponseDto findProductById(Long id) {
 
-<<<<<<< step2
         Product product = productRepository.findProductById(id);
 
         if (product == null)
@@ -41,11 +40,6 @@ public class ProductServiceImpl implements ProductService{
                 product.getName(),
                 product.getPrice(),
                 product.getImageUrl());
-=======
-        Product product = productRepository.findProductByIdElseThrow(id);
-
-        return new ProductResponseDto(product);
->>>>>>> seongwon02
     }
 
     @Override
@@ -55,13 +49,9 @@ public class ProductServiceImpl implements ProductService{
         Long price = dto.getPrice();
         String imageUrl = dto.getImageUrl();
 
-<<<<<<< step2
         Product product = productRepository.saveProduct(name, price, imageUrl);
 
         return new ProductResponseDto(product.getId(), name, price, imageUrl);
-=======
-        return productRepository.saveProduct(name, price, imageUrl);
->>>>>>> seongwon02
     }
 
     @Transactional
@@ -76,16 +66,12 @@ public class ProductServiceImpl implements ProductService{
                 dto.getImageUrl()
         );
 
-<<<<<<< step2
         return new ProductResponseDto(
                 updatedProduct.getId(),
                 updatedProduct.getName(),
                 updatedProduct.getPrice(),
                 updatedProduct.getImageUrl()
         );
-=======
-        return new ProductResponseDto(updatedProduct);
->>>>>>> seongwon02
     }
 
     @Override
