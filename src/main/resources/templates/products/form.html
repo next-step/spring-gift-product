@@ -2,26 +2,53 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>상품 등록</title>
+    <title th:text="${product.id} == null ? '상품 등록' : '상품 수정'"></title>
 </head>
 <body>
-<h1>상품 등록</h1>
 
-<form th:action="@{${product.id} == null ? '/admin/products' : '/admin/products/' + ${product.id}}" th:object="${product}" method="post">
+<h1 th:text="${product.id} == null ? '상품 등록' : '상품 수정'"></h1>
 
-    <input type="hidden" th:if="*{id != null}" th:field="*{id}" />
+<!-- ✅ 등록용 폼 (id가 null일 때만 보여짐) -->
+<form th:if="${product.id} == null"
+      th:action="@{/admin/products}"
+      th:object="${product}" method="post">
 
     <label>상품명:<br/>
-        <input type="text" th:field="*{name}" required>
-    </label><br/>
-    <label>가격:<br/>
-        <input type="number" th:field="*{price}" required>
-    </label><br/>
-    <label>이미지 URL:<br/>
-        <input type="text" th:field="*{imageUrl}" required>
+        <input type="text" th:field="*{name}" required />
     </label><br/>
 
-    <button type="submit">저장</button>
+    <label>가격:<br/>
+        <input type="number" th:field="*{price}" required />
+    </label><br/>
+
+    <label>이미지 URL:<br/>
+        <input type="text" th:field="*{imageUrl}" required />
+    </label><br/>
+
+    <button type="submit">등록</button>
+</form>
+
+<!-- ✅ 수정용 폼 (id가 null이 아닐 때만 보여짐) -->
+<form th:if="${product.id} != null"
+      th:action="@{'/admin/products/' + ${product.id}}"
+      th:object="${product}" method="post">
+
+    <!-- id를 서버에 전달 -->
+    <input type="hidden" th:field="*{id}" />
+
+    <label>상품명:<br/>
+        <input type="text" th:field="*{name}" required />
+    </label><br/>
+
+    <label>가격:<br/>
+        <input type="number" th:field="*{price}" required />
+    </label><br/>
+
+    <label>이미지 URL:<br/>
+        <input type="text" th:field="*{imageUrl}" required />
+    </label><br/>
+
+    <button type="submit">수정</button>
 </form>
 
 <br/>
