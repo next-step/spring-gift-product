@@ -1,0 +1,14 @@
+<!-- templates/fragments/modal-add.html -->
+<div th:fragment="addProductModal" id="addProductModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <h3>상품 추가</h3>
+        <form th:action="@{/admin/products}" method="post" id="addProductForm">
+            <!-- 입력 폼 -->
+            <input type="text" name="name" placeholder="상품명" required />
+            <input type="number" name="price" placeholder="가격" required />
+            <input type="text" name="imageUrl" placeholder="이미지 URL" />
+            <button type="submit">추가</button>
+            <button type="button" id="closeModalBtn">닫기</button>
+        </form>
+    </div>
+</div>

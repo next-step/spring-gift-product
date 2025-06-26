@@ -1,0 +1,15 @@
+<!-- templates/fragments/modal-edit.html -->
+<div th:fragment="editProductModal" id="editProductModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <h3>상품 수정</h3>
+        <form th:action="@{/admin/products/__id__}" method="post" id="editProductForm">
+            <input type="hidden" name="_method" value="put" />
+            <input type="hidden" name="id" id="editProductId" />
+            <input type="text" name="name" id="editProductName" placeholder="상품명" required />
+            <input type="number" name="price" id="editProductPrice" placeholder="가격" required />
+            <input type="text" name="imageUrl" id="editProductImageUrl" placeholder="이미지 URL" />
+            <button type="submit">수정</button>
+            <button type="button" id="closeEditModalBtn">닫기</button>
+        </form>
+    </div>
+</div>
