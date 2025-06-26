@@ -1,10 +1,10 @@
-# spring-gift-product
+# 📦 상품 API
 
 모든 HTTP 요청과 응답은 **JSON 형식**을 따릅니다.
 
 ---
 
-## 📦 상품 조회 (전체 상품)
+## 🔎 상품 조회 (전체 상품)
 ### Request
 ```json
 GET /api/products HTTP/1.1
@@ -19,7 +19,7 @@ Content-Type: application/json
         "id": 1,
         "name": "아이스 카페 아메리카노 T",
         "price": 4500,
-        "imageUrl": "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"
+        "imageUrl": "https://st.kakaocdn.net/product/api/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"
     },
     {
         "id": 2,
@@ -30,7 +30,7 @@ Content-Type: application/json
 ]
 ```
 
-## 📦 상품 조회 (특정 상품)
+## 🔎 상품 조회 (특정 상품)
 ### Request
 ```json
 GET /api/products/{productId} HTTP/1.1
@@ -44,7 +44,7 @@ Content-Type: application/json
     "id": 1,
     "name": "아이스 카페 아메리카노 T",
     "price": 4500,
-    "imageUrl": "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"
+    "imageUrl": "https://st.kakaocdn.net/product/api/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"
 }
 ```
 
@@ -107,3 +107,45 @@ DELETE /api/products/{productId} HTTP/1.1
 ```json
 HTTP/1.1 204 No Content
 ```
+
+---
+
+# 🧑‍💻 관리자 화면
+
+---
+
+## 🔎 상품 조회
+### 전체 상품 목록
+[GET] http://localhost:8080/admin/products  
+→ 등록된 모든 상품을 목록으로 확인할 수 있는 화면입니다.
+
+### 특정 상품 조회
+[GET] http://localhost:8080/admin/products/{productId}  
+→ 선택한 상품의 상세 정보를 확인할 수 있는 화면입니다.
+
+## ➕ 상품 추가
+### 상품 추가 화면
+[GET] http://localhost:8080/admin/products/new  
+→ 새 상품을 입력하는 폼으로 이동합니다.
+
+### 상품 추가 요청
+[POST] http://localhost:8080/admin/products  
+→ 폼에서 입력된 내용을 서버에 전송해 새 상품을 추가합니다.
+
+## ✏️ 상품 수정
+### 상품 수정 화면
+[GET] http://localhost:8080/admin/products/{productId}/edit  
+→ 선택한 상품의 정보를 수정할 수 있는 화면입니다.
+
+### 상품 수정 요청
+[PUT] http://localhost:8080/admin/products/{productId}  
+→ HTML `<form>`에서 `_method=put`로 전송되는 요청입니다.  
+→ 실제 HTTP 메서드는 `POST`이며,  
+→ AdminController에서 `@PutMapping`으로 처리합니다.
+
+## ❌ 상품 삭제
+### 상품 삭제 요청
+[DELETE] http://localhost:8080/admin/products/{productId}  
+→ HTML `<form>`에서 `_method=delete`로 전송됩니다.  
+→ 실제 HTTP 메서드는 `POST`이며,  
+→ AdminController에서 `@DeleteMapping`으로 처리합니다.
