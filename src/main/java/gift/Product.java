@@ -26,17 +26,17 @@ public class Product {
         this.imageUrl = productdto.getImageUrl();
     }
 
-    public void updateProduct(ProductDTO newProductdto) {
-        if(newProductdto.getName() != null) {
-            this.setName(newProductdto.getName());
+    public void updateProduct(Product newProduct) {
+        if(newProduct.getName() != null) {
+            this.setName(newProduct.getName());
         }
 
-        if(newProductdto.getPrice() != 0) {
-            this.setPrice(newProductdto.getPrice());
+        if(newProduct.getPrice() != 0) {
+            this.setPrice(newProduct.getPrice());
         }
 
-        if(newProductdto.getImageUrl() != null) {
-            this.setImageUrl(newProductdto.getImageUrl());
+        if(newProduct.getImageUrl() != null) {
+            this.setImageUrl(newProduct.getImageUrl());
         }
     }
 
