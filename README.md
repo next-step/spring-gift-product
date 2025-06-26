@@ -20,7 +20,7 @@
 - [x] 관리자 상품 수정 페이지 및 수정 (`GET/PUT admin/products/edit/{id}`)
 - [x] 관리자 상품 삭제 (`DELETE admin/products/{id}`)
 
-## 4️⃣ 3단계 
+## 4️⃣ 3단계 구현 예정 기능 목록
 - [ ] H2 DB 설정
 - [ ] schema.sql, data.sql 작성 및 로드 설정
 - [ ] JdbcTemplate 기반의 ProductRepository 구현
