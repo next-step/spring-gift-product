@@ -13,11 +13,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
-public class ProductController {
+public class ProductApiController {
 
     private final ProductService productService;
 
-    public ProductController(ProductService productService){
+    public ProductApiController(ProductService productService){
         this.productService = productService;
     }
 
@@ -29,7 +29,7 @@ public class ProductController {
      */
     @PostMapping
     public ResponseEntity<Void> addProduct(@RequestBody @Valid ProductRequestDto requestDto){
-        Product savedProduct = productService.save(requestDto);
+        Product savedProduct = productService.saveProduct(requestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -41,7 +41,7 @@ public class ProductController {
      */
     @GetMapping
     public ResponseEntity<List<ProductResponseDto>> getProducts(){
-        List<ProductResponseDto> responses = productService.findAll()
+        List<ProductResponseDto> responses = productService.getProducts()
                 .stream()
                 .map(product -> ProductResponseDto.productFrom(product))
                 .toList();
@@ -57,7 +57,7 @@ public class ProductController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDto> getProduct(@PathVariable Long id){
-        Product product = productService.findById(id);
+        Product product = productService.getProduct(id);
         return ResponseEntity.ok(ProductResponseDto.productFrom(product));
     }
 

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 상세 정보</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; }
+        .container { width: 600px; margin: auto; }
+        .actions { margin-top: 20px; }
+
+    </style>
+</head>
+<body>
+<div class="container" th:object="${product}">
+    <h1>상품 상세 정보</h1>
+    <div class="product-info">
+        <p><strong>ID:</strong> <span th:text="*{id}">1</span></p>
+        <p><strong>상품명:</strong> <span th:text="*{name}">1</span></p>
+        <p><strong>가격:</strong> <span th:text="*{price}">1</span></p>
+        <p><strong>이미지 URL:</strong> <span th:text="*{imageUrl}">1</span></p>
+    </div>
+    <div class="actions">
+        <a th:href="@{/admin/products}" class="list-btn">목록</a>
+        <a th:href="@{/admin/products/edit/{id}(id=*{id})}" class="edit-btn">수정</a>
+        <form th:action="@{/admin/products/{id}(id=*{id})}" th:method="delete" style="display:inline;">
+            <button type="submit" class="delete-btn" onclick="return confirm('정말로 삭제하시겠습니까?');">삭제</button>
+        </form>
+    </div>
+</div>
+</body>
+
+</html>

@@ -3,19 +3,24 @@ package gift.product.service;
 import gift.product.domain.Product;
 import gift.product.dto.ProductRequestDto;
 import gift.product.exception.ProductNotFoundException;
+import gift.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
+@Transactional
 public class ProductService {
-    // 동시성 문제 (HashMap -> ConcurrentHashMap)
-    private final Map<Long, Product> products = new ConcurrentHashMap<>();
-    // id 생성 용도로 AtomicLong 사용
-    private final AtomicLong sequence = new AtomicLong(0);
+    private final ProductRepository repository;
+
+    public ProductService(ProductRepository repository){
+        this.repository = repository;
+    }
 
 
     /**
@@ -24,14 +29,9 @@ public class ProductService {
      * @param requestDto 
      * @return
      */
-    public Product save(ProductRequestDto requestDto){
-        Product product = requestDto.toProduct();
-        long pId = sequence.incrementAndGet();
-        product.setId(pId);
+    public Product saveProduct(ProductRequestDto requestDto){
 
-        products.put(pId, product);
-
-        return product;
+        return repository.save(requestDto.name(), requestDto.price(), requestDto.imageUrl());
     }
 
 
@@ -40,11 +40,9 @@ public class ProductService {
      * 
      * @return 
      */
-    public List<Product> findAll(){
+    public List<Product> getProducts(){
         // 전체 조회 (page 등 추후 구현 필요)
-        return products.values()
-                .stream()
-                .toList();
+        return repository.findAll();
     }
 
     /**
@@ -53,14 +51,13 @@ public class ProductService {
      * @param id 
      * @return
      */
-    public Product findById(Long id){
-        Product product = products.get(id);
-        if (product == null){
-            // ProductNotFoundException 구현 필요
+    public Product getProduct(Long id){
+        Optional<Product> product = repository.findById(id);
+        if (product.isEmpty()){
             throw new ProductNotFoundException("상품을 찾을 수 없습니다. ID: " + id);
         }
 
-        return product;
+        return product.get();
     }
 
     /**
@@ -70,8 +67,13 @@ public class ProductService {
      * @param requestDto
      */
     public void update(Long id, ProductRequestDto requestDto){
-        Product product = findById(id);
-        product.update(requestDto.name(), requestDto.price(), requestDto.imageUrl());
+        Optional<Product> product = repository.findById(id);
+
+        if (product.isEmpty()){
+            throw new ProductNotFoundException("상품을 찾을 수 없습니다. ID: " + id);
+        }
+
+        product.get().update(requestDto.name(), requestDto.price(), requestDto.imageUrl());
     }
 
     /**
@@ -81,16 +83,6 @@ public class ProductService {
      */
     public void delete(Long id){
         // 존재하지 않으면 무시
-        products.remove(id);
-    }
-
-
-    /**
-     * 상품 모두 삭제(테스트 전용)
-     *
-     */
-    public void deleteAllProducts() {
-        products.clear();
-        sequence.set(0);
+        repository.deleteById(id);
     }
 }
