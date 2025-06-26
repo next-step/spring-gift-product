@@ -1,11 +1,13 @@
 package gift.product.controller;
 
+import gift.product.domain.Product;
 import gift.product.dto.ProductInfoDto;
 import gift.product.dto.ProductResponseDto;
 import gift.product.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -39,5 +41,12 @@ public class ProductAdminController {
         return "admin/products";
     }
 
+    @GetMapping("/{id}")
+    public String productDetail(@PathVariable("id") Long id, Model model){
+        Product product = productService.getProduct(id);
 
+        model.addAttribute("product", ProductInfoDto.productFrom(product));
+
+        return "admin/product-detail";
+    }
 }
