@@ -35,15 +35,17 @@ public class Product {
         return imageURL;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public Product update(String name, Integer price, String imageURL) {
+        if (name != null) {
+            this.name = name;
+        }
+        if (price != null) {
+            this.price = price;
+        }
+        if (imageURL != null) {
+            this.imageURL = imageURL;
+        }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+        return this;
     }
 }
