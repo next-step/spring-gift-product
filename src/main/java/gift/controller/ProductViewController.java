@@ -60,4 +60,14 @@ public class ProductViewController {
         return "redirect:/products/add";
     }
 
+    @GetMapping("/{id}")
+    public String showProduct(@PathVariable Long id, Model model) {
+        return productService.findProductById(id)
+                .map(product -> {
+                    model.addAttribute("product", product);
+                    return "detail";
+                })
+                .orElse("not-found");
+    }
+
 }
