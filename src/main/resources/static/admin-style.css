@@ -1,0 +1,92 @@
+body {
+    font-family: 'Malgun Gothic', sans-serif;
+    background-color: #f4f7f6;
+    margin: 20px;
+}
+
+/* 두 영역을 감싸는 메인 컨테이너 (Flexbox 적용) */
+.container {
+    display: flex; /* 자식 요소들을 가로로 배치 */
+    gap: 20px;     /* 두 영역 사이의 간격 */
+    align-items: flex-start; /* 높이가 달라도 위쪽을 기준으로 정렬 */
+}
+
+/* 각 패널(조회, 등록)의 공통 스타일 (카드 디자인) */
+.panel {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px; /* 모서리를 둥글게 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 은은한 그림자 효과 */
+    border: 1px solid #e0e0e0;
+}
+
+/* 상품 목록(조회) 패널 스타일 */
+.product-list {
+    flex: 2; /* 등록 폼보다 2배의 너비를 차지 */
+}
+
+/* 상품 등록 패널 스타일 */
+.product-form {
+    flex: 1; /* 목록보다 1배의 너비를 차지 */
+}
+
+/* 제목 스타일 */
+h1, h2 {
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 12px;
+}
+
+thead {
+    background-color: #f2f2f2;
+}
+
+/* 폼 요소들 스타일 */
+.product-form div {
+    margin-bottom: 15px;
+}
+
+.product-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.product-form input[type="text"],
+.product-form input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.product-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.product-form button:hover {
+    background-color: #0056b3;
+}

@@ -2,26 +2,61 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>상품 목록</title>
+    <title>상품 관리</title>
+    <link rel="stylesheet" href="../admin-style.css">
+
 </head>
 <body>
-<h1>전체 상품</h1>
-<table border="1">
-    <thead>
-    <tr>
-        <th>상품 ID</th>
-        <th>상품명</th>
-        <th>가격</th>
-        <th>이미지 URL</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="product : ${allProducts}">
-        <td th:text="${product.id}">ID</td>
-        <td th:text="${product.name}">이름</td>
-        <td th:text="${product.price}">가격</td>
-        <td th:text="${product.imageUrl}">이미지 URL</td>
-    </tr>
-    </tbody>
-</table>
+
+<!-- 전체를 감싸는 컨테이너 div 추가 -->
+<div class="container">
+
+    <!-- 상품 조회 영역 -->
+    <div class="panel product-list">
+        <h1>전체 상품</h1>
+        <table border="1">
+            <thead>
+            <tr>
+                <th>상품 ID</th>
+                <th>상품명</th>
+                <th>가격</th>
+                <th>이미지 URL</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${allProducts}">
+                <td th:text="${product.id}">ID</td>
+                <td th:text="${product.name}">이름</td>
+                <td th:text="${product.price}">가격</td>
+                <td th:text="${product.imageUrl}">이미지 URL</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 상품 등록 영역 -->
+    <div class="panel product-form">
+        <h2>새 상품 등록</h2>
+        <form id="create-product-form">
+            <div>
+                <label for="name">상품명:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div>
+                <label for="price">가격:</label>
+                <input type="number" id="price" name="price" required>
+            </div>
+            <div>
+                <label for="imageUrl">이미지 URL:</label>
+                <input type="text" id="imageUrl" name="imageUrl" required>
+            </div>
+            <button type="submit">상품 등록</button>
+        </form>
+    </div>
+
+</div> <!-- .container 끝 -->
+
+<!-- JavaScript 파일은 그대로 body 끝에 둡니다. -->
+<script src="../admin.js"></script>
 </body>
+</html>
