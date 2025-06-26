@@ -1,7 +1,6 @@
 package gift.Controller;
 
 import gift.domain.Product;
-import gift.dto.ProductCreateRequest;
 import gift.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,20 +39,37 @@ public class AdminProductController {
         return "admin/product-detail";
     }
 
-
-
     @GetMapping("/new")
     public String createForm(Model model) {
-        model.addAttribute("productCreateRequest", new ProductCreateRequest());
+        model.addAttribute("product", new Product());
+        return "admin/product-form";
+    }
+
+
+    @GetMapping("/{id}/edit")
+    public String editForm(@PathVariable Long id, Model model) {
+        Product product = productService.getById(id)
+                .orElseThrow(() -> new IllegalArgumentException("상품이 없습니다."));
+        model.addAttribute("product", product);
         return "admin/product-form";
     }
 
     // 상품 등록
     @PostMapping
-    public String create(@ModelAttribute("productCreateRequest") ProductCreateRequest request) {
-        Product product = request.toEntity();
+    public String create(@ModelAttribute Product product) {
         productService.create(product);
+        return "redirect:/admin/products";
+    }
 
+    @PostMapping("/{id}")
+    public String update(@PathVariable Long id, @ModelAttribute Product product) {
+        productService.update(id, product);
+        return "redirect:/admin/products/" + id;
+    }
+
+    @PostMapping("/{id}/delete")
+    public String delete(@PathVariable Long id) {
+        productService.delete(id);
         return "redirect:/admin/products";
     }
 

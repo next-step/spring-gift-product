@@ -11,7 +11,7 @@
 <table>
     <thead>
     <tr>
-        <th>ID</th><th>이름</th><th>가격</th><th>이미지</th>
+        <th>ID</th><th>이름</th><th>가격</th><th>이미지</th><th>관리</th>
     </tr>
     </thead>
     <tbody>
@@ -22,20 +22,18 @@
         </td>
         <td th:text="${product.price}"></td>
         <td>
-            <img th:src="${product.imageUrl}" alt="이미지" width="100"/>
+            <img th:src="${product.imageUrl}" alt="상품 이미지" width="100"/>
         </td>
-    </tr>
-    </tbody>
-    <tbody>
-    <tr th:each="product : ${products}">
-        <td th:text="${product.id}">1</td>
-        <td th:text="${product.name}">이름</td>
-        <td th:text="${product.price}">가격</td>
         <td>
-            <img src="#" th:src="${product.imageUrl}" alt="상품 이미지" width="100"/>
+            <a th:href="@{/admin/products/{id}/edit(id=${product.id})}">✏️ 수정</a>
+            <form th:action="@{/admin/products/{id}/delete(id=${product.id})}" method="post" style="display:inline"
+                  onsubmit="return confirm('정말 삭제할까요?');">
+                <button type="submit">🗑️ 삭제</button>
+            </form>
         </td>
     </tr>
     </tbody>
 </table>
+
 </body>
 </html>

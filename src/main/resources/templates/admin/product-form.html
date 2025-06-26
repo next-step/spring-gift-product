@@ -4,12 +4,16 @@
   <title>상품 등록</title>
 </head>
 <body>
-<h1>상품 등록</h1>
-<form th:action="@{/admin/products}" th:object="${productCreateRequest}" method="post">
-  <input type="text" th:field="*{name}" />
-  <input type="number" th:field="*{price}" />
-  <input type="text" th:field="*{imageUrl}" />
-  <button type="submit">등록</button>
+<h1 th:text="${product?.id} == null ? '상품 등록' : '상품 수정'"></h1>
+<form th:action="${product?.id} == null ? @{/admin/products} : @{/admin/products/{id}(id=${product.id})}"
+      th:object="${product}" method="post">
+  <input type="hidden" name="_method" th:if="${product?.id} != null" value="put"/>
+
+  <input type="text" th:field="*{name}" placeholder="상품명"/>
+  <input type="number" th:field="*{price}" placeholder="가격"/>
+  <input type="text" th:field="*{imageUrl}" placeholder="이미지 URL"/>
+
+  <button type="submit" th:text="${product?.id} == null ? '등록' : '수정'">제출</button>
 </form>
 
 <a th:href="@{/admin/products}">← 목록으로</a>
