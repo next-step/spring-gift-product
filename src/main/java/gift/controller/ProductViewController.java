@@ -40,4 +40,11 @@ public class ProductViewController {
         productService.saveProduct(dto);
         return "redirect:/";
     }
+
+    @GetMapping("/products/{id}")
+    public String findProduct(@PathVariable Long id, Model model) {
+        ProductResponseDto dto = productService.findProductById(id);
+        model.addAttribute("product", dto);
+        return "detail";
+    }
 }

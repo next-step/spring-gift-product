@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 단건 조회</title>
+    <style>
+        body {
+            font-family: "맑은 고딕", sans-serif;
+            margin: 0;
+            padding: 40px;
+            background-color: white;
+        }
+        .detail-container {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .detail-item {
+            margin: 20px 0;
+            padding: 15px 0;
+            border-bottom: 1px solid white;
+        }
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+        .label {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .value {
+            font-size: 16px;
+        }
+        .btn {
+            padding: 8px 16px;
+            margin: 10px 5px;
+            text-decoration: none;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+<div class="detail-container">
+    <h1>상품 단건 조회</h1>
+
+    <div class="detail-item">
+        <div class="label">번호</div>
+        <div class="value" th:text="${product.id}">1</div>
+    </div>
+
+    <div class="detail-item">
+        <div class="label">이름</div>
+        <div class="value" th:text="${product.name}">상품명</div>
+    </div>
+
+    <div class="detail-item">
+        <div class="label">가격</div>
+        <div class="value" th:text="${product.price}"></div>
+    </div>
+
+    <div class="detail-item">
+        <div class="label">이미지 주소</div>
+        <div class="value" th:text="${product.imageUrl}"></div>
+    </div>
+
+    <div style="margin-top: 30px;">
+        <a href="/" class="btn">처음으로</a>
+    </div>
+</div>
+</body>
+</html>
