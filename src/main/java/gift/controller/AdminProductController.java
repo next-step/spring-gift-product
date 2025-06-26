@@ -1,11 +1,15 @@
 package gift.controller;
 
 import gift.service.ProductService;
+import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+
 
 import java.util.List;
 
@@ -30,4 +34,11 @@ public class AdminProductController {
     public String showCreateForm() {
         return "admin/new";
     }
+
+    @PostMapping("/admin/products")
+    public String createProduct(@ModelAttribute ProductRequestDto requestDto) {
+        productService.addProduct(requestDto);
+        return "redirect:/admin/products";
+    }
+
 }
