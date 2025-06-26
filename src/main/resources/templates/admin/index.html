@@ -21,6 +21,7 @@
                 <td th:text="${product.name}">기본 상품명</td>
                 <td th:text="${product.price}">10000</td>
                 <td th:text="${product.imageUrl}">https://example.com/image.jpg</td>
+                <td><a th:href="@{/admin/update/{id}(id=${product.id})}">수정하기</a></td>
             </tr>
             </tbody>
         </table>
