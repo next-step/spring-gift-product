@@ -6,6 +6,7 @@ import gift.service.ProductService;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -56,6 +57,12 @@ public class AdminController {
     public String updateProduct(@PathVariable Long id,
             @ModelAttribute CreateProductRequestDto requestDto) {
         productService.updateProductById(id, requestDto);
+        return "redirect:/admin/boards";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteProductById(@PathVariable Long id) {
+        productService.deleteProductById(id);
         return "redirect:/admin/boards";
     }
 

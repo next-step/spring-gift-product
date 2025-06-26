@@ -24,7 +24,14 @@
     <td><span th:text="${product.name}"></span></td>
     <td><span th:text="${product.price}"></span></td>
     <td><span th:text="${product.imageUrl}"></span></td>
-    <td><button type="button" th:onclick="|location.href='@{boards/update/}| + ${product.id} + |'|">수정</button></td>
+    <td>
+      <button type="button" th:onclick="|location.href='@{boards/update/}| + ${product.id} + |'|">
+        수정
+      </button>
+      <form th:action="@{/admin/boards/{id}(id=${product.id})}" th:method="delete">
+        <button type="submit">삭제</button>
+      </form>
+    </td>
   </tr>
   </tbody>
 </table>
