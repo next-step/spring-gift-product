@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -24,11 +25,9 @@ public class GiftRepositoryImpl implements GiftRepository {
 
   @Override
   public List<GiftResponseDto> findAllGifts() {
-    List<GiftResponseDto> result = new ArrayList<>();
-    for (Gift gift : giftStorage.values()) {
-      result.add(toDto(gift));
-    }
-    return result;
+    return giftStorage.values().stream()
+                      .map(this::toDto)
+                      .collect(Collectors.toList());
   }
 
   @Override

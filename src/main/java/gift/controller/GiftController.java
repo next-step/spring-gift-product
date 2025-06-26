@@ -2,9 +2,9 @@ package gift.controller;
 
 import gift.dto.GiftRequestDto;
 import gift.dto.GiftResponseDto;
+import gift.dto.GiftUpdateDto;
 import gift.service.GiftService;
 import java.util.List;
-import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,10 +46,10 @@ public class GiftController {
   @PatchMapping("/{id}")
   public ResponseEntity<GiftResponseDto> updateGift(
       @PathVariable Long id,
-      @RequestBody Map<String, Object> updates
+      @RequestBody GiftUpdateDto dto
   ) {
-    GiftResponseDto updated = giftService.update(id, updates);
-    return new ResponseEntity<>(updated, HttpStatus.OK);
+    GiftResponseDto updatedGift = giftService.update(id, dto);
+    return new ResponseEntity<>(updatedGift, HttpStatus.OK);
   }
 
   @DeleteMapping("/{id}")
