@@ -18,8 +18,7 @@ public class GiftController {
 
     @PostMapping("")
     public ResponseEntity<?> addGift(@RequestBody RequestGift requestGift) {
-        giftRepository.save(requestGift);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(giftRepository.save(requestGift), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
