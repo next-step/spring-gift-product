@@ -66,3 +66,24 @@ document.querySelectorAll('.update-button').forEach(button => {
         }, { once: true });
     });
 });
+
+// 테이블 내의 삭제 버튼 클릭 이벤트
+document.querySelectorAll('.delete-button').forEach(button => {
+    button.addEventListener('click', event => {
+        const row = event.currentTarget.closest('tr');
+        const cells = Array.from(row.cells);
+
+        const productId = cells[1].textContent.trim();
+
+        fetch(`/view/products/${productId}`, {
+            method: 'DELETE'
+        })
+        .then (response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                console.error('삭제 실패:', res.status);
+            }
+        });
+    });
+});
