@@ -41,7 +41,7 @@
             <h4 id="modal-title"></h4>
             <form id="infoForm">
                 <label>상품명: <input type="text" name="name" required></label><br><br>
-                <label>가격: <input type="number" name="price" required></label><br><br>
+                <label>가격: <input type="number" name="price" required step="1" min="0" th:max="${T(java.lang.Integer).MAX_VALUE}"></label><br><br>
                 <label>사진: <input type="text" name="imageUrl" required></label><br><br>
                 <button type="submit">제출</button>
                 <button type="button" onclick="closeModal()">닫기</button>

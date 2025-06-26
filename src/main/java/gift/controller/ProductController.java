@@ -6,6 +6,7 @@ import gift.exception.NotFoundByIdException;
 import gift.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -54,5 +55,10 @@ public class ProductController {
     public ResponseEntity<String> handleNotFoundByIdException(NotFoundByIdException e) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body("Not Found by ID: " + e.getMessage());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<String> handleJsonParseError(HttpMessageNotReadableException e) {
+        return ResponseEntity.badRequest().body("Invalid Request: " + e.getMessage());
     }
 }
