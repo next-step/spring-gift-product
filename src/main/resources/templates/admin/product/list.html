@@ -23,6 +23,7 @@
     <td th:text="${product.name}">상품명</td>
     <td th:text="${product.price}">1000</td>
     <td><img th:src="${product.imageUrl}" alt="image" width="100"/></td>
+    <td><a th:href="@{'/admin/products/' + ${product.id} + '/edit'}">수정</a></td>
   </tr>
   </tbody>
 </table>

@@ -2,11 +2,16 @@ package gift.dto;
 
 public class ProductRequest {
 
+    private Long id;
     private String name;
     private int price;
     private String imageUrl;
 
     public ProductRequest() {
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -19,6 +24,10 @@ public class ProductRequest {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setName(String name) {

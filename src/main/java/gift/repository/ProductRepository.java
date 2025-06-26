@@ -44,6 +44,7 @@ public class ProductRepository {
         }
 
         Product updated = new Product(name, price, imageUrl);
+        updated.setId(id);
         products.put(id, updated);
         return updated;
     }
