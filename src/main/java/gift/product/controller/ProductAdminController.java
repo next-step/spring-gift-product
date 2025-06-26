@@ -1,6 +1,7 @@
 package gift.product.controller;
 
 import gift.product.domain.Product;
+import gift.product.dto.ProductEditDto;
 import gift.product.dto.ProductInfoDto;
 import gift.product.dto.ProductRequestDto;
 import gift.product.service.ProductService;
@@ -85,5 +86,40 @@ public class ProductAdminController {
 
         productService.saveProduct(requestDto);
         return "redirect:/admin/products";
+    }
+
+    /**
+     * 상품 수정 폼 페이지
+     *
+     * @param id
+     * @param model
+     * @return
+     */
+    @GetMapping("/edit/{id}")
+    public String editProductForm(@PathVariable("id") Long id, Model model){
+        Product product = productService.getProduct(id);
+
+        model.addAttribute("product", new ProductEditDto(product.getName(), product.getPrice(), product.getImageUrl()));
+        model.addAttribute("productId", id);
+
+        return "admin/product-edit-form";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editProduct(
+            @PathVariable("id") Long id,
+            @ModelAttribute @Valid ProductEditDto editDto,
+            BindingResult bindingResult,
+            Model model
+    ){
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("productId", id);
+            return "/admin/product-edit-form";
+        }
+
+        ProductRequestDto requestDto = new ProductRequestDto(editDto.name(), editDto.price(),editDto.imageUrl());
+        productService.update(id, requestDto);
+
+        return "redirect:/admin/products/" + id;
     }
 }
