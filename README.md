@@ -17,6 +17,9 @@
     - `PUT /api/products/{id}`
 - [x] 상품 삭제 기능
     - `DELETE /api/products/{id}`
+- [x] API 입력값 유효성 검증(Validation) 및 예외 처리 추가
+  - refactor: `ProductRequestDto`에 유효성 검사 어노테이션 적용
+  - refactor: 상품 추가/수정 Controller 메서드에 `@Valid` 적용
 
 ## API 명세
 | 기능 | HTTP Method | URL | Request Body | 응답 (코드 및 Body) |
@@ -31,20 +34,20 @@
 
 ## 기능 목록
 
-- [x] **상품 목록 조회**
+- [x] 상품 목록 조회
   - `feat`: Controller에서 Thymeleaf로 전달한 DTO인 ProductView 생성 (`ProductView`)
   - `feat`: 상품 목록 조회 컨트롤러 로직 구현 (`GET /admin/products`)
   - `feat`: 상품 목록 조회 HTML 템플릿 작성 (`admin/products.html`)
   
-- [x] **상품 추가 기능**
+- [x] 상품 추가 기능
   - `feat`: 상품 추가 폼 페이지로 이동하는 컨트롤러 로직 구현 (`GET /admin/products/add`)
   - `feat`: 상품 추가 HTML 템플릿 작성 (`admin/add-form.html`)
   - `feat`: 상품 추가 데이터 처리 컨트롤러 로직 구현 (`POST /admin/products/add`)
 
-- [x] **상품 수정 기능**
+- [x] 상품 수정 기능
   - `feat`: 상품 수정 폼 페이지로 이동하는 컨트롤러 로직 구현 (`GET /admin/products/edit/{id}`)
   - `feat`: 상품 수정 폼 페이지 HTML 템플릿 작성 (`admin/edit-form.html`)
   - `feat`: 상품 수정 데이터 처리 컨트롤러 로직 구현 (`POST /admin/products/edit/{id}`)
   - 
-- [x] **상품 삭제 기능**
+- [x] 상품 삭제 기능
   - `feat`: 상품 삭제 처리 컨트롤러 로직 구현 (`POST /admin/products/delete/{id}`)

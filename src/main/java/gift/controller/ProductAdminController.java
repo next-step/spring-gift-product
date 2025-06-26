@@ -44,9 +44,11 @@ public class ProductAdminController {
     }
 
     @PostMapping("/add")
-    public String addProduct(@Valid @ModelAttribute ProductRequestDto productRequestDto,
-                             BindingResult bindingResult){
+    public String addProduct(@Valid @ModelAttribute("product") ProductRequestDto productRequestDto,
+                             BindingResult bindingResult,
+                             Model model){
         if(bindingResult.hasErrors()){
+            model.addAttribute("product", productRequestDto);
             return "admin/add-form";
         }
 
