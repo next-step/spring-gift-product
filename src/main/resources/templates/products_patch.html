@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <h3 th:text="'Edit Product'"></h3>
+
+    <form th:with="url='/admin/patch/' + ${product.id}"
+          th:action="@{${url}}"
+          th:object="${product}"
+          method="post">
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input id="name" type="text" th:field="*{name}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input id="price" type="number" step="0.01" th:field="*{price}" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="imageUrl">Image URL</label>
+            <input id="imageUrl" type="text" th:field="*{imageUrl}" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a th:href="@{/products/view}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+</body>
+</html>

@@ -8,7 +8,7 @@
 <body>
 <div class="container mt-4">
     <h3>Manage <strong>Products</strong></h3>
-    <a class="btn btn-success mb-3" th:href="@{/admin/products}">+ Add New Product</a>
+    <a class="btn btn-success mb-3" th:href="@{/admin/create}">+ Add New Product</a>
 
     <table class="table table-bordered">
         <thead>
@@ -23,7 +23,7 @@
             <td th:text="${product.price}">product price</td>
             <td th:text="${product.imageUrl}">product image link</td>
             <td>
-                <a th:href="@{|/products/${product.id}|}" class="btn btn-warning btn-sm">✏️</a>
+                <a th:href="@{|/admin/patch/${product.id}|}" class="btn btn-warning btn-sm">✏️</a>
                 <form th:action="@{|/admin/delete/${product.id}|}" method="post" style="display:inline">
                     <button class="btn btn-danger btn-sm" type="submit">🗑️</button>
                 </form>
