@@ -18,4 +18,5 @@
 
 #  관리자 페이지 작성
 
-1. Product entity에 ImageUrl 필드 추가에 따른 리팩토링
+1. Product entity에 imageUrl 필드 추가에 따른 리팩토링
+2. ViewController 생성 및 리스트 페이지, 삭제 버튼 구현
