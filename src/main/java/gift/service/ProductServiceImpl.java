@@ -31,7 +31,9 @@ public class ProductServiceImpl implements ProductService {
                 .sorted(Comparator.comparing(Product::getId))
                 .collect(Collectors.toList());
 
-        return new CustomPage<>(products, page, size);
+        return new CustomPage.Builder<>(products)
+                .page(page).size(size)
+                .build();
     }
 
     @Override
