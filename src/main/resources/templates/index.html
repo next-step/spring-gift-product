@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>상품</title>
+  <style>
+    body {
+      font-family: "맑은 고딕", sans-serif;
+      margin: 20px;
+      background-color: white;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: white;
+    }
+    th, td {
+      border: 1px solid white;
+      padding: 8px;
+      text-align: left;
+      background-color: white;
+    }
+    th { background-color: #f2f2f2; }
+    .btn {
+      padding: 5px 10px;
+      margin: 2px;
+      color: white;
+      border-radius: 3px;
+    }
+    .btn-primary { background-color: #007bff; }
+    .btn-success { background-color: #28a745; }
+    .btn-warning { background-color: #ffc107; color: black; }
+    .btn-danger { background-color: #dc3545; }
+  </style>
+</head>
+<body>
+<h1>상품</h1>
+
+<div>
+  <a href="products/new" class="btn btn-success">상품 추가</a>
+</div>
+
+<table>
+  <thead>
+  <tr>
+    <th>번호</th>
+    <th>이름</th>
+    <th>가격</th>
+    <th>이미지 주소</th>
+    <th>관리</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="product : ${products}">
+    <td th:text="${product.id}">1</td>
+    <td>
+      <a th:href="@{/products/{id}(id=${product.id})}"
+         th:text="${product.name}"
+         style="text-decoration: none; color: #007bff;">상품명</a>
+    </td>
+    <td th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}">1000</td>
+    <td th:text="${product.imageUrl}">https://example.com/image.jpg</td>
+    <td>
+      <a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-primary">조회</a>
+      <a th:href="@{/products/{id}/update(id=${product.id})}" class="btn btn-warning">수정</a>
+      <a th:href="@{/products/{id}/delete(id=${product.id})}" class="btn btn-danger">삭제</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

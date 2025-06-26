@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/products")
-public class ProductController {
+public class ProductApiController {
     private final ProductService productService;
 
-    public ProductController(ProductService productService) {
+    public ProductApiController(ProductService productService) {
         this.productService = productService;
     }
 
@@ -25,7 +25,7 @@ public class ProductController {
     public ResponseEntity<ProductResponseDto> addProduct(
             @RequestBody ProductRequestDto dto
     ) {
-        return new ResponseEntity<ProductResponseDto>(productService.saveProduct(dto), HttpStatus.OK);
+        return new ResponseEntity<ProductResponseDto>(productService.saveProduct(dto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{productId}")

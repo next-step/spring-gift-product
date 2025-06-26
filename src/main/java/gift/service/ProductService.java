@@ -3,14 +3,18 @@ package gift.service;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
+import gift.exception.ProductNotFoundException;
 import gift.repository.ProductRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ProductService {
-    private Long id = 1L;
+
     private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
@@ -20,36 +24,49 @@ public class ProductService {
     public ProductResponseDto findProductById(Long productId) {
         Product product = productRepository.findById(productId);
         if (product == null)
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found.");
-        return new ProductResponseDto(product.id(), product.name(), product.price(), product.imageUrl());
+            throw new ProductNotFoundException();
+        return product.toDto();
     }
 
     public ProductResponseDto saveProduct(ProductRequestDto dto) {
-        Product product = new Product(
-                id++,
-                dto.name(),
-                dto.price(),
-                dto.imageUrl()
-        );
-        Product savedProduct = productRepository.saveProduct(product);
-        return new ProductResponseDto(savedProduct.id(), savedProduct.name(), product.price(), product.imageUrl());
+        Product product = productRepository.saveProduct(dto.name(),dto.price(),dto.imageUrl());
+        return product.toDto();
     }
 
     public ProductResponseDto updateProduct(Long productId, ProductRequestDto dto) {
         Product product = productRepository.findById(productId);
         if(product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found.");
+            throw new ProductNotFoundException();
         }
-        Product updatedProduct = new Product(productId, dto.name(), dto.price(), dto.imageUrl());
-        Product savedProduct = productRepository.updateProduct(productId,updatedProduct);
-        return new ProductResponseDto(savedProduct.id(), savedProduct.name(), savedProduct.price(), savedProduct.imageUrl());
+        product.updateProductInfo(dto.name(), dto.price(), dto.imageUrl());
+        return product.toDto();
+    }
+
+    //가격만 수정하는 것은 꽤 합리적이라고 생각
+    public ProductResponseDto updateProductPrice(Long productId, int price) {
+        Product product = productRepository.findById(productId);
+        if(product == null) {
+            throw new ProductNotFoundException();
+        }
+        product.updatePrice(price);
+        return product.toDto();
     }
 
     public void deleteProduct(Long productId) {
         Product product = productRepository.findById(productId);
         if(product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Product not found.");
+            throw new ProductNotFoundException();
         }
         productRepository.deleteById(productId);
     }
+
+    public List<ProductResponseDto> findAllProducts() {
+        List<Product> products = productRepository.findAllProducts();
+        List<ProductResponseDto> result = new ArrayList<>();
+        for (Product product : products) {
+            result.add(product.toDto());
+        }
+        return result;
+    }
+
     }
