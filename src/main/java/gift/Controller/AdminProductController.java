@@ -24,6 +24,7 @@ public class AdminProductController {
     }
 
 
+    // 상품 목록 조회
     @GetMapping
     public String list(Model model) {
         List<Product> products = productService.getAll();
@@ -31,21 +32,30 @@ public class AdminProductController {
         return "admin/product-list";
     }
 
+    // 상품 상세 조회
     @GetMapping("/{id}")
     public String detail(@PathVariable Long id, Model model) {
         Product product = productService.getById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다: "));
+                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다: " + id));
         model.addAttribute("product", product);
         return "admin/product-detail";
     }
 
+    // 상품 등록 폼
     @GetMapping("/new")
     public String createForm(Model model) {
         model.addAttribute("product", new Product());
         return "admin/product-form";
     }
 
+    // 상품 등록 처리
+    @PostMapping
+    public String create(@ModelAttribute Product product) {
+        productService.create(product);
+        return "redirect:/admin/products";
+    }
 
+    // 상품 수정 폼
     @GetMapping("/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
         Product product = productService.getById(id)
@@ -54,19 +64,14 @@ public class AdminProductController {
         return "admin/product-form";
     }
 
-    // 상품 등록
-    @PostMapping
-    public String create(@ModelAttribute Product product) {
-        productService.create(product);
-        return "redirect:/admin/products";
-    }
-
+    // 상품 수정 처리
     @PostMapping("/{id}")
     public String update(@PathVariable Long id, @ModelAttribute Product product) {
         productService.update(id, product);
         return "redirect:/admin/products";
     }
 
+    // 상품 삭제 처리
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable Long id) {
         productService.delete(id);
