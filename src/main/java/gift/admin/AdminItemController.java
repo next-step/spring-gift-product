@@ -30,7 +30,7 @@ public class AdminItemController {
         return "admin-item";
     }
 
-    @GetMapping("admin/items/new")
+    @GetMapping("/admin/items/new")
     public String newItemPage(Model model) {
         // dto가 record 형태라 생성시 값이 필요함.
         // 임의의 데이터를 넣어도 클라이언트에서 제출 시 새로운 객체가 생성됨.
@@ -38,7 +38,7 @@ public class AdminItemController {
         return "admin-item-new";
     }
 
-    @GetMapping("admin/items/update/{id}")
+    @GetMapping("/admin/items/update/{id}")
     public String updateItemPage(@PathVariable("id") Long id, Model model) {
         ItemResponseDto item = itemService.findItem(id);
         ItemUpdateDto updateDto = new ItemUpdateDto(item.name(), item.price(), item.imageUrl());
