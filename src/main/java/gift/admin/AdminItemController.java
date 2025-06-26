@@ -16,7 +16,7 @@ public class AdminItemController {
         this.itemService = itemService;
     }
 
-    @GetMapping("/admin/item")
+    @GetMapping("/admin/items")
     public String adminItemPage(Model model) {
         List<ItemResponseDto> items = itemService.findAll();
         model.addAttribute("items", items);
