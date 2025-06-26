@@ -2,8 +2,9 @@
 > Kakao Tech Campus Step2
 
 ## 구현할 기능 목록
-- [x] 제품 정보 Product class 구현
-- [x] 제품 저장할 ProductRepository interface 구현
-  - [x] ProductRepository를 메모리에서 저장하는 MemoryProductRepository로 구현
-- [x] 제품에 대한 비즈니스 로직을 담당하는 ProductService class 구현
-- [x] 제품에 대한 CRUD 기능을 제공하는 ProductController class 구현
+- [x] 관리자 화면을 thymeleaf로 구현
+  - [x] 상품을 리스트로 뜨도록 구현
+    - [x] 각 상품에 삭제 기능
+    - [x] 각 상품에 수정 기능
+  - [x] 상품 등록 기능
+- [x] 관리자 화면을 위한 Controller 구현

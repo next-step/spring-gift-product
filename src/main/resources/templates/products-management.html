@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Products Management</title>
+        <link rel="stylesheet" type="text/css" href="/style/base-style.css">
+        <link rel="stylesheet" type="text/css" href="/style/table-style.css">
+        <link rel="stylesheet" type="text/css" href="/style/modal-style.css">
+    </head>
+    <body>
+        <h1>Products Management</h1>
+        <div>
+            <button type="button" onclick="openModal('add')">Add Product</button>
+        </div>
+        <div>
+            <h2>Product List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>상품명</th>
+                        <th>가격</th>
+                        <th>사진</th>
+                        <th>작업</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="product : ${products}">
+                        <td th:text="${product.name}"></td>
+                        <td th:text="${product.price}"></td>
+                        <td th:text="${product.imageUrl}"></td>
+                        <td>
+                            <button type="button" th:onclick="openModal('update', [[${product.id}]])">Update</button> |
+                            <button type="button" th:onclick="deleteProduct([[${product.id}]])">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modal for Add/Update Product -->
+        <div id="modal">
+            <h4 id="modal-title"></h4>
+            <form id="infoForm">
+                <label>상품명: <input type="text" name="name" required></label><br><br>
+                <label>가격: <input type="number" name="price" required step="1" min="0" th:max="${T(java.lang.Integer).MAX_VALUE}"></label><br><br>
+                <label>사진: <input type="text" name="imageUrl" required></label><br><br>
+                <button type="submit">제출</button>
+                <button type="button" onclick="closeModal()">닫기</button>
+            </form>
+        </div>
+    </body>
+
+    <script src="/js/products-management.js"></script>
+</html>

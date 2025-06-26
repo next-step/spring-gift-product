@@ -4,9 +4,9 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.exception.NotFoundByIdException;
 import gift.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +16,6 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
@@ -56,5 +55,10 @@ public class ProductController {
     public ResponseEntity<String> handleNotFoundByIdException(NotFoundByIdException e) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body("Not Found by ID: " + e.getMessage());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<String> handleJsonParseError(HttpMessageNotReadableException e) {
+        return ResponseEntity.badRequest().body("Invalid Request: " + e.getMessage());
     }
 }
