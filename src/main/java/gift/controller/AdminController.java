@@ -46,5 +46,12 @@ public class AdminController {
         return "admin/products";
     }
 
+    // 상품 추가 기능 구현
+    @PostMapping
+    public String saveProduct(@ModelAttribute ProductRequestDto dto) {
+
+        productService.saveProduct(dto);
+        return "redirect:/admin/products";
+    }
 
 }
