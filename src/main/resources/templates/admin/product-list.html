@@ -25,8 +25,7 @@
             <td><img th:src="${product.imageUrl}" alt="상품 이미지" width="100"></td>
             <td>
                 <a th:href="@{'/admin/products/edit/' + ${product.id}}">수정</a> |
-                <form th:action="@{'/admin/products/delete/' + ${product.id}}" method="post" style="display:inline;">
-                    <button type="submit">삭제</button>
+                <button type="button" th:onclick="'deleteProduct(' + ${product.id} + ')'">삭제</button>
                 </form>
             </td>
         </tr>
@@ -37,6 +36,23 @@
         <a th:href="@{/admin/products/new}">상품 등록</a>
     </div>
 </div>
+<script>
+    function deleteProduct(productId) {
+      if (!confirm("정말 삭제하시겠습니까?")) return;
+
+      fetch(`/api/products/${productId}`, {
+        method: "DELETE"
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("삭제 실패");
+        alert("삭제 완료!");
+        location.reload(); // 현재 페이지 새로고침
+      })
+      .catch(err => {
+        alert("오류 발생: " + err.message);
+      });
+    }
+</script>
 
 </body>
 </html>
