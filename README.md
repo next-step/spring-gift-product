@@ -31,7 +31,10 @@
 
 ## 기능 목록
 
-- [ ] **상품 목록 조회**
+- [x] **상품 목록 조회**
   - `feat`: Controller에서 Thymeleaf로 전달한 DTO인 ProductView 생성 (`ProductView`)
   - `feat`: 상품 목록 조회 컨트롤러 로직 구현 (`GET /admin/products`)
   - `feat`: 상품 목록 조회 HTML 템플릿 작성 (`admin/products.html`)
+  
+- [ ] **상품 추가 기능**
+  - `feat`: 상품 추가 폼 페이지로 이동하는 컨트롤러 로직 구현 (`GET /admin/products/add`)

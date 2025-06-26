@@ -1,6 +1,7 @@
 package gift.controller;
 
 
+import gift.dto.request.ProductRequestDto;
 import gift.dto.response.ProductResponseDto;
 import gift.dto.view.ProductView;
 import gift.service.ProductService;
@@ -32,5 +33,13 @@ public class ProductAdminController {
         model.addAttribute("products", productViews);
 
         return "admin/products";
+    }
+
+    @GetMapping("/add")
+    public String showAddForm(Model model){
+        model.addAttribute("product",
+                new ProductRequestDto("", 0L, ""));
+
+        return "admin/add-form";
     }
 }
