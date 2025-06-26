@@ -6,7 +6,7 @@ import gift.entity.Item;
 import java.util.List;
 
 public interface ItemRepository {
-    Item saveItem(ItemDTO dto);
+    Item saveItem(Item dto);
 
     List<Item> getItems(String name, Integer price);
 

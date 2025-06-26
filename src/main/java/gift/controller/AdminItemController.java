@@ -1,9 +1,11 @@
 package gift.controller;
 
 
+import gift.dto.ItemCreateDTO;
 import gift.dto.ItemDTO;
 import gift.entity.Item;
 import gift.service.ItemService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +39,9 @@ public class AdminItemController {
     }
 
     @PostMapping
-    public String saveItem(@ModelAttribute ItemDTO itemDTO) {
-        ItemDTO itemDTO1 = itemService.saveItem(itemDTO);
+    public String saveItem(@ModelAttribute @Valid ItemCreateDTO itemDTO) {
+
+        itemService.saveItem(itemDTO);
         return "redirect:/admin/products";
     }
 
@@ -58,7 +61,7 @@ public class AdminItemController {
     }
 
     @PostMapping("/{id}/edit")
-    public String updateItem(@PathVariable Long id, @ModelAttribute ItemDTO dto) {
+    public String updateItem(@PathVariable Long id, @ModelAttribute @Valid ItemDTO dto) {
         itemService.updateItem(id, dto);
         return "redirect:/admin/products";
     }

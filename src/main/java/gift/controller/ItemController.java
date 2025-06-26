@@ -1,6 +1,7 @@
 package gift.controller;
 
 
+import gift.dto.ItemCreateDTO;
 import gift.dto.ItemDTO;
 import gift.service.ItemService;
 import jakarta.validation.Valid;
@@ -22,10 +23,10 @@ public class ItemController {
     }
 
     @PostMapping
-    public ResponseEntity<ItemDTO> addItems(
-            @RequestBody @Valid ItemDTO dto
+    public ResponseEntity<ItemCreateDTO> addItems(
+            @RequestBody @Valid ItemCreateDTO dto
     ) {
-        ItemDTO item = itemService.saveItem(dto);;
+        ItemCreateDTO item = itemService.saveItem(dto);
         return new ResponseEntity<>(item, HttpStatus.CREATED);
     }
 

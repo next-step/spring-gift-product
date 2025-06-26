@@ -20,7 +20,7 @@ public class ItemRepositoryImpl implements ItemRepository {
 
 
     @Override
-    public Item saveItem(ItemDTO dto) {
+    public Item saveItem(Item dto) {
         Long id = dto.getId();
         if (id == null) {
             id = sequence.getAndIncrement();

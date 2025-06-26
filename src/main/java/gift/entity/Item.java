@@ -1,5 +1,7 @@
 package gift.entity;
 
+import gift.dto.ItemCreateDTO;
+
 public class Item {
     private Long id;
     private String name;
@@ -19,6 +21,12 @@ public class Item {
         this.name = item.getName();
         this.price = item.getPrice();
         this.imageUrl = item.getImageUrl();
+    }
+
+    public Item(ItemCreateDTO dto) {
+        this.name = dto.name();
+        this.price = dto.price();
+        this.imageUrl = dto.imageUrl();
     }
 
     public Long getId() {

@@ -1,6 +1,7 @@
 package gift.service;
 
 
+import gift.dto.ItemCreateDTO;
 import gift.dto.ItemDTO;
 import gift.entity.Item;
 import gift.exception.ItemNotFoundException;
@@ -19,10 +20,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDTO saveItem(ItemDTO dto) {
-        Item item = itemRepository.saveItem(dto);
+    public ItemCreateDTO saveItem(ItemCreateDTO dto) {
+        Item item = new Item(dto);
+        Item saveditem = itemRepository.saveItem(item);
 
-        return new ItemDTO(item);
+        return new ItemCreateDTO(saveditem);
     }
 
     @Override
