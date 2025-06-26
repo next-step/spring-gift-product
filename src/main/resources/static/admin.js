@@ -54,8 +54,9 @@ document.getElementById("patch-product-form").addEventListener("submit", async f
 document.getElementById("delete-btn").addEventListener('click', async function (event) {
 
     const productId = event.target.dataset.productId;
-    confirm(`정말로 ${productId}번 상품을 삭제하시겠습니까?`);
-
+    if(!confirm(`정말로 ${productId}번 상품을 삭제하시겠습니까?`)){
+        return
+    }
     const response = await fetch(`/api/products/${productId}`, {
         method: "DELETE",
     })
