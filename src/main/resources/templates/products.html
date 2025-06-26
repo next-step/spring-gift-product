@@ -14,6 +14,10 @@
         <td th:text="${product.price}"></td>
         <td th:text="${product.imageUrl}"></td>
         <td><a th:href="@{|/api/product/${product.id}/update|}">수정</a></td>
+        <td><form th:action="@{|/api/product/${product.id}/delete|}" method="post">
+            <input type="hidden" name="_method" value="delete" />
+            <button type="submit">삭제</button>
+        </form></td>
     </tr>
 </table>
 <a th:href="@{/api/product/add}">상품 추가</a>
