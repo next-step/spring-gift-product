@@ -9,5 +9,5 @@ public interface ProductRepository {
     Product findById(Long productId);
     Product save(Product product);
     Product update(Product product);
-    Long deleteById(Long productId); // 삭제 메소드 추가
+    Boolean deleteById(Long productId); // 삭제 메소드 추가
 }

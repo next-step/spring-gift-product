@@ -38,3 +38,13 @@ out/
 
 ### Mac OS ###
 .DS_Store
+
+### 프론트엔드 관련 파일들 ###
+src/main/frontend/node_modules/
+
+src/main/frontend/dist/
+src/main/frontend/coverage/
+src/main/frontend/npm-debug.log
+src/main/frontend/yarn-error.log
+
+src/main/frontend/.env
