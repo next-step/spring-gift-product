@@ -49,4 +49,11 @@ public class ProductViewController {
 
         return "product/list";
     }
+
+    @GetMapping("/{id}")
+    public String getProduct(@PathVariable Long id, Model model) {
+        ProductResponseDto product = productService.findProductById(id);
+        model.addAttribute("product", product);
+        return "product/detail";
+    }
 }
