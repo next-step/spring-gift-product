@@ -1,7 +1,7 @@
-package gift.repository;
+package gift.item.repository;
 
-import gift.dto.ItemDto;
-import gift.entity.Item;
+import gift.item.dto.ItemDto;
+import gift.item.entity.Item;
 
 import java.util.List;
 

@@ -1,8 +1,7 @@
-package gift.controller;
+package gift.item.controller;
 
-import gift.dto.ItemDto;
-import gift.entity.Item;
-import gift.service.ItemService;
+import gift.item.dto.ItemDto;
+import gift.item.service.ItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

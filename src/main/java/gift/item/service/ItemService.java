@@ -1,9 +1,9 @@
-package gift.service;
+package gift.item.service;
 
-import gift.dto.ItemDto;
-import gift.entity.Item;
-import gift.exception.ItemNotFoundException;
-import gift.repository.ItemRepository;
+import gift.item.dto.ItemDto;
+import gift.item.entity.Item;
+import gift.item.exception.ItemNotFoundException;
+import gift.item.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

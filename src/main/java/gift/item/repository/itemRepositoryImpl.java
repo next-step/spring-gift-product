@@ -1,8 +1,8 @@
-package gift.repository;
+package gift.item.repository;
 
-import gift.dto.ItemDto;
-import gift.entity.Item;
-import gift.exception.ItemNotFoundException;
+import gift.item.dto.ItemDto;
+import gift.item.entity.Item;
+import gift.item.exception.ItemNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
