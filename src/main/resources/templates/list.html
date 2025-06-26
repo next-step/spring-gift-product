@@ -37,6 +37,10 @@
                             상세정보
                         </a>
 
+                        <a th:href="@{'/api/admin/products/edit/' + ${product.getId()}}" class="btn btn-sm btn-warning">
+                            수정
+                        </a>
+
                         <form th:action="@{'/api/admin/products/' + ${product.getId()}}" th:method="delete" style="display:inline;">
                             <button type="submit" class="btn btn-sm btn-danger"
                                     onclick="return confirm('정말 삭제하시겠습니까?');">

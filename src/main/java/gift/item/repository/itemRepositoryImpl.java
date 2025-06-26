@@ -2,6 +2,7 @@ package gift.item.repository;
 
 import gift.item.dto.CreateItemDto;
 import gift.item.dto.ItemDto;
+import gift.item.dto.UpdateItemDto;
 import gift.item.entity.Item;
 import gift.item.exception.ItemNotFoundException;
 import org.springframework.stereotype.Repository;
@@ -40,7 +41,7 @@ public class itemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public Item updateItem(Long id, ItemDto dto) {
+    public Item updateItem(Long id, UpdateItemDto dto) {
         Item item = items.get(id);
         if (item == null) {
             throw new ItemNotFoundException("상품을 찾을 수 없습니다: " + id);

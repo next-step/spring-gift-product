@@ -2,6 +2,7 @@ package gift.item.service;
 
 import gift.item.dto.CreateItemDto;
 import gift.item.dto.ItemDto;
+import gift.item.dto.UpdateItemDto;
 import gift.item.entity.Item;
 import gift.item.exception.ItemNotFoundException;
 import gift.item.repository.ItemRepository;
@@ -39,7 +40,7 @@ public class ItemService {
         itemRepository.deleteItem(id);
     }
 
-    public ItemDto updateItem(Long id, ItemDto dto) {
+    public ItemDto updateItem(Long id, UpdateItemDto dto) {
         Item item = itemRepository.updateItem(id, dto);
         return new ItemDto(item);
     }

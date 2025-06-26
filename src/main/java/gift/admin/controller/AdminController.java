@@ -1,6 +1,8 @@
 package gift.admin.controller;
 
 import gift.item.dto.CreateItemDto;
+import gift.item.dto.ItemDto;
+import gift.item.dto.UpdateItemDto;
 import gift.item.entity.Item;
 import gift.item.service.ItemService;
 import org.springframework.stereotype.Controller;
@@ -50,6 +52,20 @@ public class AdminController {
     @DeleteMapping("/api/admin/products/{id}")
     public String deleteProduct(@PathVariable Long id) {
         itemService.deleteItem(id);
+        return "redirect:/api/admin/products";
+    }
+    
+    //상품 수정 페이지
+    @GetMapping("/api/admin/products/edit/{id}")
+    public String updateProduct(@PathVariable Long id, Model model) {
+        model.addAttribute("product", itemService.findItem(id));
+        return "update";
+    }
+
+    //상품 수정 기능
+    @PutMapping("/api/admin/products/edit/{id}")
+    public String updateProduct(@PathVariable Long id, UpdateItemDto dto) {
+        itemService.updateItem(id, dto);
         return "redirect:/api/admin/products";
     }
 

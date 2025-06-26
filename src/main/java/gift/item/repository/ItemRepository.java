@@ -2,6 +2,7 @@ package gift.item.repository;
 
 import gift.item.dto.CreateItemDto;
 import gift.item.dto.ItemDto;
+import gift.item.dto.UpdateItemDto;
 import gift.item.entity.Item;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface ItemRepository {
 
     Item findItem(Long id);
 
-    Item updateItem(Long id, ItemDto dto);
+    Item updateItem(Long id, UpdateItemDto dto);
 
     void deleteItem(Long id);
 }

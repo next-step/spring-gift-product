@@ -2,6 +2,7 @@ package gift.item.controller;
 
 import gift.item.dto.CreateItemDto;
 import gift.item.dto.ItemDto;
+import gift.item.dto.UpdateItemDto;
 import gift.item.service.ItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +57,7 @@ public class ItemController {
     @PutMapping("/api/products/{id}")
     public ResponseEntity<ItemDto> updateItem(
             @PathVariable Long id,
-            @RequestBody ItemDto dto
+            @RequestBody UpdateItemDto dto
     ) {
         ItemDto updateItem = itemService.updateItem(id, dto);
         return ResponseEntity.ok(updateItem);
