@@ -4,6 +4,8 @@ import gift.domain.Product;
 import gift.dto.request.ProductReqDTO;
 import gift.dto.response.ProductResDTO;
 import gift.repository.ProductRepository;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,12 +13,13 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public ProductService() {
-        this.productRepository = new ProductRepository();
+    @Autowired
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
     public ProductResDTO save(ProductReqDTO productReqDTO) {
-        return ProductResDTO.toDTO(
+        return convertToDTO(
             productRepository.save(
                 new Product(
                     productReqDTO.name(),
@@ -28,30 +31,42 @@ public class ProductService {
     }
 
     public ProductResDTO findById(Long id) {
-        return ProductResDTO.toDTO(
+        return convertToDTO(
             productRepository.findById(id)
         );
+    }
+
+    public List<ProductResDTO> findAllProducts() {
+        return productRepository.findAll()
+            .stream()
+            .map(this::convertToDTO)
+            .toList();
     }
 
     public ProductResDTO update(Long id, ProductReqDTO productReqDTO) {
         Product product = productRepository.findById(id);
 
-        if (productReqDTO.name() != null) {
-            product.setName(productReqDTO.name());
-        }
-        if (productReqDTO.price() != null) {
-            product.setPrice(productReqDTO.price());
-        }
-        if (productReqDTO.imageURL() != null) {
-            product.setImageURL(productReqDTO.imageURL());
-        }
-
-        return ProductResDTO.toDTO(
-            productRepository.save(product)
+        return convertToDTO(
+            productRepository.save(
+                product.update(
+                    productReqDTO.name(),
+                    productReqDTO.price(),
+                    productReqDTO.imageURL()
+                )
+            )
         );
     }
 
     public void delete(Long id) {
         productRepository.delete(id);
+    }
+
+    private ProductResDTO convertToDTO(Product product) {
+        return new ProductResDTO(
+            product.getId(),
+            product.getName(),
+            product.getPrice(),
+            product.getImageURL()
+        );
     }
 }

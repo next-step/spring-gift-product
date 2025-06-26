@@ -3,9 +3,11 @@ package gift.controller;
 import gift.dto.request.ProductReqDTO;
 import gift.dto.response.ProductResDTO;
 import gift.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,12 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/products")
-public class ProductController {
+public class ProductApiController {
 
     private final ProductService productService;
 
-    public ProductController() {
-        this.productService = new ProductService();
+    @Autowired
+    public ProductApiController(ProductService productService) {
+        this.productService = productService;
     }
 
     @PostMapping
@@ -35,7 +38,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.findById(id));
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ProductResDTO> updateProduct(
         @PathVariable("id") Long id,
         @RequestBody ProductReqDTO productReqDTO

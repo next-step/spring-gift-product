@@ -2,8 +2,11 @@ package gift.repository;
 
 import gift.domain.Product;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class ProductRepository {
 
     private static final Map<Long, Product> products;
@@ -23,5 +26,11 @@ public class ProductRepository {
 
     public void delete(Long id) {
         products.remove(id);
+    }
+
+    public List<Product> findAll() {
+        return products.values()
+            .stream()
+            .toList();
     }
 }

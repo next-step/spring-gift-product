@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Product</title>
+    <link th:href="@{/styles/create.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:replace="~{/fragments/header.html :: headerFragment}"></div>
+<div class="create-form">
+    <form id="product-form">
+        <div class="form">
+            <label for="name">NAME</label>
+            <input
+                type="text"
+                id="name"
+                class="input-form"
+                placeholder="상품 이름을 입력해주세요."
+            >
+        </div>
+        <div class="form">
+            <label for="price">PRICE</label>
+            <input
+                type="text"
+                id="price"
+                class="input-form"
+                placeholder="상품 가격을 입력해주세요."
+            >
+        </div>
+        <div class="form">
+            <label for="imgURL">ImageURL</label>
+            <input
+                type="text"
+                id="imgURL"
+                class="input-form"
+                placeholder="상품의 이미지 URL을 입력해주세요."
+            >
+        </div>
+        <div class="add-button">
+            <button type="submit">추가하기</button>
+        </div>
+    </form>
+</div>
+<script src="/scripts/create.js"></script>
+</body>
+</html>
