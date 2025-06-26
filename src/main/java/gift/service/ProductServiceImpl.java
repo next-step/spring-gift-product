@@ -4,6 +4,7 @@ import gift.dto.RequestDto;
 import gift.dto.ResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,6 +23,16 @@ public class ProductServiceImpl implements ProductService {
 
         Product savedProduct = productRepository.saveProduct(product);
 
-        return null;
+        return new ResponseDto(savedProduct);
     }
+
+    @Override
+    public List<ResponseDto> findAllProducts() {
+
+        List<ResponseDto> allProducts = productRepository.findAllProducts();
+
+        return allProducts;
+    }
+
+
 }

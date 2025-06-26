@@ -33,11 +33,7 @@ public class ProductController {
     @GetMapping
     public List<ResponseDto> getProducts() {
 
-        List<ResponseDto> responseList = products.values().stream()
-            .map(product -> new ResponseDto(product))
-            .collect(Collectors.toList());
-
-        return responseList;
+        return productService.findAllProducts();
     }
 
     @GetMapping("/{productId}")
