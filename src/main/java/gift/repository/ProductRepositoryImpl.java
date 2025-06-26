@@ -3,7 +3,9 @@ package gift.repository;
 import gift.entity.Product;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -23,6 +25,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Product findProductById(Long id) {
         Product product = products.get(id);
         return product;
+    }
+
+    @Override
+    public List<Product> findAllProduct() {
+        return new ArrayList<>(products.values());
     }
 
     @Override

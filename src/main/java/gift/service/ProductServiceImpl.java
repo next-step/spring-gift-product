@@ -8,6 +8,9 @@ import gift.exception.ProductNotFoundException;
 import gift.repository.ProductRepositoryImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ProductServiceImpl implements ProductService{
 
@@ -30,6 +33,13 @@ public class ProductServiceImpl implements ProductService{
             throw new ProductNotFoundException(id);
         }
         return new ProductResponseDto(product);
+    }
+
+    @Override
+    public List<ProductResponseDto> findAllProduct() {
+        List<Product> products = productRepositoryImpl.findAllProduct();
+        List<ProductResponseDto> responseDto = products.stream().map(Product::toProductResponseDto).toList();
+        return responseDto;
     }
 
     @Override

@@ -4,9 +4,12 @@ import gift.dto.ProductAddRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.dto.ProductUpdateRequestDto;
 
+import java.util.List;
+
 public interface ProductService {
     public ProductResponseDto addProduct(ProductAddRequestDto requestDto);
     public ProductResponseDto findProductById(Long id);
+    public List<ProductResponseDto> findAllProduct();
     public ProductResponseDto updateProductById(Long id, ProductUpdateRequestDto requestDto);
     public void deleteProductById(Long id);
 }
