@@ -38,4 +38,17 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        ProductResponseDto product = productService.findProductById(id);
+        model.addAttribute("product", product);
+        return "admin/product-edit";
+    }
+
+    @PostMapping("/{id}")
+    public String updateProduct(@PathVariable Long id, @ModelAttribute ProductRequestDto dto) {
+        productService.updateProduct(id, dto);
+        return "redirect:/admin";
+    }
+
 }

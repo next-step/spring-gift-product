@@ -20,8 +20,8 @@
         <td th:text="${product.price}"></td>
         <td><img th:src="${product.imageUrl}" width="50"/></td>
         <td>
-            <a th:href="@{'/admin/products/' + ${product.id} + '/edit'}">수정</a>
-            <form th:action="@{'/admin/products/' + ${product.id} + '/delete'}" method="post" style="display:inline;">
+            <a th:href="@{'/admin/' + ${product.id} + '/edit'}">수정</a>
+            <form th:action="@{'/admin/' + ${product.id} + '/delete'}" method="post" style="display:inline;">
                 <button type="submit">삭제</button>
             </form>
         </td>
