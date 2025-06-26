@@ -25,4 +25,9 @@ public class AdminProductController {
         model.addAttribute("products", products);
         return "admin/list";
     }
+
+    @GetMapping("/admin/products/new")
+    public String showCreateForm() {
+        return "admin/new";
+    }
 }

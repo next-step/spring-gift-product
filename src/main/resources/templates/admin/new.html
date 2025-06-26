@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>상품 등록</title>
+</head>
+<body>
+<h1>상품 등록</h1>
+
+<form action="/admin/products" method="post">
+    <div>
+        <label>상품명: <input type="text" name="name"/></label>
+    </div>
+    <div>
+        <label>가격: <input type="number" name="price"/></label>
+    </div>
+    <div>
+        <label>이미지 URL: <input type="text" name="imageUrl"/></label>
+    </div>
+    <div>
+        <button type="submit">등록</button>
+    </div>
+</form>
+
+<a href="/admin/products">← 목록으로</a>
+</body>
+</html>
