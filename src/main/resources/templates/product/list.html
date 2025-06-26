@@ -76,7 +76,7 @@
             <form th:action="@{'/admin/products/' + ${product.id} + '/update'}" method="get" style="display:inline;">
                 <button type="submit">수정</button>
             </form>
-            <form th:action="@{'/products/delete/' + ${product.id}}" method="post" style="display:inline;">
+            <form th:action="@{'/admin/products/delete/' + ${product.id}}" method="post" style="display:inline;">
                 <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
             </form>
         </td>
