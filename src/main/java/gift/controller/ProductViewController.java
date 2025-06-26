@@ -59,4 +59,10 @@ public class ProductViewController {
         productService.updateProduct(id, dto);
         return "redirect:/products/" + id;
     }
+
+    @GetMapping("/products/{id}/delete")
+    public String deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return "redirect:/";
+    }
 }
