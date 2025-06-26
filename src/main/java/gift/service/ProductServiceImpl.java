@@ -6,9 +6,7 @@ import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -82,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
 
         Product deletedProduct = productRepository.deleteProductByProductId(productId);
 
-        return new ResponseDto(product);
+        return new ResponseDto(deletedProduct);
     }
 
 
