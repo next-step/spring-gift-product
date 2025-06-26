@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>상품 목록</title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}"/>
+</head>
+<body>
+<h1>상품 관리</h1>
+<div th:if="${message}" class="alert success" th:text="${message}"></div>
+<div th:if="${error}" class="alert error" th:text="${error}"></div>
+<a th:href="@{/admin/products/new}" class="btn">상품 등록</a>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>이름</th>
+    <th>가격</th>
+    <th>이미지</th>
+    <th>작업</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="product : ${products}" th:attr="data-id=${product.getId()}">
+    <td th:text="${product.getId()}"></td>
+    <td><a th:href="@{/admin/products/{id}(id=${product.getId()})}"
+           th:text="${product.getName()}"></a></td>
+    <td th:text="${product.getPrice()}"></td>
+    <td><img th:src="${product.getImageUrl()}" alt="상품 이미지" width="50"/></td>
+    <td>
+      <a th:href="@{/admin/products/{id}/edit(id=${product.getId()})}" class="btn">수정</a>
+      <button class="btn delete" th:onclick="|deleteProduct(${product.getId()})|">삭제</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<script th:src="@{/js/admin.js}"></script>
+</body>
+</html>
