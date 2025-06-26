@@ -8,30 +8,35 @@
 <body>
 <h1>상품 목록</h1>
 
-<table>
-    <thead>
-    <tr>
-        <th>상품명</th>
-        <th>가격</th>
-        <th>이미지</th>
-        <th>관리</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="product : ${products}">
-        <td th:text="${product.name}">상품명</td>
-        <td th:text="${product.price}">가격</td>
-        <td><img th:src="${product.imageUrl}" alt="상품 이미지" width="100"></td>
-        <td>
-            <a th:href="@{'/admin/products/edit/' + ${product.id}}">수정</a> |
-            <form th:action="@{'/admin/products/delete/' + ${product.id}}" method="post" style="display:inline;">
-                <button type="submit">삭제</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="table-container">
+    <table>
+        <thead>
+        <tr>
+            <th>상품명</th>
+            <th>가격</th>
+            <th>이미지</th>
+            <th>관리</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.name}">상품명</td>
+            <td th:text="${product.price}">가격</td>
+            <td><img th:src="${product.imageUrl}" alt="상품 이미지" width="100"></td>
+            <td>
+                <a th:href="@{'/admin/products/edit/' + ${product.id}}">수정</a> |
+                <form th:action="@{'/admin/products/delete/' + ${product.id}}" method="post" style="display:inline;">
+                    <button type="submit">삭제</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-<a href="/admin/products/new">상품 등록</a>
+    <div class="button-area">
+        <a th:href="@{/admin/products/new}">상품 등록</a>
+    </div>
+</div>
+
 </body>
 </html>

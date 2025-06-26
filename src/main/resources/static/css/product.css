@@ -21,10 +21,13 @@ h1 {
     margin-bottom: 1.5rem;
 }
 
+.table-container {
+    margin-bottom: 2rem;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 2rem;
     background-color: white;
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -50,6 +53,41 @@ tr:nth-child(even) {
 img {
     border-radius: 8px;
 }
+
+.form-container {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"] {
+    padding: 0.6rem;
+    margin-top: 0.3rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
 
 a, button {
     padding: 0.4rem 0.8rem;
@@ -79,4 +117,9 @@ button {
 button:hover {
     background-color: var(--button-hover);
     color: #000;
+}
+
+.button-area {
+    margin-top: 1rem;
+    text-align: left;
 }
