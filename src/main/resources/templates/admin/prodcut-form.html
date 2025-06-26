@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${mode == 'add' ? '상품 추가' : '상품 수정'}">상품 추가</title>
+</head>
+<body>
+<h1 th:text="${mode == 'add' ? '상품 추가' : '상품 수정'}"></h1>
+<form th:action="@{/admin/products}" method="post">
+  <input type="hidden" name="mode" th:value="${mode}"/>
+  <input type="hidden" name="id" th:value="${product.id}"/>
+  <div>
+    <label>상품명: <input type="text" name="name" th:value="${product.name}"/></label>
+  </div>
+  <div>
+    <label>가격: <input type="number" name="price" th:value="${product.price}"/></label>
+  </div>
+  <div>
+    <label>이미지 URL: <input type="text" name="imageUrl" th:value="${product.imageUrl}"/></label>
+  </div>
+  <div>
+    <button type="submit">저장</button>
+    <a th:href="@{/admin/products}">취소</a>
+  </div>
+</form>
+</body>
+</html>
