@@ -35,7 +35,7 @@ public class ProductAdminController {
     @GetMapping("/new")
     public String showAddForm(Model model) {
         model.addAttribute("product", new Product());
-        return "product/form";
+        return "product/create-form";
     }
 
     /**
@@ -53,7 +53,7 @@ public class ProductAdminController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         model.addAttribute("product", productService.getProduct(id));
-        return "product/form";
+        return "product/edit-form";
     }
 
     /**
