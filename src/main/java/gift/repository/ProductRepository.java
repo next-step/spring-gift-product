@@ -1,6 +1,6 @@
 package gift.repository;
 
-import gift.dto.ProductUpdateRequestDto;
+import gift.dto.api.ProductUpdateRequestDto;
 import gift.entity.Product;
 import org.springframework.stereotype.Repository;
 

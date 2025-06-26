@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>상품 목록</title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+
+<div class="container">
+  <h1>Manage <strong>Products</strong></h1>
+
+  <div class="button-group">
+    <a href="/admin/products/new" class="button add">+ Add Product</a>
+  </div>
+
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>상품명</th>
+      <th>가격</th>
+      <th>이미지</th>
+      <th>상세</th>
+      <th>관리</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+      <td th:text="${product.id}">1</td>
+      <td th:text="${product.name}">상품명</td>
+      <td th:text="${product.price}"></td>
+      <td><img th:src="${product.imageUrl}" width="80" /></td>
+      <td><a th:href="@{'/admin/products/' + ${product.id}}">상세보기</a></td>
+      <td class="actions">
+        <a th:href="@{'/admin/products/' + ${product.id} + '/edit'}" title="수정">✏️</a>
+        <form th:action="@{'/admin/products/' + ${product.id} + '/delete'}"
+              method="post"
+              onsubmit="return confirm('정말 삭제하시겠습니까?')"
+              style="display:inline;">
+          <button type="submit" style="border:none; background:none;" title="삭제">🗑️</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
+
