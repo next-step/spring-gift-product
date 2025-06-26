@@ -13,7 +13,11 @@ public record ProductCreateRequest(
             throw new IllegalArgumentException("상품 이름은 필수입니다.");
         }
         this.name = name;
-        if (price == null || price <= 0) {
+        if (price == null) {
+            throw new IllegalArgumentException("상품 가격은 필수입니다.");
+        }
+
+        if (price <= 0) {
             throw new IllegalArgumentException("상품 가격은 0보다 커야 합니다.");
         }
         this.price = price;

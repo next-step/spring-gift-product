@@ -12,26 +12,24 @@ public record ErrorMessageResponse (
     String message,
     int status,
     String error,
-    String path
+    String path,
+    String stackTrace
 ) {
 
     public static class Builder {
         HttpServletRequest request;
         String message;
         HttpStatus status;
+        String stackTrace = "";
 
-        public Builder(HttpServletRequest request) {
-            this.status = status;
-            return this;
-        }
-
-        public Builder message(String message) {
+        public Builder(HttpServletRequest request, String message, HttpStatus status) {
+            this.request = request;
             this.message = message;
-            return this;
+            this.status = status;
         }
 
-        public Builder status(HttpStatus status) {
-            this.status = status;
+        public Builder stackTrace(String stackTrace) {
+            this.stackTrace = stackTrace;
             return this;
         }
 
@@ -41,7 +39,8 @@ public record ErrorMessageResponse (
                 message,
                 status.value(),
                 status.getReasonPhrase(),
-                request.getRequestURI()
+                request.getRequestURI(),
+                stackTrace
             );
         }
     }
