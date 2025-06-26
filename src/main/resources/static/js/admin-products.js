@@ -56,7 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
             openEditModal(productId);
         }
         if (target.classList.contains('delete-btn')) {
-            // 4단계
+            const productId = target.dataset.id;
+            deleteProduct(productId);
         }
     });
 });
@@ -174,4 +175,16 @@ function updateProduct(id, productData) {
                 getProducts();
             }
         })
+}
+
+function deleteProduct(id) {
+    if (confirm(`정말로 이 상품(ID: ${id})을 삭제하시겠습니까?`)) {
+        axios.delete(`/api/products/${id}`)
+            .then(response => {
+                if (response.status === 204) {
+                    alert('상품이 성공적으로 삭제되었습니다.');
+                    getProducts();
+                }
+            })
+    }
 }
