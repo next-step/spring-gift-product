@@ -26,4 +26,8 @@ public class ProductRepository {
     public void deleteById(Long id) {
         products.remove(id);
     }
+
+    public List<Product> findAllProducts() {
+        return new ArrayList<>(products.values());
+    }
 }

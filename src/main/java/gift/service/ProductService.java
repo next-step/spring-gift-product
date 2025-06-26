@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ProductService {
 
@@ -56,4 +59,14 @@ public class ProductService {
         }
         productRepository.deleteById(productId);
     }
+
+    public List<ProductResponseDto> findAllProducts() {
+        List<Product> products = productRepository.findAllProducts();
+        List<ProductResponseDto> result = new ArrayList<>();
+        for (Product product : products) {
+            result.add(product.toDto());
+        }
+        return result;
+    }
+
     }
