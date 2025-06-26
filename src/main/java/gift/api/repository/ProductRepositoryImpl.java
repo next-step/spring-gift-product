@@ -1,6 +1,7 @@
 package gift.api.repository;
 
 import gift.api.domain.Product;
+import gift.exception.ProductNotFoundException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -63,11 +64,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product findProductById(Long id) throws IllegalArgumentException {
+    public Product findProductById(Long id) {
         Product product = products.get(id);
 
         if (product == null) {
-            throw new IllegalArgumentException("해당 ID의 상품이 존재하지 않습니다: " + id);
+            throw new ProductNotFoundException(id);
         }
 
         return product;
@@ -87,12 +88,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product updateProduct(Product product)
-            throws IllegalArgumentException {
+    public Product updateProduct(Product product) {
         Product newProduct = products.get(product.getId());
 
         if (newProduct == null) {
-            throw new IllegalArgumentException("해당 ID의 상품이 존재하지 않습니다: " + product.getId());
+            throw new ProductNotFoundException(product.getId());
         }
 
         newProduct.setName(product.getName());
@@ -103,9 +103,9 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public void deleteProduct(Long id) throws IllegalArgumentException {
+    public void deleteProduct(Long id) {
         if (!products.containsKey(id)) {
-            throw new IllegalArgumentException("해당 ID의 상품이 존재하지 않습니다: " + id);
+            throw new ProductNotFoundException(id);
         }
 
         products.remove(id);

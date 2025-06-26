@@ -4,6 +4,7 @@ import gift.api.dto.ProductRequestDto;
 import gift.api.dto.ProductResponseDto;
 import gift.api.service.ProductService;
 import jakarta.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -35,47 +36,36 @@ public class ProductController {
             @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
             @RequestParam(required = false) Long categoryId
     ) {
-        return new ResponseEntity<>(
-                productService.findAllProducts(pageable, categoryId).getContent(), HttpStatus.OK);
+        return ResponseEntity.ok(productService.findAllProducts(pageable, categoryId).getContent());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable Long id) {
-        try {
-            return new ResponseEntity<>(productService.findProductById(id), HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<ProductResponseDto> getProductById(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.findProductById(id));
     }
 
     @PostMapping
     public ResponseEntity<ProductResponseDto> createProduct(
             @Valid @RequestBody ProductRequestDto productRequestDto) {
-        return new ResponseEntity<>(productService.createProduct(productRequestDto),
-                HttpStatus.CREATED);
+        ProductResponseDto createdProduct = productService.createProduct(productRequestDto);
+
+        URI location = URI.create("/admin/products/" + createdProduct.id());
+
+        return ResponseEntity.created(location).body(createdProduct);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(
+    public ResponseEntity<ProductResponseDto> updateProduct(
             @PathVariable Long id,
             @Valid @RequestBody ProductRequestDto productRequestDto
     ) {
-        try {
-            return new ResponseEntity<>(productService.updateProduct(id, productRequestDto),
-                    HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        return ResponseEntity.ok(productService.updateProduct(id, productRequestDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
-        try {
-            productService.deleteProduct(id);
+    public ResponseEntity<ProductResponseDto> deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
 
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

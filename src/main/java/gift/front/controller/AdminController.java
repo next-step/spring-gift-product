@@ -43,30 +43,23 @@ public class AdminController {
     @GetMapping("/{id}")
     public String productDetail(
             @PathVariable Long id, Model model) {
-        try {
-            model.addAttribute("product", productService.findProductById(id));
-            return "admin/product-detail";
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "error";
-        }
+        model.addAttribute("product", productService.findProductById(id));
+
+        return "admin/product-detail";
     }
 
     @GetMapping("/{id}/edit")
     public String editProduct(
             @PathVariable Long id, Model model) {
-        try {
-            model.addAttribute("product", productService.findProductById(id));
-            return "admin/product-edit";
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "error";
-        }
+        model.addAttribute("product", productService.findProductById(id));
+
+        return "admin/product-edit";
     }
 
     @GetMapping("/new")
     public String newProduct(Model model) {
         model.addAttribute("product", new ProductRequestDto(null, null, null));
+
         return "admin/product-new";
     }
 
@@ -99,24 +92,15 @@ public class AdminController {
             return "admin/product-edit";
         }
 
-        try {
-            productService.updateProduct(id, productRequestDto);
-            return "redirect:/admin/products/" + id;
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "error";
-        }
+        productService.updateProduct(id, productRequestDto);
+
+        return "redirect:/admin/products/" + id;
     }
 
     @DeleteMapping("/{id}")
-    public String deleteProduct(
-            @PathVariable Long id, Model model) {
-        try {
-            productService.deleteProduct(id);
-            return "redirect:/admin/products";
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "error";
-        }
+    public String deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+
+        return "redirect:/admin/products";
     }
 }
