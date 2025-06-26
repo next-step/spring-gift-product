@@ -3,6 +3,8 @@ package gift.controller;
 import gift.dto.ProductRequest;
 import gift.dto.ProductResponse;
 import gift.service.ProductService;
+import gift.service.ProductServiceAdminImpl;
+import gift.service.ProductServiceImpl;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +23,7 @@ public class ProductApiController {
 
     private final ProductService productService;
 
-    public ProductApiController(ProductService productService) {
+    public ProductApiController(ProductServiceImpl productService) {
         this.productService = productService;
     }
 

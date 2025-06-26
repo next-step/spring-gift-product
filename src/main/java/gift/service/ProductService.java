@@ -5,7 +5,6 @@ import gift.dto.ProductResponse;
 import java.util.List;
 
 public interface ProductService {
-
     ProductResponse getProductById(Long productId);
 
     void save(ProductRequest request);
