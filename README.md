@@ -15,5 +15,7 @@
 - Products.html : 첫 화면. 상품 전체 조회
 - ProductController : 상품 추가,수정,삭제,조회 구현
 
-create/createForm : 상품 추가
-update/editForm : 상품 수정
+### ProductController 함수 구분
+create, createForm : 상품 추가  
+edit, editForm : 상품 수정  
+delete : 상품 삭제

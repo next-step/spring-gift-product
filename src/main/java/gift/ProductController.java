@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Controller
-@RequestMapping("/admin/products")
+@RequestMapping("/products")
 
 public class ProductController {
 
@@ -32,7 +32,7 @@ public class ProductController {
     public String create(@ModelAttribute Product product) {
         product.setId(idGenerator.getAndIncrement());
         products.put(product.getId(), product);
-        return "redirect:/admin/products";
+        return "redirect:/products";
     }
 
     @GetMapping("/{id}/edit")
@@ -42,11 +42,16 @@ public class ProductController {
         return "Productform";
     }
     @PostMapping("/{id}")
-    public String update(@PathVariable Long id, @ModelAttribute Product updated) {
+    public String edit(@PathVariable Long id, @ModelAttribute Product updated) {
         updated.setId(id);
         products.put(id, updated);
-        return "redirect:/admin/products";
+        return "redirect:/products";
     }
 
+    @PostMapping("/{id}/delete")
+    public String delete(@PathVariable Long id) {
+        products.remove(id);
+        return "redirect:/products";
+    }
 
 }
