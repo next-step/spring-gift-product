@@ -4,6 +4,7 @@ import gift.dto.ProductRequestDto;
 import gift.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -77,5 +78,16 @@ public class AdminController {
         return "redirect:/admin/products";
     }
 
+    // 상품 삭제
+    @DeleteMapping("/{id}")
+    public String deleteProduct(@PathVariable Long id,
+            RedirectAttributes redirectAttributes) {
+        try {
+            productService.deleteProduct(id);
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "상품을 찾을 수 없습니다.");
+        }
+        return "redirect:/admin/products";
+    }
 
 }
