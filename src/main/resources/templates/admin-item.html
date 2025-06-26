@@ -28,6 +28,12 @@
         <td>
           <a th:href="@{/admin/items/update/{id}(id=${item.id})}">수정</a>
         </td>
+        <td>
+          <form th:action="@{/admin/items/{id}/delete(id=${item.id})}"
+                method="post">
+            <button type="submit">삭제</button>
+          </form>
+        </td>
       </tr>
       </tbody>
     </table>
