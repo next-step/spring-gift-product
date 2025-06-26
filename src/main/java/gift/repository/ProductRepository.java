@@ -34,6 +34,9 @@ public class ProductRepository {
     public Product findById(Long id) {
         return store.get(id);
     }
+    public void deleteById(Long id){
+        store.remove(id);
+    }
 
 
 
