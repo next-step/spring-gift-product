@@ -1,7 +1,7 @@
 package gift.controller;
 
-import gift.dto.RequestDto;
 import gift.dto.ResponseDto;
+import gift.dto.request.ProductCreateRequestDto;
 import gift.service.ProductService;
 import java.util.List;
 import org.springframework.stereotype.Controller;
@@ -36,8 +36,9 @@ public class ProductViewController {
     ) {
 
         try {
-            RequestDto requestDto = new RequestDto(name, price, imageUrl);
-            productService.saveProduct(requestDto);
+            ProductCreateRequestDto productCreaterequestDto = new ProductCreateRequestDto(name,
+                price, imageUrl);
+            productService.saveProduct(productCreaterequestDto);
             return "redirect:/admin/products";
         } catch (ResponseStatusException e) {
             return "redirect:/admin/products/create-product";

@@ -2,6 +2,8 @@ package gift.controller;
 
 import gift.dto.RequestDto;
 import gift.dto.ResponseDto;
+import gift.dto.request.ProductCreateRequestDto;
+import gift.dto.response.ProductCreateResponseDto;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -27,9 +29,11 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDto> addProduct(@Valid @RequestBody RequestDto requestDto) {
+    public ResponseEntity<ProductCreateResponseDto> createProduct(
+        @Valid @RequestBody ProductCreateRequestDto productCreateRequestDto) {
 
-        return new ResponseEntity<>(productService.saveProduct(requestDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(productService.saveProduct(productCreateRequestDto),
+            HttpStatus.CREATED);
     }
 
     @GetMapping

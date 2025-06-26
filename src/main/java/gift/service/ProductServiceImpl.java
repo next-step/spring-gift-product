@@ -1,7 +1,8 @@
 package gift.service;
 
-import gift.dto.RequestDto;
 import gift.dto.ResponseDto;
+import gift.dto.request.ProductCreateRequestDto;
+import gift.dto.response.ProductCreateResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
@@ -19,13 +20,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponseDto saveProduct(RequestDto requestDto) {
+    public ProductCreateResponseDto saveProduct(ProductCreateRequestDto productCreateRequestDto) {
 
-        Product product = new Product(requestDto.name(), requestDto.price(), requestDto.imageUrl());
+        Product product = new Product(productCreateRequestDto.name(),
+            productCreateRequestDto.price(), productCreateRequestDto.imageUrl());
 
         Product savedProduct = productRepository.saveProduct(product);
 
-        return new ResponseDto(savedProduct);
+        return new ProductCreateResponseDto(savedProduct);
     }
 
     @Override

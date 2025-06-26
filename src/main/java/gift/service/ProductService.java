@@ -1,12 +1,13 @@
 package gift.service;
 
-import gift.dto.RequestDto;
 import gift.dto.ResponseDto;
+import gift.dto.request.ProductCreateRequestDto;
+import gift.dto.response.ProductCreateResponseDto;
 import java.util.List;
 
 public interface ProductService {
 
-    ResponseDto saveProduct(RequestDto requestDto);
+    ProductCreateResponseDto saveProduct(ProductCreateRequestDto productCreateRequestDto);
 
     List<ResponseDto> findAllProducts();
 
