@@ -1,5 +1,6 @@
 # spring-gift-product
 
+## 1단계
 ### PRODUCT API 명세서
 
 `상품 등록`
@@ -26,3 +27,12 @@
 - /api/products/{id}
 - DELETE
 - id 값과 매핑된 상품 하나를 삭제한다.
+
+
+## 2단계
+### 구현 기능 목록
+- 1단계 리뷰 요청 반영
+- 상품 조회 템플릿 구현
+- 상품 생성, 수정 템플릿 구현
+- 상품 삭제 기능 구현
+- View Controller 구현
