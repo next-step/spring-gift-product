@@ -14,11 +14,11 @@ public interface ProductService {
     
     List<FindProductResponseDto> findAllProducts();
     
-    FindProductResponseDto findProductWithDbId(Long id);
+    FindProductResponseDto findProductWithId(Long id);
     
-    ModifyProductResponseDto modifyProductWithDbId(Long id, ModifyProductRequestDto requestDto);
+    ModifyProductResponseDto modifyProductWithId(Long id, ModifyProductRequestDto requestDto);
     
-    void deleteProductWithDbId(Long id);
+    void deleteProductWithId(Long id);
     
-    ModifyProductResponseDto modifyProductInfoWithDbId(Long id, ModifyProductRequestDto requestDto);
+    ModifyProductResponseDto modifyProductInfoWithId(Long id, ModifyProductRequestDto requestDto);
 }

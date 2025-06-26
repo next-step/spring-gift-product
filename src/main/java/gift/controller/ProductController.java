@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/product")
+@RequestMapping("api/products")
 public class ProductController {
     
     private final ProductService productService;
@@ -43,45 +43,48 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<FindProductResponseDto>> findAllProducts() {
         List<FindProductResponseDto> responseDtoList = productService.findAllProducts();
+        if (responseDtoList.isEmpty()) {
+            return new ResponseEntity<>(responseDtoList, HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(responseDtoList, HttpStatus.OK);
     }
     
-    //상품 단건 조회 api (dbId)
+    //상품 단건 조회 api
     @GetMapping("{id}")
-    public ResponseEntity<FindProductResponseDto> findProductWithDbId(
+    public ResponseEntity<FindProductResponseDto> findProductWithId(
         @PathVariable Long id
     ) {
-        FindProductResponseDto responseDto = productService.findProductWithDbId(id);
+        FindProductResponseDto responseDto = productService.findProductWithId(id);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
     
-    //상품 전체 수정 api (dbId)
+    //상품 전체 수정 api
     @PutMapping("{id}")
-    public ResponseEntity<ModifyProductResponseDto> modifyProductWithDbId(
+    public ResponseEntity<ModifyProductResponseDto> modifyProductWithId(
         @PathVariable Long id,
         @RequestBody ModifyProductRequestDto requestDto
     ) {
-        ModifyProductResponseDto responseDto = productService.modifyProductWithDbId(id, requestDto);
+        ModifyProductResponseDto responseDto = productService.modifyProductWithId(id, requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
     
-    //상품 일부 수정 api (dbId)
+    //상품 일부 수정 api
     @PatchMapping("{id}")
-    public ResponseEntity<ModifyProductResponseDto> modifyProductInfoWithDbId(
+    public ResponseEntity<ModifyProductResponseDto> modifyProductInfoWithId(
         @PathVariable Long id,
         @RequestBody ModifyProductRequestDto requestDto
     ) {
-        ModifyProductResponseDto responseDto = productService.modifyProductInfoWithDbId(id,
+        ModifyProductResponseDto responseDto = productService.modifyProductInfoWithId(id,
             requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
     
     //상품 단건 삭제 api
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteProductWithDbId(
+    public ResponseEntity<Void> deleteProductWithId(
         @PathVariable Long id
     ) {
-        productService.deleteProductWithDbId(id);
+        productService.deleteProductWithId(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
