@@ -9,4 +9,6 @@ public interface ProductRepository {
     Product saveProduct(Product product);
 
     List<ResponseDto> findAllProducts();
+
+    Product findProductByProductId(Long productId);
 }

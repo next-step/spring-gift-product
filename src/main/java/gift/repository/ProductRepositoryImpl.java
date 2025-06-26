@@ -36,5 +36,10 @@ public class ProductRepositoryImpl implements ProductRepository {
         return allProducts;
     }
 
+    @Override
+    public Product findProductByProductId(Long productId) {
+        return products.get(productId);
+    }
+
 
 }

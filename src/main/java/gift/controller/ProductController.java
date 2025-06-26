@@ -39,33 +39,18 @@ public class ProductController {
     @GetMapping("/{productId}")
     public ResponseEntity<ResponseDto> getProductByproductId(@PathVariable Long productId) {
 
-        Product product = products.get(productId);
-
-        if (product == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(new ResponseDto(product), HttpStatus.OK);
+        return new ResponseEntity<>(productService.findProductByProductId(productId),
+            HttpStatus.OK);
     }
 
     @PutMapping("/{productId}")
     public ResponseEntity<ResponseDto> updateProduct(@PathVariable Long productId,
         @RequestBody RequestDto requestDto) {
 
-        Product product = products.get(productId);
-
-        if (product == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        if (requestDto.name() == null || requestDto.price() == null
-            || requestDto.imageUrl() == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        product.update(requestDto);
-
-        return new ResponseEntity<>(new ResponseDto(product), HttpStatus.OK);
+        return new ResponseEntity<>(
+            productService.updateProductByProductId(productId, requestDto.name(),
+                requestDto.price(),
+                requestDto.imageUrl()), HttpStatus.OK);
     }
 
     @DeleteMapping("/{productId}")

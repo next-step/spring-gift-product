@@ -42,9 +42,9 @@ public class Product {
         this.productId = productId;
     }
 
-    public void update(RequestDto requestDto) {
-        this.name = requestDto.name();
-        this.price = requestDto.price();
-        this.imageUrl = requestDto.imageUrl();
+    public void update(String name, Double price, String imageUrl) {
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
     }
 }
