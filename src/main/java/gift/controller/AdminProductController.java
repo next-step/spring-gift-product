@@ -86,5 +86,4 @@ public class AdminProductController {
             return "redirect:/admin/products";
         }
     }
-
 }

@@ -30,10 +30,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ResponseDto> findAllProducts() {
-
-        List<ResponseDto> allProducts = productRepository.findAllProducts();
-
-        return allProducts;
+        return productRepository.findAllProducts();
     }
 
     @Override
@@ -82,6 +79,4 @@ public class ProductServiceImpl implements ProductService {
 
         return new ResponseDto(deletedProduct);
     }
-
-
 }
