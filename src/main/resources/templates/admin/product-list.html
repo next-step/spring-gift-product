@@ -16,6 +16,18 @@
     </thead>
     <tbody>
     <tr th:each="product : ${products}">
+        <td th:text="${product.id}"></td>
+        <td>
+            <a th:href="@{/admin/products/{id}(id=${product.id})}" th:text="${product.name}">상품명</a>
+        </td>
+        <td th:text="${product.price}"></td>
+        <td>
+            <img th:src="${product.imageUrl}" alt="이미지" width="100"/>
+        </td>
+    </tr>
+    </tbody>
+    <tbody>
+    <tr th:each="product : ${products}">
         <td th:text="${product.id}">1</td>
         <td th:text="${product.name}">이름</td>
         <td th:text="${product.price}">가격</td>

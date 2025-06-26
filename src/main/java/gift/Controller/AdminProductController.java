@@ -5,10 +5,7 @@ import gift.dto.ProductCreateRequest;
 import gift.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +24,22 @@ public class AdminProductController {
         this.productService = productService;
     }
 
-    //상품 목록 조회
+
     @GetMapping
     public String list(Model model) {
         List<Product> products = productService.getAll();
+        model.addAttribute("products", products);
         return "admin/product-list";
     }
+
+    @GetMapping("/{id}")
+    public String detail(@PathVariable Long id, Model model) {
+        Product product = productService.getById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다: "));
+        model.addAttribute("product", product);
+        return "admin/product-detail";
+    }
+
 
 
     @GetMapping("/new")
