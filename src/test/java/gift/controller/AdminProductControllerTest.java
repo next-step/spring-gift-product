@@ -226,4 +226,106 @@ class AdminProductControllerTest {
                 .andExpect(MockMvcResultMatchers.model().attribute("pageTitle", "새 상품 추가"));
     }
 
+    // PUT
+    @Test
+    @DisplayName("PUT /admin/products/{id} - 상품 수정 성공: 유효한 요청이면 /admin/products로 리다이렉트한다")
+    void updateProduct_shouldRedirectOnSuccess() throws Exception {
+        long existingProductId = 1L;
+        Product updatedProduct = new Product(existingProductId, "수정된 상품", 6000,
+                "http://updated.img/updated.jpg");
+        ResponseEntity<Product> successResponse = new ResponseEntity<>(updatedProduct,
+                HttpStatus.OK);
+
+        when(restTemplate.exchange(
+                eq("http://localhost:8080/api/products/" + existingProductId),
+                eq(HttpMethod.PUT),
+                any(HttpEntity.class),
+                eq(Product.class)
+        )).thenReturn(successResponse);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/products/{id}",
+                                existingProductId)
+                        .param("_method", "PUT")
+                        .param("id", String.valueOf(existingProductId))
+                        .param("name", "수정된 상품")
+                        .param("price", "6000")
+                        .param("imageUrl", "http://updated.img/updated.jpg"))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/admin/products"));
+    }
+
+    // PUT
+    @Test
+    @DisplayName("PUT /admin/products/{id} - 상품 수정 실패: API에서 400 Bad Request 반환 시 폼 페이지로 돌아가며 에러 메시지 표시")
+    void updateProduct_shouldReturnFormAndErrorMessageOnBadRequest() throws Exception {
+        long existingProductId = 1L;
+        when(restTemplate.exchange(
+                eq("http://localhost:8080/api/products/" + existingProductId),
+                eq(HttpMethod.PUT),
+                any(HttpEntity.class),
+                eq(Product.class)
+        )).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Invalid update data"));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/products/{id}", existingProductId)
+                        .param("_method", "PUT")
+                        .param("id", String.valueOf(existingProductId))
+                        .param("name", "")
+                        .param("price", "6000")
+                        .param("imageUrl", "http://updated.img/invalid.jpg"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("admin/product_form"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("errorMessage"))
+                .andExpect(MockMvcResultMatchers.model()
+                        .attribute("product", org.hamcrest.Matchers.notNullValue()))
+                .andExpect(MockMvcResultMatchers.model()
+                        .attribute("pageTitle", "상품 수정"));
+    }
+
+    // PUT
+    @Test
+    @DisplayName("PUT /admin/products/{id} - 상품 수정 실패: API에서 404 Not Found 반환 시 폼 페이지로 돌아가며 에러 메시지 표시")
+    void updateProduct_shouldReturnFormAndErrorMessageOnNotFound() throws Exception {
+        long nonExistingProductId = 999L;
+        when(restTemplate.exchange(
+                eq("http://localhost:8080/api/products/" + nonExistingProductId),
+                eq(HttpMethod.PUT),
+                any(HttpEntity.class),
+                eq(Product.class)
+        )).thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, "Product not found"));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/products/{id}", nonExistingProductId)
+                        .param("_method", "PUT")
+                        .param("id", String.valueOf(nonExistingProductId))
+                        .param("name", "없는 상품")
+                        .param("price", "100")
+                        .param("imageUrl", "http://updated.img/notfound.jpg"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("admin/product_form"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("errorMessage"))
+                .andExpect(MockMvcResultMatchers.model().attribute("pageTitle", "상품 수정"));
+    }
+
+    // PUT
+    @Test
+    @DisplayName("PUT /admin/products/{id} - 상품 수정 실패: API 호출 중 일반적인 예외 발생 시 폼 페이지로 돌아가며 일반 에러 메시지 표시")
+    void updateProduct_shouldReturnFormAndErrorMessageOnGenericError() throws Exception {
+        long existingProductId = 1L;
+        when(restTemplate.exchange(
+                eq("http://localhost:8080/api/products/" + existingProductId),
+                eq(HttpMethod.PUT),
+                any(HttpEntity.class),
+                eq(Product.class)
+        )).thenThrow(new RuntimeException("네트워크 오류"));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/products/{id}", existingProductId)
+                        .param("_method", "PUT")
+                        .param("id", String.valueOf(existingProductId))
+                        .param("name", "오류 상품")
+                        .param("price", "100")
+                        .param("imageUrl", "http://updated.img/error.jpg"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("admin/product_form"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("errorMessage"))
+                .andExpect(MockMvcResultMatchers.model().attribute("pageTitle", "상품 수정"));
+    }
 }

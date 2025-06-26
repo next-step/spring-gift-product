@@ -82,7 +82,8 @@
     <td th:text="${product.price}"></td>
     <td><img alt="상품 이미지" th:src="${product.imageUrl}"></td>
     <td class="action-links">
-      <a href="#" th:href="@{/admin/products/{id}/edit(id=${product.id})}">수정</a> <a href="#">삭제</a>
+      <a th:href="@{/admin/products/{id}/edit(id=${product.id})}">수정</a>
+      <a href="#">삭제</a>
     </td>
   </tr>
   </tbody>
