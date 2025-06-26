@@ -8,11 +8,7 @@ Spring Boot 기반의 간단한 상품 관리 API입니다.
 ### ✅ 구현할 기능 목록
 
 #### 📌 1. 상품 조회
-<<<<<<< lwj0831
 - [ ] 전체 상품 목록 조회 (GET `/api/products/page=0&size=10&sort=name,asc`)
-=======
-- [ ] 전체 상품 목록 조회 (GET `/api/products/page=0&size=10&sort=name,asc&categoryId=1`)
->>>>>>> lwj0831
 - [ ] 단일 상품 상세 조회 (GET `/api/products/{id}`)
 
 #### 📌 2. 상품 등록
@@ -90,8 +86,4 @@ Spring Boot와 Thymeleaf 기반의 상품 관리 웹 애플리케이션입니다
 3. **feat: 상품 등록 API & 폼 개발**
 4. **feat: 상품 수정 API & 폼 개발**
 5. **feat: 상품 삭제 API 개발**
-=======
-- [ ] 상품 검색 기능 (name 또는 카테고리 기준)
-- [ ] 상품 품절 상태 관리
-- [ ] 등록일 기준 정렬 기능
->>>>>>> lwj0831
+

@@ -29,11 +29,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     //validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-<<<<<<< lwj0831
-    //thymeleafgit
+    //thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-=======
->>>>>>> lwj0831
+
 }
 
 tasks.named('test') {
