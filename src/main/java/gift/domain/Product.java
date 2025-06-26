@@ -21,7 +21,6 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    // getter/setter 생략 가능 (Lombok 쓰면 @Data도 가능)
     public Long getId() { return id; }
 
     public String getName() { return name; }
