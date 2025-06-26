@@ -3,6 +3,8 @@ package gift.service;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.repository.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +24,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponseDto> findAllProducts() {
-        return productRepository.findAllProducts();
+    public Page<ProductResponseDto> findAllProducts(Pageable pageable) {
+        return productRepository.findAllProducts(pageable);
     }
 
     @Override

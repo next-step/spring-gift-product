@@ -3,13 +3,16 @@ package gift.repository;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
@@ -32,10 +35,24 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public List<ProductResponseDto> findAllProducts() {
-        return products.values().stream()
-                .map(this::toResponseDto)
-                .collect(Collectors.toList());
+    public Page<ProductResponseDto> findAllProducts(Pageable pageable) {
+        List<ProductResponseDto> all = products.values().stream()
+                .map(p -> new ProductResponseDto(p.getId(), p.getName(), p.getPrice(), p.getImageUrl()))
+                .toList();
+
+        int total = all.size();
+
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startIdx = currentPage * pageSize;
+        int endIdx = Math.min(startIdx + pageSize, total);
+
+        List<ProductResponseDto> pageList = new ArrayList<>();
+        if (startIdx < total) {
+            pageList = all.subList(startIdx, endIdx);
+        }
+
+        return new PageImpl<>(pageList, pageable, total);
     }
 
     @Override

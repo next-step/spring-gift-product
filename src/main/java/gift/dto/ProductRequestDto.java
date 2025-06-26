@@ -8,6 +8,8 @@ public class ProductRequestDto {
     private int price;
     private String imageUrl;
 
+    public ProductRequestDto() {}
+
     public ProductRequestDto(String name, int price, String imageUrl) {
         this.name = name;
         this.price = price;
