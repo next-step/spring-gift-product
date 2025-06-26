@@ -2,11 +2,13 @@ package gift.domain.product.repository;
 
 import java.util.List;
 
+import gift.common.pagination.Page;
+import gift.common.pagination.Pageable;
 import gift.domain.product.model.Product;
 
 public interface ProductRepository {
 
-    List<Product> findAll();
+    Page<Product> findAll(Pageable pageable);
 
     Product findById(Long id);
 
