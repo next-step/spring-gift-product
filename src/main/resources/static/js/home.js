@@ -2,9 +2,13 @@ function openCreateModal(titleText, file) {
     fetch(file)
         .then(response => response.text())
         .then(html => {
+            const modalEl = document.getElementById('product-modal');
+
             document.querySelector('.product-modal-title').textContent = titleText;
             document.getElementById('product-modal').style.display = 'flex';
             document.querySelector('.product-modal-body').innerHTML = html;
+
+            modalEl.dispatchEvent(new Event('modalready'));
         });
 }
 
@@ -36,4 +40,29 @@ document.getElementById('delete-button').addEventListener('click', () => {
                 window.location.reload();
             });
     }
+});
+
+// 테이블 내의 수정 버튼 클릭 이벤트
+document.querySelectorAll('.update-button').forEach(button => {
+    button.addEventListener('click', event => {
+        const row = event.currentTarget.closest('tr');
+        const cells = Array.from(row.cells);
+
+        const productId = cells[1].textContent.trim();
+        const id        = cells[2].textContent.trim();
+        const name      = cells[3].textContent.trim();
+        const price     = cells[4].textContent.trim();
+        const imageUrl  = cells[5].textContent.trim();
+
+        openCreateModal('물품 수정 창', 'update-product.html');
+
+        const modalEl = document.getElementById('product-modal');
+        modalEl.addEventListener('modalready', () => {
+          document.getElementById('productId').value = productId;
+          document.getElementById('id').value         = id;
+          document.getElementById('name').value       = name;
+          document.getElementById('price').value      = price;
+          document.getElementById('imageUrl').value   = imageUrl;
+        }, { once: true });
+    });
 });

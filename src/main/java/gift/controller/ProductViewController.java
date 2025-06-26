@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,6 +43,11 @@ public class ProductViewController {
         return "create-product";
     }
 
+    @GetMapping("/update-product.html")
+    public String showUpdateProductView() {
+        return "update-product";
+    }
+
     @PostMapping("/products")
     public String createProduct(
         @RequestParam Long id,
@@ -50,6 +56,19 @@ public class ProductViewController {
         @RequestParam String imageUrl
     ) {
         productService.createProduct(new ProductRequestDto(id, name, price, imageUrl));
+
+        return "redirect:/view/products";
+    }
+
+    @PostMapping("/products/update")
+    public String updateProduct(
+        @RequestParam Long productId,
+        @RequestParam Long id,
+        @RequestParam String name,
+        @RequestParam int price,
+        @RequestParam String imageUrl
+    ) {
+        productService.updateProduct(productId, new ProductRequestDto(id, name, price, imageUrl));
 
         return "redirect:/view/products";
     }
