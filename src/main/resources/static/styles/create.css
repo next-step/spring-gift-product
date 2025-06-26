@@ -1,0 +1,70 @@
+.create-form {
+    position: relative;
+    top: 50px;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+}
+
+.form:last-child {
+    margin-bottom: 70px;
+}
+
+label {
+    margin-bottom: 8px;
+    font-family: Arial, serif;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.input-form {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.add-button {
+    left: 577px;
+}
+
+.add-button button {
+    position: absolute;
+    width: 300px;
+    height: 44px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, serif;
+    font-size: 16px;
+    line-height: 26px;
+    font-weight: 400;
+    color: #FFFFFFFF;
+    background: #636AE8FF;
+    opacity: 1;
+    border: none;
+    border-radius: 6px;
+    transition: 0.3s;
+    cursor: pointer;
+    gap: 6px;
+}
+
+.add-button button:hover {
+    color: #FFFFFFFF;
+    background: #4850E4FF;
+}
+
+.add-button button:hover:active {
+    color: #FFFFFFFF;
+    background: #2C35E0FF;
+}
+
+.add-button button:disabled {
+    opacity: 0.4;
+}
