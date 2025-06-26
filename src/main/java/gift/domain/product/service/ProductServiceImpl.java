@@ -1,0 +1,63 @@
+package gift.domain.product.service;
+
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import gift.domain.product.dto.ProductRequest;
+import gift.domain.product.dto.ProductResponse;
+import gift.domain.product.model.Product;
+import gift.domain.product.repository.ProductRepository;
+
+@Service
+public class ProductServiceImpl implements ProductService {
+    
+    private final ProductRepository productRepository;
+
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    public List<ProductResponse> getAllProducts() {
+        return productRepository.findAll().stream()
+        .map(ProductResponse::from)
+        .collect(Collectors.toList());
+    }
+
+    @Override
+    public ProductResponse getProductById(Long id) {
+        if (!productRepository.existsById(id)) {
+            throw new NoSuchElementException("상품을 찾을 수 없습니다.");
+        }
+        Product product = productRepository.findById(id);
+        return ProductResponse.from(product);
+    }
+
+    @Override
+    public ProductResponse addProduct(ProductRequest productRequest) {
+        Product product = new Product(null, productRequest.getName(), productRequest.getPrice(), productRequest.getImageUrl());
+        Product savedProduct = productRepository.save(product);
+        return ProductResponse.from(savedProduct);
+    }
+
+    @Override
+    public void updateProduct(Long id, ProductRequest productRequest) {
+        if (!productRepository.existsById(id)) {
+            throw new NoSuchElementException("상품을 찾을 수 없습니다.");
+        }
+        Product updatedProduct = new Product(id, productRequest.getName(), productRequest.getPrice(), productRequest.getImageUrl());
+        productRepository.save(updatedProduct);
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+        if (!productRepository.existsById(id)) {
+            throw new NoSuchElementException("상품을 찾을 수 없습니다.");
+        }
+        productRepository.deleteById(id);
+    }
+    
+
+}
