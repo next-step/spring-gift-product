@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Products</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <h3>Manage <strong>Products</strong></h3>
+    <a class="btn btn-success mb-3" th:href="@{/admin/products}">+ Add New Product</a>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th><th>Name</th><th>Price</th><th>ImageUrl</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id}">Product id</td>
+            <td th:text="${product.name}">Product name</td>
+            <td th:text="${product.price}">product price</td>
+            <td th:text="${product.imageUrl}">product image link</td>
+            <td>
+                <a th:href="@{|/products/${product.id}|}" class="btn btn-warning btn-sm">✏️</a>
+                <form th:action="@{|/admin/delete/${product.id}|}" method="post" style="display:inline">
+                    <button class="btn btn-danger btn-sm" type="submit">🗑️</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
