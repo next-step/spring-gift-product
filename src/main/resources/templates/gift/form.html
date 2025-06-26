@@ -2,19 +2,99 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title th:text="${gift.id} != null ? 'Edit Gift' : 'Add New Gift'"></title>
+  <title th:text="${formAction.contains('edit')} ? 'Edit Gift' : 'Add New Gift'">Gift Form</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f9;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      background-color: white;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 15px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    a {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #333;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-<h1 th:text="${gift.id} != null ? 'Edit Gift' : 'Add New Gift'"></h1>
+<div class="container">
+  <h1 th:text="${formAction.contains('edit')} ? 'Edit Gift' : 'Add New Gift'">Gift Form</h1>
 
-<form th:action="@{${formAction}}" method="post" th:object="${gift}">
-  <label>Name: <input type="text" th:field="*{name}" required/></label><br/>
-  <label>Price: <input type="number" th:field="*{price}" required/></label><br/>
-  <label>Image URL: <input type="text" th:field="*{imageUrl}" required/></label><br/>
+  <form th:action="@{${formAction}}" method="post" th:object="${gift}">
+    <label>Name:
+      <input type="text" th:field="*{name}" required/>
+    </label>
 
-  <button type="submit" th:text="${gift.id} != null ? 'Update' : 'Submit'">Submit</button>
-</form>
+    <label>Price:
+      <input type="number" th:field="*{price}" required/>
+    </label>
 
-<a href="/gift-page">← Back to List</a>
+    <label>Image URL:
+      <input type="text" th:field="*{imageUrl}" required/>
+    </label>
+
+    <button type="submit"
+            th:text="${formAction.contains('edit')} ? 'Update' : 'Submit'">Submit
+    </button>
+  </form>
+
+  <a href="/gift-page">← Back to List</a>
+</div>
 </body>
 </html>
