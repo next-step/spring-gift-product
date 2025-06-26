@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${pageTitle}"></title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #333; }
+    form { margin-top: 20px; background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    div { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; }
+    input[type="text"], input[type="number"], input[type="url"] {
+      width: calc(100% - 22px);
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .error { color: red; font-size: 0.9em; margin-top: 5px; }
+  </style>
+</head>
+<body>
+<h1 th:text="${pageTitle}">상품 정보</h1>
+
+<p th:if="${errorMessage}" class="error" th:text="${errorMessage}"></p>
+
+<form th:action="${formAction}" th:object="${product}" method="post">
+  <div>
+    <label for="id">ID:</label>
+    <input type="number" id="id" th:field="*{id}" required min="1"/>
+  </div>
+
+  <div>
+    <label for="name">이름:</label>
+    <input type="text" id="name" th:field="*{name}" required/>
+  </div>
+
+  <div>
+    <label for="price">가격:</label>
+    <input type="number" id="price" th:field="*{price}" required min="1"/>
+  </div>
+
+  <div>
+    <label for="imageUrl">이미지 URL:</label>
+    <input type="url" id="imageUrl" th:field="*{imageUrl}" required/>
+  </div>
+
+  <div>
+    <button type="submit">저장</button>
+  </div>
+</form>
+<a href="/admin/products">목록으로 돌아가기</a>
+</body>
+</html>
