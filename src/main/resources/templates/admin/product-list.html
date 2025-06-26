@@ -15,6 +15,7 @@
     <th>제목</th>
     <th>가격</th>
     <th>이미지</th>
+    <th>수정</th>
   </tr>
   </thead>
   <tbody>
@@ -22,7 +23,9 @@
     <td th:text="${product.name}">제목</td>
     <td th:text="${product.price}">가격</td>
     <td><img th:src="${product.imageUrl}" width="100"/></td>
-
+    <td>
+      <a th:href="@{/admin/products/edit/{id}(id=${product.id})}">수정</a>
+    </td>
   </tr>
   </tbody>
 </table>

@@ -41,4 +41,9 @@ public class ProductService {
         productRepository.deleteById(updated.getId());
     }
 
+
+    public Product getProductById(Long id) {
+        return productRepository.findById(id) .orElseThrow(() -> new NoSuchElementException("해당 상품이 존재하지 않습니다: id=" + id));
+    }
+
 }

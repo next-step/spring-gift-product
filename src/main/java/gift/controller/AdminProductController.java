@@ -5,10 +5,7 @@ import gift.entity.Product;
 import gift.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @Controller
@@ -44,6 +41,22 @@ public class AdminProductController {
     }
 
 
+    /// /// 수정///
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        Product product = productService.getProductById(id);
+        ProductRequestDto dto = new ProductRequestDto(product.getName(), product.getPrice(), product.getImageUrl());
+        model.addAttribute("product", dto);
+        model.addAttribute("productId", id);
+        return "admin/product-edit-form";
+    }
+
+    @PostMapping("/{id}")
+    public String updateProduct(@PathVariable Long id,@ModelAttribute ProductRequestDto productRequestDto) {
+        productService.updateProduct(id, productRequestDto);
+        return "redirect:/admin/products";
+
+    }
 
 
 }
