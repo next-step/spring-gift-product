@@ -24,7 +24,7 @@
 - [x] H2 DB 설정
 - [x] schema.sql, data.sql 작성 및 로드 설정
 - [x] JdbcTemplate 기반의 ProductRepository 구현
-- [ ] 에러 응답용 전용 DTO 적용
+- [x] 에러 응답 전용 DTO 적용
 
 ## 4️⃣ 기술 스택
 - Java 17

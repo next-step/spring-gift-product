@@ -1,5 +1,6 @@
 package gift.exception;
 
+import gift.dto.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,20 +15,22 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<Map<String, String>> handleResponseStatusError(ResponseStatusException e) {
+    public ResponseEntity<ErrorResponseDto> handleResponseStatusError(ResponseStatusException e) {
         Map<String, String> errors = new HashMap<>();
         errors.put("message", e.getReason());
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(errors);
 
-        return ResponseEntity.status(e.getStatusCode()).body(errors);
+        return new ResponseEntity<>(errorResponseDto, e.getStatusCode());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationError(MethodArgumentNotValidException e) {
+    public ResponseEntity<ErrorResponseDto> handleValidationError(MethodArgumentNotValidException e) {
         Map<String, String> errors = new HashMap<>();
         e.getBindingResult().getFieldErrors().forEach(error -> {
             errors.put(error.getField(), error.getDefaultMessage());
         });
+        ErrorResponseDto errorResponseDto = new ErrorResponseDto(errors);
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+        return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
     }
 }
