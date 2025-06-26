@@ -9,7 +9,7 @@
 <div class="container">
   <h1>상품 등록</h1>
 
-  <form id="createForm">
+  <form th:action="@{/products}" method="post">
     <label>이름:
       <input type="text" name="name" required />
     </label>
@@ -24,26 +24,5 @@
 
   <a href="/products" class="back-link">← 목록으로</a>
 </div>
-
-<script>
-  document.getElementById('createForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-
-    const requestBody = {
-      name: formData.get('name'),
-      price: parseInt(formData.get('price')),
-      imageUrl: formData.get('imageUrl')
-    };
-
-    await fetch('/api/products', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(requestBody)
-    });
-
-    location.href = '/products';
-  });
-</script>
 </body>
 </html>

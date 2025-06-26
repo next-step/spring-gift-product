@@ -9,7 +9,7 @@
 <div class="container">
   <h1>상품 수정</h1>
 
-  <form id="editForm">
+  <form th:action="@{'/products/' + ${product.id}}" method="post">
     <input type="hidden" name="id" th:value="${product.id}" />
 
     <label>이름:
@@ -30,36 +30,5 @@
     <a th:href="@{/products}">목록으로</a>
   </div>
 </div>
-
-<script>
-  document.getElementById('editForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    const productId = formData.get('id');
-
-    const requestBody = {
-      name: formData.get('name'),
-      price: parseInt(formData.get('price')),
-      imageUrl: formData.get('imageUrl')
-    };
-
-    try {
-      const response = await fetch(`/api/products/${productId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody)
-      });
-
-      if (!response.ok) {
-        throw new Error("수정 실패");
-      }
-
-      location.href = `/products`;
-    } catch (error) {
-      alert("상품 수정 중 오류가 발생했습니다.");
-      console.error(error);
-    }
-  });
-</script>
 </body>
 </html>
