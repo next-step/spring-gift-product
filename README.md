@@ -21,8 +21,8 @@
 - [x] 관리자 상품 삭제 (`DELETE admin/products/{id}`)
 
 ## 4️⃣ 3단계 구현 예정 기능 목록
-- [ ] H2 DB 설정
-- [ ] schema.sql, data.sql 작성 및 로드 설정
+- [x] H2 DB 설정
+- [x] schema.sql, data.sql 작성 및 로드 설정
 - [ ] JdbcTemplate 기반의 ProductRepository 구현
 - [ ] 서비스 및 컨트롤러에서 DB 기반 Repository로 전환
 
