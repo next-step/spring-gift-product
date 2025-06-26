@@ -29,16 +29,17 @@ public class ProductService {
     public Product getProduct(Long id) {
         Optional<Product> product = productRepository.findById(id);
         if (product.isEmpty()) {
-            throw new IllegalArgumentException("해당 ID의 상품이 존재하지 않습니다.");
+            throw new IllegalArgumentException(
+                "id: " + id + ". error getProduct(). 해당 ID의 상품이 존재하지 않습니다.");
         }
         return product.get();
     }
 
     // 상품 수정
-    public void updateProduct(Product product) {
+    public void updateProduct(Long id, Product product) {
         // 수정 전에 존재 여부 체크
-        if (productRepository.findById(product.getId()).isEmpty()) {
-            throw new IllegalArgumentException("수정할 상품이 존재하지 않습니다.");
+        if (productRepository.findById(id).isEmpty()) {
+            throw new IllegalArgumentException("id: " + id + ". 수정할 상품이 존재하지 않습니다.");
         }
         productRepository.update(product);
     }

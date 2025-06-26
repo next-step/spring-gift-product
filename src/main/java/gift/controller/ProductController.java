@@ -62,7 +62,7 @@ public class ProductController {
     public ResponseEntity<Void> updateProduct(@PathVariable Long id, @RequestBody Product product) {
         try {
             product.setId(id);
-            productService.updateProduct(product);
+            productService.updateProduct(id, product);
             return ResponseEntity.noContent().build(); // 204 No Content
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // 404 Not Found
