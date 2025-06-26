@@ -50,12 +50,18 @@ public class AdminProductController {
         return "admin/edit";
     }
 
-    @PostMapping("/edit/{id}")
+    @PutMapping("/edit/{id}")
     public String editProduct(
             @PathVariable Long id,
             @ModelAttribute ProductUpdateRequestDto requestDto
     ) {
         productService.updateProductById(id, requestDto);
+        return "redirect:/api/admin/products";
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable Long id) {
+        productService.deleteProductById(id);
         return "redirect:/api/admin/products";
     }
 }

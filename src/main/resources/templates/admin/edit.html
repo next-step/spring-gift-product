@@ -8,6 +8,7 @@
 <h1>상품 수정</h1>
 
 <form th:action="@{/api/admin/products/edit/{id}(id=${product.id})}" th:object="${product}" method="post">
+    <input type="hidden" name="_method" value="put"/>
     <label>상품명: <input type="text" th:field="*{name}"/></label><br>
     <label>가격: <input type="number" th:field="*{price}"/></label><br>
     <label>이미지: <input type="text" th:field="*{url}"/></label><br>

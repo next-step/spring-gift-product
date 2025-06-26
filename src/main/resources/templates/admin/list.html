@@ -16,8 +16,7 @@
         <th>상품명</th>
         <th>가격</th>
         <th>이미지</th>
-        <th>수정</th>
-        <th>삭제</th>
+        <th>액션</th>
       </tr>
     </thead>
     <tbody>
@@ -27,12 +26,10 @@
         <td th:text="${product.price}">1000</td>
         <td th:text="${product.url}">url</td>
         <td>
-          <form th:action="@{/api/admin/products/edit/{id}(id=${product.id})}" method="get">
+          <form th:action="@{/api/admin/products/edit/{id}(id=${product.id})}" method="get" style="display:inline;">
             <button type="submit">수정</button>
           </form>
-        </td>
-        <td>
-          <form th:action="@{/api/admin/products/delete/{id}(id=${product.id})}" method="post">
+          <form th:action="@{/api/admin/products/delete/{id}(id=${product.id})}" method="post" style="display:inline;">
             <input type="hidden" name="_method" value="delete"/>
             <button type="submit">삭제</button>
           </form>
