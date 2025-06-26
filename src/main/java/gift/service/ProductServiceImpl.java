@@ -1,13 +1,12 @@
-package service;
+package gift.service;
 
 import gift.dto.RequestDto;
 import gift.dto.ResponseDto;
 import gift.entity.Product;
-import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import repository.ProductRepository;
+import gift.repository.ProductRepository;
 
 @Service
 public class ProductServiceImpl implements ProductService {

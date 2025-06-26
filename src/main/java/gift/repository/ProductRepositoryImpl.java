@@ -1,4 +1,4 @@
-package repository;
+package gift.repository;
 
 import gift.entity.Product;
 import java.util.HashMap;

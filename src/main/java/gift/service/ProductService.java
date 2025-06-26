@@ -1,4 +1,4 @@
-package service;
+package gift.service;
 
 import gift.dto.RequestDto;
 import gift.dto.ResponseDto;
