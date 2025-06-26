@@ -8,7 +8,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 import gift.domain.Product;
-import gift.exception.NotFoundException;
+import gift.exception.ProductNotFoundException;
 
 @Repository
 public class ProductRepository {
@@ -33,7 +33,7 @@ public class ProductRepository {
 
     public Product update(Long id, String name, Integer price, String imageUrl) {
         if (!products.containsKey(id)) {
-            throw new NotFoundException("해당 상품이 존재하지 않습니다.");
+            throw new ProductNotFoundException("해당 상품이 존재하지 않습니다.");
         }
 
         products.put(id, new Product(id, name, price, imageUrl));
@@ -42,7 +42,7 @@ public class ProductRepository {
 
     public void delete(Long id) {
         if (!products.containsKey(id)) {
-            throw new NotFoundException("해당 상품이 존재하지 않습니다.");
+            throw new ProductNotFoundException("해당 상품이 존재하지 않습니다.");
         }
 
         products.remove(id);

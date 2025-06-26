@@ -9,7 +9,7 @@ import gift.dto.CreateProductResponse;
 import gift.dto.ReadProductResponse;
 import gift.dto.UpdateProductRequest;
 import gift.dto.UpdateProductResponse;
-import gift.exception.NotFoundException;
+import gift.exception.ProductNotFoundException;
 import gift.repository.ProductRepository;
 
 @Service
@@ -31,7 +31,7 @@ public class ProductService {
     public ReadProductResponse getProductById(Long id) {
         return ReadProductResponse.of(
             productRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 상품이 존재하지 않습니다.")));
+                .orElseThrow(() -> new ProductNotFoundException("해당 상품이 존재하지 않습니다.")));
     }
 
     public CreateProductResponse createProduct(CreateProductRequest request) {
