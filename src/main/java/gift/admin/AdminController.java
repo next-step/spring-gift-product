@@ -28,5 +28,4 @@ public class AdminController {
         model.addAttribute("products", products.values());
         return "admin/list";
     }
-
 }
