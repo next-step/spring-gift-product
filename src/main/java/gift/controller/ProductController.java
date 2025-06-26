@@ -1,20 +1,18 @@
 package gift.controller;
 
+
 import gift.domain.Product;
 import gift.dto.CreateProductRequest;
-import gift.dto.CreateProductResponse;
 import gift.dto.UpdateProductRequest;
-import gift.dto.UpdateProductResponse;
 import gift.service.ProductService;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import java.util.List;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-
-@RestController
+@Controller
 @RequestMapping("/api/products")
 public class ProductController {
 
@@ -24,39 +22,50 @@ public class ProductController {
         this.service = service;
     }
 
-    @PostMapping
-    public HttpEntity<CreateProductResponse> createProduct(@RequestBody CreateProductRequest request) {
-        CreateProductResponse createProductResponse = service.save(request);
-
-        return new ResponseEntity<>(createProductResponse, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/{id}")
-    public HttpEntity<Product> findProductById(@PathVariable Long id) {
-        Product findProduct = service.findById(id);
-
-        return new ResponseEntity<>(findProduct, HttpStatus.OK);
-    }
-
     @GetMapping
-    public HttpEntity<List<Product>> findProducts() {
+    public String items(Model model) {
         List<Product> products = service.findAll();
-
-        return new ResponseEntity<>(products, HttpStatus.OK);
+        model.addAttribute("products", products);
+        return "/products";
     }
 
-    @PutMapping("/{id}")
-    public HttpEntity<UpdateProductResponse> updateProduct(@PathVariable Long id, @RequestBody UpdateProductRequest request) {
-        UpdateProductResponse updateProductResponse = service.update(id, request);
-
-        return new ResponseEntity<>(updateProductResponse, HttpStatus.OK);
-
+    @GetMapping("/add")
+    public String addProduct(Model model) {
+        model.addAttribute("product", new CreateProductRequest("",null,""));
+        return "/addForm";
     }
 
-    @DeleteMapping("/{id}")
-    public HttpEntity<Void> deleteProduct(@PathVariable Long id) {
+
+    @PostMapping("/add")
+    public String addProduct(@Validated @ModelAttribute("product") CreateProductRequest product, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/addForm";
+        }
+        service.save(product);
+        return "redirect:/api/products";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String updateProduct(@PathVariable Long id, Model model) {
+        Product findProduct = service.findById(id);
+        model.addAttribute("product", findProduct);
+        return "/editForm";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String updateProduct(@PathVariable Long id,
+                                @Validated @ModelAttribute("product") UpdateProductRequest product,
+                                BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/editForm";
+        }
+        service.update(id, product);
+        return "redirect:/api/products";
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deleteProduct(@PathVariable Long id) {
         service.delete(id);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return "redirect:/api/products";
     }
 }

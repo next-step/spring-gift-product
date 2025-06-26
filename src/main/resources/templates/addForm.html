@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link  th:href="@{/css/bootstrap.min.css}"
+         href="../css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .container {
+      max-width: 560px;
+    }
+    .field-error {
+      border-color: #dc3545;
+      color: #dc3545;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="py-5 text-center">
+    <h2>상품 등록</h2>
+  </div>
+
+  <h4 class="mb-3">상품 입력</h4>
+
+  <form th:action th:object="${product}" method="post">
+    <div>
+      <label for="name">상품명</label>
+      <input type="text" id="name" th:field="*{name}" th:errorclass= "field-error" class="form-control" placeholder="이름을 입력하세요">
+      <div class="field-error" th:errors="*{name}">상품명 오류</div>
+    </div>
+    <div>
+      <label for="price">가격</label>
+      <input type="text" id="price" th:field="*{price}" th:errorclass="field-error" class = "form-control" placeholder="가격을 입력하세요">
+      <div class="field-error" th:errors="*{price}">가격 오류</div>
+    </div>
+    <div>
+      <label for="imageUrl">ImageURL</label>
+      <input type="text" id="imageUrl" th:field="*{imageUrl}" th:errorclass="field-error" class = "form-control" placeholder="URL을 입력하세요">
+      <div class="field-error" th:errors="*{imageUrl}">URL 오류</div>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="row">
+      <div class="col">
+        <button class = "w-100 btn btn-dark" type="submit">상품 등록</button>
+      </div>
+      <div class="col">
+        <button class = "w-100 btn btn-secondary"
+                th:onclick="|location.href='@{/api/products}'|"
+                type="button">취소</button>
+      </div>
+    </div>
+
+
+  </form>
+</div>
+</body>
+</html>

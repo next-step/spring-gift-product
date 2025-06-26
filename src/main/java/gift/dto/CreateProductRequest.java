@@ -1,28 +1,17 @@
 package gift.dto;
 
-public class CreateProductRequest {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
-    private final String name;
-    private final int price;
-    private final String imageUrl;
+public record CreateProductRequest(
+        @NotBlank(message = "상품명은 필수입니다.")
+        String name,
+        @Positive(message = "가격은 0보다 커야 합니다.")
+        @NotNull(message = "가격은 필수입니다")
+        Integer price,
+        @NotBlank(message = "URL을 입력해야 합니다.")
+        String imageUrl) {
 
-    public CreateProductRequest(String name, int price, String imageUrl) {
-        this.name = name;
-        this.price = price;
-        this.imageUrl = imageUrl;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
 
 }

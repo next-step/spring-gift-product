@@ -40,7 +40,6 @@ public class ProductService {
 
     public UpdateProductResponse update(Long id, UpdateProductRequest request) {
         findIdOrThrow(id);
-
         Product updateProduct = repository.update(id, request);
         return new UpdateProductResponse(updateProduct.getId(), updateProduct.getName(), updateProduct.getPrice(), updateProduct.getImageUrl());
 
@@ -48,7 +47,6 @@ public class ProductService {
 
     public void delete(Long id) {
         findIdOrThrow(id);
-
         repository.delete(id);
 
     }
