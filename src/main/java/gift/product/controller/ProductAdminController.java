@@ -2,13 +2,13 @@ package gift.product.controller;
 
 import gift.product.domain.Product;
 import gift.product.dto.ProductInfoDto;
-import gift.product.dto.ProductResponseDto;
+import gift.product.dto.ProductRequestDto;
 import gift.product.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,6 +41,13 @@ public class ProductAdminController {
         return "admin/products";
     }
 
+    /**
+     * 상품 상세정보 조회
+     *
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping("/{id}")
     public String productDetail(@PathVariable("id") Long id, Model model){
         Product product = productService.getProduct(id);
@@ -48,5 +55,35 @@ public class ProductAdminController {
         model.addAttribute("product", ProductInfoDto.productFrom(product));
 
         return "admin/product-detail";
+    }
+
+    /**
+     * 상품 추가 폼 페이지
+     *
+     * @param model
+     * @return
+     */
+    @GetMapping("/add")
+    public String addProductForm(Model model) {
+        model.addAttribute("product", new ProductRequestDto("", 0, ""));
+        return "admin/product-add-form";
+    }
+
+    /**
+     * 상품 추가 처리
+     *
+     * @param requestDto
+     * @param bindingResult
+     * @return
+     */
+    @PostMapping("/add")
+    public String addProduct(@ModelAttribute @Valid ProductRequestDto requestDto, BindingResult bindingResult){
+
+        if(bindingResult.hasErrors()){
+            return "admin/product-add-form";
+        }
+
+        productService.saveProduct(requestDto);
+        return "redirect:/admin/products";
     }
 }
