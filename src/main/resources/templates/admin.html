@@ -14,9 +14,11 @@
     </tr>
     <tr th:each="product : ${products}">
         <td th:text="${product.name}">상품명</td>
-        <td th:text="${product.price}">가격</td>
+        <td th:text="${product.price}">상품 가격</td>
         <td><img th:src="${product.imageUrl}" alt="사진"></td>
     </tr>
 </table>
+<br>
+<a th:href="@{/admin/products/add}" style="display: flex; justify-content: center; align-items: center">상품 추가</a>
 </body>
 </html>
