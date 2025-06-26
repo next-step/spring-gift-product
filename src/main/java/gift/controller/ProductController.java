@@ -1,88 +1,71 @@
 package gift.controller;
 
-import gift.dto.RequestDto;
-import gift.dto.ResponseDto;
-import gift.entity.Product;
+import gift.dto.request.ProductCreateRequestDto;
+import gift.dto.request.ProductUpdateRequestDto;
+import gift.dto.response.ProductCreateResponseDto;
+import gift.dto.response.ProductDeleteResponseDto;
+import gift.dto.response.ProductGetResponseDto;
+import gift.dto.response.ProductUpdateResponseDto;
+import gift.service.ProductService;
+import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
-    private final Map<Long, Product> products = new HashMap<>();
+
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @PostMapping
-    public ResponseEntity<ResponseDto> addProduct(@RequestBody RequestDto requestDto) {
-        long productId = products.isEmpty() ? 1: Collections.max(products.keySet()) + 1;
+    public ResponseEntity<ProductCreateResponseDto> createProduct(
+        @Valid @RequestBody ProductCreateRequestDto productCreateRequestDto) {
 
-        Product product = new Product(productId, requestDto.name(), requestDto.price(), requestDto.imageUrl());
-
-        if (requestDto.name() == null || requestDto.price() == null || requestDto.imageUrl() == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        products.put(productId, product);
-
-        return new ResponseEntity<>(new ResponseDto(product), HttpStatus.CREATED);
+        return new ResponseEntity<>(productService.saveProduct(productCreateRequestDto),
+            HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<ResponseDto> getProducts() {
+    public List<ProductGetResponseDto> getProducts() {
 
-        List<ResponseDto> responseList = new ArrayList<>();
-
-        for (Product product : products.values()) {
-            ResponseDto responseDto = new ResponseDto(product);
-            responseList.add(responseDto);
-        }
-
-        return responseList;
+        return productService.findAllProducts();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ResponseDto> getProductById(@PathVariable Long id) {
+    @GetMapping("/{productId}")
+    public ResponseEntity<ProductGetResponseDto> getProductByproductId(
+        @PathVariable Long productId) {
 
-        Product product = products.get(id);
-
-        if (product == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        return new ResponseEntity<>(new ResponseDto(product), HttpStatus.OK);
+        return new ResponseEntity<>(productService.findProductByProductId(productId),
+            HttpStatus.OK);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<ResponseDto> updateProduct(@PathVariable Long id,
-                                                     @RequestBody RequestDto requestDto) {
+    @PutMapping("/{productId}")
+    public ResponseEntity<ProductUpdateResponseDto> updateProduct(@PathVariable Long productId,
+        @RequestBody ProductUpdateRequestDto productUpdaterequestDto) {
 
-        Product product = products.get(id);
-
-        if (product == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        if (requestDto.name() == null || requestDto.price() == null || requestDto.imageUrl() == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        product.update(requestDto);
-
-        return new ResponseEntity<>(new ResponseDto(product), HttpStatus.OK);
+        return new ResponseEntity<>(
+            productService.updateProductByProductId(productId, productUpdaterequestDto.name(),
+                productUpdaterequestDto.price(),
+                productUpdaterequestDto.imageUrl()), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseDto> deleteProduct(@PathVariable Long id) {
-        Product product = products.get(id);
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<ProductDeleteResponseDto> deleteProduct(@PathVariable Long productId) {
 
-        if (product == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        products.remove(id);
-
-        return new ResponseEntity<>(new ResponseDto(product), HttpStatus.OK);
+        return new ResponseEntity<>(productService.deleteProductByProductId(productId),
+            HttpStatus.OK);
     }
 }
