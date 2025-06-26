@@ -1,0 +1,60 @@
+/* 테이블 기본 스타일 */
+table {
+    width: 100%;                    /* 테이블 너비를 화면 전체로 */
+    border-collapse: collapse;      /* 셀 경계선 겹치지 않게 */
+    margin-top: 10px;               /* 위쪽 여백 */
+}
+
+/* 테이블 셀(헤더와 데이터)에 공통 스타일 적용 */
+th, td {
+    border: 1px solid #ccc;         /* 연한 회색 테두리 */
+    padding: 12px;                  /* 안쪽 여백 */
+    text-align: center;             /* 가운데 정렬 */
+}
+
+/* 테이블 헤더 배경 색상 */
+th {
+    background-color: #f2f2f2;
+}
+
+
+/* 모든 버튼의 공통 기본 스타일 */
+button {
+    padding: 5px 10px;              /* 안쪽 여백
+    margin: 0 2px;                  /* 양옆 간격*/
+    border: none;                   /* 기본 테두리 제거 */
+    border-radius: 3px;             /* 둥근 모서리 */
+    cursor: pointer;                /* 마우스를 손가락 모양으로 */
+    color: white;                   /* 글자 색상 흰색 */
+}
+
+
+
+button.new {
+    background-color: #2196F3;
+    padding: 12px 24px;
+    font-size: 16px;
+
+}
+
+button.new:hover {
+    background-color: #1976D2;      /* 마우스를 올렸을 때 더 진한 파란색 */
+}
+
+
+button.update {
+    background-color: #2196F3;
+}
+
+button.update:hover {
+    background-color: #1976D2;
+}
+
+
+button.delete {
+    background-color: #f44336;
+}
+
+button.delete:hover {
+    background-color: #d32f2f;
+}
