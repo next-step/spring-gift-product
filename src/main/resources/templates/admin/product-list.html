@@ -9,8 +9,8 @@
             <div class="flex justify-end px-5 mb-5">
                 <a href="/admin/products/create" class="rounded-lg bg-green-500 px-3 py-1 text-sm font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300">상품 등록</a>
             </div>
-            <div class="flex flex-wrap justify-center gap-6">
-                <th:block th:each="product, stat : ${products}">
+            <div class="flex flex-wrap justify-center gap-3">
+                <th:block th:each="product, stat : ${pageInfo.contents}">
                     <div class="m-1 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
                         <div class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl">
                             <img class="object-cover" th:src="${product.imageUrl}" alt="product image" />
@@ -27,8 +27,39 @@
                     </div>
                 </th:block>
             </div>
+
+            <div class="flex justify-center p-5 mt-5">
+                <nav th:if="${pageInfo.totalPages > 1}" class="flex items-center">
+                    <ul class="inline-flex -space-x-px">
+                        <li>
+                            <a th:if="${pageInfo.page == 0}" class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-lg disabled" th:text="'이전'"></a>
+                            <a th:unless="${pageInfo.page == 0}"
+                               th:href="@{'/admin/products?page=' + ${pageInfo.page - 1}}"
+                               class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-l-lg"
+                               th:text="'이전'"></a>
+                        </li>
+                        <th:block th:each="i : ${#numbers.sequence(0, pageInfo.totalPages - 1)}">
+                            <li th:if="${i == pageInfo.page}" class="border-gray-300">
+                                <span class="px-3 py-2 text-sm font-medium text-white bg-blue-500 border border-blue-300" th:text="${i + 1}"></span>
+                            </li>
+                            <li th:unless="${i == pageInfo.page}">
+                                <a th:href="@{'/admin/products?page=' + ${i}}" class="px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-50 bg-white border hover:bg-blue-500 border-gray-300" th:text="${i + 1}"></a>
+                            </li>
+                        </th:block>
+                        <li>
+                            <a th:if="${pageInfo.page == pageInfo.totalPages - 1}" class="px-3 py-2 text-sm font-medium text-gray-600 bg-gray-400 border border-gray-300 rounded-r-lg disabled" th:text="'다음'"></a>
+                            <a th:unless="${pageInfo.page == pageInfo.totalPages - 1}"
+                               th:href="@{'/admin/products?page=' + ${pageInfo.page + 1}}"
+                               class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-r-lg"
+                               th:text="'다음'"></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </section>
     </main>
+
+
     <script th:src="@{/js/admin/product-delete.js}"></script>
 </body>
 </html>

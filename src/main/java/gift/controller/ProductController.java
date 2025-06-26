@@ -1,5 +1,6 @@
 package gift.controller;
 
+import gift.dto.CustomPage;
 import gift.dto.ProductCreateRequest;
 import gift.dto.ProductUpdateRequest;
 import gift.entity.Product;
@@ -8,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/api/products")
@@ -21,8 +20,14 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
-        return new ResponseEntity<>(productService.getAll(), HttpStatus.OK);
+    public ResponseEntity<CustomPage<Product>> getAllProducts(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "5") Integer size
+    ) {
+        if (page < 0 || size <= 0) {
+            throw new IllegalArgumentException("페이지 번호와 크기는 양수여야 합니다.");
+        }
+        return new ResponseEntity<>(productService.getBy(page, size), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

@@ -1,6 +1,5 @@
 async function requestDeleteProduct(element) {
     const id = element.parentNode.querySelector("input").value;
-    const cardElement = element.parentNode.parentNode.parentNode;
     const res = await fetch(`/api/products/${id}`, {
         "method": "DELETE",
         "headers": {
@@ -9,7 +8,7 @@ async function requestDeleteProduct(element) {
     });
 
     if (res.ok) {
-        cardElement.remove();
+        window.location.reload();
     } else {
         const errorData = await res.json();
         console.error("상품 삭제 요청 실패:", errorData);
