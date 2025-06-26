@@ -3,7 +3,9 @@ package gift.service;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -15,5 +17,11 @@ public class ProductService {
     public List<Product> findAll(){
         return productRepository.findAll();
     }
+
+
+    public Product save(Product product){
+        return productRepository.save(product);
+    }
+
 
 }
