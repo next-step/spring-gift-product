@@ -26,7 +26,6 @@ public class Product {
         return imageUrl;
     }
 
-
     public String getName()
     {
         return name;

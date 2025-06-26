@@ -12,7 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/api/admin/products")
+@RequestMapping("/admin/products")
 public class AdminProductController {
     private final ProductService productService;
     public AdminProductController(ProductService productService)
@@ -44,7 +44,7 @@ public class AdminProductController {
             return "admin/products/new";
         }
         productService.create(dto);
-        return "redirect:/api/admin/products";
+        return "redirect:/admin/products";
     }
 
     // Update
@@ -74,7 +74,7 @@ public class AdminProductController {
             return "admin/products/edit";
         }
         productService.update(id, dto);
-        return "redirect:/api/admin/products";
+        return "redirect:/admin/products";
     }
 
     // Delete
@@ -82,6 +82,6 @@ public class AdminProductController {
     public String delete(@PathVariable Long id)
     {
         productService.delete(id);
-        return "redirect:/api/admin/products";
+        return "redirect:/admin/products";
     }
 }
