@@ -1,7 +1,7 @@
 package gift.controller;
 
-import gift.dto.ResponseDto;
 import gift.dto.request.ProductCreateRequestDto;
+import gift.dto.response.ProductGetResponseDto;
 import gift.service.ProductService;
 import java.util.List;
 import org.springframework.stereotype.Controller;
@@ -47,7 +47,7 @@ public class ProductViewController {
 
     @GetMapping
     public String getProductsPage(Model model) {
-        List<ResponseDto> products = productService.findAllProducts();
+        List<ProductGetResponseDto> products = productService.findAllProducts();
         model.addAttribute("products", products);
         return "products";
     }
@@ -55,7 +55,7 @@ public class ProductViewController {
     @GetMapping("/update/{productId}")
     public String updateProductPage(@PathVariable Long productId, Model model) {
         try {
-            ResponseDto product = productService.findProductByProductId(productId);
+            ProductGetResponseDto product = productService.findProductByProductId(productId);
             model.addAttribute("product", product);
             return "update-product";
         } catch (ResponseStatusException e) {

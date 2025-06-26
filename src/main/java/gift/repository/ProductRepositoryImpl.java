@@ -1,6 +1,6 @@
 package gift.repository;
 
-import gift.dto.ResponseDto;
+import gift.dto.response.ProductGetResponseDto;
 import gift.entity.Product;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,13 +27,10 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public List<ResponseDto> findAllProducts() {
-
-        List<ResponseDto> allProducts = products.values().stream()
-            .map(product -> new ResponseDto(product))
+    public List<ProductGetResponseDto> findAllProducts() {
+        return products.values().stream()
+            .map(product -> new ProductGetResponseDto(product))
             .collect(Collectors.toList());
-
-        return allProducts;
     }
 
     @Override

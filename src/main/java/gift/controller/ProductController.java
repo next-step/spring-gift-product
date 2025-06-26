@@ -4,6 +4,7 @@ import gift.dto.RequestDto;
 import gift.dto.ResponseDto;
 import gift.dto.request.ProductCreateRequestDto;
 import gift.dto.response.ProductCreateResponseDto;
+import gift.dto.response.ProductGetResponseDto;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -37,13 +38,14 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<ResponseDto> getProducts() {
+    public List<ProductGetResponseDto> getProducts() {
 
         return productService.findAllProducts();
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<ResponseDto> getProductByproductId(@PathVariable Long productId) {
+    public ResponseEntity<ProductGetResponseDto> getProductByproductId(
+        @PathVariable Long productId) {
 
         return new ResponseEntity<>(productService.findProductByProductId(productId),
             HttpStatus.OK);

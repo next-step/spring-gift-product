@@ -3,6 +3,7 @@ package gift.service;
 import gift.dto.ResponseDto;
 import gift.dto.request.ProductCreateRequestDto;
 import gift.dto.response.ProductCreateResponseDto;
+import gift.dto.response.ProductGetResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
@@ -31,12 +32,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ResponseDto> findAllProducts() {
+    public List<ProductGetResponseDto> findAllProducts() {
         return productRepository.findAllProducts();
     }
 
     @Override
-    public ResponseDto findProductByProductId(Long productId) {
+    public ProductGetResponseDto findProductByProductId(Long productId) {
         Product product = productRepository.findProductByProductId(productId);
 
         if (product == null) {
@@ -44,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
                 "Does not exist productId = " + productId);
         }
 
-        return new ResponseDto(product);
+        return new ProductGetResponseDto(product);
     }
 
     @Override
