@@ -27,9 +27,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDTO> getItems(String name, Integer price) {
-        List<ItemDTO> items;
-        System.out.println(name);
-        System.out.println(price);
+        List<Item> items;
+        List<ItemDTO> result = new  ArrayList<>();
         if (name == null && price == null) {
             items = itemRepository.getAllItems();
         }else
@@ -38,7 +37,12 @@ public class ItemServiceImpl implements ItemService {
             System.out.println("예외 처리 실행");
             throw new ItemNotFoundException();
         }
-        return items;
+
+        for (Item item : items) {
+            result.add(new ItemDTO(item));
+
+        }
+        return result;
     }
 
     @Override
@@ -66,11 +70,11 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDTO findById(Long id) {
-        List<ItemDTO> items = itemRepository.getAllItems();
+        List<Item> items = itemRepository.getAllItems();
 
-        for(ItemDTO item : items){
+        for(Item item : items){
             if(item.getId().equals(id)){
-                return item;
+                return new ItemDTO(item);
             }
         }
         return null;
@@ -86,8 +90,13 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDTO> getAllItems() {
-        List<ItemDTO> items = itemRepository.getAllItems();
+        List<Item> items = itemRepository.getAllItems();
+        List<ItemDTO> result = new ArrayList<>();
 
-        return items;
+        for (Item item : items) {
+            result.add(new ItemDTO(item));
+        }
+
+        return result;
     }
 }

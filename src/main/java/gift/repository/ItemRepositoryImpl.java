@@ -31,16 +31,16 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public List<ItemDTO> getItems(String name, Integer price) {
-        List<ItemDTO> result = new ArrayList<>();
+    public List<Item> getItems(String name, Integer price) {
+        List<Item> result = new ArrayList<>();
 
         for (Item item : items.values()) {
             boolean nameMatch = (name == null || item.getName().equals(name));
             boolean priceMatch = (price == null || item.getPrice().equals(price));
 
             if (nameMatch && priceMatch) {
-                ItemDTO dto = new ItemDTO(item);
-                result.add(dto);
+                Item addItem = new Item(item);
+                result.add(addItem);
             }
         }
 
@@ -68,10 +68,10 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public List<ItemDTO> getAllItems() {
-        List<ItemDTO> result = new ArrayList<>();
+    public List<Item> getAllItems() {
+        List<Item> result = new ArrayList<>();
         for (Item item : items.values()) {
-            result.add(new ItemDTO(item));
+            result.add(new Item(item));
         }
         return result;
     }

@@ -8,13 +8,13 @@ import java.util.List;
 public interface ItemRepository {
     Item saveItem(ItemDTO dto);
 
-    List<ItemDTO> getItems(String name, Integer price);
+    List<Item> getItems(String name, Integer price);
 
     Item deleteItems(String name);
 
     Item findById(Long id);
 
-    List<ItemDTO> getAllItems();
+    List<Item> getAllItems();
 
     Item deleteById(Long id);
 
