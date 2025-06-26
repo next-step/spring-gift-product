@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -46,6 +47,34 @@ public class AdminController {
       return "admin/form";
     }
     productService.addProduct(productRequestDto);
+    return "redirect:/admin";
+  }
+
+  @GetMapping("/edit/{id}")
+  public String editForm(@PathVariable Long id, Model model) {
+    ProductResponseDto product = productService.findProductById(id);
+    ProductRequestDto productRequestDto = new ProductRequestDto(
+        product.name(),
+        product.price(),
+        product.imageUrl()
+    );
+    model.addAttribute("product", productRequestDto);
+    model.addAttribute("productId", id);
+    model.addAttribute("mode", "edit");
+    return "admin/form";
+  }
+
+  @PostMapping("/edit/{id}")
+  public String editProduct(@PathVariable Long id,
+      @Valid @ModelAttribute("product") ProductRequestDto productRequestDto,
+      BindingResult bindingResult,
+      Model model) {
+    if (bindingResult.hasErrors()) {
+      model.addAttribute("mode", "edit");
+      model.addAttribute("productId", id);
+      return "admin/form";
+    }
+    productService.updateProduct(id, productRequestDto);
     return "redirect:/admin";
   }
 }
