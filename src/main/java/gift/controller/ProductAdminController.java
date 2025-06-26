@@ -60,6 +60,7 @@ public class ProductAdminController {
         ProductResponseDto productDto = productService.getProduct(id);
 
         model.addAttribute("product", productDto);
+        model.addAttribute("productId", id);
 
         return "admin/edit-form";
     }
@@ -67,8 +68,10 @@ public class ProductAdminController {
     @PostMapping("/edit/{id}")
     public String updateProduct(@PathVariable Long id,
                                 @Valid @ModelAttribute("product") ProductRequestDto requestDto,
-                                BindingResult bindingResult) {
+                                BindingResult bindingResult,
+                                Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("productId", id);
             return "admin/edit-form";
         }
 
