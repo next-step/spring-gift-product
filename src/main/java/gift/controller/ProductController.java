@@ -8,6 +8,8 @@ import gift.service.ProductService;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -28,14 +30,18 @@ public class ProductController {
     }
 
     @GetMapping("/add")
-    public String addProduct() {
+    public String addProduct(Model model) {
+        model.addAttribute("product", new CreateProductRequest("",null,""));
         return "/addForm";
     }
 
 
     @PostMapping("/add")
-    public String addProduct(@ModelAttribute CreateProductRequest request) {
-        service.save(request);
+    public String addProduct(@Validated @ModelAttribute("product") CreateProductRequest product, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/addForm";
+        }
+        service.save(product);
         return "redirect:/api/products";
     }
 
@@ -47,8 +53,13 @@ public class ProductController {
     }
 
     @PostMapping("/{id}/edit")
-    public String updateProduct(@PathVariable Long id, @ModelAttribute UpdateProductRequest request) {
-        service.update(id, request);
+    public String updateProduct(@PathVariable Long id,
+                                @Validated @ModelAttribute("product") UpdateProductRequest product,
+                                BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/editForm";
+        }
+        service.update(id, product);
         return "redirect:/api/products";
     }
 
