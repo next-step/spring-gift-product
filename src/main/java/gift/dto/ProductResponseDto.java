@@ -3,7 +3,7 @@ package gift.dto;
 public record ProductResponseDto(
     Long id,
     String name,
-    int price,
+    long price,
     String imageUrl
 ) {
 }
