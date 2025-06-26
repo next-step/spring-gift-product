@@ -28,4 +28,11 @@ public class AdminController {
     public String showAddProductForm() {
         return "admin/product/add";
     }
+
+    @GetMapping("/{id}")
+    public String showEditProductForm(@PathVariable("id") Long id, Model model) {
+        ProductResponseDto product = productService.findProductById(id);
+        model.addAttribute("product", product);
+        return "admin/product/edit";
+    }
 }

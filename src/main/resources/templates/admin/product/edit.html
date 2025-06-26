@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>상품 수정</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+    :root {
+      --bg-color: #f4f7fa;
+      --card-bg-color: #ffffff;
+      --primary-color: #6a82fb;
+      --primary-hover-color: #5468d4;
+      --text-color: #333;
+      --text-light-color: #777;
+      --border-color: #e9ecef;
+      --shadow-color: rgba(106, 130, 251, 0.15);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background-color: var(--bg-color); color: var(--text-color); padding: 2rem; }
+    .container { max-width: 800px; margin: 0 auto; }
+    .header h1 { font-size: 2rem; font-weight: 700; color: var(--text-color); margin-bottom: 1rem;}
+    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.5rem; border-radius: 50px; border: none; color: white; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background-color 0.2s ease, transform 0.2s ease; text-decoration: none; }
+    .btn:hover { transform: translateY(-2px); }
+    .form-card { background-color: var(--card-bg-color); border-radius: 16px; box-shadow: 0 8px 25px var(--shadow-color); padding: 2.5rem; margin-top: 2rem; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-light-color); }
+    .form-group input { width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; font-family: 'Nunito', sans-serif; }
+    .form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2.5rem; }
+    .btn-primary { background-color: var(--primary-color); }
+    .btn-primary:hover { background-color: var(--primary-hover-color); }
+    .btn-cancel { background-color: #f0f2f5; color: var(--text-light-color); }
+    .btn-cancel:hover { background-color: #e4e6e9; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>상품 수정</h1>
+  </div>
+
+  <div class="form-card">
+    <form id="edit-product-form" th:object="${product}">
+      <input type="hidden" id="productId" th:value="*{id}">
+
+      <div class="form-group">
+        <label for="productName">상품명</label>
+        <input type="text" id="productName" name="name" required th:value="*{name}">
+      </div>
+      <div class="form-group">
+        <label for="productPrice">가격</label>
+        <input type="number" id="productPrice" name="price" required th:value="*{price}">
+      </div>
+      <div class="form-group">
+        <label for="productImageUrl">이미지 URL</label>
+        <input type="url" id="productImageUrl" name="imageUrl" required th:value="*{imageUrl}">
+      </div>
+
+      <div class="form-actions">
+        <a th:href="@{/management/products}" class="btn btn-cancel">취소</a>
+        <button type="submit" class="btn btn-primary">수정 완료</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const editForm = document.getElementById('edit-product-form');
+    const productId = document.getElementById('productId').value;
+
+    editForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(editForm);
+      const productData = Object.fromEntries(formData.entries());
+
+      productData.price = parseInt(productData.price, 10);
+
+      fetch(`/api/products/${productId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productData),
+      })
+              .then(response => {
+                if (response.ok) {
+                  alert('상품 정보가 성공적으로 수정되었습니다.');
+                  window.location.href = '/management/products';
+                } else {
+                  alert('상품 수정에 실패했습니다. 입력값을 확인해주세요.');
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+                alert('수정 중 오류가 발생했습니다.');
+              });
+    });
+  });
+</script>
+
+</body>
+</html>
