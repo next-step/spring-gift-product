@@ -8,8 +8,11 @@ import gift.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.validation.BindingResult;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -41,5 +44,17 @@ public class ProductAdminController {
                 new ProductRequestDto("", 0L, ""));
 
         return "admin/add-form";
+    }
+
+    @PostMapping("/add")
+    public String addProduct(@Valid @ModelAttribute ProductRequestDto productRequestDto,
+                             BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "admin/add-form";
+        }
+
+        productService.addProduct(productRequestDto);
+
+        return "redirect:/admin/products";
     }
 }
