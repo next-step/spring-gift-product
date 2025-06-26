@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 관리</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 40px; }
+        h1 { margin-bottom: 20px; }
+        table { border-collapse: collapse; width: 90%; margin-bottom: 30px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+        form { margin-bottom: 30px; }
+        input[type="text"], input[type="number"] {
+            padding: 5px; margin: 5px;
+        }
+        button { padding: 6px 12px; margin-left: 5px; }
+    </style>
+</head>
+<body>
+<h1>상품 등록 페이지</h1>
+
+<form id="productForm">
+    <input type="hidden" id="productId">
+    <input type="text" id="productName" placeholder="상품명" required>
+    <input type="number" id="productPrice" placeholder="가격" required>
+    <input type="text" id="productImageUrl" placeholder="이미지 URL">
+</form>
+
+<table id="productTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>상품명</th>
+        <th>가격</th>
+        <th>이미지</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+    // 상품 전체 조회
+    function fetchProducts() {
+        fetch('/api/products')
+            .then(res => res.json())
+            .then(products => {
+                const tbody = document.querySelector('#productTable tbody');
+                tbody.innerHTML = '';
+                products.forEach(p => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${p.id}</td>
+                        <td>${p.name}</td>
+                        <td>${p.price}</td>
+                        <td><img src="${p.imageUrl}" width="50" /></td>
+
+                    `;
+                    tbody.appendChild(row);
+                });
+            });
+    }
+    window.onload = fetchProducts;
+</script>
+</body>
+</html>
