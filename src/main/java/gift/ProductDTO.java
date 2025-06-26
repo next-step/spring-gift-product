@@ -16,6 +16,15 @@ public class ProductDTO {
         this.imageUrl = imageUrl;
     }
 
+    public ProductDTO(Product product) {
+        if(product.getPrice() < 0) {
+            throw new IllegalArgumentException("Price should be positive");
+        }
+        this.name = product.getName();
+        this.price = product.getPrice();
+        this.imageUrl = product.getImageUrl();
+    }
+
     public String getName() {
         return name;
     }

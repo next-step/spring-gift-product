@@ -13,6 +13,7 @@
         <td th:text="${product.name}"></td>
         <td th:text="${product.price}"></td>
         <td th:text="${product.imageUrl}"></td>
+        <td th:href="@{/api/product/${product.id}/update}">수정</td>
     </tr>
 </table>
 <a th:href="@{/api/product/add}">상품 추가</a>
