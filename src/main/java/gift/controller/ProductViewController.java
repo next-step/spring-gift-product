@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -40,7 +41,10 @@ public class ProductViewController {
         Model model
     ) {
         FindProductResponseDto product = productService.findProductWithId(id);
+        ModifyProductRequestDto modifyForm = new ModifyProductRequestDto(product.getName(),
+            product.getPrice(), product.getImageUrl());
         model.addAttribute("product", product);
+        model.addAttribute("modifyForm", modifyForm);
         return "product-detail";
     }
     
@@ -70,6 +74,13 @@ public class ProductViewController {
     public String modifyProduct(@PathVariable Long id,
         @ModelAttribute ModifyProductRequestDto productForm) {
         productService.modifyProductWithId(id, productForm);
+        return "redirect:/products";
+    }
+    
+    @PatchMapping("/edit/{id}")
+    public String modifyInfoProduct(@PathVariable Long id,
+        @ModelAttribute ModifyProductRequestDto productForm) {
+        productService.modifyProductInfoWithId(id, productForm);
         return "redirect:/products";
     }
     

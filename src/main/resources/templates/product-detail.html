@@ -51,19 +51,86 @@
       font-weight: bold;
       cursor: pointer;
     }
+
+    .field-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 12px 0;
+    }
+
+    .field-row strong {
+      width: 80px;
+      flex-shrink: 0;
+    }
+
+    .field-input {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0 10px;
+    }
+
+    .field-input input[type="text"],
+    .field-input input[type="number"] {
+      width: 100%;
+      padding: 6px;
+      box-sizing: border-box;
+    }
+
+    .unit {
+      white-space: nowrap;
+    }
+
+    .field-row button {
+      padding: 6px 12px;
+      font-weight: bold;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 <h2>📦 상품 상세</h2>
 
-<div class="detail-container">
+<div class="detail-container" th:object="${modifyForm}">
   <p><strong>상품 ID:</strong> <span th:text="${product.getId()}">1</span></p>
-  <p><strong>상품명:</strong> <span th:text="${product.getName()}">샘플 상품</span></p>
-  <p><strong>가격:</strong> <span th:text="${product.getPrice()}">10000</span> 원</p>
-  <p><strong>이미지:</strong> <span th:text="${product.getImageUrl()}">이미지</span></p>
+  <form th:action="@{/products/edit/{id}(id=${product.id})}" th:method="patch">
+    <div class="field-row">
+      <strong>상품명:</strong>
+      <div class="field-input">
+        <input type="text" th:field="*{name}" required/>
+      </div>
+      <button type="submit">수정</button>
+    </div>
+  </form>
+
+  <form th:action="@{/products/edit/{id}(id=${product.id})}" th:method="patch">
+    <div class="field-row">
+      <strong>가격:</strong>
+      <div class="field-input">
+        <input type="number" th:field="*{price}" required/>
+        <span class="unit">원</span>
+      </div>
+      <button type="submit">수정</button>
+    </div>
+  </form>
+
+  <form th:action="@{/products/edit/{id}(id=${product.id})}" th:method="patch">
+    <div class="field-row">
+      <strong>이미지:</strong>
+      <div class="field-input">
+        <input type="text" th:field="*{imageUrl}" required/>
+      </div>
+      <button type="submit">수정</button>
+    </div>
+  </form>
 
   <a th:href="@{/products}" class="back-btn">목록으로</a>
-  
 </div>
 </body>
 </html>
