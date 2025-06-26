@@ -49,10 +49,14 @@ public class ProductController {
 
     //read
     //특정 상품을 조회(id)
-    @GetMapping("/products/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
+    @GetMapping("/products/info")
+    public String getProduct(
+        @RequestParam Long id,
+        Model model
+    ) {
         Product product = findProductById(id);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        model.addAttribute("product", product);
+        return "productinfo";
     }
 
     //read
@@ -63,7 +67,7 @@ public class ProductController {
             .stream()
             .collect(Collectors.toList());
         model.addAttribute("productList",productList);
-        return "main";
+        return "home";
         //return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 

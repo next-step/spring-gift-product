@@ -5,14 +5,6 @@
   <title>Title</title>
 </head>
 <body>
-
-<nav>
-  <ul>
-    <li><a th:href="@{/products}">전체 상품 조회하기</a></li>
-    <li><a th:href="@{/products/new}">상품 등록하기</a></li>
-  </ul>
-</nav>
-
 <table>
 
   <thead>
@@ -25,7 +17,7 @@
   </thead>
 
   <tbody>
-  <tr th:each="product : ${productList}">
+  <tr>
     <td th:text="${product.id}"></td>
     <td th:text="${product.name}"></td>
     <td th:text="${product.price}"></td>
