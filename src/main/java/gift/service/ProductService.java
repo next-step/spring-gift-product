@@ -23,7 +23,7 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    public ProductResponse getProductById(Long id) {
+    public ProductResponse findProductById(Long id) {
         return productRepository.findById(id)
                 .map(ProductResponse::new)
                 .orElse(null);
