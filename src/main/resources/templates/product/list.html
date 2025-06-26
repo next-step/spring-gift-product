@@ -73,7 +73,7 @@
         <td><img th:src="${product.imageUrl}" alt="이미지" width="50"/></td>
         <td class="actions">
             <a th:href="@{'/admin/products/' + ${product.id}}">상세 보기</a>
-            <form th:action="@{'/products/edit/' + ${product.id}}" method="get" style="display:inline;">
+            <form th:action="@{'/admin/products/' + ${product.id} + '/update'}" method="get" style="display:inline;">
                 <button type="submit">수정</button>
             </form>
             <form th:action="@{'/products/delete/' + ${product.id}}" method="post" style="display:inline;">
