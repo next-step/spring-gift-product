@@ -11,16 +11,20 @@
 ## 2. 상품리스트 받아오기
 - 상품 전체조회 기능 만들기
 - 상품정보를 받아와서 한줄씩 나열하기
+- api/admin/products에 GET요청
 ## 3. 상품추가 폼 및 버튼 만들기
 - 상품정보를 폼으로 입력받아 버튼을 누를 시
-- api/products에 POST요청
+- api/admin/products/add에 POST요청
 ## 4. 상품수정 폼 및 버튼 만들기
 - 수정 버튼은 상품정보마다 하나씩
 - 상품정보를 폼에서 수정하여 버튼을 누를 시
-- api/products/{id}에 PUT요청
+- api/admin/products/edit/{id}에 PUT요청
 ## 5. 상품삭제 버튼 만들기
 - 삭제 버튼은 상품정보마다 하나씩
-- api/products/{id}에 DELETE요청
+- admin/api/products/delete/{id}에 DELETE요청
+## 6. 추가적인 작업
+- 추가, 수정 폼의 요소들을 정렬해서 깔끔하게 만들어보기
+- 이미지가 url이 아닌 사진으로 보이게 구현해보기
 ---
 # 1단계 
 상품을 추가하고 조회하고 수정하고 삭제 요청할 수 있는 API를 만든다.
