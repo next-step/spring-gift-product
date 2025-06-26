@@ -26,28 +26,29 @@ public class ProductController {
     }
 
     //전체 조회
-    @GetMapping("")
+    @GetMapping()
     public ResponseEntity<List<ProductResponseDto>> getAllProducts() {
         List<ProductResponseDto> productResponseDtos = productService.getAllProducts();
         return  ResponseEntity.ok(productResponseDtos);
     }
 
     //특정 상품 추가
-    @PostMapping("")
+    @PostMapping()
     public ResponseEntity<ProductResponseDto> addProduct(@RequestBody ProductRequestDto productRequestDto) {
         ProductResponseDto productResponseDto = productService.addProduct(productRequestDto);
         return  ResponseEntity.ok(productResponseDto);
     }
 
     //특정 상품 수정
-    @PutMapping("")
-    public ResponseEntity<ProductResponseDto> updateProduct(@RequestBody ProductRequestDto productRequestDto) {
-        ProductResponseDto productResponseDto = productService.updateProduct(productRequestDto);
+    @PutMapping("{id}")
+    public ResponseEntity<ProductResponseDto> updateProduct(@RequestBody ProductRequestDto productRequestDto,
+                                                            @PathVariable Long id) {
+        ProductResponseDto productResponseDto = productService.updateProduct(id,productRequestDto);
         return  ResponseEntity.ok(productResponseDto);
     }
 
     //삭제
-    @DeleteMapping("")
+    @DeleteMapping()
     public ResponseEntity<Void> deleteProduct(@RequestBody ProductRequestDto productRequestDto) {
         productService.deleteProduct(productRequestDto.getId());
         return ResponseEntity.noContent().build();

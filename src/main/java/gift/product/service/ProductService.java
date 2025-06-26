@@ -50,10 +50,10 @@ public class ProductService {
     }
 
     //수정
-    public ProductResponseDto updateProduct(ProductRequestDto productRequestDto) {
+    public ProductResponseDto updateProduct(Long id ,ProductRequestDto productRequestDto) {
         Product product = new Product();
         if(productRequestDto != null) {
-            product.setId(productRequestDto.getId());
+            product.setId(id);
             product.setName(productRequestDto.getName());
             product.setPrice(productRequestDto.getPrice());
             product.setImageUrl(productRequestDto.getImageUrl());
