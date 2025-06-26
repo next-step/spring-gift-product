@@ -6,6 +6,7 @@ import gift.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -29,7 +30,11 @@ public class ProductAdminController {
     }
 
     @PostMapping("/add")
-    public String addProduct(@ModelAttribute CreateProductReqDto dto) {
+    public String addProduct(@ModelAttribute CreateProductReqDto dto,
+                             BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "product-add";
+        }
         productService.createProduct(dto);
         return "redirect:/admin/products";
     }
@@ -42,7 +47,11 @@ public class ProductAdminController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateProduct(@PathVariable Long id, @ModelAttribute UpdateProductReqDto dto) {
+    public String updateProduct(@PathVariable Long id, @ModelAttribute UpdateProductReqDto dto,
+                                BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "product-edit";
+        }
         productService.updateProduct(id, dto);
         return "redirect:/admin/products";
     }
