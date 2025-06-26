@@ -35,4 +35,16 @@ public class AdminController {
 
         return "admin/editProductForm";
     }
+
+    // 상품 목록 조회 기능
+    @GetMapping
+    public String findAllProducts(Model model) {
+
+        List<ProductResponseDto> dtoList = productService.findAllProducts();
+        model.addAttribute("products", dtoList);
+
+        return "admin/products";
+    }
+
+
 }
