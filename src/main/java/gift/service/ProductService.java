@@ -13,7 +13,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public ProductService(ProductRepository productRepository){
+    public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
@@ -22,15 +22,13 @@ public class ProductService {
     }
 
 
-
-
-    public Product save(ProductRequestDto dto){
+    public Product save(ProductRequestDto dto) {
         Product product = dto.toEntity();
         return productRepository.save(product);
     }
 
     public void update(Long id, ProductRequestDto dto) {
-        Product updated= dto.toEntity();
+        Product updated = dto.toEntity();
         productRepository.update(id, updated);
     }
 
@@ -44,7 +42,7 @@ public class ProductService {
         return product;
     }
 
-    public void deleteProductById(Long id){
+    public void deleteProductById(Long id) {
         productRepository.deleteById(id);
     }
 

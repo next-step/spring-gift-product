@@ -3,6 +3,7 @@ package gift.dto;
 import gift.entity.Product;
 
 public class ProductRequestDto {
+
     private String name;
     private int price;
     private String imageUrl;

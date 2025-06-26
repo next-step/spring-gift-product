@@ -19,13 +19,13 @@ public class ProductController {
     private final ProductService productService;
 
     //생성자 주입
-    public ProductController(ProductService productService){
-        this.productService=productService;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping
-    public String list(Model model){
-        model.addAttribute("products",productService.findAll());
+    public String list(Model model) {
+        model.addAttribute("products", productService.findAll());
         return "product/list";
     }
 
@@ -36,15 +36,16 @@ public class ProductController {
     }
 
     @PostMapping
-    public String createProduct(@ModelAttribute ProductRequestDto dto){
+    public String createProduct(@ModelAttribute ProductRequestDto dto) {
         productService.save(dto);
         return "redirect:/admin/products";
     }
 
     @GetMapping("/{id}/edit")
-     public String showEditForm(@PathVariable Long id, Model model) {
+    public String showEditForm(@PathVariable Long id, Model model) {
         Product product = productService.findById(id);
-        ProductRequestDto dto = new ProductRequestDto(product.getName(), product.getPrice(), product.getImageUrl());
+        ProductRequestDto dto = new ProductRequestDto(product.getName(), product.getPrice(),
+                product.getImageUrl());
         model.addAttribute("product", dto);
         model.addAttribute("id", id);
         return "product/edit";
@@ -57,7 +58,7 @@ public class ProductController {
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteProduct(@PathVariable Long id){
+    public String deleteProduct(@PathVariable Long id) {
         productService.deleteProductById(id);
         return "redirect:/admin/products";
     }

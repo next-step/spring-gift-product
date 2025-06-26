@@ -9,14 +9,15 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class ProductRepository {
+
     private final Map<Long, Product> store = new HashMap<>();
     private Long nextId = 1L;
 
-    public List<Product> findAll(){
+    public List<Product> findAll() {
         return new ArrayList<>(store.values());
     }
 
-    public Product save(Product product){
+    public Product save(Product product) {
         product.setId(nextId++);
         store.put(product.getId(), product);
         return product;
@@ -34,10 +35,10 @@ public class ProductRepository {
     public Product findById(Long id) {
         return store.get(id);
     }
-    public void deleteById(Long id){
+
+    public void deleteById(Long id) {
         store.remove(id);
     }
-
 
 
 }
