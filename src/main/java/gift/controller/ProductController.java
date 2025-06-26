@@ -15,7 +15,7 @@ public class ProductController {
     private final Map<Long, Product> products = new ConcurrentHashMap<>();
     private final AtomicLong idGenerator = new AtomicLong();
 
-    @GetMapping
+    @GetMapping // 전체 상품 조회 API
     public Collection<Product> getProducts() {
         return products.values();
     }

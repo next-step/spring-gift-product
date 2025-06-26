@@ -5,7 +5,6 @@ public class Product {
     private String name;
     private int price;
 
-    public Product() {}
     public Product(Long id, String name, int price) {
         this.id = id;
         this.name = name;
