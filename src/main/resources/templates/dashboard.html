@@ -24,7 +24,7 @@
     <td><span th:text="${product.name}"></span></td>
     <td><span th:text="${product.price}"></span></td>
     <td><span th:text="${product.imageUrl}"></span></td>
-    <td><span th:text="${product.id}"></span></td>
+    <td><button type="button" th:onclick="|location.href='@{boards/update/}| + ${product.id} + |'|">수정</button></td>
   </tr>
   </tbody>
 </table>
