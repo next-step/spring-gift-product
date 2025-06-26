@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin/products")
@@ -48,6 +50,30 @@ public class AdminController {
     @PostMapping
     public String addProduct(@ModelAttribute ProductRequestDto productRequestDto) {
         productService.saveProduct(productRequestDto);
+        return "redirect:/admin/products";
+    }
+
+    // 상품 수정
+    @GetMapping("/{id}/edit")
+    public String editProduct(@PathVariable Long id, Model model) {
+        try {
+            model.addAttribute("product", productService.findProduct(id));
+            model.addAttribute("productId", id);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", "상품을 찾을 수 없습니다.");
+        }
+        return "admin/products/edit";
+    }
+
+    @PutMapping("/{id}")
+    public String updateProduct(@PathVariable Long id,
+            @ModelAttribute ProductRequestDto productRequestDto,
+            RedirectAttributes redirectAttributes) {
+        try {
+            productService.updateProduct(id, productRequestDto);
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "상품을 찾을 수 없습니다.");
+        }
         return "redirect:/admin/products";
     }
 
