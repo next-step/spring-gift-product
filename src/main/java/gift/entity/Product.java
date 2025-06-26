@@ -3,6 +3,7 @@ package gift.entity;
 import gift.dto.CreateProductRequestDto;
 
 public class Product {
+
     private Long id;
     private String name;
     private Long price;
@@ -18,17 +19,20 @@ public class Product {
     public Long getId() {
         return id;
     }
+
     public String getName() {
         return name;
     }
+
     public Long getPrice() {
         return price;
     }
+
     public String getImageUrl() {
         return imageUrl;
     }
 
-    public void update(CreateProductRequestDto requestDto){
+    public void update(CreateProductRequestDto requestDto) {
         this.name = requestDto.getName();
         this.price = requestDto.getPrice();
         this.imageUrl = requestDto.getImageUrl();

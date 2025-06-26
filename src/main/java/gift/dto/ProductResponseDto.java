@@ -1,6 +1,7 @@
 package gift.dto;
 
 public class ProductResponseDto {
+
     private Long id;
     private String name;
     private Long price;
@@ -16,12 +17,15 @@ public class ProductResponseDto {
     public Long getId() {
         return id;
     }
+
     public String getName() {
         return name;
     }
+
     public Long getPrice() {
         return price;
     }
+
     public String getImageUrl() {
         return imageUrl;
     }

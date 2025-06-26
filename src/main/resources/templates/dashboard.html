@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Management System</title>
+  <style>
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid black;
+    }
+
+    th {
+      background-color: steelblue;
+      color: white;
+    }
+
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 15%;
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 55%;
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+      width: 30%;
+    }
+
+    tr:nth-child(even) {
+      background-color: lightgray;
+    }
+  </style>
+</head>
+<body>
+<h1>Product Management System</h1>
+<button th:onclick="|location.href='@{boards/add}'|">상품 등록</button>
+<table style="width: 100vw;background-color: white">
+  <thead>
+  <tr>
+    <th>id</th>
+    <th>name</th>
+    <th>price</th>
+    <th>image</th>
+    <th>actions</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr th:each="product : ${products}">
+    <td><span th:text="${product.id}"></span></td>
+    <td><span th:text="${product.name}"></span></td>
+    <td><span th:text="${product.price}"></span></td>
+    <td><span th:text="${product.imageUrl}"></span></td>
+    <td>
+      <button type="button" th:onclick="|location.href='@{boards/update/}| + ${product.id} + |'|">
+        수정
+      </button>
+      <form th:action="@{/admin/boards/{id}(id=${product.id})}" th:method="delete">
+        <button type="submit">삭제</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
