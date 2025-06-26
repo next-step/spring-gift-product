@@ -21,6 +21,15 @@ public class ProductController {
         return new ArrayList<>(products.values());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProducts(@PathVariable Long id) {
+        Product storedProduct = products.get(id);
+        if (storedProduct == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(storedProduct);
+    }
+
     @PostMapping
     public Product addProducts(@RequestBody Product product) {
         Long id = idGenerator.getAndDecrement();
