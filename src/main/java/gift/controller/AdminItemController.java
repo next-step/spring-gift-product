@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,10 +60,22 @@ public class AdminItemController {
             redirectAttributes.addFlashAttribute("message", "상품이 성공적으로 등록되었습니다!");
             return "redirect:/admin/items";
         } catch (
-            ResponseStatusException ex) { // 현재 단계에서는 HTTP에 종속된다는 문제가 있음. 추후 예외 처리를 고도화할 필요가 있는 코드
+            ResponseStatusException ex) { // 현재 단계에서는 HTTP에 종속된다는 문제가 있음(아래 try-catch 문들도 동일). 추후 예외 처리를 고도화할 필요가 있는 코드
             redirectAttributes.addFlashAttribute("errorMessage", ex.getReason());
             return "admin/items/form";
         }
+    }
+
+    @GetMapping("/{id}")
+    public String detailItem(@PathVariable("id") Long id, Model model) {
+        try {
+            ItemResponse item = itemService.getItemById(id);
+            model.addAttribute("item", item);
+        } catch (ResponseStatusException ex) {
+            model.addAttribute("errorMessage", ex.getReason());
+            model.addAttribute("item", null);
+        }
+        return "admin/items/detail";
     }
 
 }

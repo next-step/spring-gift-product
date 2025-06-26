@@ -209,3 +209,43 @@ h1 {
 .form-actions button {
   margin-right: 10px;
 }
+
+.detail-container {
+  padding: 20px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.detail-item-info p {
+  margin-bottom: 10px;
+  font-size: 1.1em;
+}
+
+.detail-item-info strong {
+  color: #555;
+  display: inline-block;
+  min-width: 80px;
+}
+
+.detail-item-image {
+  max-width: 300px;
+  height: auto;
+  display: block;
+  margin: 20px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.detail-actions {
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.detail-actions form {
+  margin: 0;
+}
