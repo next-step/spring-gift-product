@@ -83,5 +83,10 @@ public class AdminProductController {
         return "redirect:/admin/products";
     }
 
-    // 삭제 POST 핸들러는 여기 밑에 이어서 구현
+    @PostMapping("/{id}/delete")
+    public String deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return "redirect:/admin/products";
+    }
+
 }

@@ -1,57 +1,35 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="${productId != null} ? '상품 수정' : '상품 등록'">상품 등록</title>
-</head>
-<body>
-<h1 th:text="${productId != null} ? '상품 수정' : '상품 등록'">상품 등록</h1>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, ~{::section})}">
 
-<!-- 등록 폼 -->
-<form th:if="${productId == null}" th:action="@{/admin/products/new}" th:object="${form}" method="post">
-    <div>
-        <label>이름:</label>
-        <input type="text" th:field="*{name}" required/>
-        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></div>
-    </div>
+<title th:text="${productId != null} ? '상품 수정' : '상품 등록'">상품 등록</title>
 
-    <div>
-        <label>가격:</label>
-        <input type="number" th:field="*{price}" min="0" required/>
-        <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color:red"></div>
-    </div>
+<section>
+    <h2 th:text="${productId != null} ? '상품 수정' : '상품 등록'">상품 등록</h2>
 
-    <div>
-        <label>이미지 URL:</label>
-        <input type="text" th:field="*{imageUrl}" placeholder="https://example.com/img.png"/>
-    </div>
+    <form th:action="@{${productId != null} ? '/admin/products/' + ${productId} + '/edit' : '/admin/products/new'}"
+          th:object="${form}" method="post">
+        <div class="form-group">
+            <label>이름:</label>
+            <input type="text" th:field="*{name}" required/>
+            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></div>
+        </div>
 
-    <button type="submit">등록</button>
-    <a th:href="@{/admin/products}">목록으로</a>
-</form>
+        <div class="form-group">
+            <label>가격:</label>
+            <input type="number" th:field="*{price}" min="0" required/>
+            <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color:red"></div>
+        </div>
 
-<!-- 수정 폼 -->
-<form th:if="${productId != null}" th:action="@{'/admin/products/' + ${productId} + '/edit'}"
-      th:object="${form}" method="post">
-    <div>
-        <label>이름:</label>
-        <input type="text" th:field="*{name}" required/>
-        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></div>
-    </div>
+        <div class="form-group">
+            <label>이미지 URL:</label>
+            <input type="text" th:field="*{imageUrl}" placeholder="https://example.com/img.png"/>
+        </div>
 
-    <div>
-        <label>가격:</label>
-        <input type="number" th:field="*{price}" min="0" required/>
-        <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color:red"></div>
-    </div>
-
-    <div>
-        <label>이미지 URL:</label>
-        <input type="text" th:field="*{imageUrl}" placeholder="https://example.com/img.png"/>
-    </div>
-
-    <button type="submit">수정</button>
-    <a th:href="@{/admin/products}">목록으로</a>
-</form>
-</body>
+        <div class="form-actions">
+            <button type="submit" th:text="${productId != null} ? '수정' : '등록'">등록</button>
+            <a th:href="@{/admin/products}">목록으로</a>
+        </div>
+    </form>
+</section>
 </html>
