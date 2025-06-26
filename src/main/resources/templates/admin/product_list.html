@@ -36,14 +36,38 @@
       margin: 0 auto;
     }
 
-    .action-links a {
-      margin-right: 10px;
+    .action-links {
+      white-space: nowrap;
+    }
+
+    .action-links a, .action-links button {
+      display: inline-block;
+      padding: 5px 10px;
+      margin-right: 5px;
+      border-radius: 4px;
       text-decoration: none;
-      color: #007bff;
+      font-size: 0.9em;
+      cursor: pointer;
+      border: none;
+      text-align: center;
+    }
+
+    .action-links a {
+      background-color: #007bff;
+      color: white;
     }
 
     .action-links a:hover {
-      text-decoration: underline;
+      background-color: #0056b3;
+    }
+
+    .action-links button {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .action-links button:hover {
+      background-color: #c82333;
     }
 
     .add-product-btn {
@@ -59,12 +83,21 @@
     .add-product-btn:hover {
       background-color: #218838;
     }
+
+    .error {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 5px;
+    }
   </style>
 </head>
 <body>
 <h1>상품 목록 (관리자)</h1>
 
-<a class="add-product-btn" href="/admin/products/new">상품 추가</a>
+<p class="error" th:if="${param.error}" th:text="${param.error}"></p> <a class="add-product-btn"
+                                                                         href="/admin/products/new">상품
+  추가</a>
+
 <table>
   <thead>
   <tr>
@@ -83,10 +116,34 @@
     <td><img alt="상품 이미지" th:src="${product.imageUrl}"></td>
     <td class="action-links">
       <a th:href="@{/admin/products/{id}/edit(id=${product.id})}">수정</a>
-      <a href="#">삭제</a>
+      <button onclick="deleteProduct(this.dataset.id)" th:data-id="${product.id}">삭제</button>
     </td>
   </tr>
   </tbody>
 </table>
+
+<script>
+  function deleteProduct(productId) {
+    if (confirm('정말로 이 상품을 삭제하시겠습니까?')) {
+      fetch(`/api/products/${productId}`, {
+        method: 'DELETE'
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('상품이 성공적으로 삭제되었습니다.');
+          window.location.reload();
+        } else if (response.status === 404) {
+          alert('삭제할 상품을 찾을 수 없습니다.');
+        } else {
+          alert('상품 삭제에 실패했습니다. 상태 코드: ' + response.status);
+        }
+      })
+      .catch(error => {
+        console.error('삭제 중 오류 발생:', error);
+        alert('상품 삭제 중 오류가 발생했습니다.');
+      });
+    }
+  }
+</script>
 </body>
 </html>

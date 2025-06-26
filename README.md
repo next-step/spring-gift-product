@@ -20,5 +20,5 @@
 * [X] 상품 수정 화면: 특정 상품 정보 수정 폼 제공
     * `GET /admin/products/{id}/edit` (상품 수정 폼 페이지)
     * `PUT /admin/products/{id}` (폼 제출 후 상품 수정 처리)
-* [ ] 상품 삭제 기능: 특정 상품 삭제 기능 구현
+* [X] 상품 삭제 기능: 특정 상품 삭제 기능 구현
     * `DELETE /admin/products/{id}`
