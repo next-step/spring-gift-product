@@ -24,7 +24,6 @@ public class ProductRepositoryV1 implements ProductRepository{
                 .toList();
     }
 
-
     public Optional<Product> findById(UUID id) {
         return Optional.ofNullable(products.get(id));
     }
