@@ -18,6 +18,13 @@ public class AdminController {
         this.productService = productService;
     }
 
+    @GetMapping
+    public String index(Model model) {
+        List<Product> products = productService.findAllProducts();
+        model.addAttribute("products", products);
+        return "admin/index";
+    }
+
     @GetMapping("/create")
     public String create(Model model) {
         List<Product> products = productService.findAllProducts();
