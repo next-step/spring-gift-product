@@ -12,8 +12,12 @@
 - 상품 수정 (`PUT /api/products/{id}`)
 - 상품 삭제 (`DELETE /api/products/{id}`)
 
-## STEP2: 관리자 화면 구현 기능 목록
+## STEP2: 관리자 화면 구현
 - 관리자 상품 관리 페이지
+  - 상품 목록 조회 페이지 (`http://localhost:8080/admin/products`)
+  - 상품 추가 페이지 (`http://localhost:8080/admin/products/new`)
+  - 상품 수정 페이지 (`http://localhost:8080/admin/products/{id}/edit`)
+- 주요 기능
   - 상품 전체 조회 기능
   - 상품 단건 조회 기능
   - 상품 추가 기능
