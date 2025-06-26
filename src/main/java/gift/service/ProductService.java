@@ -19,6 +19,12 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    public ProductResponseDto getProductById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Product not found with id: " + id));
+        return new ProductResponseDto(product);
+    }
+
     public List<ProductResponseDto> getProducts() {
         return productRepository.findAll()
                 .stream()
@@ -27,7 +33,7 @@ public class ProductService {
     }
 
     public ProductResponseDto addProduct(ProductRequestDto requestDto) {
-        Product product = new Product(null, requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
+        Product product = Product.from(requestDto);
         Product savedProduct = productRepository.save(product);
         return new ProductResponseDto(savedProduct);
     }

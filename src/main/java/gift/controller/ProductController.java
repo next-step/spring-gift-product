@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/products")
@@ -19,16 +20,23 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponseDto> getProduct(@PathVariable Long id) {
+        ProductResponseDto response = productService.getProductById(id);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping
     public List<ProductResponseDto> getProducts() {
         return productService.getProducts();
     }
 
     @PostMapping
-    public ResponseEntity<Void> addProduct(@RequestBody ProductRequestDto requestDto) {
+    public ResponseEntity<ProductResponseDto> addProduct(@RequestBody @Valid ProductRequestDto requestDto) {
         ProductResponseDto response = productService.addProduct(requestDto);
-        return ResponseEntity.created(URI.create("/api/products/" + response.getId())).build();
+        return ResponseEntity.created(URI.create("/api/products/" + response.getId())).body(response);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDto requestDto) {
