@@ -6,15 +6,14 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Repository
 public class ProductRepository {
     private final Map<Long, Product> products = new HashMap<>();
-    private static Long id = 0L;
+    private static Long nextId = 0L;
 
     public Product create(Product product) {
-        product.setId(id++);
+        product.setId(nextId++);
         products.put(product.getId(), product);
         return product;
     }
