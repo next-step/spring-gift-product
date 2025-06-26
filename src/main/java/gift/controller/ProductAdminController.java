@@ -7,10 +7,7 @@ import gift.dto.view.ProductView;
 import gift.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -56,5 +53,14 @@ public class ProductAdminController {
         productService.addProduct(productRequestDto);
 
         return "redirect:/admin/products";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model){
+        ProductResponseDto productDto = productService.getProduct(id);
+
+        model.addAttribute("product", productDto);
+
+        return "admin/edit-form";
     }
 }
