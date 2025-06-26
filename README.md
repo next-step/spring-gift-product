@@ -38,3 +38,4 @@
   
 - [ ] **상품 추가 기능**
   - `feat`: 상품 추가 폼 페이지로 이동하는 컨트롤러 로직 구현 (`GET /admin/products/add`)
+  - `feat`: 상품 추가 HTML 템플릿 작성 (`admin/add-form.html`)
