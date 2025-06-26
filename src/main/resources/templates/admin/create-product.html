@@ -10,26 +10,22 @@
                 <div class="mb-4 p-4 rounded-lg border border-gray-100 bg-gray-50">
                     <label for="prod-name-input" class="block text-2xl font-bold text-gray-900 mb-2">상품 이름</label>
                     <input type="text" id="prod-name-input" name="name"
-                           class="w-full text-2xl text-right border rounded-lg p-2"
-                           th:value="${product?.name}" required />
+                           class="w-full text-2xl text-right border rounded-lg p-2" required />
                 </div>`
                 <div class="mb-4 p-4 rounded-lg border border-gray-100 bg-gray-50">
                     <label for="prod-price-input" class="block text-2xl font-bold text-gray-900 mb-2">상품 가격</label>
                     <input type="number" id="prod-price-input" name="price"
-                           class="w-full text-2xl text-right border rounded-lg p-2"
-                           th:value="${product?.price}" required />
+                           class="w-full text-2xl text-right border rounded-lg p-2" required />
                 </div>
                 <div class="mb-4 p-4 rounded-lg border border-gray-100 bg-gray-50">
                     <label for="prod-url-input" class="block text-2xl font-bold text-gray-900 mb-2">이미지 URL</label>
                     <input type="text" id="prod-url-input" name="imageUrl"
-                           class="w-full p-2 text-right border rounded-lg overflow-x-auto whitespace-nowrap"
-                           th:value="${product?.imageUrl}" required />
+                           class="w-full p-2 text-right border rounded-lg overflow-x-auto whitespace-nowrap" required />
                 </div>
                 <div class="flex justify-end">
                     <button type="button"
                             class="rounded-lg bg-green-500 px-4 py-2 text-white font-medium hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300"
-                            onclick="requestCreateProduct()"
-                    >
+                            onclick="requestCreateProduct()">
                         등록하기
                     </button>
                 </div>
