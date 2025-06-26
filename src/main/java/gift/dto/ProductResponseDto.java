@@ -3,6 +3,7 @@ package gift.dto;
 import gift.entity.Product;
 
 public class ProductResponseDto {
+
     private final Long id;
     private final String name;
     private final int price;

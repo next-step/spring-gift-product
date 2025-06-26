@@ -14,7 +14,8 @@
   <div class="top-action-buttons">
     <button id="create-button" onclick="openCreateModal('물품 등록 창', 'create-product.html')"
             data-bs-target="#product-modal">
-      물품 등록</button>
+      물품 등록
+    </button>
     <button id="delete-button">선택 항목 삭제</button>
   </div>
 </div>
@@ -53,16 +54,20 @@
   </tbody>
 
   <tbody class="product-table-body" th:if="${productMap != null and !productMap.isEmpty()}">
-    <tr th:each="entry : ${productEntries}">
-      <td><input type="checkbox" name="selectedKey" th:value="${entry.key}"></td>
-      <td th:text="${entry.key}"></td>
-      <td th:text="${entry.value.id}"></td>
-      <td th:text="${entry.value.name}"></td>
-      <td th:text="${entry.value.price}"></td>
-      <td th:text="${entry.value.imageUrl}"></td>
-      <td><button class="update-button">수정</button></td>
-      <td><button class="delete-button">삭제</button></td>
-    </tr>
+  <tr th:each="entry : ${productEntries}">
+    <td><input type="checkbox" name="selectedKey" th:value="${entry.key}"></td>
+    <td th:text="${entry.key}"></td>
+    <td th:text="${entry.value.id}"></td>
+    <td th:text="${entry.value.name}"></td>
+    <td th:text="${entry.value.price}"></td>
+    <td th:text="${entry.value.imageUrl}"></td>
+    <td>
+      <button class="update-button">수정</button>
+    </td>
+    <td>
+      <button class="delete-button">삭제</button>
+    </td>
+  </tr>
   </tbody>
 </table>
 

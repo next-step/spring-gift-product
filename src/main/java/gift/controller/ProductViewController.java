@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/view")
 public class ProductViewController {
+
     private final ProductService productService;
 
     public ProductViewController(ProductService productService) {
@@ -33,7 +34,8 @@ public class ProductViewController {
     public String showProducts(Model model) {
         Map<Long, Product> productMap = productService.findAllMap();
 
-        model.addAttribute("productMap", productMap); // productMap은 Collections.unmodifiableMap이므로, th:each가 X.
+        model.addAttribute("productMap",
+            productMap); // productMap은 Collections.unmodifiableMap이므로, th:each가 X.
         model.addAttribute("productEntries", productMap.entrySet()); // 이에 따른 entrySet 추가
         return "home";
     }
