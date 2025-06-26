@@ -17,4 +17,6 @@ public interface ItemService {
     ItemDTO findById(Long id);
 
     void deleteById(Long id);
+
+    List<ItemDTO> getAllItems();
 }

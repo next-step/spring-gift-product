@@ -7,6 +7,7 @@ import gift.exception.ItemNotFoundException;
 import gift.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,9 +27,15 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDTO> getItems(String name, Integer price) {
-
-        List<ItemDTO> items = itemRepository.getItems(name, price);
+        List<ItemDTO> items;
+        System.out.println(name);
+        System.out.println(price);
+        if (name == null && price == null) {
+            items = itemRepository.getAllItems();
+        }else
+            items = itemRepository.getItems(name, price);
         if(items.isEmpty()){
+            System.out.println("예외 처리 실행");
             throw new ItemNotFoundException();
         }
         return items;
@@ -75,5 +82,12 @@ public class ItemServiceImpl implements ItemService {
         if(item == null){
             throw new ItemNotFoundException();
         }
+    }
+
+    @Override
+    public List<ItemDTO> getAllItems() {
+        List<ItemDTO> items = itemRepository.getAllItems();
+
+        return items;
     }
 }

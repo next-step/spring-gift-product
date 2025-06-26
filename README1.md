@@ -10,4 +10,6 @@
 
 
 ## Step 2
-- 
+- [x] AdminController 생성
+- [x] step1 피드백 기반 리팩토링
+- [x] step1 예외 처리 추가

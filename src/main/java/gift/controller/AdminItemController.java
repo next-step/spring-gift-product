@@ -2,6 +2,7 @@ package gift.controller;
 
 
 import gift.dto.ItemDTO;
+import gift.entity.Item;
 import gift.service.ItemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,13 +19,19 @@ public class AdminItemController {
     public AdminItemController(ItemService itemService) {
         this.itemService = itemService;
     }
-
     @GetMapping
-    public String getItem(
+    public String searchItem(
             Model model,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Integer price) {
-        List<ItemDTO> items = itemService.getItems(name, price);
+
+        List<ItemDTO> items;
+
+        if(name == null && price == null){
+            items = itemService.getAllItems();
+        }else {
+            items = itemService.getItems(name, price);
+        }
         model.addAttribute("items", items);
         return "admin/list";
     }
@@ -62,4 +69,6 @@ public class AdminItemController {
         model.addAttribute("itemDTO", item);
         return "admin/editForm";
     }
+
+
 }
