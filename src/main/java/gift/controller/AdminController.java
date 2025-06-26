@@ -54,4 +54,14 @@ public class AdminController {
         return "redirect:/admin/products";
     }
 
+    // 상품 수정 기능 구현
+    @PutMapping("{id}")
+    public String updateProduct(
+            @PathVariable Long id,
+            @ModelAttribute ProductRequestDto dto) {
+
+        productService.updateProduct(id, dto);
+        return "redirect:/admin/products";
+    }
+
 }
