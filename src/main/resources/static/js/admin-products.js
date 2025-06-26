@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const productForm = document.getElementById('product-form');
     const modalTitle = document.getElementById('modal-title');
     const productIdField = document.getElementById('product-id');
-
+    const tableBody = document.querySelector("#product-table tbody");
     getProducts();
 
     const openModal = () => {
@@ -32,18 +32,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     productForm.addEventListener('submit', (event) => {
-        event.preventDefault();
+            event.preventDefault();
 
-        const productData = {
-            name: document.getElementById('name').value,
-            price: parseInt(document.getElementById('price').value, 10),
-            imageUrl: document.getElementById('imageUrl').value,
-        };
+            const productData = {
+                name: document.getElementById('name').value,
+                price: parseInt(document.getElementById('price').value, 10),
+                imageUrl: document.getElementById('imageUrl').value,
+            };
+            const id = document.getElementById('product-id').value;
 
-        addNewProduct(productData);
+            if (id) {
+                updateProduct(id, productData);
+            } else {
+                addNewProduct(productData);
+            }
+        }
+    );
+
+    tableBody.addEventListener('click', (event) => {
+        const target = event.target;
+        if (target.classList.contains('edit-btn')) {
+            const productId = target.dataset.id;
+            openEditModal(productId);
+        }
+        if (target.classList.contains('delete-btn')) {
+            // 4단계
+        }
     });
-
 });
+
 
 function getProducts(page = 0, size = 5) {
     axios.get(`/api/products?page=${page}&size=${size}`)
@@ -129,4 +146,32 @@ function addNewProduct(productData) {
             const errorMessage = error.response?.data?.message || '상품 추가에 실패했습니다.';
             alert(errorMessage);
         });
+}
+
+function openEditModal(id) {
+    axios.get(`/api/products/${id}`)
+        .then(response => {
+            const product = response.data;
+            const productModal = document.getElementById('product-modal');
+            const productForm = document.getElementById('product-form');
+
+            productForm.querySelector('#modal-title').textContent = '상품 수정';
+            productForm.querySelector('#product-id').value = product.id;
+            productForm.querySelector('#name').value = product.name;
+            productForm.querySelector('#price').value = product.price;
+            productForm.querySelector('#imageUrl').value = product.imageUrl;
+
+            productModal.style.display = 'block';
+        })
+}
+
+function updateProduct(id, productData) {
+    axios.put(`/api/products/${id}`, productData)
+        .then(response => {
+            if (response.status === 204) {
+                alert('상품이 성공적으로 수정되었습니다.');
+                document.getElementById('product-modal').style.display = 'none';
+                getProducts();
+            }
+        })
 }
