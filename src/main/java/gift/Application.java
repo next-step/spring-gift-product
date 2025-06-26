@@ -13,7 +13,7 @@ public class Application {
     }
 
     @Bean
-    public HiddenHttpMethodFilter hiddenHttpMethodFilter(){
+    public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
         return new HiddenHttpMethodFilter();
     }
 }
