@@ -25,4 +25,16 @@ public class ProductUpdateRequestDto{
     public String getUrl() {
         return this.url;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }

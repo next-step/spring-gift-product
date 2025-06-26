@@ -2,14 +2,12 @@ package gift.controller;
 
 import gift.dto.ProductAddRequestDto;
 import gift.dto.ProductResponseDto;
+import gift.dto.ProductUpdateRequestDto;
 import gift.entity.Product;
 import gift.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,6 +37,25 @@ public class AdminProductController {
     @PostMapping("/add")
     public String addProduct(@ModelAttribute ProductAddRequestDto requestDto) {
         productService.addProduct(requestDto);
+        return "redirect:/api/admin/products";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String showEditForm(
+            Model model,
+            @PathVariable Long id
+    ) {
+        ProductResponseDto product = productService.findProductById(id);
+        model.addAttribute("product", product);
+        return "admin/edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editProduct(
+            @PathVariable Long id,
+            @ModelAttribute ProductUpdateRequestDto requestDto
+    ) {
+        productService.updateProductById(id, requestDto);
         return "redirect:/api/admin/products";
     }
 }
