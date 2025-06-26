@@ -46,8 +46,8 @@ public class ProductControllerTest {
         ProductRequestDto requestDto1 = new ProductRequestDto("Test1", 1000, "Test1.jpg");
         ProductRequestDto requestDto2 = new ProductRequestDto("Test2", 1200, "Test2.jpg");
 
-        product1 = productService.save(requestDto1);
-        product2 = productService.save(requestDto2);
+        product1 = productService.saveProduct(requestDto1);
+        product2 = productService.saveProduct(requestDto2);
     }
 
     @Test
