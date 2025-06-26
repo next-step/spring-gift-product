@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>상품 관리</title>
+</head>
+<body>
+
+<h1>상품 목록</h1>
+
+<table border="1">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>상품명</th>
+    <th>가격</th>
+    <th>이미지</th>
+    <th>관리</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr th:each="product : ${products}">
+      <td th:text="${product.id}"></td>
+      <td th:text="${product.name}"></td>
+      <td th:text="${product.formattedPrice}"></td>
+      <td>
+        <img th:src="${product.imageUrl}" alt="상품 이미지" width="100">
+      </td>
+      <td>
+        <a th:href="@{/admin/products/edit/{id}(id=${product.id})}">수정</a>
+
+        <form th:action="@{/admin/products/delete/{id}(id=${product.id})}" method="post">
+          <button type="submit">삭제</button>
+        </form>
+      </td>
+    </tr>
+
+    <tr th:if="${#lists.isEmpty(products)}">
+      <td colspan="5">등록된 상품이 없습니다.</td>
+    </tr>
+  </tbody>
+</table>
+
+<br> <a href="/admin/products/add">새 상품 추가</a>
+
+</body>
+</html>
