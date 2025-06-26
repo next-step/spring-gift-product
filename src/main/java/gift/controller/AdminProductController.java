@@ -33,4 +33,11 @@ public class AdminProductController {
         return "admin/product-register";
     }
 
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        ProductResponse product = productService.getProduct(id);
+        model.addAttribute("product", product);
+        return "admin/product-edit";
+    }
+
 }
