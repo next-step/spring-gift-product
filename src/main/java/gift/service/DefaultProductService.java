@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
-public class ProductServiceImpl implements ProductService {
+public class DefaultProductService implements ProductService {
 
     // 임시 DB
     private final Map<Long, Product> productList = new HashMap<>();
@@ -26,7 +26,7 @@ public class ProductServiceImpl implements ProductService {
         Long ProductId = productList.isEmpty() ? 1 : Collections.max(productList.keySet()) + 1;
 
         // 상품 객체 생성
-        Product product = new Product(ProductId, requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
+        Product product = new Product(ProductId, requestDto.name(), requestDto.price(), requestDto.imageUrl());
 
         // 임시 DB에 저장
         productList.put(ProductId, product);
@@ -54,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
             throw new ProductNotFoundException(id); // 예외 처리
         }
 
-        product.update(requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
+        product.update(requestDto.name(), requestDto.price(), requestDto.imageUrl());
 
         return new ProductResponseDto(product);
     }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Manage</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="header">
+    <h2>Product Manage</h2>
+    <button type="button" id="openModalBtn">상품 추가</button>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>상품명</th>
+        <th>가격</th>
+        <th>이미지</th>
+        <th>수정</th>
+        <th>삭제</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product, stat : ${products}" th:if="${stat.index < 5}">
+        <td th:text="${product.id}"></td>
+        <td th:text="${product.name}"></td>
+        <td th:text="${product.price}"></td>
+        <td><img th:src="${product.imageUrl}" alt="상품 이미지"/></td>
+        <td>
+            <button type="button"
+                    th:attr="
+                            data-id=${product.id},
+                            data-name=${product.name},
+                            data-price=${product.price},
+                            data-imageurl=${product.imageUrl}"
+                    onclick="openEditModal(this)">
+                수정
+            </button>
+        </td>
+        <td>
+            <button type="button" class="deleteBtn" th:data-id="${product.id}">삭제</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- 모달 추가 -->
+<div th:insert="~{fragments/modal-add :: addProductModal}"></div> <!-- 상품 추가 모달 -->
+<div th:insert="~{fragments/modal-edit :: editProductModal}"></div> <!-- 상품 수정 모달 -->
+<div th:insert="fragments/modal-delete :: deleteProductModal"></div>
+
+<!-- js 추가 -->
+<script th:src="@{/js/modal-handler.js}"></script>
+
+</body>
+</html>
