@@ -44,4 +44,10 @@ public class ProductController {
         productService.deleteProduct(productId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/search")
+    public List<ProductResponse> searchByName(@RequestParam String name) {
+        System.out.println("🔥 검색 요청 도착: " + name);
+        return productService.searchByName(name);
+    }
 }

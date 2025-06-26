@@ -67,4 +67,13 @@ public class ProductServiceImpl implements ProductService {
         }
         products.remove(productId);
     }
+
+    @Override
+    public List<ProductResponse> searchByName(String keyword) {
+        return products.values().stream()
+                .filter(p -> p.getName() != null &&
+                        p.getName().toLowerCase().contains(keyword.toLowerCase()))
+                .map(ProductResponse::new)
+                .toList();
+    }
 }

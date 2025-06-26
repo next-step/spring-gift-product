@@ -123,3 +123,29 @@ button:hover {
     margin-top: 1rem;
     text-align: left;
 }
+
+.search-box {
+  margin: 20px 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+}
+
+.search-box input {
+  padding: 6px;
+  font-size: 14px;
+  width: 200px;
+}
+
+.search-box button {
+  padding: 6px 10px;
+  font-size: 14px;
+  margin-left: 4px;
+}
+
+.search-message {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #444;
+}
