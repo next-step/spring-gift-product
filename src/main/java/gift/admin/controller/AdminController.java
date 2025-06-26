@@ -42,6 +42,13 @@ public class AdminController {
         return "create";
     }
 
+    //상품 등록하기 기능
+    @PostMapping("/api/admin/products/create")
+    public String createProduct(CreateItemDto dto) {
+        itemService.saveItem(dto);
+        return "redirect:/api/admin/products";
+    }
+
 
 
 }

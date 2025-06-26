@@ -11,7 +11,7 @@
 <div class="container mt-4">
     <h2>상품 등록</h2>
 
-    <form th:action="@{/admin/products/new}" method="post" th:object="${product}">
+    <form th:action="@{/api/admin/products/create}" method="post" th:object="${product}">
         <div class="mb-3">
             <label class="form-label">상품명</label>
             <input type="text" th:field="*{name}" class="form-control" required />
@@ -28,7 +28,7 @@
             <div class="text-danger" th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}"></div>
         </div>
         <button type="submit" class="btn btn-primary">등록</button>
-        <a th:href="@{/admin/products}" class="btn btn-secondary">취소</a>
+        <a th:href="@{/api/admin/products}" class="btn btn-secondary">취소</a>
     </form>
 </div>
 </body>
