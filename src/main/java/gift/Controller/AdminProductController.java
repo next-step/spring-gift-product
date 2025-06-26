@@ -25,4 +25,10 @@ public class AdminProductController {
         model.addAttribute("products", products);
         return "admin/product-list";
     }
+
+    @GetMapping("/new")
+    public String createForm(Model model) {
+        model.addAttribute("product", new Product());
+        return "admin/product-form";
+    }
 }
