@@ -7,6 +7,8 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -42,4 +44,18 @@ public class AdminProductController {
         return "admin/list";
     }
 
+    // 3-1. 상품 수정 폼
+    @GetMapping("{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        ResponseDto product = productService.findById(id);
+        model.addAttribute("product", product);
+        return "admin/form";
+    }
+
+    // 3-2. 상품 수정 처리
+    @PostMapping
+    public String update(@PathVariable Long id, @ModelAttribute RequestDto dto) {
+        productService.update(id, dto);
+        return "admin/products";
+    }
 }
