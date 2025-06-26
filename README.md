@@ -11,6 +11,9 @@
 ### 파일 구조
 
 - Product : 상품 객체 구현
-- ProductController : 상품 추가,수정,삭제,조회 구현
 - Productform.html : 상품 추가 form
 - Products.html : 첫 화면. 상품 전체 조회
+- ProductController : 상품 추가,수정,삭제,조회 구현
+
+create/createForm : 상품 추가
+update/editForm : 상품 수정

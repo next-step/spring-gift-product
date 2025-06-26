@@ -35,4 +35,18 @@ public class ProductController {
         return "redirect:/admin/products";
     }
 
+    @GetMapping("/{id}/edit")
+    public String editForm(@PathVariable Long id, Model model) {
+        Product product = products.get(id);
+        model.addAttribute("product", product);
+        return "Productform";
+    }
+    @PostMapping("/{id}")
+    public String update(@PathVariable Long id, @ModelAttribute Product updated) {
+        updated.setId(id);
+        products.put(id, updated);
+        return "redirect:/admin/products";
+    }
+
+
 }
