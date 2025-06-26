@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
 
 
 import java.util.List;
@@ -31,13 +33,19 @@ public class AdminProductController {
         return "admin/list";
     }
 
-    @GetMapping("/admin/products/new")
-    public String showCreateForm() {
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("productRequestDto", new ProductRequestDto());
         return "admin/new";
     }
 
-    @PostMapping("/admin/products")
-    public String createProduct(@ModelAttribute ProductRequestDto requestDto) {
+    @PostMapping("")
+    public String createProduct(@Valid @ModelAttribute ProductRequestDto requestDto,
+                                BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "admin/new"; // 유효성 실패 시 다시 등록 폼
+        }
+
         productService.addProduct(requestDto);
         return "redirect:/admin/products";
     }

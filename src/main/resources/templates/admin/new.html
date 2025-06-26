@@ -6,21 +6,28 @@
 <body>
 <h1>상품 등록</h1>
 
-<form action="/admin/products" method="post">
+<form th:action="@{/admin/products}" method="post" th:object="${productRequestDto}">
     <div>
-        <label>상품명: <input type="text" name="name"/></label>
+        <label for="name">상품명:</label>
+        <input type="text" id="name" th:field="*{name}"/>
+        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></p>
     </div>
     <div>
-        <label>가격: <input type="number" name="price"/></label>
+        <label for="price">가격:</label>
+        <input type="number" id="price" th:field="*{price}"/>
+        <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="error"></p>
     </div>
     <div>
-        <label>이미지 URL: <input type="text" name="imageUrl"/></label>
+        <label for="imageUrl">이미지 URL:</label>
+        <input type="text" id="imageUrl" th:field="*{imageUrl}"/>
+        <p th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}" class="error"></p>
     </div>
     <div>
-        <button type="submit">등록</button>
+        <button type="submit">상품 등록</button>
     </div>
 </form>
 
+<hr>
 <a href="/admin/products">← 목록으로</a>
 </body>
 </html>
