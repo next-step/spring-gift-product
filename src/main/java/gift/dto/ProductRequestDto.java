@@ -14,7 +14,7 @@ public class ProductRequestDto {
     private final Long price;
 
     private final String imageUrl;
-
+  
     public ProductRequestDto(Long price, String name, String imageUrl) {
         this.price = price;
         this.name = name;
