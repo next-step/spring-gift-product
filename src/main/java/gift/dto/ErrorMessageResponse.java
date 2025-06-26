@@ -3,26 +3,46 @@ package gift.dto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
-public class ErrorMessageResponse {
-    private final LocalDateTime timestamp;
-    private final String message;
-    private final int status;
-    private final String error;
-    private final String path;
+public record ErrorMessageResponse (
+    LocalDateTime timestamp,
+    String message,
+    int status,
+    String error,
+    String path
+) {
 
-    public ErrorMessageResponse(HttpServletRequest request, String message, HttpStatus status) {
-        this.timestamp = LocalDateTime.now();
-        this.message = message;
-        this.status = status.value();
-        this.error = status.getReasonPhrase();
-        this.path = request.getRequestURI();
+    public static class Builder {
+        HttpServletRequest request;
+        String message;
+        HttpStatus status;
+
+        public Builder(HttpServletRequest request) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder message(String message) {
+            this.message = message;
+            return this;
+        }
+
+        public Builder status(HttpStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public ErrorMessageResponse build() {
+            return new ErrorMessageResponse(
+                LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()),
+                message,
+                status.value(),
+                status.getReasonPhrase(),
+                request.getRequestURI()
+            );
+        }
     }
-
-    public LocalDateTime getTimestamp() { return timestamp; }
-    public String getMessage() { return message; }
-    public int getStatus() { return status; }
-    public String getError() { return error; }
-    public String getPath() { return path; }
 }

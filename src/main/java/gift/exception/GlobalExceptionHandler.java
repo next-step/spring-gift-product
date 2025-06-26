@@ -15,17 +15,20 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorMessageResponse> handleNoSuchElementException(
             NoSuchElementException e, HttpServletRequest request
     ) {
-
-        return new ResponseEntity<>(new ErrorMessageResponse(
-                request, e.getMessage(), HttpStatus.NOT_FOUND
-        ), HttpStatus.NOT_FOUND);
+        var errorMessage = new ErrorMessageResponse.Builder(request)
+                .message(e.getMessage())
+                .status(HttpStatus.NOT_FOUND)
+                .build();
+        return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
     }
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorMessageResponse> handleIllegalArgumentException(
             IllegalArgumentException e, HttpServletRequest request
     ) {
-        return new ResponseEntity<>(new ErrorMessageResponse(
-                request, e.getMessage(), HttpStatus.BAD_REQUEST
-        ), HttpStatus.BAD_REQUEST);
+        var errorMessage = new ErrorMessageResponse.Builder(request)
+                .message(e.getMessage())
+                .status(HttpStatus.BAD_REQUEST)
+                .build();
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 }
