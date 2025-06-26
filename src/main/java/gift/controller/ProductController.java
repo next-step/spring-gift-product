@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/products")
@@ -26,12 +27,14 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> update(@PathVariable Long id, @RequestBody ProductRequestDTO dto) {
-        return ResponseEntity.ok(productService.update(id, dto));
+        Optional<ProductResponseDTO> productResponse = productService.update(id, dto);;
+        return productResponse.map(ResponseEntity::ok).orElseGet( () -> ResponseEntity.noContent().build());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(productService.findProductById(id));
+        Optional<ProductResponseDTO> productResponse = productService.findProductById(id);
+        return productResponse.map(ResponseEntity::ok).orElseGet( () -> ResponseEntity.noContent().build());
     }
 
     @GetMapping

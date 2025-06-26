@@ -27,21 +27,18 @@ public class ProductService {
         return new ProductResponseDTO(productRepository.create(product));
     }
 
-    public ProductResponseDTO update(Long id, ProductRequestDTO dto) {
-        Product product = productRepository.findById(id);
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "id를 찾을 수 없습니다.");
+    public Optional<ProductResponseDTO> update(Long id, ProductRequestDTO dto) {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isEmpty()) {
+            return Optional.empty();
         }
-        product.updateFromProductRequestDTO(dto);
-        return new ProductResponseDTO(productRepository.update(product));
+        product.get().updateFromProductRequestDTO(dto);
+        return Optional.of(new ProductResponseDTO(productRepository.update(product.get())));
     }
 
-    public ProductResponseDTO findProductById(Long id) {
-        Product product = productRepository.findById(id);
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "id를 찾을 수 없습니다.");
-        }
-        return new ProductResponseDTO(product);
+    public Optional<ProductResponseDTO> findProductById(Long id) {
+        Optional<Product> product = productRepository.findById(id);
+        return product.map(ProductResponseDTO::new);
     }
 
     public List<Product> findAllProducts() {
