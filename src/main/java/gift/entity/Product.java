@@ -4,10 +4,16 @@ import gift.dto.RequestDto;
 
 public class Product {
 
-    private final Long productId;
+    private Long productId;
     private String name;
     private Double price;
     private String imageUrl;
+
+    public Product(String name, Double price, String imageUrl) {
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
+    }
 
     public Product(Long productId, String name, Double price, String imageUrl) {
         this.productId = productId;
@@ -30,6 +36,10 @@ public class Product {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public void update(RequestDto requestDto) {

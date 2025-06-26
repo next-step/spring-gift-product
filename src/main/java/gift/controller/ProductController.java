@@ -3,6 +3,8 @@ package gift.controller;
 import gift.dto.RequestDto;
 import gift.dto.ResponseDto;
 import gift.entity.Product;
+import gift.service.ProductService;
+import jakarta.validation.Valid;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,21 +15,19 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
+
     private final Map<Long, Product> products = new HashMap<>();
 
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
     @PostMapping
-    public ResponseEntity<ResponseDto> addProduct(@RequestBody RequestDto requestDto) {
-        long productId = products.isEmpty() ? 1: Collections.max(products.keySet()) + 1;
+    public ResponseEntity<ResponseDto> addProduct(@Valid @RequestBody RequestDto requestDto) {
 
-        Product product = new Product(productId, requestDto.name(), requestDto.price(), requestDto.imageUrl());
-
-        if (requestDto.name() == null || requestDto.price() == null || requestDto.imageUrl() == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        products.put(productId, product);
-
-        return new ResponseEntity<>(new ResponseDto(product), HttpStatus.CREATED);
+        return new ResponseEntity<>(productService.saveProduct(requestDto), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -54,7 +54,7 @@ public class ProductController {
 
     @PutMapping("/{productId}")
     public ResponseEntity<ResponseDto> updateProduct(@PathVariable Long productId,
-                                                     @RequestBody RequestDto requestDto) {
+        @RequestBody RequestDto requestDto) {
 
         Product product = products.get(productId);
 
@@ -62,7 +62,8 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        if (requestDto.name() == null || requestDto.price() == null || requestDto.imageUrl() == null) {
+        if (requestDto.name() == null || requestDto.price() == null
+            || requestDto.imageUrl() == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
