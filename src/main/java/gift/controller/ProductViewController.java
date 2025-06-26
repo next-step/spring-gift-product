@@ -9,10 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/admin/products")
@@ -24,7 +21,7 @@ public class ProductViewController {
         this.productService = productService;
     }
 
-    // 상품 등록 페이지
+    // 상품 등록
     @GetMapping("/new")
     public String createForm(Model model) {
         model.addAttribute("product", new ProductRequestDto());
@@ -39,5 +36,17 @@ public class ProductViewController {
     public String create(@ModelAttribute ProductRequestDto dto) {
         productService.createProduct(dto);
         return "redirect:/admin/products";
+    }
+
+    @GetMapping
+    public String list(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                       Model model) {
+        Page<ProductResponseDto> products = productService.findAllProducts(pageable);
+
+        model.addAttribute("products", products);
+        model.addAttribute("currentPage", products.getNumber());
+        model.addAttribute("totalPages", products.getTotalPages());
+
+        return "product/list";
     }
 }
