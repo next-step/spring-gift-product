@@ -1,10 +1,10 @@
 package gift.controller;
 
+import gift.dto.ProductRequestDto;
+import gift.dto.ProductResponseDto;
 import gift.entity.Product;
-import java.util.ArrayList;
-import java.util.HashMap;
+import gift.service.ProductService;
 import java.util.List;
-import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,35 +17,42 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/products")//코드리뷰: 코드중복줄이기
 public class ProductController {
-  private final Map<Long, Product> productsMap = new HashMap<>();
 
-  @GetMapping("/products")
-  public ResponseEntity<List<Product>> findAllProduct(){
-    return new ResponseEntity<>(new ArrayList<>(productsMap.values()), HttpStatus.OK);
+  private final ProductService service;
+
+  public ProductController(ProductService service) {
+    this.service = service;
   }
 
-  @GetMapping("/products/{id}")
-  public ResponseEntity<Product> findProductById(@PathVariable Long id){
-    Product findByIdProduct=productsMap.get(id);
-    return new ResponseEntity<>(findByIdProduct,HttpStatus.OK);
+  @GetMapping("")
+  public ResponseEntity<List<ProductResponseDto>> findAllProduct() {
+    return new ResponseEntity<>(service.findAllProduct(), HttpStatus.OK);
   }
 
-  @PostMapping("/products")
-  public ResponseEntity<Product> createProduct(@RequestBody Product product){
-    productsMap.put(product.getId(), product);
-    return new ResponseEntity<>(product,HttpStatus.OK);
+  @GetMapping("/{id}")
+  public ResponseEntity<ProductResponseDto> findProductById(@PathVariable Long id) {
+    return new ResponseEntity<>(service.findProductById(id), HttpStatus.OK);
   }
 
-  @PatchMapping("/products/{id}")
-  public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product newProduct){
-    productsMap.replace(id,newProduct);
-    return new ResponseEntity<>(newProduct,HttpStatus.OK);
+  @PostMapping("")
+  public ResponseEntity<ProductResponseDto> createProduct(
+      @RequestBody ProductRequestDto requestDto) {
+    //코드리뷰: 200대신 더 적절한 201(created) 사용하기
+    return new ResponseEntity<>(service.createProduct(requestDto), HttpStatus.CREATED);
   }
-  @DeleteMapping("/products/{id}")
-  public ResponseEntity<Product> deleteProduct(@PathVariable Long id){
-    productsMap.remove(id);
-    return new ResponseEntity<>(HttpStatus.OK);
+
+  @PatchMapping("/{id}")
+  public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long id,
+      @RequestBody ProductRequestDto requestDto) {
+    return new ResponseEntity<>(service.updateProduct(id, requestDto), HttpStatus.OK);
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
+    service.deleteProduct(id);
+    //코드리뷰: 200대신 더 적절한 204(NO_CONTENT) 사용하기
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }

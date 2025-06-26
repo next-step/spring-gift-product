@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<body>
+<div class="container">
+  <div>
+    <div>
+      <a href="/admin/products/new">상품 등록</a>
+      <table class="table">
+        <thead>
+        <tr>
+          <th>id</th>
+          <th>이름</th>
+          <th>가격</th>
+          <th>imageUrl</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="responseDto : ${responseDtoList}">
+          <td th:text="${responseDto.id}"></td>
+          <td th:text="${responseDto.name}"></td>
+          <td th:text="${responseDto.price}"></td>
+          <td th:text="${responseDto.imageUrl}"></td>
+          <td>
+            <a href="#" th:href="@{/admin/products/{id}/update (id=${responseDto.id})}"
+               role="button">상품 수정</a>
+            <a href="#" th:href="@{/admin/products/{id}/delete (id=${responseDto.id})}"
+               role="button">상품 삭제</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div> <!-- /container -->
+</body>
+</html>
