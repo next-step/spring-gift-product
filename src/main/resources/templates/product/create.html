@@ -9,7 +9,7 @@
 <div class="container">
     <h1>🎁 상품 등록 🎁</h1>
 
-    <form th:action="@{/products}" th:object="${product}" method="post">
+    <form th:action="@{/admin/products}" th:object="${product}" method="post">
         <div class="form-group">
             <label>상품명</label>
             <input type="text" th:field="*{name}" placeholder="상품명을 입력하세요" required>
@@ -27,7 +27,7 @@
         <br>
         <div class="btn-group">
             <button type="submit" class="btn-primary">등록하기</button>
-            <a th:href="@{/products}" class="btn-secondary">취소</a>
+            <a th:href="@{/admin/products}" class="btn-secondary">취소</a>
         </div>
     </form>
 </div>
