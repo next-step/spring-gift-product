@@ -17,6 +17,8 @@
             });
 
             $('#updateBtn').on('click', function () {
+                const $btn = $(this)
+                $btn.prop('disabled', true);
                 const updatedProduct = {
                     name: $('#nameInput').val(),
                     price: parseInt($('#priceInput').val()),
@@ -32,8 +34,15 @@
                         alert("수정 완료!");
                         window.location.href = '/admin';
                     },
-                    error: function () {
-                        alert("수정 실패!");
+                    error: function (jqXHR) {
+                        let message = '상품 수정 실패!';
+                        if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                            message = jqXHR.responseJSON.message;
+                        }
+                        alert(message);
+                    },
+                    complete: function () {
+                        $btn.prop('disabled', false);
                     }
                 });
             });

@@ -10,6 +10,8 @@
     <script>
         $(document).ready(function () {
             $('#addProduct').on('click', function () {
+                const $btn = $(this)
+                $btn.prop('disabled', true);
                 const name = $('#nameInput').val();
                 const price = $('#priceInput').val();
                 const imageURL = $('#imageURLInput').val();
@@ -29,8 +31,15 @@
                         $('#imageURLInput').val('');
                         fetchProducts();
                     },
-                    error: function () {
-                        alert('상품 추가 실패!');
+                    error: function (jqXHR) {
+                        let message = '상품 추가 실패!';
+                        if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                            message = jqXHR.responseJSON.message;
+                        }
+                        alert(message);
+                    },
+                    complete: function () {
+                        $btn.prop('disabled', false);
                     }
                 });
             });
@@ -74,6 +83,8 @@
             }
 
             $('#result').on('click', '.deleteBtn', function () {
+                const $btn = $(this)
+                $btn.prop('disabled', true);
                 const productId = $(this).data('id');
                 if (confirm('정말 삭제하시겠습니까?')) {
                     $.ajax({
@@ -82,8 +93,15 @@
                         success: function () {
                             fetchProducts();
                         },
-                        error: function () {
-                            alert('삭제 실패!');
+                        error: function (jqXHR) {
+                            let message = '상품 삭제 실패!';
+                            if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                                message = jqXHR.responseJSON.message;
+                            }
+                            alert(message);
+                        },
+                        complete: function () {
+                            $btn.prop('disabled', false);
                         }
                     });
                 }
