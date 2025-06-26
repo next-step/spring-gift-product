@@ -21,7 +21,7 @@ public class ProductViewController {
     }
 
     @GetMapping("/view")
-    public String listProducts(Model model, @RequestParam(defaultValue = "1") int page) {
+    public String showProductsForm(Model model, @RequestParam(defaultValue = "1") int page) {
 
         int pageSize = 5;
 
@@ -49,7 +49,7 @@ public class ProductViewController {
     }
 
     @GetMapping("/add")
-    public String addProduct(Model model) {
+    public String showAddForm(Model model) {
         model.addAttribute("product", new ProductRequestDto());
         return "add";
     }
@@ -61,13 +61,29 @@ public class ProductViewController {
     }
 
     @GetMapping("/{id}")
-    public String showProduct(@PathVariable Long id, Model model) {
+    public String showProductForm(@PathVariable Long id, Model model) {
         return productService.findProductById(id)
                 .map(product -> {
                     model.addAttribute("product", product);
                     return "detail";
                 })
                 .orElse("not-found");
+    }
+
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        return productService.findProductById(id)
+                .map(product -> {
+                    model.addAttribute("product", product);
+                    return "edit";
+                })
+                .orElse("not-found");
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editProduct(@PathVariable Long id, @ModelAttribute ProductRequestDto requestDto) {
+        productService.updateProduct(id, requestDto);
+        return "redirect:/products/" + id;
     }
 
 }
