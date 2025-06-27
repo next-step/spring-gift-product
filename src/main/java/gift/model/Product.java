@@ -1,5 +1,7 @@
 package gift.model;
 
+import gift.dto.ProductRequestDto;
+
 public class Product {
     private Long id;
     private String name;
@@ -45,21 +47,9 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public void updateFrom(Product updatedProduct) {
-        if (updatedProduct == null) {
-            throw new IllegalArgumentException("업데이트할 상품 정보가 null입니다");
-        }
-
-        if (updatedProduct.getName() != null) {
-            this.name = updatedProduct.getName();
-        }
-
-        if (updatedProduct.getPrice() >= 0) {
-            this.price = updatedProduct.getPrice();
-        }
-
-        if (updatedProduct.getImageUrl() != null) {
-            this.imageUrl = updatedProduct.getImageUrl();
-        }
+    public void updateFrom(ProductRequestDto updatedProduct) {
+        this.name = updatedProduct.name();
+        this.price = updatedProduct.price();
+        this.imageUrl = updatedProduct.imageUrl();
     }
 }

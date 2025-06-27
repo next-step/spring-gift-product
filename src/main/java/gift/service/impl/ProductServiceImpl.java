@@ -39,9 +39,7 @@ public class ProductServiceImpl implements ProductService {
         if (productRepository.findById(id).isEmpty()) {
             throw new RuntimeException("상품을 찾을 수 없습니다. ID: " + id);
         }
-
-        Product updatedProduct = productDto.toEntity();
-        return productRepository.update(id, updatedProduct);
+        return productRepository.update(id, productDto);
     }
 
     @Override

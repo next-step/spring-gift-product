@@ -1,5 +1,6 @@
 package gift.repository.impl;
 
+import gift.dto.ProductRequestDto;
 import gift.model.Product;
 import gift.repository.ProductRepository;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,7 +34,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product update(Long id, Product updatedProduct) {
+    public Product update(Long id, ProductRequestDto updatedProduct) {
         Product existingProduct = products.get(id);
         if (existingProduct != null) {
             existingProduct.updateFrom(updatedProduct);
