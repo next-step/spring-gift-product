@@ -1,15 +1,7 @@
 package gift.repository;
-
-import gift.dto.ProductResponseDto;
 import gift.entity.Product;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class ProductRepository {
@@ -20,32 +12,24 @@ public class ProductRepository {
     // DB 대체 제품 저장 컬렉션
     private final Map<Long, Product> products = new HashMap<>();
 
-    public Product findProductById(long id) {
+    public Optional<Product> findProductById(long id) {
         Product product = products.get(id);
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No found Product");
-        }
-        return product;
+        return Optional.ofNullable(product);
     }
 
-    public List<ProductResponseDto> findAllProducts() {
-        List<ProductResponseDto> list = new ArrayList<>();
-        for(Product product : products.values()){
-            list.add(new ProductResponseDto(product));
-        }
-        return list;
+    public List<Product> findAllProducts() {
+        return new ArrayList<>(products.values());
     }
 
-    public ProductResponseDto saveProduct(Product product) {
-        product.setId(label);
-        products.put(label, product);
-        label++;
-        return new ProductResponseDto(product);
+    public Product saveProduct(Product product) {
+        Product newProduct = new Product(label, product.name(), product.price(), product.imageUrl());
+        products.put(label++, newProduct);
+        return newProduct;
     }
 
-    public boolean updateProduct(Long id, String name, Long price) {
-        Product product = new Product(id, name, price);
-        return products.replace(id, product) != null;
+    public boolean updateProduct(Long id, Product product) {
+        Product newProduct = new Product(id, product.name(), product.price(), product.imageUrl());
+        return products.replace(id, newProduct) != null;
     }
 
     public boolean deleteProduct(Long id) {

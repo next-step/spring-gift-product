@@ -3,6 +3,7 @@ package gift.controller;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,20 +32,20 @@ public class ProductController {
 
     /*
      * 제품 모두 조회
-     * @return : ProductResponseDto JSON
+     * @return : List<ProductResponseDto> JSON
      */
     @GetMapping()
-    public List<ProductResponseDto> findAllProducts(){
-        return productService.findAllProduct();
+    public ResponseEntity<List<ProductResponseDto>> findAllProducts(){
+        return new ResponseEntity<>(productService.findAllProduct(), HttpStatus.OK);
     }
 
     /*
      * 제품 추가
      * @param : ProductRequestDto JSON
-     * @return :
+     * @return : ProductResponseDto JSON
      */
     @PostMapping()
-    public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto requestDto){
+    public ResponseEntity<ProductResponseDto> createProduct(@Valid @RequestBody ProductRequestDto requestDto){
         return new ResponseEntity<>(productService.saveProduct(requestDto), HttpStatus.CREATED);
     }
 
@@ -55,8 +56,8 @@ public class ProductController {
      * @return : ProductResponseDto JSON
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDto requestDto){
-        return new ResponseEntity<>(productService.updateProduct(id, requestDto.name(), requestDto.price()), HttpStatus.OK);
+    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductRequestDto requestDto){
+        return new ResponseEntity<>(productService.updateProduct(id, requestDto), HttpStatus.OK);
     }
 
     /*
