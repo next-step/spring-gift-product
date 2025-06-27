@@ -1,50 +1,38 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+<html layout:decorate="~{layout}">
 
-<nav>
-  <ul>
-    <li><a th:href="@{/products}">전체 상품 조회하기</a></li>
-    <li><a th:href="@{/products/new}">상품 등록하기</a></li>
-    <li>
-      <form th:action="@{/products/info}" method="get">
-        <input type="number" name="id" placeholder="상품ID 입력">
-        <input type="submit" value="상품 검색하기">
-      </form>
-    </li>
-  </ul>
-</nav>
+<div layout:fragment="content">
+  <table>
 
-<table>
+    <thead>
+    <tr>
+      <th>상품ID</th>
+      <th>상품명</th>
+      <th>가격</th>
+      <th>이미지</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
 
-  <thead>
-  <tr>
-    <th>상품ID</th>
-    <th>상품명</th>
-    <th>가격</th>
-    <th>이미지</th>
-  </tr>
-  </thead>
+    <tbody>
+    <tr th:each="product : ${productList}">
+      <td th:text="${product.id}"></td>
+      <td th:text="${product.name}"></td>
+      <td th:text="${product.price}"></td>
+      <td><img th:src="${product.imageUrl}" width="100px" alt = "상품 이미지"></td>
 
-  <tbody>
-  <tr th:each="product : ${productList}">
-    <td th:text="${product.id}"></td>
-    <td th:text="${product.name}"></td>
-    <td th:text="${product.price}"></td>
-    <td><img th:src="${product.imageUrl}" width="100px" alt = "상품 이미지"></td>
 
-    <!--PathVariable-->
-    <td><button th:onclick="|location.href='@{/products/remove/{id}(id=${product.id})}'|">상품 삭제</button></td>
+      <td>
+        <!--PathVariable-->
+        <button th:onclick="|location.href='@{/products/remove/{id}(id=${product.id})}'|">상품 삭제</button>
+        <!--RequestParam-->
+        <button th:onclick="|location.href='@{/products/modify(id=${product.id})}'|">상품 수정</button>
+      </td>
 
-    <!--RequestParam-->
-    <td><button th:onclick="|location.href='@{/products/modify(id=${product.id})}'|">상품 수정</button></td>
-  </tr>
-  </tbody>
-</table>
 
-</body>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+
 </html>
