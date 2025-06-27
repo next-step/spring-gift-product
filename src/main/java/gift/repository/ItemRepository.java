@@ -6,12 +6,19 @@ import gift.entity.Item;
 import java.util.List;
 
 public interface ItemRepository {
-    Item saveItem(ItemDTO dto);
+    Item saveItem(Item dto);
 
-    List<ItemDTO> getItems(String name, Integer price);
+    List<Item> getItems(String name, Integer price);
 
-    void deleteItems(String name);
+    Item deleteItems(String name);
 
     Item findById(Long id);
+
+    List<Item> getAllItems();
+
+    Item deleteById(Long id);
+
+    Item updateItem(Long id, String name, int price, String imageUrl);
+
 
 }

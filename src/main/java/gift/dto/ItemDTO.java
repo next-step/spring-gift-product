@@ -1,23 +1,18 @@
 package gift.dto;
 
 import gift.entity.Item;
+import jakarta.validation.constraints.Min;
 
 public class ItemDTO {
     private Long id;
     private String name;
+    @Min(0)
     private Integer price;
     private String imageUrl;
 
     public ItemDTO() {
     }
 
-    public ItemDTO(Long id, String name, Integer price, String imageUrl) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.imageUrl = imageUrl;
-
-    }
 
     public ItemDTO(Item item) {
         this.id = item.getId();
@@ -41,5 +36,21 @@ public class ItemDTO {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

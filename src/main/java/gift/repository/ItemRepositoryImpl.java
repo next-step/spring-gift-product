@@ -9,14 +9,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class ItemRepositoryImpl implements ItemRepository {
 
-    private final Map<Long, Item> items = new HashMap<>();
+    private final Map<Long, Item> items = new ConcurrentHashMap<>();
+    private static final AtomicLong sequence = new AtomicLong(1);
+
+
     @Override
-    public Item saveItem(ItemDTO dto) {
+    public Item saveItem(Item dto) {
         Long id = dto.getId();
+        if (id == null) {
+            id = sequence.getAndIncrement();
+        }
         String itemName = dto.getName();
         Integer itemPrice = dto.getPrice();
         String itemImageUrl = dto.getImageUrl();
@@ -27,21 +35,16 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public List<ItemDTO> getItems(String name, Integer price) {
-        List<ItemDTO> result = new ArrayList<>();
+    public List<Item> getItems(String name, Integer price) {
+        List<Item> result = new ArrayList<>();
 
         for (Item item : items.values()) {
             boolean nameMatch = (name == null || item.getName().equals(name));
             boolean priceMatch = (price == null || item.getPrice().equals(price));
 
             if (nameMatch && priceMatch) {
-                ItemDTO dto = new ItemDTO(
-                        item.getId(),
-                        item.getName(),
-                        item.getPrice(),
-                        item.getImageUrl()
-                );
-                result.add(dto);
+                Item addItem = new Item(item);
+                result.add(addItem);
             }
         }
 
@@ -49,21 +52,45 @@ public class ItemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public void deleteItems(String name) {
+    public Item deleteItems(String name) {
         for(Item item : items.values()){
             if(item.getName().equals(name)){
-                items.remove(item.getId());
-            }
-        }
-    }
-
-    @Override
-    public Item findById(Long id) {
-        for(Item item : items.values()){
-            if(item.getId().equals(id)){
-                return item;
+                return items.remove(item.getId());
             }
         }
         return null;
     }
+
+    @Override
+    public Item findById(Long id) {
+        return items.get(id);
+    }
+
+    @Override
+    public List<Item> getAllItems() {
+        List<Item> result = new ArrayList<>();
+        for (Item item : items.values()) {
+            result.add(new Item(item));
+        }
+        return result;
+    }
+
+    @Override
+    public Item deleteById(Long id) {
+        return items.remove(id);
+    }
+
+    @Override
+    public Item updateItem(Long id, String name, int price, String imageUrl) {
+        Item item = items.get(id);
+        if (item == null) {
+            return null;
+        }
+        item.setName(name);
+        item.setPrice(price);
+        item.setImageUrl(imageUrl);
+
+        return item;
+    }
+
 }
