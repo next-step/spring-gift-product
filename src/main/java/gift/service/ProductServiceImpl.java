@@ -5,6 +5,7 @@ import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -34,12 +35,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDto findProductById(Long id) {
-        Product find = productRepository.findProductById(id);
-
-        if (find == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-
+        Product find = findProductByIdOrElseThrow(id);
         ProductResponseDto responseDto = new ProductResponseDto(find.getId(), find.getName(),
                 find.getPrice(), find.getImageUrl());
         return responseDto;
@@ -47,21 +43,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDto updateProductById(Long id, CreateProductRequestDto requestDto) {
-        Product product = productRepository.findProductById(id);
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-        product.update(requestDto);
-        return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(),
-                product.getImageUrl());
+        Product find = findProductByIdOrElseThrow(id);
+        find.update(requestDto);
+        return new ProductResponseDto(find.getId(), find.getName(), find.getPrice(),
+                find.getImageUrl());
     }
 
     @Override
     public void deleteProductById(Long id) {
-        Product product = productRepository.findProductById(id);
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
         productRepository.deleteProductById(id);
+    }
+
+    public Product findProductByIdOrElseThrow(Long id){
+        return productRepository.findProductById(id).orElseThrow(() ->new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }
