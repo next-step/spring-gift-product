@@ -32,11 +32,13 @@ public class ProductRepository {
 
     public void update(Long id, ProductUpdateRequestDto dto) {
         Product existing = storage.get(id);
-        if (existing != null) {
-            existing.setName(dto.getName());
-            existing.setPrice(dto.getPrice());
-            existing.setImageUrl(dto.getImageUrl());
-        }
+        Product updated = new Product(
+            dto.getName(),
+            dto.getPrice(),
+            dto.getImageUrl()
+        );
+        updated.setId(existing.getId());
+        storage.put(id, updated);
     }
 
     public void delete(Long id) {
