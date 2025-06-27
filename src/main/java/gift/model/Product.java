@@ -1,5 +1,7 @@
 package gift.model;
 
+import gift.dto.ProductRequestDto;
+
 public class Product {
     private Long id;
     private String name;
@@ -45,7 +47,9 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public boolean validateProduct() {
-        return this.name != null && this.price >= 0;
+    public void updateFrom(ProductRequestDto updatedProduct) {
+        this.name = updatedProduct.name();
+        this.price = updatedProduct.price();
+        this.imageUrl = updatedProduct.imageUrl();
     }
 }

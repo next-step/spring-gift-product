@@ -1,7 +1,10 @@
 package gift.repository.impl;
 
+import gift.dto.ProductRequestDto;
 import gift.model.Product;
 import gift.repository.ProductRepository;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -9,13 +12,14 @@ import java.util.*;
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    private final Map<Long, Product> products = new HashMap<>();
-    private Long id = 1L;
+    private final Map<Long, Product> products = new ConcurrentHashMap<>();
+    private final AtomicLong nextId = new AtomicLong(1);
 
     @Override
     public Product save(Product product) {
+        Long id = nextId.getAndIncrement();
         product.setId(id);
-        products.put(id++, product);
+        products.put(id, product);
         return product;
     }
 
@@ -30,12 +34,10 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product update(Long id, Product product) {
+    public Product update(Long id, ProductRequestDto updatedProduct) {
         Product existingProduct = products.get(id);
         if (existingProduct != null) {
-            existingProduct.setName(product.getName());
-            existingProduct.setPrice(product.getPrice());
-            existingProduct.setImageUrl(product.getImageUrl());
+            existingProduct.updateFrom(updatedProduct);
             return existingProduct;
         }
         return null;

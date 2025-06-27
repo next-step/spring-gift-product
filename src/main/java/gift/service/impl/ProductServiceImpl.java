@@ -1,5 +1,6 @@
 package gift.service.impl;
 
+import gift.dto.ProductRequestDto;
 import gift.model.Product;
 import gift.repository.ProductRepository;
 import gift.service.ProductService;
@@ -12,16 +13,14 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
-    @Override
-    public Product createProduct(Product product) {
-        if (!product.validateProduct()) {
-            throw new RuntimeException("상품 정보가 올바르지 않습니다.");
-        }
-        return productRepository.save(product);
-    }
-
     public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
+    }
+
+    @Override
+    public Product createProduct(ProductRequestDto productDto) {
+        Product product = productDto.toEntity();
+        return productRepository.save(product);
     }
 
     @Override
@@ -32,26 +31,21 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다. ID: " + id));
     }
 
     @Override
-    public Product updateProduct(Long id, Product product) {
-        if (!product.validateProduct()) {
-            throw new RuntimeException("상품 정보가 올바르지 않습니다.");
-        }
-
+    public Product updateProduct(Long id, ProductRequestDto productDto) {
         if (productRepository.findById(id).isEmpty()) {
-            throw new RuntimeException("상품을 찾을 수 없습니다.");
+            throw new RuntimeException("상품을 찾을 수 없습니다. ID: " + id);
         }
-
-        return productRepository.update(id, product);
+        return productRepository.update(id, productDto);
     }
 
     @Override
     public void deleteProduct(Long id) {
         if (productRepository.findById(id).isEmpty()) {
-            throw new RuntimeException("상품을 찾을 수 없습니다.");
+            throw new RuntimeException("상품을 찾을 수 없습니다. ID: " + id);
         }
 
         productRepository.deleteById(id);
