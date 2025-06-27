@@ -8,7 +8,7 @@
 <body>
 <h1>상품 수정</h1>
 
-<form th:action="@{/api/admin/products/edit/{id}(id=${product.id})}" th:object="${product}" method="post">
+<form th:action="@{/admin/products/edit/{id}(id=${product.id})}" th:object="${product}" method="post">
     <input type="hidden" name="_method" value="put"/>
     <div class="form-row">
         <label>상품명: </label>
@@ -28,6 +28,6 @@
     </div>
 </form>
 
-<a th:href="@{/api/admin/products}"><- 목록으로 돌아가기</a>
+<a th:href="@{/admin/products}"><- 목록으로 돌아가기</a>
 </body>
 </html>

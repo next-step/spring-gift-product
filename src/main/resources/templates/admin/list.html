@@ -7,7 +7,7 @@
 <body>
   <h1>상품 목록</h1>
 
-  <a th:href="@{/api/admin/products/add}">상품 추가</a>
+  <a th:href="@{/admin/products/add}">상품 추가</a>
 
   <table border="1">
     <thead>
@@ -28,10 +28,10 @@
           <img th:src="${product.url}" alt="이미지" style="max-width: 20px; display: block; margin-top: 10px;" />
         </td>
         <td>
-          <form th:action="@{/api/admin/products/edit/{id}(id=${product.id})}" method="get" style="display:inline;">
+          <form th:action="@{/admin/products/edit/{id}(id=${product.id})}" method="get" style="display:inline;">
             <button type="submit">수정</button>
           </form>
-          <form th:action="@{/api/admin/products/delete/{id}(id=${product.id})}" method="post" style="display:inline;">
+          <form th:action="@{/admin/products/delete/{id}(id=${product.id})}" method="post" style="display:inline;">
             <input type="hidden" name="_method" value="delete"/>
             <button type="submit">삭제</button>
           </form>

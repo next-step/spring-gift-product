@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/api/admin/products")
+@RequestMapping("/admin/products")
 public class AdminProductController {
 
     private final ProductService productService;
@@ -37,7 +37,7 @@ public class AdminProductController {
     @PostMapping("/add")
     public String addProduct(@ModelAttribute ProductAddRequestDto requestDto) {
         productService.addProduct(requestDto);
-        return "redirect:/api/admin/products";
+        return "redirect:/admin/products";
     }
 
     @GetMapping("/edit/{id}")
@@ -56,12 +56,12 @@ public class AdminProductController {
             @ModelAttribute ProductUpdateRequestDto requestDto
     ) {
         productService.updateProductById(id, requestDto);
-        return "redirect:/api/admin/products";
+        return "redirect:/admin/products";
     }
 
     @DeleteMapping("/delete/{id}")
     public String deleteProduct(@PathVariable Long id) {
         productService.deleteProductById(id);
-        return "redirect:/api/admin/products";
+        return "redirect:/admin/products";
     }
 }
