@@ -16,7 +16,4 @@ public record ProductRequestDto(
         Long price,
         @Size(max = 2000, message = "이미지 URL은 2000자 이하여야 합니다.")
         String imageUrl) {
-    public ProductRequestDto(Product product) {
-        this(product.getName(), product.getPrice(), product.getImageUrl());
-    }
 }
