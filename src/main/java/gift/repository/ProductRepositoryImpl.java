@@ -24,7 +24,8 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         for (Map.Entry<Long, Product> entry : products.entrySet()) {
             productList.add(
-                new ProductResponseDto(entry.getValue())); // Product -> ProductResponseDto
+                ProductResponseDto.from(entry.getValue())
+            ); // Product -> ProductResponseDto
         }
         return productList;
     }
@@ -32,19 +33,19 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public ProductResponseDto createProduct(ProductRequestDto requestDto) {
         products.put(productId,
-            new Product(requestDto.getId(), requestDto.getName(), requestDto.getPrice(),
-                requestDto.getImageUrl()));
+            new Product(requestDto.id(), requestDto.name(), requestDto.price(),
+                requestDto.imageUrl()));
         productId++; // id 값 1 증가
 
-        return new ProductResponseDto(requestDto.getId(), requestDto.getName(),
-            requestDto.getPrice(),
-            requestDto.getImageUrl());
+        return new ProductResponseDto(requestDto.id(), requestDto.name(),
+            requestDto.price(),
+            requestDto.imageUrl());
     }
 
     @Override
     public ProductResponseDto findProduct(Long productId) {
         Product product = products.get(productId);
-        return new ProductResponseDto(product);
+        return ProductResponseDto.from(product);
     }
 
     @Override
@@ -52,14 +53,14 @@ public class ProductRepositoryImpl implements ProductRepository {
         Product product = products.get(productId);
 
         // product 내용 update
-        product.setId(requestDto.getId());
-        product.setName(requestDto.getName());
-        product.setPrice(requestDto.getPrice());
-        product.setImageUrl(requestDto.getImageUrl());
+        product.setId(requestDto.id());
+        product.setName(requestDto.name());
+        product.setPrice(requestDto.price());
+        product.setImageUrl(requestDto.imageUrl());
 
         products.put(productId, product);
 
-        return new ProductResponseDto(product);
+        return ProductResponseDto.from(product);
     }
 
     @Override
