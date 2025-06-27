@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>상품 관리</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<h1>상품 목록</h1>
+
+<!-- 검색 폼 -->
+<form method="get" th:action="@{/admin/products}">
+    <input type="text" name="keyword" th:value="${keyword}" placeholder="상품 ID 또는 이름 검색"/>
+    <button type="submit">검색</button>
+</form>
+
+<!-- 상품 등록 버튼 -->
+<div style="margin-top: 10px;">
+    <a th:href="@{/admin/products/new}">상품 등록</a>
+</div>
+
+<!-- 상품 테이블 -->
+<table border="1" cellpadding="5" cellspacing="0" style="margin-top: 10px;">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>상품명</th>
+        <th>가격</th>
+        <th>이미지</th>
+        <th>작업</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p : ${products}">
+        <td th:text="${p.id}">1</td>
+        <td th:text="${p.name}">상품명</td>
+        <td th:text="${p.price}">1000</td>
+        <td><img th:src="${p.imageUrl}" width="100"/></td>
+        <td>
+            <a th:href="@{|/admin/products/${p.id}/edit|}">수정</a>
+            <form th:action="@{|/admin/products/${p.id}/delete|}" method="post" style="display:inline;">
+                <button type="submit" onclick="return confirm('정말 삭제할까요?');">삭제</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div style="margin-top: 20px;">
+    <span>페이지: </span>
+    <span th:each="i : ${#numbers.sequence(1, 5)}">
+    <a th:href="@{|/admin/products?page=${i - 1}|}"
+       th:text="${i}"
+       th:classappend="${page + 1 == i} ? 'current' : ''"
+       style="margin: 0 4px; text-decoration: none;">
+    </a>
+  </span>
+</div>
+
+</body>
+</html>
