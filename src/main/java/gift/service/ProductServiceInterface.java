@@ -1,6 +1,7 @@
 package gift.service;
 
 import gift.dto.request.ProductRequestDto;
+import gift.dto.request.ProductUpdateRequestDto;
 import gift.dto.response.ProductResponseDto;
 import gift.entity.Product;
 
@@ -13,7 +14,8 @@ interface ProductServiceInterface {
     ProductResponseDto createProduct(ProductRequestDto productRequestDto);
 
     //상품 수정
-    ProductResponseDto updateProduct(long productId, ProductRequestDto productRequestDto);
+    ProductResponseDto updateProduct(long productId,
+        ProductUpdateRequestDto productUpdateRequestDto);
 
     //상품 삭제
     void deleteProduct(long productId);

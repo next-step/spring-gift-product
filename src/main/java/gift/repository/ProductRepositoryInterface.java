@@ -6,14 +6,14 @@ import java.util.Optional;
 
 public interface ProductRepositoryInterface {
 
-    public Optional<Product> findById(long productId);
+    Optional<Product> findById(long productId);
 
-    public void createProduct(Product product);
+    void createProduct(Product product);
 
-    public void updateProduct(Product product);
+    void updateProduct(Product product);
 
-    public void delete(long productId);
+    void delete(long productId);
 
-    public boolean containsKey(long id);
+    boolean containsKey(long id);
 
 }

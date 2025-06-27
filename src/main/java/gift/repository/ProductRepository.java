@@ -23,7 +23,6 @@ public class ProductRepository implements ProductRepositoryInterface {
     //상품 반환용 매퍼
     private RowMapper<Product> productRowMapper() {
         return new RowMapper<>() {
-
             @Override
             public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
                 return new Product(
