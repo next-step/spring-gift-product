@@ -2,6 +2,8 @@ package gift.repository;
 
 import gift.entity.Product;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -20,7 +22,14 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product addProduct(String name, Long price, String url) {
-        return null;
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcClient.sql("insert into product (name, price, url) values (:name, :price, :url)")
+                .param("name", name)
+                .param("price", price)
+                .param("url", url)
+                .update(keyHolder);
+        Long id = keyHolder.getKey().longValue();
+        return findProductById(id);
     }
 
     @Override
