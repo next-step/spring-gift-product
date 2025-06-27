@@ -1,10 +1,6 @@
 package gift.repository;
-
-import gift.dto.ProductRequestDto;
-import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import org.springframework.stereotype.Repository;
-
 import java.util.*;
 
 @Repository
@@ -21,24 +17,19 @@ public class ProductRepository {
         return Optional.ofNullable(product);
     }
 
-    public List<ProductResponseDto> findAllProducts() {
-        List<ProductResponseDto> list = new ArrayList<>();
-        for(Product product : products.values()){
-            list.add(new ProductResponseDto(product));
-        }
-        return list;
+    public List<Product> findAllProducts() {
+        return new ArrayList<>(products.values());
     }
 
-    public ProductResponseDto saveProduct(ProductRequestDto requestDto) {
-        Product product = new Product(label, requestDto.name(), requestDto.price(), requestDto.imageUrl());
-        products.put(label, product);
-        label++;
-        return new ProductResponseDto(product);
+    public Product saveProduct(Product product) {
+        Product newProduct = new Product(label, product.name(), product.price(), product.imageUrl());
+        products.put(label++, newProduct);
+        return newProduct;
     }
 
-    public boolean updateProduct(Long id, ProductRequestDto requestDto) {
-        Product product = new Product(id, requestDto.name(), requestDto.price(), requestDto.imageUrl());
-        return products.replace(id, product) != null;
+    public boolean updateProduct(Long id, Product product) {
+        Product newProduct = new Product(id, product.name(), product.price(), product.imageUrl());
+        return products.replace(id, newProduct) != null;
     }
 
     public boolean deleteProduct(Long id) {

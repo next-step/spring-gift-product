@@ -6,6 +6,7 @@
 4. Repository 레이어 구성, 오타 수정 및 Product entity 불변성 제거
 5. Controller 반환 코드 세분화, 제품 등록 할 때 유효성 검사 추가
 6. 코드 피드백 반영
+
     findProductById Repository에서 예외 반환하지 않고 Optional로 감싼 후 Service에서 예외 처리하도록 수정 
     
     Product entity의 id를 0으로 만든 후 setId로 후처리하던 방식에서 Repository에서 새로 만드는 방식으로 변경
@@ -21,3 +22,10 @@
 1. Product entity에 imageUrl 필드 추가에 따른 리팩토링
 2. ViewController 생성 및 리스트 페이지, 삭제 버튼 구현
 3. 생성 페이지, 수정 페이지 구현
+4. 코드 피드백 반영
+
+    ProductViewController 의 역할이 애매하여 AdminController로 역할 변경
+
+    Repository는 무조건 Product만 입력 받고 반환하도록 변경. 이에 따른 RequestDto -> Entity 생성자 구현
+
+    Service에서 ResponseStatusException로 응답코드 반환 하지 않고 @RestControllerAdvice에서 처리하도록 변경

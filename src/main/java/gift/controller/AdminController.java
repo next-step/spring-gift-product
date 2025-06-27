@@ -9,12 +9,12 @@ import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping("/admin")
-public class ProductViewController {
+public class AdminController {
     // 의존성 고정하여 안전하게 유지
     private final ProductService productService;
 
     // 의존성 주입
-    private ProductViewController(ProductService productService) {this.productService = productService;}
+    private AdminController(ProductService productService) {this.productService = productService;}
 
     /**
      * 관리자 페이지 제품 리스트 View 출력
