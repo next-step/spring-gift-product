@@ -61,5 +61,8 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public void deleteProductById(Long id) {
+        jdbcClient.sql("delete from product where id = :id")
+                .param("id", id)
+                .update();
     }
 }
