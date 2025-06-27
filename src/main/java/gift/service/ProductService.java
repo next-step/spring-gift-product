@@ -55,6 +55,10 @@ public class ProductService {
         productRepository.delete(product.getId());
     }
 
+    public void deleteProducts(List<Long> ids) {
+        ids.forEach(this::deleteProduct);
+    }
+
     private void validate(ProductRequest request) {
         if (request.name() == null || request.name().trim().isEmpty()) {
             throw new InvalidProductException("상품 이름은 필수입니다.");
