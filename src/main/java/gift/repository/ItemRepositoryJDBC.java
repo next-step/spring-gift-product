@@ -74,7 +74,15 @@ public class ItemRepositoryJDBC implements ItemRepository{
 
     @Override
     public Item deleteById(Long id) {
-        return null;
+        String selectSql = "SELECT id, name, price, image_url FROM items WHERE id = ?";
+        Item item = jdbcTemplate.queryForObject(selectSql, new Object[]{id}, itemRowMapper);
+
+
+
+        String deleteSql = "DELETE FROM items WHERE id = ?";
+        jdbcTemplate.update(deleteSql, id);
+
+        return item;
     }
 
     @Override
