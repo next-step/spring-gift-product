@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 등록</title>
+    <link rel="stylesheet" th:href="@{/css/product.css}">
+</head>
+<body>
+<h1>상품 등록</h1>
+
+<div class="form-container">
+    <form id="product-form">
+        <label for="name">상품명</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="price">가격</label>
+        <input type="number" id="price" name="price" required>
+
+        <label for="imageUrl">이미지 URL</label>
+        <input type="text" id="imageUrl" name="imageUrl" required>
+
+        <div class="btn-group">
+            <button type="submit">등록</button>
+            <a th:href="@{/admin/products}">← 목록으로</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.getElementById("product-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const price = document.getElementById("price").value;
+      const imageUrl = document.getElementById("imageUrl").value;
+
+      fetch("/api/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, price, imageUrl })
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("등록 실패");
+        return res.json();
+      })
+      .then(data => {
+        alert("상품 등록 완료!");
+        window.location.href = "/admin/products"; // 목록으로 이동
+      })
+      .catch(err => {
+        alert("오류 발생: " + err.message);
+      });
+    });
+</script>
+</body>
+</html>

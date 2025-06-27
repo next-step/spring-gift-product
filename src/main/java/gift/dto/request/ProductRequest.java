@@ -1,26 +1,10 @@
 package gift.dto.request;
 
-public class ProductRequest {
-    private final String name;
-    private final int price;
-    private final String imageUrl;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
-
-    public ProductRequest(String name, int price, String imageUrl) {
-        this.name = name;
-        this.price = price;
-        this.imageUrl = imageUrl;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-}
+public record ProductRequest(
+        @NotBlank String name,
+        @Positive int price,
+        @NotBlank String imageUrl
+) {}
