@@ -11,10 +11,10 @@ import java.util.Optional;
 @Repository
 public class ProductRepository {
     private final Map<Long, Product> products = new HashMap<>();
-    private static Long id = 0L;
+    private static Long nextId = 0L;
 
     public Product create(Product product) {
-        product.setId(id++);
+        product.setId(nextId++);
         products.put(product.getId(), product);
         return product;
     }
@@ -24,7 +24,7 @@ public class ProductRepository {
         return product;
     }
 
-    public Product findById(Long id) { return products.get(id); }
+    public Optional<Product> findById(Long id) { return Optional.ofNullable(products.get(id)); }
 
     public List<Product> findAll() {
         return products.values().stream().toList();

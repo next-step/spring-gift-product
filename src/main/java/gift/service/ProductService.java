@@ -23,29 +23,20 @@ public class ProductService {
 
     public ProductResponseDTO create(ProductRequestDTO dto) {
         Product product = new Product();
-        product.setName(dto.getName());
-        product.setPrice(dto.getPrice());
-        product.setImageUrl(dto.getImageUrl());
+        product.updateFromProductRequestDTO(dto);
         return new ProductResponseDTO(productRepository.create(product));
     }
 
-    public ProductResponseDTO update(Long id, ProductResponseDTO dto) {
-        Product product = productRepository.findById(id);
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "id를 찾을 수 없습니다.");
-        }
-        product.setName(dto.getName());
-        product.setPrice(dto.getPrice());
-        product.setImageUrl(dto.getImageUrl());
-        return new ProductResponseDTO(productRepository.update(product));
+    public Optional<ProductResponseDTO> update(Long id, ProductRequestDTO dto) {
+        return productRepository.findById(id).map(product -> {
+            product.updateFromProductRequestDTO(dto);
+            return productRepository.update(product);
+        }).map(ProductResponseDTO::new);
     }
 
-    public ProductResponseDTO findProductById(Long id) {
-        Product product = productRepository.findById(id);
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "id를 찾을 수 없습니다.");
-        }
-        return new ProductResponseDTO(product);
+    public Optional<ProductResponseDTO> findProductById(Long id) {
+        Optional<Product> product = productRepository.findById(id);
+        return product.map(ProductResponseDTO::new);
     }
 
     public List<Product> findAllProducts() {

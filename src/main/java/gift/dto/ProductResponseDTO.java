@@ -8,9 +8,6 @@ public class ProductResponseDTO {
     private Long price;
     private String imageUrl;
 
-    // 기본 생성자 추가
-    public ProductResponseDTO() {}
-
     public ProductResponseDTO(Long id, String name, Long price, String imageUrl) {
         this.id = id;
         this.name = name;

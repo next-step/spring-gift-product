@@ -1,5 +1,7 @@
 package gift.entity;
 
+import gift.dto.ProductRequestDTO;
+
 public class Product {
     private Long id;
     private String name;
@@ -36,5 +38,11 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public void updateFromProductRequestDTO(ProductRequestDTO dto) {
+        this.name = dto.getName();
+        this.price = dto.getPrice();
+        this.imageUrl = dto.getImageUrl();
     }
 }
