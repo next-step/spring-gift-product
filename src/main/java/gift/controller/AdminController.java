@@ -25,6 +25,11 @@ public class AdminController {
     private final Map<Long, Product> products = new HashMap<>();
     private static Long pid = 0L;
 
+    @GetMapping
+    public String home(){
+        return "redirect:/admin/products/list";
+    }
+
     //create
     //생성한 product는 HashMap에 저장
     @PostMapping("/products")

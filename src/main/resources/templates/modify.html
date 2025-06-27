@@ -1,7 +1,5 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
-
-
   <div id="productForm">
     <form th:action="@{/admin/products(id=${product.id})}" th:method="put">
       <p>
@@ -21,7 +19,7 @@
       </p>
       <p>
         <input type="submit" value="상품 수정하기">
-        <button th:onclick="|location.href='@{/products}'|">수정 취소</button></td>
+        <button type="button" th:onclick="|location.href='@{/admin/products/list}'|">수정 취소</button></td>
       </p>
     </form>
   </div>
