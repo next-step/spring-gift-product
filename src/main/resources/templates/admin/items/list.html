@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>상품 관리</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+  <h1>상품 목록</h1>
+
+  <div th:if="${message}" class="alert success" th:text="${message}"></div>
+  <div th:if="${errorMessage}" class="alert error" th:text="${errorMessage}"></div>
+
+  <div class="button-group top-buttons">
+    <a href="/admin/items/new" class="btn primary">새 상품 등록</a>
+  </div>
+
+  <table class="item-table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>이름</th>
+      <th>가격</th>
+      <th>이미지</th>
+      <th>관리</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${items.isEmpty()}">
+      <td colspan="5" class="no-data">등록된 상품이 없습니다.</td>
+    </tr>
+    <tr th:each="item : ${items}">
+      <td th:text="${item.id()}">1</td>
+      <td><a th:href="@{/admin/items/{id}(id=${item.id()})}" th:text="${item.name()}"
+             class="item-name-link">상품 이름</a></td>
+      <td th:text="${item.price()}">1000</td>
+      <td><img th:src="${item.imageUrl()}" alt="상품 이미지" class="item-image"></td>
+      <td class="action-buttons">
+        <a th:href="@{/admin/items/{id}/edit(id=${item.id()})}" class="btn small secondary">수정</a>
+        <form th:action="@{/admin/items/{id}(id=${item.id()})}" method="post"
+              style="display:inline;" onsubmit="return confirm('정말 이 상품을 삭제하시겠습니까?');">
+          <input type="hidden" name="_method" value="delete"/>
+          <button type="submit" class="btn small danger">삭제</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

@@ -8,11 +8,8 @@ public class Item {
     private String imageUrl;
 
     public Item(Long id, String name, int price, String imageUrl) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("상품 이름은 비어있을 수 없습니다.");
-        }
-        if (price < 0) {
-            throw new IllegalArgumentException("가격은 음수일 수 없습니다.");
+        if (id == null) {
+            throw new IllegalArgumentException("상품 ID는 비어있을 수 없습니다.");
         }
         this.id = id;
         this.name = name;
@@ -37,12 +34,6 @@ public class Item {
     }
 
     public void updateItemInfo(String name, int price, String imageUrl) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("상품 이름은 비어 있을 수 없습니다.");
-        }
-        if (price < 0) {
-            throw new IllegalArgumentException("가격은 음수일 수 없습니다.");
-        }
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;

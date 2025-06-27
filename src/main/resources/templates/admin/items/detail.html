@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>상품 상세</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+  <h1>상품 상세 정보</h1>
+
+  <div th:if="${errorMessage}" class="alert error" th:text="${errorMessage}"></div>
+
+  <div th:if="${item != null}" class="detail-container">
+    <div class="detail-item-info">
+      <p><strong>ID:</strong> <span th:text="${item.id()}"></span></p>
+      <p><strong>이름:</strong> <span th:text="${item.name()}"></span></p>
+      <p><strong>가격:</strong> <span th:text="${item.price()}"></span></p>
+      <p><strong>이미지:</strong></p>
+      <img th:src="${item.imageUrl()}" alt="상품 이미지" class="detail-item-image">
+    </div>
+
+    <div class="detail-actions">
+      <a th:href="@{/admin/items}" class="btn secondary">목록으로</a>
+      <a th:href="@{/admin/items/{id}/edit(id=${item.id()})}" class="btn primary">수정</a>
+      <form th:action="@{/admin/items/{id}(id=${item.id()})}" method="post" style="display:inline;"
+            onsubmit="return confirm('정말 이 상품을 삭제하시겠습니까?');">
+        <input type="hidden" name="_method" value="delete"/>
+        <button type="submit" class="btn danger">삭제</button>
+      </form>
+    </div>
+  </div>
+  <div th:unless="${item != null}" class="detail-container">
+    <p>요청하신 상품을 찾을 수 없습니다.</p>
+    <a th:href="@{/admin/items}" class="btn secondary">목록으로 돌아가기</a>
+  </div>
+</div>
+</body>
+</html>
