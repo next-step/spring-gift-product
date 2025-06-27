@@ -48,10 +48,35 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product update(Product product) {
-        productMap.put(product.getId(), product); // 제품을 업데이트
-        return product; // 업데이트된 제품 반환
+    public Product updateNameById(Long productId, String name) {
+        if (productMap.containsKey(productId)) {
+            Product product = productMap.get(productId);
+            product.setName(name);
+            return product;
+        }
+        return null;
     }
+
+    @Override
+    public Product updatePriceById(Long productId, Long price) {
+        if (productMap.containsKey(productId)) {
+            Product product = productMap.get(productId);
+            product.setPrice(price);
+            return product;
+        }
+        return null;
+    }
+
+    @Override
+    public Product updateImageUrlById(Long productId, String imageUrl) {
+        if (productMap.containsKey(productId)) {
+            Product product = productMap.get(productId);
+            product.setImageUrl(imageUrl);
+            return product;
+        }
+        return null;
+    }
+
 
     @Override
     public Boolean deleteById(Long productId) {

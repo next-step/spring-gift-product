@@ -54,20 +54,26 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional // 트랜잭션을 사용하여 데이터베이스 일관성 유지
     public Product update(Product product) {
-        Product existingProduct = productRepository.findById(product.getId());
+        Product updated = productRepository.findById(product.getId());
 
         // 상품이 존재하지 않는 경우 예외 처리
-        if (existingProduct == null) {
+        if (updated == null) {
             throw new NoSuchElementException(
                     String.format("Id %d에 해당하는 상품이 존재하지 않습니다.", product.getId()));
         }
-
         // 업데이트할 필드가 null이 아닌 경우에만 업데이트
-        if (product.getName() != null) existingProduct.setName(product.getName());
-        if (product.getPrice() != null) existingProduct.setPrice(product.getPrice());
-        if (product.getImageUrl() != null) existingProduct.setImageUrl(product.getImageUrl());
 
-        return productRepository.update(existingProduct);
+        if (product.getName() != null)
+            updated = productRepository.updateNameById(updated.getId(), product.getName());
+
+        if (product.getPrice() != null)
+            updated = productRepository.updatePriceById(updated.getId(), product.getPrice());
+
+        if (product.getImageUrl() != null)
+            updated = productRepository.updateImageUrlById(updated.getId(), product.getImageUrl());
+
+        // 업데이트된 상품을 반환
+        return updated;
     }
 
     @Override
