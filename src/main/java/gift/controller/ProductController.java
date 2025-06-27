@@ -4,8 +4,6 @@ import gift.dto.ProductRequestDto;
 import gift.entity.Product;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -16,8 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 //@ResponseBody + @Controller
-//@RestController
-@Controller
+@RestController
 public class ProductController {
 
     private final Map<Long, Product> products = new HashMap<>();
@@ -26,91 +23,69 @@ public class ProductController {
     //create
     //생성한 product는 HashMap에 저장
     @PostMapping("/products")
-    public String createProduct(@ModelAttribute ProductRequestDto requestDto) {
+    public ResponseEntity<Product> createProduct(@RequestBody ProductRequestDto requestDto) {
         if (checkProduct(requestDto)) {
             Product product = new Product(
-                ++pid,
-                requestDto.getName(),
-                requestDto.getPrice(),
-                requestDto.getImageUrl()
+                    ++pid,
+                    requestDto.getName(),
+                    requestDto.getPrice(),
+                    requestDto.getImageUrl()
             );
             products.put(product.getId(), product);
-            return "redirect:/products"; //GetMapping 되어 있는 것을 호출,,,?
+            //ResponseEntity의 경우, 객체와 상태를 함께 반환(상태 지정 가능)
+            return new ResponseEntity<>(product, HttpStatus.CREATED);
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-            "가격은 음수가 될 수 없으며, 상품명, 가격, 이미지 주소는 필수 값입니다.");
-    }
-
-    //form.html을 불러오기 위한 메서드
-    @GetMapping("/products/new")
-    public String productForm(){
-        return "form";
+                "가격은 음수가 될 수 없으며, 상품명, 가격, 이미지 주소는 필수 값입니다.");
     }
 
     //read
     //특정 상품을 조회(id)
-    @GetMapping("/products/info")
-    public String getProduct(
-        @RequestParam Long id,
-        Model model
-    ) {
+    @GetMapping("/products/{id}")
+    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
         Product product = findProductById(id);
-        model.addAttribute("product", product);
-        return "productinfo";
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     //read
     //전체 상품을 조회
     @GetMapping("/products")
-    public String getProducts(Model model) {
+    public ResponseEntity<List<Product>> getProducts() {
         List<Product> productList = products.values()
-            .stream()
-            .collect(Collectors.toList());
-        model.addAttribute("productList",productList);
-        return "home";
-        //return new ResponseEntity<>(productList, HttpStatus.OK);
-    }
-
-    //modify.html을 불러오기 위한 메서드
-    @GetMapping("/products/modify")
-    public String modifyForm(
-        @RequestParam Long id,
-        Model model
-    ){
-        Product product = products.get(id);
-        model.addAttribute("product",product);
-        return "modify";
-
+                .stream()
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
     //update
     //상품 수정
-    @PutMapping("/products")
-    public String modifyProduct(
-        @ModelAttribute ProductRequestDto requestDto,
-        @RequestParam Long id
+    @PutMapping("/products/{id}")
+    public ResponseEntity<Product> modifyProduct(
+            @RequestBody ProductRequestDto requestDto,
+            @PathVariable Long id
     ) {
-        Product product = new Product(id,
-            requestDto.getName(),
-            requestDto.getPrice(),
-            requestDto.getImageUrl());
-        products.put(id, product);
-        return "redirect:/products";
+        Long found = findProductById(id).getId();
+        Product product = new Product(found,
+                requestDto.getName(),
+                requestDto.getPrice(),
+                requestDto.getImageUrl());
+        products.put(found, product);
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     //delete
     //등록된 상품을 삭제
-    @GetMapping("/products/remove/{id}")
-    public String removeProduct(@PathVariable Long id) {
+    @DeleteMapping("/products/{id}")
+    public ResponseEntity<Void> removeProduct(@PathVariable Long id) {
         Long found = findProductById(id).getId();
         products.remove(found);
-        return "redirect:/products";
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     public boolean checkProduct(ProductRequestDto requestDto) {
         //상품명, 가격, 이미지의 경우 모두 필수 값
         if (requestDto.getName() == null || requestDto.getPrice() == null
-            || requestDto.getImageUrl() == null) {
+                || requestDto.getImageUrl() == null) {
             return false;
         }
         //가격은 0이하가 될 수 없음
