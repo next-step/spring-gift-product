@@ -5,15 +5,18 @@
 </head>
 <body>
 <h1>상품 등록</h1>
-<form th:action="@{/admin/products-add}" method="post">
+<form th:action="@{/admin/products-add}" th:object="${product}" method="post">
     <div>
-        <label>이름: <input type="text" name="name" /></label>
+        <label>이름: <input type="text" th:field="*{name}" required  /></label>
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red;"></div>
     </div>
     <div>
-        <label>가격: <input type="number" name="price" /></label>
+        <label>가격: <input type="number" th:field="*{price}" max="9999999999" required /></label>
+        <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color:red;"></div>
     </div>
     <div>
-        <label>이미지 URL: <input type="text" name="imageUrl" /></label>
+        <label>이미지 URL: <input type="text" th:field="*{imageUrl}" /></label>
+        <div th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}" style="color:red;"></div>
     </div>
     <div>
         <button type="submit">등록</button>

@@ -4,8 +4,10 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,12 +34,16 @@ public class AdminController {
 
     @GetMapping("/products-add")
     public String showAddProductForm(Model model) {
-        model.addAttribute("product", new Product());
+        model.addAttribute("product", new ProductRequestDto(null, null, null));
         return "admin/product-add";
     }
 
     @PostMapping("/products-add")
-    public String createProduct(@ModelAttribute ProductRequestDto dto) {
+    public String createProduct(@Valid @ModelAttribute("product") ProductRequestDto dto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("product", dto);
+            return "admin/product-add";
+        }
         productService.saveProduct(dto);
         return "redirect:/admin";
     }
@@ -50,7 +56,11 @@ public class AdminController {
     }
 
     @PostMapping("/{id}")
-    public String updateProduct(@PathVariable Long id, @ModelAttribute ProductRequestDto dto) {
+    public String updateProduct(@PathVariable Long id, @Valid @ModelAttribute("product") ProductRequestDto dto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("product", dto);
+            return "admin/product-edit";
+        }
         productService.updateProduct(id, dto);
         return "redirect:/admin";
     }
