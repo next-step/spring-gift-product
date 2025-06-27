@@ -49,9 +49,25 @@ public class ProductRepository {
 
 
     public Optional<Product> findById(Long id) {
-        return Optional.ofNullable(products.get(id));
+        String sql = "SELECT * FROM product WHERE id = :id";
+
+        return jdbcClient.sql(sql)
+                .param("id", id)
+                .query(getProductRowMapper())
+                .optional();
     }
 
+    public Product update(Product product) {
+        var sql ="UPDATE product SET name = :name, price = :price, imageUrl = :imageUrl WHERE id = :id";
+
+         jdbcClient.sql(sql)
+                .param("name", product.getName())
+                .param("price", product.getPrice())
+                .param("imageUrl", product.getImageUrl())
+                .param("id", product.getId())
+                .update();
+         return product;
+    }
 
     public void deleteById(Long id) {
         products.remove(id);
