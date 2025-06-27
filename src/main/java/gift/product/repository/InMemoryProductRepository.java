@@ -22,7 +22,7 @@ public class InMemoryProductRepository implements ProductRepository {
 
   @Override
   public void save(Product product) {
-    Objects.requireNonNull(product,"product cannot be null");
+    Objects.requireNonNull(product,"상품은 null일 수 없습니다");
 
     Long id = idGenerator.incrementAndGet();
     Product newProduct = Product.withId(id,product);
@@ -31,14 +31,14 @@ public class InMemoryProductRepository implements ProductRepository {
 
   @Override
   public Optional<Product> findById(Long id) {
-    Objects.requireNonNull(id,"id cannot be null");
+    Objects.requireNonNull(id,"ID는 null일 수 없습니다");
 
     return Optional.ofNullable(productMap.get(id));
   }
 
   @Override
   public PagedResult<Product> findAll(int page, int size, String sortField, boolean asc) {
-    Objects.requireNonNull(sortField, "Sort field cannot be null");
+    Objects.requireNonNull(sortField, "정렬 필드값은 null일 수 없습니다");
     SortStrategy<Product> sortStrategy = ProductSortStrategyFactory.getStrategy(sortField);
 
     Comparator<Product> comparator = asc ?
@@ -57,8 +57,8 @@ public class InMemoryProductRepository implements ProductRepository {
 
   @Override
   public void update(Long id, Product updatedProduct) {
-    Objects.requireNonNull(id,"id cannot be null");
-    Objects.requireNonNull(updatedProduct,"product cannot be null");
+    Objects.requireNonNull(id,"ID는 null일 수 없습니다");
+    Objects.requireNonNull(updatedProduct,"상품은 null일 수 없습니다");
 
     productMap.put(id, updatedProduct);
   }
