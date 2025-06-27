@@ -47,13 +47,14 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public void updateProductById(Product product) {
-        jdbcClient.sql("update product set name = :name, price = :price, url = :url where id = :id")
+    public int updateProductById(Product product) {
+        int result = jdbcClient.sql("update product set name = :name, price = :price, url = :url where id = :id")
                 .param("name", product.name())
                 .param("price", product.price())
                 .param("url", product.url())
                 .param("id", product.id())
                 .update();
+        return result;
     }
 
     @Override

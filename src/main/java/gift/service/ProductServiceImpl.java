@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
     public void updateProductById(Long id, ProductUpdateRequestDto requestDto) {
         Product product = productRepository.findProductByIdOrElseThrow(id);
         Product newProduct = new Product(id, requestDto);
-        productRepository.updateProductById(newProduct);
+        int result = productRepository.updateProductById(newProduct); //1 -> 성공, 0 -> 실패
     }
 
     @Override

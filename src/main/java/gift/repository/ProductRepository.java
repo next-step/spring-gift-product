@@ -9,6 +9,6 @@ public interface ProductRepository {
     public void addProduct(ProductAddRequestDto requestDto);
     public Product findProductByIdOrElseThrow(Long id);
     public List<Product> findAllProduct();
-    public void updateProductById(Product product);
+    public int updateProductById(Product product);
     public void deleteProductById(Long id);
 }
