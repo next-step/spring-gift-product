@@ -36,11 +36,9 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Page<ProductResponseDto> findAllProducts(Pageable pageable) {
-        List<ProductResponseDto> all = products.values().stream()
-                .map(p -> new ProductResponseDto(p.getId(), p.getName(), p.getPrice(), p.getImageUrl()))
-                .toList();
+        List<Product> allProducts = new ArrayList<>(products.values());
 
-        int total = all.size();
+        int total = allProducts.size();
 
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
@@ -49,7 +47,9 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         List<ProductResponseDto> pageList = new ArrayList<>();
         if (startIdx < total) {
-            pageList = all.subList(startIdx, endIdx);
+            pageList = allProducts.subList(startIdx, endIdx).stream()
+                    .map(this::toResponseDto)
+                    .toList();
         }
 
         return new PageImpl<>(pageList, pageable, total);
