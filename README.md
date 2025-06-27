@@ -6,7 +6,19 @@ jdbcClient를 사용하여 상품정보를 저장할 수 있는 데이터베이�
 - service, repository 를 interface 타입으로 주입해보기
 - toProductResponseDto 생성자 수정
 - record 클래스를 뷰에 전달해보기
-
+## 2. h2데이터베이스 설정
+- h2데이터베이스를 사용하기 위한 설정하기
+## 3. schema.sql, data.sql 만들기
+- schema.sql파일에 상품 데이터베이스 product 테이블 정의하기
+- data.sql에 테스트 데이터 추가하는 코드 추가하기
+## 4. 데이터베이스 내 상품 목록 조회 기능 만들기
+- `select id, name, price, url from product`
+## 5. 데이터베이스 내 상품 추가 기능 만들기
+- `insert into product (id, name, price, url) values (:id, :name, :price, :url)`
+## 6. 데이터베이스 내 상품 업데이트 기능 만들기
+- `update product set name=:name, price=:price, url=:url where id = :id`
+## 7. 데이터베이스 내 상품 삭제 기능 만들기
+- `delete from product where id = :id`
 ---
 # 2단계
 상품을 추가, 조회, 수정, 삭제 할 수 있는 관리자 화면을 만든다.
