@@ -77,8 +77,8 @@ public class ProductController {
     //등록된 상품을 삭제
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Void> removeProduct(@PathVariable Long id) {
-        Long found = findProductById(id).getId();
-        products.remove(found);
+        Long productId = findProductById(id).getId();
+        products.remove(productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

@@ -108,8 +108,8 @@ public class AdminController {
     //등록된 상품을 삭제
     @GetMapping("/products/remove/{id}")
     public String removeProduct(@PathVariable Long id) {
-        Long found = findProductById(id).getId();
-        products.remove(found);
+        Long productId = findProductById(id).getId();
+        products.remove(productId);
         return "redirect:/admin/products/list";
     }
 
