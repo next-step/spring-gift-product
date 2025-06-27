@@ -9,7 +9,7 @@
 * 상품 목록 조회 화면
 * 상품 추가/수정 화면
 * 상품 삭제
-* ![상품 목록](tempImg/기본.jpg)
-* ![상품 추가/수정](tempImg/새_상품_추가_수정.jpg)
-* ![상품 추가 후](tempImg/상품_추가_후,jpg)
-* ![상품 삭제 후](tmepImg/상품_삭제_후.jpg)
+* ![상품 목록](src/main/resources/tempImg/%EA%B8%B0%EB%B3%B8.png)
+* ![상품 추가/수정](src/main/resources/tempImg/%EC%83%88_%EC%83%81%ED%92%88_%EC%B6%94%EA%B0%80_%EC%88%98%EC%A0%95.png)
+* ![상품 추가 후](src/main/resources/tempImg/%EC%83%81%ED%92%88_%EC%B6%94%EA%B0%80_%ED%9B%84.png)
+* ![상품 삭제 후](src/main/resources/tempImg/%EC%83%81%ED%92%88_%EC%82%AD%EC%A0%9C_%ED%9B%84.png)
