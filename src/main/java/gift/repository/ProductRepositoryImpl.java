@@ -8,20 +8,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.server.ResponseStatusException;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
     private final Map<Long, Product> products = new HashMap<>();
-    private final Random random = new Random();
     private Long nextId = 1L;
 
     @Override
     public ProductResponseDto createProduct(ProductRequestDto requestDto) {
-        Long id = nextId++; // jpa 사용 전까지 임시 번호 부여(여러 스레드 사용시 문제 발생 가능)
+        Long id = nextId++;
         String name = requestDto.name();
         Integer price = requestDto.price();
         String imageUrl = requestDto.imageUrl();

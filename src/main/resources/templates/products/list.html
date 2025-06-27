@@ -44,12 +44,25 @@
           </td>
           <td th:text="${product.name}"></td>
           <td th:text="|${product.price} ₩|"></td>
-          <td class="text-center">
-            <!-- 수정 버튼 -->
-            <a th:href="@{'/admin/products/edit/' + ${product.id}}" class="btn btn-sm btn-warning me-2">Edit</a>
-            <!-- 삭제 버튼 -->
-            <a th:href="@{'/admin/products/delete/' + ${product.id}}" class="btn btn-sm btn-danger"
-               onclick="return confirm('Are you sure you want to delete it?');">Delete</a>
+          <td class="text-center align-middle">
+            <div class="d-inline-flex gap-2 align-items-center">
+              <!-- 수정 버튼 -->
+              <a th:href="@{'/admin/products/edit/' + ${product.id}}"
+                 class="btn btn-sm btn-warning d-flex align-items-center justify-content-center"
+                 style="color: black; min-width: 70px; height: 40px;">
+                Edit
+              </a>
+              <!-- 삭제 버튼 -->
+              <form th:action="@{'/admin/products/delete/' + ${product.id}}" method="post" class="d-inline">
+                <input type="hidden" name="_method" value="delete"/>
+                <button type="submit"
+                        class="btn btn-sm btn-danger d-flex align-items-center justify-content-center"
+                        onclick="return confirm('Are you sure you want to delete it?');"
+                        style="color: white; min-width: 70px; height: 40px;">
+                  Delete
+                </button>
+              </form>
+            </div>
           </td>
         </tr>
         <tr th:if="${#lists.isEmpty(products)}">
