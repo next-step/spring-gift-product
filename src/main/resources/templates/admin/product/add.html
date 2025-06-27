@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>상품 추가</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+    :root {
+      --bg-color: #f4f7fa;
+      --card-bg-color: #ffffff;
+      --primary-color: #6a82fb;
+      --primary-hover-color: #5468d4;
+      --secondary-color: #43d9a0;
+      --secondary-hover-color: #35ad80;
+      --delete-color: #ff7b7b;
+      --delete-hover-color: #e66a6a;
+      --text-color: #333;
+      --text-light-color: #777;
+      --border-color: #e9ecef;
+      --shadow-color: rgba(106, 130, 251, 0.15);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background-color: var(--bg-color); color: var(--text-color); padding: 2rem; }
+    .container { max-width: 800px; margin: 0 auto; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .header h1 { font-size: 2rem; font-weight: 700; color: var(--text-color); }
+    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.5rem; border-radius: 50px; border: none; color: white; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background-color 0.2s ease, transform 0.2s ease; text-decoration: none; }
+    .btn:hover { transform: translateY(-2px); }
+    .form-card { background-color: var(--card-bg-color); border-radius: 16px; box-shadow: 0 8px 25px var(--shadow-color); padding: 2.5rem; margin-top: 2rem; }
+    .form-card h2 { font-size: 1.5rem; margin-bottom: 2rem; text-align: center; color: var(--text-color); }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-light-color); }
+    .form-group input { width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 1rem; font-family: 'Nunito', sans-serif; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+    .form-group input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(106, 130, 251, 0.2); }
+    .form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2.5rem; }
+    .btn-primary { background-color: var(--primary-color); }
+    .btn-primary:hover { background-color: var(--primary-hover-color); }
+    .btn-cancel { background-color: #f0f2f5; color: var(--text-light-color); }
+    .btn-cancel:hover { background-color: #e4e6e9; color: var(--text-color); }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>상품 추가</h1>
+  </div>
+
+  <div class="form-card">
+    <form id="add-product-form">
+      <div class="form-group">
+        <label for="productName">상품명</label>
+        <input type="text" id="productName" name="name" required placeholder="예: 프리미엄 키보드">
+      </div>
+      <div class="form-group">
+        <label for="productPrice">가격</label>
+        <input type="number" id="productPrice" name="price" required placeholder="숫자만 입력하세요">
+      </div>
+      <div class="form-group">
+        <label for="productImageUrl">이미지 URL</label>
+        <input type="url" id="productImageUrl" name="imageUrl" required placeholder="예: https://example.com/image.jpg">
+      </div>
+      <div class="form-actions">
+        <a href="/management/products" class="btn btn-cancel">취소</a>
+        <button type="submit" class="btn btn-primary">상품 추가하기</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const addForm = document.getElementById('add-product-form');
+
+  addForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(addForm);
+    const productData = Object.fromEntries(formData.entries());
+
+    productData.price = parseInt(productData.price, 10);
+
+    try {
+      const response = await fetch('/api/products', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productData),
+      });
+
+      if (response.ok) {
+        alert('상품이 성공적으로 추가되었습니다.');
+        window.location.href = '/management/products';
+      } else {
+        const errorData = await response.json();
+        alert(`상품 추가에 실패했습니다: ${errorData.message || '서버 오류'}`);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('상품 추가 중 오류가 발생했습니다.');
+    }
+  });
+</script>
+
+</body>
+</html>
