@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Min;
 public class ProductResponseDto {
     private Long id;
     private String name;
-    @Min(value = 0, message = "가격은 0 이상이어야 합니다.")
     private int price;
     private String imageUrl;
 
