@@ -96,7 +96,10 @@ public class ItemRepositoryJDBC implements ItemRepository{
 
     @Override
     public Item updateItem(Long id, String name, int price, String imageUrl) {
-        return null;
+        String sql = "UPDATE items SET name = ?, price = ?, image_url = ? WHERE id = ?";
+        jdbcTemplate.update(sql, name, price, imageUrl, id);
+
+        return findById(id);
     }
     private final RowMapper<Item> itemRowMapper = new RowMapper<>() {
         @Override
