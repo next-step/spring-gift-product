@@ -1,0 +1,4 @@
+INSERT INTO product (name, price, imageUrl) VALUES ('아메리카노', 3000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3bgpr9EPuJ47gcYCWg7jrEXJ3M15nEXZ9WdKpUsF11wMJFwIPXpOtIkDwoTUUi8_S_WbVTmcus1R7oEx0ongOCiJtjK8iLm-JxAp4swI_-Q');
+INSERT INTO product (name, price, imageUrl) VALUES ('카페라떼', 4000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjYwdtYk0ww-YSRxAG1stQYFuTT6K2D5lQcQ&s');
+INSERT INTO product (name, price, imageUrl) VALUES ('모카', 5000, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkd11qAyK1kPY8z6tpvKO4KM97cTpCphVeOQ&s');
+INSERT INTO product (name, price, imageUrl) VALUES ('아포가토', 4500, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvgoCg5CPPBL8MZGAWT3ilkSeBnr1SkR-x2A&s');
