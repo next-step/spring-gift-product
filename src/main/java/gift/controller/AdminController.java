@@ -44,7 +44,7 @@ public class AdminController {
     }
 
     //form.html을 불러오기 위한 메서드
-    @GetMapping("/products/new")
+    @GetMapping("/products/add")
     public String productForm(){
         return "form";
     }
