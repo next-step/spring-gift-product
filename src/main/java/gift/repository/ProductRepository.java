@@ -19,24 +19,22 @@ public class ProductRepository {
         saveDummyData();
     }
 
-    public Product save(Product product) {
+    public Optional<Product> save(Product product) {
         Long id = sequence.incrementAndGet();
         Product savedProduct = new Product(id, product.getName(), product.getPrice(), product.getImageUrl());
         map.put(id, savedProduct);
-        return savedProduct.copy();
+        return Optional.of(savedProduct);
     }
 
     public Optional<Product> findById(Long id) {
         if (map.containsKey(id)) {
-            Product result = map.get(id);
-            return Optional.of(result.copy());
+            return Optional.of(map.get(id));
         }
         return Optional.empty();
     }
 
     public List<Product> findAll() {
         return map.values().stream()
-                .map(Product::copy)
                 .toList();
     }
 
@@ -44,7 +42,7 @@ public class ProductRepository {
         if (map.containsKey(id)) {
             Product savedProduct = new Product(id, product.getName(), product.getPrice(), product.getImageUrl());
             map.put(id, savedProduct);
-            return Optional.of(savedProduct.copy());
+            return Optional.of(savedProduct);
         }
         return Optional.empty();
     }

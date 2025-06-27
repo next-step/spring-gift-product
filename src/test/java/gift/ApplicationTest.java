@@ -1,4 +1,4 @@
-package gift.controller;
+package gift;
 
 import gift.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ProductControllerTest {
+public class ApplicationTest {
 
     @Autowired
     private MockMvc mockMvc;

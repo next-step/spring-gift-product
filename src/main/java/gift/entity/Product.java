@@ -1,8 +1,5 @@
 package gift.entity;
 
-import gift.dto.request.CreateProductDto;
-import gift.dto.request.UpdateProductDto;
-
 public class Product {
 
     private final Long id;
@@ -35,14 +32,5 @@ public class Product {
 
     public String getImageUrl() {
         return imageUrl;
-    }
-
-    // builder
-    public static Product build(CreateProductDto dto) {
-        return new Product(null, dto.name(), dto.price(), dto.imageUrl());
-    }
-
-    public static Product build(UpdateProductDto dto) {
-        return new Product(null, dto.name(), dto.price(), dto.imageUrl());
     }
 }
