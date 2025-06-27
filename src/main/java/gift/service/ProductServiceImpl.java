@@ -21,9 +21,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDto createProduct(CreateProductRequestDto requestDto) {
-        Product createdProduct = productRepository.createProduct(requestDto);
-        return new ProductResponseDto(createdProduct.getId(), createdProduct.getName(),
-                createdProduct.getPrice(), createdProduct.getImageUrl());
+        Product newProduct = new Product(null, requestDto.getName(), requestDto.getPrice(),
+                requestDto.getImageUrl());
+        Product savedProduct = productRepository.createProduct(newProduct);
+        return new ProductResponseDto(savedProduct.getId(), savedProduct.getName(),
+                savedProduct.getPrice(), savedProduct.getImageUrl());
     }
 
     @Override

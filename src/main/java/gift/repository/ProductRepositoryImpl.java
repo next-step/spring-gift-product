@@ -17,11 +17,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     private Long id = 1L;
 
     @Override
-    public Product createProduct(CreateProductRequestDto requestDto) {
-        Product newProduct = new Product(id++, requestDto.getName(), requestDto.getPrice(),
-                requestDto.getImageUrl());
-        products.put(newProduct.getId(), newProduct);
-        return newProduct;
+    public Product createProduct(Product newProduct) {
+        Product savedProduct = new Product(id++, newProduct.getName(), newProduct.getPrice(),
+                newProduct.getImageUrl());
+        products.put(savedProduct.getId(), savedProduct);
+        return savedProduct;
     }
 
     @Override
