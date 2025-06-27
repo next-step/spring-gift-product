@@ -29,8 +29,8 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductResponseDto> createProduct(
             @RequestBody CreateProductRequestDto requestDto) {
-        if (requestDto.getName() != null && requestDto.getPrice() >= 0
-                && requestDto.getImageUrl() != null) {
+        if (requestDto.name() != null && requestDto.price() >= 0
+                && requestDto.imageUrl() != null) {
             return new ResponseEntity<>(productService.createProduct(requestDto),
                     HttpStatus.CREATED);
         } else {
@@ -51,8 +51,8 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponseDto> updateProductById(@PathVariable Long id,
             @RequestBody CreateProductRequestDto requestDto) {
-        if (requestDto.getName() != null && requestDto.getPrice() >= 0
-                && requestDto.getImageUrl() != null) {
+        if (requestDto.name() != null && requestDto.price() >= 0
+                && requestDto.imageUrl() != null) {
             return new ResponseEntity<>(productService.updateProductById(id, requestDto),
                     HttpStatus.OK);
         } else {

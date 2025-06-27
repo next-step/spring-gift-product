@@ -35,15 +35,11 @@ public class AdminController {
 
     @GetMapping("/add")
     public String showCreatePage(Model model) {
-        CreateProductRequestDto requestDto = new CreateProductRequestDto();
-        model.addAttribute("requestDto", requestDto);
         return "createForm";
     }
 
     @GetMapping("/update/{id}")
     public String showUpdatePage(@PathVariable Long id, Model model) {
-        CreateProductRequestDto requestDto = new CreateProductRequestDto();
-        model.addAttribute("requestDto", requestDto);
         model.addAttribute("id", id);
         return "updateForm";
     }
