@@ -25,7 +25,11 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product findProductById(Long id) {
-        return null;
+        Product product = jdbcClient.sql("select id, name, price, url from product where id = :id")
+                .param("id", id)
+                .query(Product.class)
+                .single();
+        return product;
     }
 
     @Override
