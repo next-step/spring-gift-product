@@ -1,33 +1,48 @@
 package gift.repository;
 
 import gift.entity.Product;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @Repository
 public class ProductRepository {
 
-    private final Map<Long, Product> productMap = new HashMap<>();
+
+    private final Map<Long, Product> store = new HashMap<>();
     private Long nextId = 1L;
 
-    public Product addProduct(Product product) {
+    public List<Product> findAll() {
+        return new ArrayList<>(store.values());
+    }
+
+    public Product save(Product product) {
         product.setId(nextId++);
-        productMap.put(product.getId(), product);
+        store.put(product.getId(), product);
         return product;
     }
 
-    public Product findProduct(Long id) {
-        return productMap.get(id);
+    public void update(Long id, Product updatedProduct) {
+        Product existing = store.get(id);
+        if (existing != null) {
+            existing.setName(updatedProduct.getName());
+            existing.setPrice(updatedProduct.getPrice());
+            existing.setImageUrl(updatedProduct.getImageUrl());
+        }
     }
 
-    public Product updateProduct(Product product) {
-        productMap.put(product.getId(), product);
-        return product;
+    public Product findById(Long id) {
+        return store.get(id);
     }
 
-    public void deleteProduct(Long id) {
-        productMap.remove(id);
+    public void deleteById(Long id) {
+        store.remove(id);
     }
+
+
+
 }
