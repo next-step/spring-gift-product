@@ -32,7 +32,9 @@ public class ProductService {
 
     public Product updateProduct(Long id, UpdateProductRequest request) {
         Product product = getById(id);
-        return product.update(request.name(), request.price(), request.quantity());
+        product.update(request.name(), request.price(), request.quantity());
+        productRepository.update(product);
+        return product;
     }
 
     public void deleteProduct(Long id) {
