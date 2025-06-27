@@ -37,11 +37,11 @@ public class InMemoryProductRepository implements ProductRepository {
   }
 
   @Override
-  public PagedResult<Product> findAll(int page, int size, String sortField, boolean asc) {
+  public PagedResult<Product> findAll(int page, int size, String sortField, boolean isAscending) {
     Objects.requireNonNull(sortField, "정렬 필드값은 null일 수 없습니다");
     SortStrategy<Product> sortStrategy = ProductSortStrategyFactory.getStrategy(sortField);
 
-    Comparator<Product> comparator = asc ?
+    Comparator<Product> comparator = isAscending ?
         sortStrategy.getComparator() :
         sortStrategy.getComparator().reversed();
 

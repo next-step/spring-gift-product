@@ -7,8 +7,7 @@ import gift.product.dto.CreateProductReqDto;
 import gift.product.dto.GetProductResDto;
 import gift.product.dto.UpdateProductReqDto;
 import gift.product.exception.ProductNotFoundException;
-import gift.product.repository.ProductRepository;
-import java.util.List;
+import gift.product.repository.InMemoryProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,40 +15,47 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProductService {
 
-  private final ProductRepository productRepository;
+  private final InMemoryProductRepository productRepository;
 
-  public PagedResult<GetProductResDto> getAllProducts(int page, int size, String sortField,
-      boolean ascending) throws IllegalArgumentException {
-    PagedResult<Product> pagedResult = productRepository.findAll(page, size, sortField, ascending);
-
-    List<GetProductResDto> dtoList = pagedResult.content().stream()
-        .map(GetProductResDto::from).toList();
-
-    return PagedResult.from(dtoList, pagedResult);
+  public PagedResult<GetProductResDto> getAllByPage(int page, int size, String sortField,
+      boolean isAscending) throws IllegalArgumentException {
+    PagedResult<Product> pagedResult = productRepository.findAll(page, size, sortField, isAscending);
+    return pagedResult.map(GetProductResDto::from);
   }
 
   public GetProductResDto getProductById(Long id) throws ProductNotFoundException {
     Product product = productRepository.findById(id)
-        .orElseThrow(() -> new ProductNotFoundException(ErrorCode.NOT_FOUND));
+        .orElseThrow(() -> new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
     return GetProductResDto.from(product);
   }
 
-  public Long createProduct(CreateProductReqDto dto) {
-    Product newProduct = new Product(null, dto.name(), dto.price(), dto.description());
-    return productRepository.save(newProduct);
+  public void createProduct(CreateProductReqDto dto) {
+    Product newProduct = Product.of(
+        dto.name(),
+        dto.price(),
+        dto.description(),
+        dto.imageUrl()
+    );
+    productRepository.save(newProduct);
   }
 
   public void updateProduct(Long id, UpdateProductReqDto dto) throws ProductNotFoundException {
-    Product product = productRepository.findById(id)
-        .orElseThrow(() -> new ProductNotFoundException(ErrorCode.NOT_FOUND));
-    product.update(dto);
-    productRepository.update(id, product);
+    if(productRepository.findById(id).isEmpty()){
+      throw new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND);
+    }
+    Product newProduct = Product.of(
+        dto.name(),
+        dto.price(),
+        dto.description(),
+        dto.imageUrl()
+    );
+    productRepository.update(id, newProduct);
   }
 
   public void deleteProduct(Long id) throws ProductNotFoundException {
-    Product deletedProduct = productRepository.delete(id);
-    if (deletedProduct == null) {
-      throw new ProductNotFoundException(ErrorCode.NOT_FOUND);
+    if(productRepository.findById(id).isEmpty()){
+      throw new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND);
     }
+    productRepository.deleteById(id);
   }
 }
