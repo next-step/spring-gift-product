@@ -1,5 +1,5 @@
 package gift.Controller;
-
+/*
 import gift.Entity.Product;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
@@ -63,3 +63,4 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 }
+*/
