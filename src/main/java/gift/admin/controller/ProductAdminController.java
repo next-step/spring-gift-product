@@ -7,60 +7,64 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/products")
 public class ProductAdminController {
 
-    private final ProductService productService;
+  private final ProductService productService;
 
-    @GetMapping
-    public String listProducts(Model model) {
-        var result = productService.getAllProducts(0, 100, "name", true);
-        model.addAttribute("products", result.content());
-        return "product-list";
-    }
+  @GetMapping
+  public String listProducts(Model model) {
+    var result = productService.getAllProducts(0, 100, "name", true);
+    model.addAttribute("products", result.content());
+    return "product-list";
+  }
 
-    @GetMapping("/add")
-    public String showAddForm(Model model) {
-        model.addAttribute("product", new CreateProductReqDto(null, null, null));
-        return "product-add";
-    }
+  @GetMapping("/add")
+  public String showAddForm(Model model) {
+    model.addAttribute("product", new CreateProductReqDto(null, null, null));
+    return "product-add";
+  }
 
-    @PostMapping("/add")
-    public String addProduct(@ModelAttribute CreateProductReqDto dto,
-                             BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            return "product-add";
-        }
-        productService.createProduct(dto);
-        return "redirect:/admin/products";
+  @PostMapping("/add")
+  public String addProduct(@ModelAttribute CreateProductReqDto dto,
+      BindingResult bindingResult, Model model) {
+    if (bindingResult.hasErrors()) {
+      return "product-add";
     }
+    productService.createProduct(dto);
+    return "redirect:/admin/products";
+  }
 
-    @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
-        var product = productService.getProductById(id);
-        model.addAttribute("product", product);
-        return "product-edit";
-    }
+  @GetMapping("/edit/{id}")
+  public String showEditForm(@PathVariable Long id, Model model) {
+    var product = productService.getProductById(id);
+    model.addAttribute("product", product);
+    return "product-edit";
+  }
 
-    @PostMapping("/edit/{id}")
-    public String updateProduct(@PathVariable Long id, @ModelAttribute UpdateProductReqDto dto,
-                                BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            return "product-edit";
-        }
-        productService.updateProduct(id, dto);
-        return "redirect:/admin/products";
+  @PostMapping("/edit/{id}")
+  public String updateProduct(@PathVariable Long id, @ModelAttribute UpdateProductReqDto dto,
+      BindingResult bindingResult, Model model) {
+    if (bindingResult.hasErrors()) {
+      return "product-edit";
     }
+    productService.updateProduct(id, dto);
+    return "redirect:/admin/products";
+  }
 
-    @PostMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
-        return "redirect:/admin/products";
-    }
+  @PostMapping("/delete/{id}")
+  public String deleteProduct(@PathVariable Long id) {
+    productService.deleteProduct(id);
+    return "redirect:/admin/products";
+  }
 
 
 }

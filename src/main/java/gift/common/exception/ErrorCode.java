@@ -4,17 +4,17 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorCode {
-    INVALID_INPUT_VALUE(400, "invalid input value"),
-    NOT_FOUND(404, "not found value"),
-    INTERNAL_ERROR(500, "unexpected error"),
-    ACCESS_DENIED_ERROR(403, "access denied error"),
-    ;
+  INVALID_INPUT_VALUE(400, "invalid input value"),
+  NOT_FOUND(404, "not found value"),
+  INTERNAL_ERROR(500, "unexpected error"),
+  ACCESS_DENIED_ERROR(403, "access denied error"),
+  ;
 
-    private final Integer code;
-    private final String message;
+  private final Integer code;
+  private final String message;
 
-    ErrorCode(Integer code, String message) {
-        this.code = code;
-        this.message = message;
-    }
+  ErrorCode(Integer code, String message) {
+    this.code = code;
+    this.message = message;
+  }
 }
