@@ -1,5 +1,6 @@
 package gift.service;
 
+import gift.common.exception.ProductNotFoundException;
 import gift.domain.Product;
 import gift.dto.product.CreateProductRequest;
 import gift.dto.product.ProductManageResponse;
@@ -53,6 +54,6 @@ public class ProductService {
 
     private Product getById(Long id) {
         Optional<Product> getProduct = productRepository.findById(id);
-        return getProduct.orElseThrow(() -> new IllegalStateException("Product를 찾을 수 없습니다."));
+        return getProduct.orElseThrow(ProductNotFoundException::new);
     }
 }

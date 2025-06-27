@@ -23,4 +23,9 @@ public class GlobalExceptionHandler {
         ErrorResponse response = new ErrorResponse(LocalDateTime.now(), sb.toString());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleProductNotFoundException(ProductNotFoundException e) {
+        return new ResponseEntity<>(new ErrorResponse(LocalDateTime.now(), e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
 }

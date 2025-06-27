@@ -59,12 +59,7 @@ public class ProductRepository {
 
     public void deleteByid(Long id) {
         String sql = "delete from product where id=?";
-        try {
-            jdbcTemplate.update(sql, id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new IllegalStateException(e);
-        }
-
+        jdbcTemplate.update(sql, id);
     }
 
     public void update(Product product) {
