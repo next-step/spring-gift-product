@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>상품 목록</title>
+  <style>
+        /* 전체 페이지 스타일 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 상단 바 스타일 (상품 목록과 상품 추가 버튼이 포함됨) */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 상품 목록 제목 스타일 */
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        /* 상품 추가 버튼 스타일 */
+        .add-product {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .add-product:hover {
+            background-color: #218838;
+        }
+
+        /* 상품 목록 표 스타일 */
+        table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 테이블 헤더 스타일 */
+        th {
+            background-color: #007bff;
+            color: #fff;
+            padding: 12px;
+            text-align: left;
+        }
+
+        /* 테이블 본문 스타일 */
+        td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* 액션 버튼 스타일 */
+        a, button {
+            padding: 5px 10px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* 수정 버튼 hover 효과 */
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        /* 삭제 버튼 hover 효과 */
+        button:hover {
+            background-color: #e60000;
+        }
+
+
+
+  </style>
+</head>
+<body>
+<div class="header">
+  <h1>상품 관리 시스템</h1>
+  <a class="add-product" th:href="@{/admin/products/new}">상품 추가</a>
+</div>
+
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>이름</th>
+    <th>가격</th>
+    <th>이미지 URL</th>
+    <th>액션</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="product : ${products}">
+    <td th:text="${product.id}">ID</td>
+    <td th:text="${product.name}">이름</td>
+    <td th:text="${product.price}">가격</td>
+    <td th:text="${product.imageUrl}">이미지 URL</td>
+    <td>
+      <!-- 수정 버튼 -->
+      <a th:href="@{|/admin/products/${product.id}/edit|}">수정</a>
+
+      <!-- 삭제 버튼 -->
+      <form th:action="@{|/admin/products/${product.id}/delete|}" method="post"
+            style="display:inline;">
+        <button type="submit">삭제</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
