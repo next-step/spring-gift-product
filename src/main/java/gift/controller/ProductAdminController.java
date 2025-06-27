@@ -98,6 +98,13 @@ public class ProductAdminController {
         return "redirect:/admin/products";
     }
 
-
+    /**
+     * 상품 삭제 처리
+     */
+    @PostMapping("/{id}/delete")
+    public String delete(@PathVariable Long id) {
+        productService.delete(id);
+        return "redirect:/admin/products";
+    }
 
 }
