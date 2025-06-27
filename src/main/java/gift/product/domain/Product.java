@@ -1,7 +1,5 @@
 package gift.product.domain;
 
-import gift.product.dto.UpdateProductReqDto;
-
 public record Product(
     Long id,
     String name,
@@ -19,7 +17,7 @@ public record Product(
 
   public static Product withId(Long id, String name, Integer price, String description, String imageUrl){
     validateId(id);
-    return new Product(null, name, price,description,imageUrl);
+    return new Product(id, name, price,description,imageUrl);
   }
 
   public static Product of(String name, Integer price, String description, String imageUrl){
