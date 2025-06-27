@@ -80,6 +80,6 @@ public class ProductController {
         @PathVariable Long id
     ) {
         productService.deleteProductWithId(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
