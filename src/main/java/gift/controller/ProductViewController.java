@@ -3,6 +3,7 @@ package gift.controller;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -30,7 +31,7 @@ public class ProductViewController {
 
     // 상품 등록 처리
     @PostMapping
-    public String create(@ModelAttribute ProductRequestDto dto) {
+    public String create(@ModelAttribute @Valid ProductRequestDto dto) {
         productService.createProduct(dto);
         return "redirect:/admin/products";
     }
@@ -62,7 +63,7 @@ public class ProductViewController {
     }
 
     @PostMapping("/{id}")
-    public String update(@PathVariable Long id, @ModelAttribute ProductRequestDto dto) {
+    public String update(@PathVariable Long id, @ModelAttribute @Valid ProductRequestDto dto) {
         productService.updateProduct(id, dto);
         return "redirect:/admin/products";
     }
