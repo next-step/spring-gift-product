@@ -1,10 +1,11 @@
 package gift.product;
 
 
+import gift.product.dto.GetItemResponse;
+import gift.product.dto.ItemRequest;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

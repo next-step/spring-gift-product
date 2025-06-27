@@ -1,6 +1,8 @@
 package gift.product;
 
 
+import gift.product.dto.GetItemResponse;
+import gift.product.dto.ItemRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
