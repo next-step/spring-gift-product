@@ -64,6 +64,7 @@ public class ProductDao {
     }
 
     public int update(Product product) {
+        String sql = "UPDATE products SET name = ?, price = ?, image_url = ? WHERE id = ?";
         return jdbcClient.sql(sql)
                 .param(product.getName())
                 .param(product.getPrice())
