@@ -91,7 +91,7 @@ public class AdminController {
 
     //update
     //상품 수정
-    @PutMapping("/products")
+    @PutMapping("/products/modify")
     public String modifyProduct(
             @ModelAttribute ProductRequestDto requestDto,
             @RequestParam Long id
