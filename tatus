@@ -1,0 +1,41 @@
+[33mcommit 4bbf01cf7dc5adc7be82e934ebafcab38dc00e43[m[33m ([m[1;36mHEAD -> [m[1;32mstep1[m[33m)[m
+Author: hayun <psh040826@naver.com>
+Date:   Tue Jun 24 04:25:09 2025 +0900
+
+    feat: 상품 삭제 기능 구현
+
+[33mcommit 81b7ba8e1973f873ebac3d6e3186ef2ea4e6b32d[m
+Author: hayun <psh040826@naver.com>
+Date:   Tue Jun 24 04:21:33 2025 +0900
+
+    feat: 상품 조회 기능 구현
+
+[33mcommit 207c351fe1a34ad2ce3a8481f0ae20680313e6d0[m
+Author: hayun <psh040826@naver.com>
+Date:   Tue Jun 24 04:12:48 2025 +0900
+
+    feat: 상품 수정 기능 및 예외 처리 구현
+
+[33mcommit 709f384f9e96fd24800c3e1506178755edaaf280[m
+Author: hayun <psh040826@naver.com>
+Date:   Mon Jun 23 23:55:24 2025 +0900
+
+    feat: 상품 추가 기능 및 예외 처리 구현
+
+[33mcommit e63256ac24209c7f7978a96fa5de7e0c345a761c[m
+Author: hayun <psh040826@naver.com>
+Date:   Mon Jun 23 23:55:24 2025 +0900
+
+    docs : 구현할 기능 목록 및 API 명세서
+
+[33mcommit 292abc5ca8eeada654f5661c1d9b828efcda6311[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/dev-sohyeon[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m, [m[1;32mdev-sohyeon[m[33m)[m
+Author: wotjd243 <wotjd243@naver.com>
+Date:   Mon Jun 23 09:50:29 2025 +0900
+
+    feat: set up the project
+
+[33mcommit efe15835708283ae999aac43ff91c30482eb98fc[m
+Author: 박재성(Jason) <wotjd243@naver.com>
+Date:   Mon Jun 23 09:30:04 2025 +0900
+
+    Initial commit

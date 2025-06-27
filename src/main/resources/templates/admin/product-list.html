@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 목록</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1em; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; vertical-align: middle;}
+        th { background-color: #f8f8f8; }
+        .product-image { max-width: 100px; max-height: 100px; }
+        .empty-list { padding: 20px; text-align: center; color: #888; }
+    </style>
+</head>
+<body>
+
+<h1>상품 관리</h1>
+<p>등록된 모든 상품의 목록입니다.</p>
+
+<!-- 상품이 있을 경우에만 테이블을 보여줍니다. -->
+<div th:if="${!products.isEmpty()}">
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>상품명</th>
+            <th>가격</th>
+            <th>이미지</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id()}">1</td>
+            <td th:text="${product.name()}">상품 이름 예시</td>
+            <td th:text="${product.price()}">10000</td>
+            <td>
+                <img class="product-image" th:src="${product.imageUrl()}" alt="상품 이미지">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- 상품이 없을 경우 메시지를 보여줍니다. -->
+<div th:if="${products.isEmpty()}">
+    <p class="empty-list">등록된 상품이 없습니다.</p>
+</div>
+
+</body>
+</html>

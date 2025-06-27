@@ -22,7 +22,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest request) {
         ProductResponse response = productService.addProduct(request);
-        return ResponseEntity.created(URI.create("/api/products/" + response.getId())).body(response);
+        return ResponseEntity.created(URI.create("/api/products/" + response.id())).body(response);
     }
 
     @GetMapping
@@ -43,7 +43,7 @@ public class ProductController {
             @RequestBody ProductRequest request) {
 
         ProductResponse updatedProduct = productService.updateProduct(id, request);
-        return ResponseEntity.ok(updatedProduct); // 200 OK 상태와 함께 수정된 상품 정보 반환
+        return ResponseEntity.ok(updatedProduct);
     }
 
     @DeleteMapping("/{id}")
