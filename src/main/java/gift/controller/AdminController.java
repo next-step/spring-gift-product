@@ -112,7 +112,8 @@ public class AdminController {
     @PostMapping("/products/remove/{id}")
     public String removeProduct(@PathVariable Long id) {
         Long productId = findProductById(id).getId();
-        products.remove(productId);
+        String sql = "delete from products where id = ?";
+        jdbcTemplate.update(sql, productId);
         return "redirect:/admin/products/list";
     }
 
