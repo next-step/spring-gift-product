@@ -27,7 +27,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> update(@PathVariable Long id, @RequestBody ProductRequestDTO dto) {
-        Optional<ProductResponseDTO> productResponse = productService.update(id, dto);;
+        Optional<ProductResponseDTO> productResponse = productService.update(id, dto);
         return productResponse.map(ResponseEntity::ok).orElseGet( () -> ResponseEntity.noContent().build());
     }
 
