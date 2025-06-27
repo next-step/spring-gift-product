@@ -71,5 +71,24 @@ public class ProductAdminController {
         return "redirect:/admin/products";
     }
 
+    /**
+     * 상품 수정 폼
+     */
+    @GetMapping("/{id}/edit")
+    public String editForm(@PathVariable Long id, Model model) {
+        Product product = productService.getById(id);
+        ProductRequest request = new ProductRequest(
+                product.getCategoryId(),
+                product.getName(),
+                product.getPrice(),
+                product.getImageUrl()
+        );
+        model.addAttribute("productId", product.getId());
+        model.addAttribute("productRequest", request);
+        model.addAttribute("isNew", false);
+        return "admin/product/form";
+    }
+
+
 
 }
