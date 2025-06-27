@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>상품 등록/수정</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h1 th:text="${product.id == null} ? '상품 추가' : '상품 수정'"></h1>
+
+<!-- 상품 추가 form -->
+<form th:if="${product.id == null}" th:action="@{/admin/products/add}" method="post">
+    <div>
+        <label>이름:</label>
+        <input type="text" name="name" th:value="${product.name}" required />
+    </div>
+    <div>
+        <label>가격:</label>
+        <input type="number" name="price" th:value="${product.price}" required />
+    </div>
+    <div>
+        <label>이미지 URL:</label>
+        <input type="text" name="image" th:value="${product.image}" required />
+    </div>
+    <div style="margin-top: 10px;">
+        <button type="submit">저장</button>
+        <a href="/admin/products">취소</a>
+    </div>
+</form>
+
+<form th:if="${product.id != null}" th:action="@{/admin/products/edit}" method="post">
+    <input type="hidden" name="id" th:value="${product.id}" />
+    <div>
+        <label>이름:</label>
+        <input type="text" name="name" th:value="${product.name}" required />
+    </div>
+    <div>
+        <label>가격:</label>
+        <input type="number" name="price" th:value="${product.price}" required />
+    </div>
+    <div>
+        <label>이미지 URL:</label>
+        <input type="text" name="image" th:value="${product.image}" required />
+    </div>
+    <div style="margin-top: 10px;">
+        <button type="submit">저장</button>
+        <a href="/admin/products">취소</a>
+    </div>
+</form>
+
+</body>
+</html>

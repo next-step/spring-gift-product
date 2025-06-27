@@ -12,6 +12,9 @@ public class Product {
         this.price = price;
         this.image = imageUrl;
     }
+
+    public Product() {}
+
     public Long getId() { return id; }
     public String getName() { return name; }
     public Integer getPrice() { return price; }
