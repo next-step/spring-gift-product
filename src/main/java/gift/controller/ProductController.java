@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/products")
 class ProductController {
+
     private final ProductService productService;
 
     public ProductController(ProductService productService) {
@@ -21,7 +22,8 @@ class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto requestDto) {
+    public ResponseEntity<ProductResponseDto> createProduct(
+        @RequestBody ProductRequestDto requestDto) {
         return new ResponseEntity<>(productService.createProduct(requestDto), HttpStatus.CREATED);
     }
 
@@ -32,15 +34,16 @@ class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductResponseDto>> findAllProducts() {
-        return new ResponseEntity<>(productService.findAllProducts(), HttpStatus.OK);
+        return new ResponseEntity<>(productService.findAll(), HttpStatus.OK);
     }
 
-    @PatchMapping("/{productId}")
+    @PutMapping("/{productId}")
     public ResponseEntity<ProductResponseDto> updateProduct(
-            @PathVariable Long productId,
-            @RequestBody ProductRequestDto requestDto
+        @PathVariable Long productId,
+        @RequestBody ProductRequestDto requestDto
     ) {
-        return new ResponseEntity<>(productService.updateProduct(productId, requestDto), HttpStatus.OK);
+        return new ResponseEntity<>(productService.updateProduct(productId, requestDto),
+            HttpStatus.OK);
     }
 
     @DeleteMapping("/{productId}")

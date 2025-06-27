@@ -1,0 +1,76 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>상품 페이지</title>
+  <link rel="stylesheet" href="/css/home.css" type="text/css">
+</head>
+<body>
+<div class="page-header">
+  <h1 class="page-title">Manage <b>Products</b></h1>
+
+  <!--product create/delete button-->
+  <div class="top-action-buttons">
+    <button id="create-button" onclick="openCreateModal('물품 등록 창', 'create-product.html')"
+            data-bs-target="#product-modal">
+      물품 등록
+    </button>
+    <button id="delete-button">선택 항목 삭제</button>
+  </div>
+</div>
+
+<!--Modal-->
+<div id="product-modal" class="product-modal">
+  <div class="product-modal-content">
+    <div class="product-modal-header">
+      <h5 class="product-modal-title">모달 제목</h5>
+      <button class="product-modal-close-button" onclick="closeModal()">✖</button>
+    </div>
+    <div class="product-modal-body">
+    </div>
+  </div>
+</div>
+
+<!--Product Table-->
+<table class="product-table">
+  <thead>
+  <tr>
+    <th th:text="선택"></th>
+    <th th:text="번호"></th>
+    <th th:text="아이디"></th>
+    <th th:text="상품명"></th>
+    <th th:text="가격"></th>
+    <th th:text="이미지URL"></th>
+    <th th:text="수정"></th>
+    <th th:text="삭제"></th>
+  </tr>
+  </thead>
+
+  <tbody class="product-table-body" th:if="${productMap == null or productMap.isEmpty()}">
+  <tr>
+    <td colspan="8">등록된 상품이 없습니다.</td>
+  </tr>
+  </tbody>
+
+  <tbody class="product-table-body" th:if="${productMap != null and !productMap.isEmpty()}">
+  <tr th:each="entry : ${productEntries}">
+    <td><input type="checkbox" name="selectedKey" th:value="${entry.key}"></td>
+    <td th:text="${entry.key}"></td>
+    <td th:text="${entry.value.id}"></td>
+    <td th:text="${entry.value.name}"></td>
+    <td th:text="${entry.value.price}"></td>
+    <td th:text="${entry.value.imageUrl}"></td>
+    <td>
+      <button class="update-button">수정</button>
+    </td>
+    <td>
+      <button class="delete-button">삭제</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<script th:src="@{/js/home.js}"></script>
+</body>
+</html>

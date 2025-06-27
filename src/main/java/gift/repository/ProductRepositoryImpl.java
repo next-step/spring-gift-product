@@ -19,14 +19,13 @@ public class ProductRepositoryImpl implements ProductRepository {
     private long productId = 1L;
 
     @Override
-    public List<ProductResponseDto> findAllProducts() {
+    public List<ProductResponseDto> findAll() {
         List<ProductResponseDto> productList = new ArrayList<>();
 
-        // 지금까지 담은 물품들이 담긴 HashMap인 products 변수를 for loop를 돌면서 productList에 add 한다.
-        // 파이썬 습관 때문에 products를 그냥 넣으면 loop를 돌 수 있을 것이라고 생각했는데, 아예 다르게 Map.Entry<>로 나오는 것을 알았음.
         for (Map.Entry<Long, Product> entry : products.entrySet()) {
             productList.add(
-                new ProductResponseDto(entry.getValue())); // Product -> ProductResponseDto
+                ProductResponseDto.from(entry.getValue())
+            ); // Product -> ProductResponseDto
         }
         return productList;
     }
@@ -34,19 +33,19 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public ProductResponseDto createProduct(ProductRequestDto requestDto) {
         products.put(productId,
-            new Product(requestDto.getId(), requestDto.getName(), requestDto.getPrice(),
-                requestDto.getImageUrl()));
+            new Product(requestDto.id(), requestDto.name(), requestDto.price(),
+                requestDto.imageUrl()));
         productId++; // id 값 1 증가
 
-        return new ProductResponseDto(requestDto.getId(), requestDto.getName(),
-            requestDto.getPrice(),
-            requestDto.getImageUrl());
+        return new ProductResponseDto(requestDto.id(), requestDto.name(),
+            requestDto.price(),
+            requestDto.imageUrl());
     }
 
     @Override
     public ProductResponseDto findProduct(Long productId) {
         Product product = products.get(productId);
-        return new ProductResponseDto(product);
+        return ProductResponseDto.from(product);
     }
 
     @Override
@@ -54,14 +53,14 @@ public class ProductRepositoryImpl implements ProductRepository {
         Product product = products.get(productId);
 
         // product 내용 update
-        product.setId(requestDto.getId());
-        product.setName(requestDto.getName());
-        product.setPrice(requestDto.getPrice());
-        product.setImageUrl(requestDto.getImageUrl());
+        product.setId(requestDto.id());
+        product.setName(requestDto.name());
+        product.setPrice(requestDto.price());
+        product.setImageUrl(requestDto.imageUrl());
 
         products.put(productId, product);
 
-        return new ProductResponseDto(product);
+        return ProductResponseDto.from(product);
     }
 
     @Override
@@ -69,5 +68,10 @@ public class ProductRepositoryImpl implements ProductRepository {
         if (products.remove(productId) == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Override
+    public Map<Long, Product> findAllMap() {
+        return products;
     }
 }

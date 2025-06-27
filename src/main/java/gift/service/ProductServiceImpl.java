@@ -2,8 +2,14 @@ package gift.service;
 
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
+import gift.entity.Product;
 import gift.repository.ProductRepository;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,8 +22,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponseDto> findAllProducts() {
-        return productRepository.findAllProducts();
+    public List<ProductResponseDto> findAll() {
+        return productRepository.findAll();
     }
 
     @Override
@@ -38,5 +44,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(Long productId) {
         productRepository.deleteProduct(productId);
+    }
+
+    @Override
+    public Map<Long, Product> findAllMap() {
+        return Collections.unmodifiableMap(
+            productRepository.findAllMap()
+        );
     }
 }
