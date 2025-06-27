@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Controller
 @RequestMapping("/products")
 
-public class ProductPageController {
+public class ProductPageForm {
 
     private final Map<Long, Product> products = new HashMap<>();
     private final AtomicLong idGenerator = new AtomicLong(1);
