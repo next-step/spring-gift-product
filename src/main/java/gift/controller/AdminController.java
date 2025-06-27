@@ -2,28 +2,32 @@ package gift.controller;
 
 import gift.dto.ProductRequestDto;
 import gift.entity.Product;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
-//@ResponseBody + @Controller
-@RestController
-public class ProductController {
 
+@Controller//Controller는 mvc에서 화면을 구성하기 위해서 뷰 이름을 반환하고 ViewResolver를 거치게 됩니다.
+public class AdminController {
     private final Map<Long, Product> products = new HashMap<>();
     private static Long pid = 0L;
 
     //create
     //생성한 product는 HashMap에 저장
     @PostMapping("/products")
-    public ResponseEntity<Product> createProduct(@RequestBody ProductRequestDto requestDto) {
+    public String createProduct(@ModelAttribute ProductRequestDto requestDto) {
         if (checkProduct(requestDto)) {
             Product product = new Product(
                     ++pid,
@@ -32,54 +36,76 @@ public class ProductController {
                     requestDto.getImageUrl()
             );
             products.put(product.getId(), product);
-            //ResponseEntity의 경우, 객체와 상태를 함께 반환(상태 지정 가능)
-            return new ResponseEntity<>(product, HttpStatus.CREATED);
+            return "redirect:/products"; //GetMapping 되어 있는 것을 호출,,,?
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                 "가격은 음수가 될 수 없으며, 상품명, 가격, 이미지 주소는 필수 값입니다.");
     }
 
+    //form.html을 불러오기 위한 메서드
+    @GetMapping("/products/new")
+    public String productForm(){
+        return "form";
+    }
+
     //read
     //특정 상품을 조회(id)
-    @GetMapping("/products/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable Long id) {
+    @GetMapping("/products/info")
+    public String getProduct(
+            @RequestParam Long id,
+            Model model
+    ) {
         Product product = findProductById(id);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        model.addAttribute("product", product);
+        return "productinfo";
     }
 
     //read
     //전체 상품을 조회
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts() {
+    public String getProducts(Model model) {
         List<Product> productList = products.values()
                 .stream()
                 .collect(Collectors.toList());
-        return new ResponseEntity<>(productList, HttpStatus.OK);
+        model.addAttribute("productList",productList);
+        return "home";
+        //return new ResponseEntity<>(productList, HttpStatus.OK);
+    }
+
+    //modify.html을 불러오기 위한 메서드
+    @GetMapping("/products/modify")
+    public String modifyForm(
+            @RequestParam Long id,
+            Model model
+    ){
+        Product product = products.get(id);
+        model.addAttribute("product",product);
+        return "modify";
+
     }
 
     //update
     //상품 수정
-    @PutMapping("/products/{id}")
-    public ResponseEntity<Product> modifyProduct(
-            @RequestBody ProductRequestDto requestDto,
-            @PathVariable Long id
+    @PutMapping("/products")
+    public String modifyProduct(
+            @ModelAttribute ProductRequestDto requestDto,
+            @RequestParam Long id
     ) {
-        Long found = findProductById(id).getId();
-        Product product = new Product(found,
+        Product product = new Product(id,
                 requestDto.getName(),
                 requestDto.getPrice(),
                 requestDto.getImageUrl());
-        products.put(found, product);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        products.put(id, product);
+        return "redirect:/products";
     }
 
     //delete
     //등록된 상품을 삭제
-    @DeleteMapping("/products/{id}")
-    public ResponseEntity<Void> removeProduct(@PathVariable Long id) {
+    @GetMapping("/products/remove/{id}")
+    public String removeProduct(@PathVariable Long id) {
         Long found = findProductById(id).getId();
         products.remove(found);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return "redirect:/products";
     }
 
     public boolean checkProduct(ProductRequestDto requestDto) {
@@ -103,3 +129,4 @@ public class ProductController {
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "존재하지 않는 상품입니다.");
     }
 }
+
