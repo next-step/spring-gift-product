@@ -38,8 +38,8 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public List<ProductResponseDto> findAllProduct() {
         List<Product> products = productRepository.findAllProduct();
-        List<ProductResponseDto> responseDto = products.stream().map(Product::toProductResponseDto).toList();
-        return responseDto;
+        List<ProductResponseDto> responseDtos = products.stream().map(Product::toProductResponseDto).toList();
+        return responseDtos;
     }
 
     @Override
