@@ -42,8 +42,9 @@ public class ProductService {
     }
 
     public void deleteProduct(Long id) {
-        Product removedProduct = products.remove(id);
-        validateProduct(removedProduct);
+        Product existingProduct = products.get(id);
+        validateProduct(existingProduct);
+        products.remove(id);
     }
 
     public List<ProductResponseDto> getProducts() {
