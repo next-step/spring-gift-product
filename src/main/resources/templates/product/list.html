@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>🎁 상품 목록 🎁</title>
+    <style>
+        body {
+            font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            padding: 30px;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f5f5f5;
+        }
+
+        .actions form {
+            display: inline;
+        }
+
+        .pagination {
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            margin: 0 5px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .pagination .current {
+            font-weight: bold;
+            text-decoration: underline;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🎁 상품 목록</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>상품명</th>
+        <th>가격</th>
+        <th>이미지</th>
+        <th>액션</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products.content}">
+        <td th:text="${product.id}">1</td>
+        <td th:text="${product.name}">상품명</td>
+        <td th:text="${product.price}">1000</td>
+        <td><img th:src="${product.imageUrl}" alt="이미지" width="50"/></td>
+        <td class="actions">
+            <a th:href="@{'/admin/products/' + ${product.id}}">상세 보기</a>
+            <form th:action="@{'/admin/products/' + ${product.id} + '/update'}" method="get" style="display:inline;">
+                <button type="submit">수정</button>
+            </form>
+            <form th:action="@{'/admin/products/delete/' + ${product.id}}" method="post" style="display:inline;">
+                <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- 페이지네이션 -->
+<div class="pagination">
+    <span th:if="${products.hasPrevious()}">
+        <a th:href="@{/admin/products(page=${products.number - 1})}">이전</a>
+    </span>
+
+    <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:href="@{/admin/products(page=${i})}"
+           th:text="${i + 1}"
+           th:class="${i == currentPage} ? 'current' : ''"></a>
+    </span>
+
+    <span th:if="${products.hasNext()}">
+        <a th:href="@{/admin/products(page=${products.number + 1})}">다음</a>
+    </span>
+</div>
+
+<a href="/admin/products/new">상품 등록하기</a>
+
+</body>
+</html>

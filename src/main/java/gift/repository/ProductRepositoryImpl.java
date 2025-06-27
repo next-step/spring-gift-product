@@ -3,28 +3,31 @@ package gift.repository;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    private final Map<Long, Product> products = new HashMap<>();
-    private Long initId = 1L;
+    private final ConcurrentHashMap<Long, Product> products = new ConcurrentHashMap<>();
+    private final AtomicLong initId = new AtomicLong();
 
     @Override
     public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
-        Product product = new Product(initId++,
+        Product product = new Product(initId.incrementAndGet(),
                 productRequestDto.getName(),
                 productRequestDto.getPrice(),
                 productRequestDto.getImageUrl()
         );
-        products.put(initId, product);
+        products.put(initId.get(), product);
         return new ProductResponseDto(product.getId(),
                 product.getName(),
                 product.getPrice(),
@@ -32,10 +35,24 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public List<ProductResponseDto> findAllProducts() {
-        return products.values().stream()
-                .map(this::toResponseDto)
-                .collect(Collectors.toList());
+    public Page<ProductResponseDto> findAllProducts(Pageable pageable) {
+        List<Product> allProducts = new ArrayList<>(products.values());
+
+        int total = allProducts.size();
+
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startIdx = currentPage * pageSize;
+        int endIdx = Math.min(startIdx + pageSize, total);
+
+        List<ProductResponseDto> pageList = new ArrayList<>();
+        if (startIdx < total) {
+            pageList = allProducts.subList(startIdx, endIdx).stream()
+                    .map(this::toResponseDto)
+                    .toList();
+        }
+
+        return new PageImpl<>(pageList, pageable, total);
     }
 
     @Override
@@ -60,17 +77,17 @@ public class ProductRepositoryImpl implements ProductRepository {
             throw new NoSuchElementException("수정할 상품이 없습니다. id=" + id);
         }
 
-        Product updateProduct = new Product(id,
+        product.update(
                 productRequestDto.getName(),
                 productRequestDto.getPrice(),
                 productRequestDto.getImageUrl()
         );
-        products.put(id, updateProduct);
-
-        return new ProductResponseDto(updateProduct.getId(),
-                updateProduct.getName(),
-                updateProduct.getPrice(),
-                updateProduct.getImageUrl());
+        return new ProductResponseDto(
+                product.getId(),
+                product.getName(),
+                product.getPrice(),
+                product.getImageUrl()
+        );
     }
 
     @Override
