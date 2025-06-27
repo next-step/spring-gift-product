@@ -1,5 +1,6 @@
 package gift;
 
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -8,17 +9,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Controller
 @RequestMapping("/products")
+@Controller
 
-public class ProductPageForm {
+public class ProductPageController {
 
-    private final Map<Long, Product> products = new HashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong(1);
+    private final ProductStorage products;
+
+    public ProductPageController(ProductStorage products) { this.products = products; }
 
     @GetMapping
     public String list(Model model) {
-        model.addAttribute("products", products.values());
+        model.addAttribute("products", products.getProducts());
         return "Products";
     }
 
@@ -30,28 +32,25 @@ public class ProductPageForm {
 
     @PostMapping
     public String create(@ModelAttribute Product product) {
-        product.setId(idGenerator.getAndIncrement());
-        products.put(product.getId(), product);
+        products.save(product);
         return "redirect:/products";
     }
 
     @GetMapping("/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
-        Product product = products.get(id);
-        model.addAttribute("product", product);
+        model.addAttribute("product", products.findById(id));
         return "Productform";
     }
 
     @PostMapping("/{id}")
     public String edit(@PathVariable Long id, @ModelAttribute Product updated) {
-        updated.setId(id);
-        products.put(id, updated);
+        products.update(id, updated);
         return "redirect:/products";
     }
 
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable Long id) {
-        products.remove(id);
+        products.delete(id);
         return "redirect:/products";
     }
 
