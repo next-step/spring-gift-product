@@ -38,10 +38,9 @@ public class ProductService {
     }
 
     public Product getProduct(Long productId) {
-        if (productRepository.findById(productId).isEmpty()) {
-            throw new IllegalArgumentException("Product(id: " + productId + ") not found");
-        }
-        return productRepository.findById(productId).get();
+        return productRepository.findById(productId)
+            .orElseThrow(
+                () -> new IllegalArgumentException("Product(id: " + productId + ") not found"));
     }
 
     public Product updateProduct(Long productId, ProductRequest request) {
