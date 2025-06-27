@@ -40,7 +40,7 @@ public class ProductService {
 
     public ProductDto updateProduct(Long id, UpdateProductDto body) {
         findProduct(id);
-        Product instance = body.toEntity();
+        Product instance = body.toEntity(id);
         Product product = productRepository.update(id, instance).get();
         return ProductDto.from(product);
     }

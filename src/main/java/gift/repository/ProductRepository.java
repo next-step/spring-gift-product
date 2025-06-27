@@ -1,75 +1,80 @@
 package gift.repository;
 
 import gift.entity.Product;
-import org.springframework.stereotype.Component;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
-@Component
+@Repository
 public class ProductRepository {
 
-    private final Map<Long, Product> map = new ConcurrentHashMap<>();
-    private final AtomicLong sequence = new AtomicLong(1);
+    private final JdbcClient client;
 
-    public ProductRepository() {
-        saveDummyData();
+    public ProductRepository(JdbcClient client) {
+        this.client = client;
     }
 
     public Optional<Product> save(Product product) {
-        Long id = sequence.incrementAndGet();
-        Product savedProduct = new Product(id, product.getName(), product.getPrice(), product.getImageUrl());
-        map.put(id, savedProduct);
-        return Optional.of(savedProduct);
+        var sql = "insert into product (name, price, imageUrl) values (:name, :price, :imageUrl);";
+        var keyHolder = new GeneratedKeyHolder();
+        client.sql(sql)
+                .param("name", product.getName())
+                .param("price", product.getPrice())
+                .param("imageUrl", product.getImageUrl())
+                .update(keyHolder);
+        Long id = keyHolder.getKey().longValue();
+        return Optional.of(new Product(id, product.getName(), product.getPrice(), product.getImageUrl()));
+        //return findById(id);
     }
 
     public Optional<Product> findById(Long id) {
-        if (map.containsKey(id)) {
-            return Optional.of(map.get(id));
-        }
-        return Optional.empty();
+        var sql = "select * from product where id=:id;";
+        return client.sql(sql)
+                .param("id", id)
+                .query(getRowMapper())
+                .optional();
     }
 
     public List<Product> findAll() {
-        return map.values().stream()
-                .toList();
+        var sql = "select * from product;";
+        return client.sql(sql)
+                .query(getRowMapper())
+                .list();
     }
 
     public Optional<Product> update(Long id, Product product) {
-        if (map.containsKey(id)) {
-            Product savedProduct = new Product(id, product.getName(), product.getPrice(), product.getImageUrl());
-            map.put(id, savedProduct);
-            return Optional.of(savedProduct);
+        var sql = "update product set name = :name, price = :price, imageUrl = :imageUrl where id = :id;";
+        var affected = client.sql(sql)
+                .param("id", product.getId())
+                .param("name", product.getName())
+                .param("price", product.getPrice())
+                .param("imageUrl", product.getImageUrl())
+                .update();
+
+        if(affected == 0) {
+            return Optional.empty();
         }
-        return Optional.empty();
+        return Optional.of(new Product(id, product.getName(), product.getPrice(), product.getImageUrl()));
     }
 
     public void delete(Long id) {
-        map.remove(id);
+        var sql = "delete from product where id = :id;";
+        client.sql(sql)
+                .param("id", id)
+                .update();
     }
 
-    /**
-     * !!test에서 사용되는 메서드!!
-     * 호출 금지
-     */
-    public void clear() {
-        map.clear();
-    }
-
-    /**
-     * 테스트용 데이터 초기화 메서드
-     */
-    private void saveDummyData() {
-        Product p1 = new Product(null, "아메리카노", 3000L, "https://americano");
-        Product p2 = new Product(null, "카페라떼", 4000L, "https://cafelatte");
-        Product p3 = new Product(null, "모카", 5000L, "https://moka");
-        Product p4 = new Product(null, "아포가토", 4500L, "https://affogato");
-        save(p1);
-        save(p2);
-        save(p3);
-        save(p4);
+    private static RowMapper<Product> getRowMapper() {
+        return (rs, rowNum) -> {
+            Long id = rs.getLong("id");
+            String name = rs.getString("name");
+            Long price = (long) rs.getInt("price");
+            String imageUrl = rs.getString("imageUrl");
+            return new Product(id, name, price, imageUrl);
+        };
     }
 }

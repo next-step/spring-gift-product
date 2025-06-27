@@ -9,7 +9,7 @@ public record UpdateProductDto(
         @Min(value = 0, message = "Product price must be positive") Long price,
         String imageUrl
 ) {
-    public Product toEntity() {
-        return new Product(null, name, price, imageUrl);
+    public Product toEntity(Long id) {
+        return new Product(id, name, price, imageUrl);
     }
 }
