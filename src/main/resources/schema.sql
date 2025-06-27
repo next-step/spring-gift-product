@@ -1,6 +1,6 @@
-create table product(
+create table products(
     id bigint auto_increment,
-    name varchar(255) NOT NULL,
-    price int NOT NULL,
-    imageUrl varchar(255) NOT NULL
+    name varchar(255) not null,
+    price int not null,
+    imageurl varchar(255) not null
 );

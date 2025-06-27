@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,13 @@ public class AdminController {
     private final Map<Long, Product> products = new HashMap<>();
     private static Long pid = 0L;
 
+    private JdbcTemplate jdbcTemplate;
+
+    //의존성 주입(생성자가 1개인 경우 @Autowired 생략 가능)
+    public AdminController(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     @GetMapping
     public String home(){
         return "redirect:/admin/products/list";
@@ -35,13 +43,8 @@ public class AdminController {
     @PostMapping("/products/add")
     public String createProduct(@ModelAttribute ProductRequestDto requestDto) {
         if (checkProduct(requestDto)) {
-            Product product = new Product(
-                    ++pid,
-                    requestDto.getName(),
-                    requestDto.getPrice(),
-                    requestDto.getImageUrl()
-            );
-            products.put(product.getId(), product);
+            String sql = "INSERT INTO PRODUCTS (NAME, PRICE, IMAGEURL) VALUES (?, ?, ?)";
+            jdbcTemplate.update(sql, requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
             return "redirect:/admin/products/list"; //GetMapping 되어 있는 것을 호출,,,?
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
