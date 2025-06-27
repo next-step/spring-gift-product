@@ -168,3 +168,44 @@ src/
 
 - 상품 등록 시 이미지 업로드는 하지 않고, **URL을 직접 입력**받아 처리합니다.
 - 기존 상품 API는 `/api/products` 경로로 제공되며, 관리자 화면에서는 해당 API를 직접 사용하거나, 서버 측에서 데이터를 조회해 뷰에 바인딩합니다.
+
+
+
+### Step 3
+
+H2 데이터베이스와 연동하여 상품 정보를 영구적으로 저장하고 관리할 수 있도록, 기존 메모리 기반 → DB 기반 전환으로 전환합니다.
+
+JdbcTemplate을 활용해 상품의 등록, 조회, 수정, 삭제 기능을 데이터베이스와 연결하며, 애플리케이션 실행 시 테이블과 초기 데이터를 자동으로 생성하도록 구성합니다.
+
+✅ 구현 목표
+- 기존 메모리 저장 방식 제거
+- **H2 데이터베이스와 연동**하여 상품 정보를 영구 저장
+- 애플리케이션 실행 시 테이블 자동 생성 및 초기 데이터 삽입
+- `JdbcTemplate`을 활용한 CRUD 구현
+
+- [x] `schema.sql`로 테이블 자동 생성
+- [x] `data.sql`로 초기 상품 데이터 삽입
+- [x] `application.properties`에 H2 설정 추가
+- [x] `JdbcTemplate`을 통한 상품 등록/조회/삭제 구현
+- [x] 메모리 저장소 코드 제거
+
+### 📂 디렉터리 구조
+
+```text
+src/
+├── main/
+│ ├── java/
+│ │ └── gift/
+│ │ ├── controller/
+│ │ ├── dto/
+│ │ ├── entity/
+│ │ ├── exception/
+│ │ ├── repository/
+│ │ └── service/
+│ └── resources/
+│ ├── application.properties
+│ ├── schema.sql # 테이블 생성
+│ ├── data.sql # 초기 상품 데이터
+│ ├── static/ # 정적 파일
+│ └── templates/ # HTML 템플릿
+```
