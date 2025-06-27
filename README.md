@@ -36,3 +36,18 @@ ___
     - 성공적으로 삭제되면 204 No Content
     - 없는 ID면 404 Not Found
     - DELETE /api/products/{id}
+
+### 관리자 페이지 구현
+1. 상품 목록 페이지
+   - /products/view
+   - 파라미터를 통해 페이지 크기 설정 가능
+   - ex) /products/view?page=1&pageSize=5
+     - 기본값: page=1, pageSize=5
+2. 상품 등록 페이지
+   - /product/add
+3. 상품 상세 페이지
+   - /product/{id}
+4. 상품 수정 페이지
+   - /product/edit/{id}
+5. 상품 삭제는 별다른 페이지 없이
+   - /delete/{id}
