@@ -25,8 +25,8 @@
 
 ## Step2 Refactoring [ 06/27 ]
 
-- [ ] 관리자 페이지 구현
-    - [ ] form 태그 Thymeleaf 설정
-    - [ ] th:object 사용해 코드 간소화
+- [x] 관리자 페이지 구현
+    - [x] form 태그 Thymeleaf 설정
+    - [x] th:object 사용해 코드 간소화
 - [x] saveProduct의 EndPoint 분리
 - [ ] 도메인 객체를 뷰와 분리

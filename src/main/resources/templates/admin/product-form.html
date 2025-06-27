@@ -8,31 +8,31 @@
 </head>
 <body class="bg-light">
 <div class="container py-5" style="max-width: 600px">
-  <h2 class="mb-4 text-center" th:text="${product.id == null ? '➕ 상품 추가' : '✏️ 상품 수정'}"></h2>
+  <h2 class="mb-4 text-center" th:text="*{id} == null ? '➕ 상품 추가' : '✏️ 상품 수정'"></h2>
 
-  <form th:action="@{${action}}" method="post">
+  <form th:action="@{${action}}" method="post" th:object="${product}">
     <!-- method override: PUT -->
     <input type="hidden" name="_method" th:if="${method == 'put'}" value="put"/>
 
-    <input type="hidden" name="id" th:value="${product.id}"/>
+    <input type="hidden" name="id" th:field="*{id}"/>
 
     <div class="mb-3">
       <label class="form-label">상품명</label>
-      <input type="text" class="form-control" name="name" th:value="${product.name}" required>
+      <input type="text" th:field="*{name}" class="form-control" required>
     </div>
 
     <div class="mb-3">
       <label class="form-label">가격</label>
-      <input type="number" class="form-control" name="price" th:value="${product.price}" required>
+      <input type="number" th:field="*{price}" class="form-control" required>
     </div>
 
     <div class="mb-3">
       <label class="form-label">이미지 URL</label>
-      <input type="text" class="form-control" name="imageUrl" th:value="${product.imageUrl}">
+      <input type="text" th:field="*{imageUrl}" class="form-control">
     </div>
 
     <div class="mb-3 text-center">
-      <img th:if="${product.imageUrl != null}" th:src="${product.imageUrl}"
+      <img th:if="*{imageUrl} != null" th:src="*{imageUrl}"
            class="img-fluid rounded" style="max-height: 200px;" alt="미리보기 이미지"/>
     </div>
 
