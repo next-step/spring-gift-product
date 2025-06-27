@@ -11,7 +11,7 @@ import java.util.*;
 @Repository
 public class ProductRepositoryImpl implements ProductRepository{
 
-    private final Map<Long, Product> productList = new HashMap<>();
+    private final Map<Long, Product> products = new HashMap<>();
     private Long listId;
 
     public ProductRepositoryImpl() {
@@ -21,7 +21,7 @@ public class ProductRepositoryImpl implements ProductRepository{
     @Override
     public List<ProductResponseDto> findAllProducts() {
 
-        return productList.values()
+        return products.values()
                 .stream()
                 .map(product -> new ProductResponseDto(
                         product.getId(),
@@ -35,13 +35,13 @@ public class ProductRepositoryImpl implements ProductRepository{
     @Override
     public Product findProductById (Long id) {
 
-        return productList.get(id);
+        return products.get(id);
     }
 
     @Override
     public Product findProductByIdElseThrow(Long id) {
 
-        Product product = productList.get(id);
+        Product product = products.get(id);
 
         if (product == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 ID의 상품은 존재하지 않습니다.");
@@ -55,7 +55,7 @@ public class ProductRepositoryImpl implements ProductRepository{
         listId++;
 
         Product product = new Product(listId, name, price, imageUrl);
-        productList.put(listId, product);
+        products.put(listId, product);
 
         return product;
     }
@@ -63,7 +63,7 @@ public class ProductRepositoryImpl implements ProductRepository{
     @Override
     public Product updateProduct(Long id, String name, Long price, String imageUrl) {
 
-        Product product = productList.get(id);
+        Product product = products.get(id);
 
         product.updateProduct(name, price, imageUrl);
 
@@ -72,6 +72,6 @@ public class ProductRepositoryImpl implements ProductRepository{
 
     @Override
     public void deleteProduct(Long id) {
-        productList.remove(id);
+        products.remove(id);
     }
 }
