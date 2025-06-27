@@ -1,4 +1,13 @@
 # spring-gift-product
+# 3단계
+jdbcClient를 사용하여 상품정보를 저장할 수 있는 데이터베이스를 만들고 sql문을 작성하여 관리할 수 있게 한다.
+## 1. 2단계 피드백 반영
+- RequestMapping에서 api 빼기
+- service, repository 를 interface 타입으로 주입해보기
+- toProductResponseDto 생성자 수정
+- record 클래스를 뷰에 전달해보기
+
+---
 # 2단계
 상품을 추가, 조회, 수정, 삭제 할 수 있는 관리자 화면을 만든다.
 ## 1. 1단계 피드백 반영
