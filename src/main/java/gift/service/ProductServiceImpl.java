@@ -74,16 +74,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDeleteResponseDto deleteProductByProductId(Long productId) {
-        Product product = productRepository.findProductByProductId(productId);
+    public void deleteProductByProductId(Long productId) {
+        int deletedProductRows = productRepository.deleteProductByProductId(productId);
 
-        if (product == null) {
+        if (deletedProductRows == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Does not exist productId = " + productId);
+                "Failed to delete productId = " + productId);
         }
-
-        Product deletedProduct = productRepository.deleteProductByProductId(productId);
-
-        return new ProductDeleteResponseDto(deletedProduct);
     }
 }

@@ -57,11 +57,14 @@ public class ProductRepositoryImpl implements ProductRepository {
                 ),
             productId
         );
+
         return product;
     }
 
     @Override
-    public Product deleteProductByProductId(Long productId) {
-        return products.remove(productId);
+    public int deleteProductByProductId(Long productId) {
+
+        String sql = "DELETE FROM products WHERE productId = ?";
+        return jdbcTemplate.update(sql, productId);
     }
 }

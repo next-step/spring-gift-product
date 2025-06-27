@@ -12,5 +12,5 @@ public interface ProductRepository {
 
     Product findProductByProductId(Long productId);
 
-    Product deleteProductByProductId(Long productId);
+    int deleteProductByProductId(Long productId);
 }

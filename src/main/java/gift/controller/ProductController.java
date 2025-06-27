@@ -3,7 +3,6 @@ package gift.controller;
 import gift.dto.request.ProductCreateRequestDto;
 import gift.dto.request.ProductUpdateRequestDto;
 import gift.dto.response.ProductCreateResponseDto;
-import gift.dto.response.ProductDeleteResponseDto;
 import gift.dto.response.ProductGetResponseDto;
 import gift.dto.response.ProductUpdateResponseDto;
 import gift.service.ProductService;
@@ -63,9 +62,9 @@ public class ProductController {
     }
 
     @DeleteMapping("/{productId}")
-    public ResponseEntity<ProductDeleteResponseDto> deleteProduct(@PathVariable Long productId) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
 
-        return new ResponseEntity<>(productService.deleteProductByProductId(productId),
-            HttpStatus.OK);
+        productService.deleteProductByProductId(productId);
+        return ResponseEntity.noContent().build();
     }
 }
