@@ -23,6 +23,15 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
+    public static Product createWithId(Product productWithoutId, Long newId) {
+        return new Product(
+                newId,
+                productWithoutId.getName(),
+                productWithoutId.getPrice(),
+                productWithoutId.getImageUrl()
+        );
+    }
+
     public Long getId() {
         return id;
     }

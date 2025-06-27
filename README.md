@@ -9,3 +9,12 @@
 | 상품 추가    | POST   | `/api/products`              | 요청 body                 | 등록 정보       | `201 Created`    |
 | 상품 수정    | PATCH  | `/api/products/{id}` | 요청 body + Path Variable | 수정 정보       | `200 OK`         |
 | 상품 삭제    | DELETE | `/api/products/{id}` | 요청 body + Path Variable | 없음                          | `204 No Content` |
+
+- 2단계 - 관리자 화면 기능 요구 사항
+  - 상품 리스트 화면
+    - 상품 전체 조회
+    - 상품 추가 버튼
+    - 상품 수정 버튼
+    - 상품 삭제 버튼
+  - 상품 추가 화면
+  - 상품 수정 화면
