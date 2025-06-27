@@ -53,9 +53,7 @@ public class ProductController {
 
     @PatchMapping("/product/{id}/update")
     public String updateProduct(@PathVariable Long id, @ModelAttribute ProductDTO updateProductdto) {
-        if(!products.containsKey(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 데이터가 존재하지 않습니다.");
-        }
+        checkId(id);
         Product oldProduct = products.get(id);
         oldProduct.updateProduct(updateProductdto);
         return "redirect:/api/products";
@@ -63,10 +61,14 @@ public class ProductController {
 
     @DeleteMapping("/product/{id}/delete")
     public String deleteProduct(@PathVariable Long id) {
+        checkId(id);
+        products.remove(id);
+        return "redirect:/api/products";
+    }
+
+    private void checkId(Long id) {
         if(!products.containsKey(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 데이터가 존재하지 않습니다.");
         }
-        products.remove(id);
-        return "redirect:/api/products";
     }
 }
