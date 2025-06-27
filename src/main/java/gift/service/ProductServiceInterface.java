@@ -1,5 +1,6 @@
 package gift.service;
 
+import gift.dto.PageResponseDto;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 
@@ -10,6 +11,9 @@ public interface ProductServiceInterface {
 
     // 상품 생성
     ProductResponseDto addProduct(ProductRequestDto requestDto);
+
+    // 상품 목록 페이지 단위 조회
+    PageResponseDto getPageProducts(int page, int pageSize);
 
     // 전체 상품 목록 조회
     List<ProductResponseDto> findAllProducts();

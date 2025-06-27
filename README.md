@@ -40,6 +40,9 @@ ___
 ### 관리자 페이지 구현
 1. 상품 목록 페이지
    - /products/view
+   - 파라미터를 통해 페이지 크기 설정 가능
+   - ex) /products/view?page=1&pageSize=5
+     - 기본값: page=1, pageSize=5
 2. 상품 등록 페이지
    - /product/add
 3. 상품 상세 페이지

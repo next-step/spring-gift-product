@@ -1,5 +1,6 @@
 package gift.service;
 
+import gift.dto.PageResponseDto;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
@@ -35,6 +36,36 @@ public class ProductService implements ProductServiceInterface {
         Product addedProduct = productRepository.addProduct(product);
 
         return new ProductResponseDto(addedProduct.getId(), addedProduct.getName(), addedProduct.getPrice(), addedProduct.getImageUrl());
+    }
+
+    @Override
+    public PageResponseDto getPageProducts(int page, int pageSize) {
+        List<Product> productList = productRepository.findAllProducts();
+        List<ProductResponseDto> products = new ArrayList<>();
+        for (Product product : productList) {
+            products.add(new ProductResponseDto(
+                    product.getId(),
+                    product.getName(),
+                    product.getPrice(),
+                    product.getImageUrl()
+            ));
+        }
+
+        int totalProducts = products.size();
+        int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
+        if (totalPages == 0){
+            totalPages = 1;
+        }
+
+        int fromIndex = (page - 1) * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, totalProducts);
+
+        List<ProductResponseDto> pageProducts = new ArrayList<>();
+        if (fromIndex < totalProducts) {
+            pageProducts = products.subList(fromIndex, toIndex);
+        }
+
+        return new PageResponseDto(page, totalPages, pageProducts);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package gift.controller;
 
+import gift.dto.PageResponseDto;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.service.ProductService;
@@ -24,29 +25,15 @@ public class ProductViewController {
     }
 
     @GetMapping("/view")
-    public String showProductsForm(Model model, @RequestParam(defaultValue = "1") int page) {
+    public String showProductsForm(Model model, @RequestParam(defaultValue = "1") int page,
+                                   @RequestParam(defaultValue = "5") int pageSize) {
 
-        int pageSize = 5;
+        PageResponseDto pageResponseDto = productService.getPageProducts(page, pageSize);
 
-        List<ProductResponseDto> allProducts = productService.findAllProducts();
-
-        int totalProducts = allProducts.size();
-        int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
-        if (totalPages == 0){
-            totalPages = 1;
-        }
-
-        int fromIndex = (page - 1) * pageSize;
-        int toIndex = Math.min(fromIndex + pageSize, totalProducts);
-
-        List<ProductResponseDto> products = new ArrayList<>();
-        if (fromIndex < totalProducts) {
-            products = allProducts.subList(fromIndex, toIndex);
-        }
-
-        model.addAttribute("products", products);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("products", pageResponseDto.getPageProducts());
+        model.addAttribute("currentPage", pageResponseDto.getCurrentPage());
+        model.addAttribute("totalPages", pageResponseDto.getTotalPages());
+        model.addAttribute("pageSize", pageSize);
 
         return "view";
     }
