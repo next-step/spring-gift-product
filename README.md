@@ -2,9 +2,7 @@
 > Kakao Tech Campus Step2
 
 ## 구현할 기능 목록
-- [x] 관리자 화면을 thymeleaf로 구현
-  - [x] 상품을 리스트로 뜨도록 구현
-    - [x] 각 상품에 삭제 기능
-    - [x] 각 상품에 수정 기능
-  - [x] 상품 등록 기능
-- [x] 관리자 화면을 위한 Controller 구현
+- Database의 스키마를 static/sql/schema.sql에 정의
+- Database에 테스트용 데이터를 static/sql/data.sql에 정의
+- Database를 통해 동작하는 DatabaseProductRepository 구현
+- Database에 관련된 정보를 application.yml에 정의
