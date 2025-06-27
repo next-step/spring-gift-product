@@ -52,12 +52,12 @@ public class ProductController {
     }
 
     @PatchMapping("/product/{id}/update")
-    public String updateProduct(@PathVariable Long id, @ModelAttribute Product updateProduct) {
+    public String updateProduct(@PathVariable Long id, @ModelAttribute ProductDTO updateProductdto) {
         if(!products.containsKey(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 데이터가 존재하지 않습니다.");
         }
         Product oldProduct = products.get(id);
-        oldProduct.updateProduct(updateProduct);
+        oldProduct.updateProduct(updateProductdto);
         return "redirect:/api/products";
     }
 
