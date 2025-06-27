@@ -42,14 +42,12 @@ public class AdminProductController {
         return "product/form";
     }
 
-    // 5. 상품 수정 처리 (POST /admin/products/edit)
     @PostMapping("/edit")
     public String edit(@ModelAttribute Product product) {
         productService.updateProduct(product.getId(), product);
         return "redirect:/admin/products";
     }
 
-    // 6. 상품 삭제 처리 (POST /admin/products/delete/{id})
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         productService.removeProduct(id);
