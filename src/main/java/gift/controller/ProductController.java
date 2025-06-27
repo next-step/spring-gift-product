@@ -51,5 +51,4 @@ public class ProductController {
     public List<ProductResponse> searchByName(@RequestParam String name) {
         return productService.searchByName(name);
     }
-
 }

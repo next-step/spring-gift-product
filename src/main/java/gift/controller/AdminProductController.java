@@ -37,5 +37,4 @@ public class AdminProductController {
         model.addAttribute("product", product);
         return "admin/product-edit";
     }
-
 }
