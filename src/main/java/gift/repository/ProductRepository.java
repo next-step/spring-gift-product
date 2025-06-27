@@ -1,8 +1,8 @@
 package gift.repository;
 
-import gift.dto.AddProductResponseDto;
-import gift.dto.FindProductResponseDto;
-import gift.dto.ModifyProductResponseDto;
+import gift.dto.api.AddProductResponseDto;
+import gift.dto.api.FindProductResponseDto;
+import gift.dto.api.ModifyProductResponseDto;
 import gift.entity.Product;
 import java.util.List;
 

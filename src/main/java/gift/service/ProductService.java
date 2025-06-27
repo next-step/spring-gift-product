@@ -1,10 +1,10 @@
 package gift.service;
 
-import gift.dto.AddProductRequestDto;
-import gift.dto.AddProductResponseDto;
-import gift.dto.FindProductResponseDto;
-import gift.dto.ModifyProductRequestDto;
-import gift.dto.ModifyProductResponseDto;
+import gift.dto.api.AddProductRequestDto;
+import gift.dto.api.AddProductResponseDto;
+import gift.dto.api.FindProductResponseDto;
+import gift.dto.api.ModifyProductRequestDto;
+import gift.dto.api.ModifyProductResponseDto;
 import java.util.List;
 
 public interface ProductService {

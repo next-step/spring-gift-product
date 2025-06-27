@@ -1,8 +1,10 @@
 package gift.controller;
 
-import gift.dto.AddProductRequestDto;
-import gift.dto.FindProductResponseDto;
-import gift.dto.ModifyProductRequestDto;
+import gift.dto.api.AddProductRequestDto;
+import gift.dto.api.FindProductResponseDto;
+import gift.dto.api.ModifyProductRequestDto;
+import gift.dto.htmlform.AddProductForm;
+import gift.dto.htmlform.ModifyProductForm;
 import gift.service.ProductService;
 import java.util.List;
 import org.springframework.stereotype.Controller;
@@ -42,24 +44,34 @@ public class ProductViewController {
         Model model
     ) {
         FindProductResponseDto product = productService.findProductWithId(id);
-        ModifyProductRequestDto modifyForm = new ModifyProductRequestDto(product.getName(),
+        ModifyProductForm modifyForm = new ModifyProductForm(product.getName(),
             product.getPrice(), product.getImageUrl());
+        
         model.addAttribute("product", product);
         model.addAttribute("modifyForm", modifyForm);
+        
         return "product-detail";
     }
     
     //상품 추가 화면, 이름 / 가격 / 이미지 링크 입력 받도록 구성
     @GetMapping("/add")
     public String showAddForm(Model model) {
-        model.addAttribute("productForm", new AddProductRequestDto());
+        model.addAttribute("productForm", new AddProductForm());
+        
         return "product-add";
     }
     
     //상품 추가 화면에서 제출 버튼 누르면 동작
     @PostMapping("/add")
-    public String addProduct(@ModelAttribute AddProductRequestDto productForm) {
-        productService.addProduct(productForm);
+    public String addProduct(@ModelAttribute AddProductForm productForm) {
+        AddProductRequestDto requestDto = new AddProductRequestDto(
+            productForm.getName(),
+            productForm.getPrice(),
+            productForm.getImageUrl()
+        );
+        
+        productService.addProduct(requestDto);
+        
         return "redirect:" + PRODUCTS_LIST_PATH;
     }
     
@@ -67,21 +79,38 @@ public class ProductViewController {
     @GetMapping("/edit/{id}")
     public String showModifyForm(@PathVariable Long id, Model model) {
         model.addAttribute("productId", id);
-        model.addAttribute("productForm", new ModifyProductRequestDto());
+        model.addAttribute("productForm", new ModifyProductForm());
+        
         return "product-edit";
     }
     
+    //수정 화면에서 수정 누를 시 동작
     @PutMapping("/edit/{id}")
     public String modifyProduct(@PathVariable Long id,
-        @ModelAttribute ModifyProductRequestDto productForm) {
-        productService.modifyProductWithId(id, productForm);
+        @ModelAttribute ModifyProductForm productForm) {
+        ModifyProductRequestDto requestDto = new ModifyProductRequestDto(
+            productForm.getName(),
+            productForm.getPrice(),
+            productForm.getImageUrl()
+        );
+        
+        productService.modifyProductWithId(id, requestDto);
+        
         return "redirect:" + PRODUCTS_LIST_PATH;
     }
     
+    //조회 화면에서 수정 누를 시 동작
     @PatchMapping("/edit/{id}")
     public String modifyInfoProduct(@PathVariable Long id,
-        @ModelAttribute ModifyProductRequestDto modifyForm) {
-        productService.modifyProductInfoWithId(id, modifyForm);
+        @ModelAttribute ModifyProductForm modifyForm) {
+        ModifyProductRequestDto requestDto = new ModifyProductRequestDto(
+            modifyForm.getName(),
+            modifyForm.getPrice(),
+            modifyForm.getImageUrl()
+        );
+        
+        productService.modifyProductInfoWithId(id, requestDto);
+        
         return "redirect:" + PRODUCTS_LIST_PATH;
     }
     
@@ -89,6 +118,7 @@ public class ProductViewController {
     @DeleteMapping("/{id}")
     public String deleteProduct(@PathVariable Long id) {
         productService.deleteProductWithId(id);
+        
         return "redirect:" + PRODUCTS_LIST_PATH;
     }
 }

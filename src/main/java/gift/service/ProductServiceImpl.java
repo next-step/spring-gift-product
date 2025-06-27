@@ -1,10 +1,10 @@
 package gift.service;
 
-import gift.dto.AddProductRequestDto;
-import gift.dto.AddProductResponseDto;
-import gift.dto.FindProductResponseDto;
-import gift.dto.ModifyProductRequestDto;
-import gift.dto.ModifyProductResponseDto;
+import gift.dto.api.AddProductRequestDto;
+import gift.dto.api.AddProductResponseDto;
+import gift.dto.api.FindProductResponseDto;
+import gift.dto.api.ModifyProductRequestDto;
+import gift.dto.api.ModifyProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
@@ -32,9 +32,9 @@ public class ProductServiceImpl implements ProductService {
         
         Product product = new Product(
             0L,
-            requestDto.getName(),
-            requestDto.getPrice(),
-            requestDto.getImageUrl()
+            requestDto.name(),
+            requestDto.price(),
+            requestDto.imageUrl()
         );
         
         return productRepository.addProduct(product);
@@ -65,9 +65,9 @@ public class ProductServiceImpl implements ProductService {
         
         Product newProduct = new Product(
             id,
-            requestDto.getName(),
-            requestDto.getPrice(),
-            requestDto.getImageUrl()
+            requestDto.name(),
+            requestDto.price(),
+            requestDto.imageUrl()
         );
         
         return productRepository.modifyProductWithId(id,
@@ -92,9 +92,9 @@ public class ProductServiceImpl implements ProductService {
         
         Product newProduct = new Product(
             id,
-            requestDto.getName() != null ? requestDto.getName() : product.getName(),
-            requestDto.getPrice() != null ? requestDto.getPrice() : product.getPrice(),
-            requestDto.getImageUrl() != null ? requestDto.getImageUrl() : product.getImageUrl()
+            requestDto.name() != null ? requestDto.name() : product.getName(),
+            requestDto.price() != null ? requestDto.price() : product.getPrice(),
+            requestDto.imageUrl() != null ? requestDto.imageUrl() : product.getImageUrl()
         );
         
         return productRepository.modifyProductWithId(id,
