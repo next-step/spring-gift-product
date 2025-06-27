@@ -19,6 +19,12 @@ jdbcClient를 사용하여 상품정보를 저장할 수 있는 데이터베이�
 - `update product set name=:name, price=:price, url=:url where id = :id`
 ## 7. 데이터베이스 내 상품 삭제 기능 만들기
 - `delete from product where id = :id`
+## 8. 추가작업
+- addProduct와 deleteProductById가 같은 dto를 반환하는데, 코드 구조가 달라  통일 성을 해친다.
+- -> addProduct와 deleteProductById가 dto를 반환할 필요가 없다고 판단했다.
+- -> dto를 반환하지 않는 것으로 통일하기
+- 예외 발생 조건에 Optional 적용해보기
+
 ---
 # 2단계
 상품을 추가, 조회, 수정, 삭제 할 수 있는 관리자 화면을 만든다.
