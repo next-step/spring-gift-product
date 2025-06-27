@@ -50,4 +50,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         return all.subList(fromIndex, toIndex);
     }
 
+    public int count() {
+        return store.size(); // 상품의 개수 반환
+    }
 }

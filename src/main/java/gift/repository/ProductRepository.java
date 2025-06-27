@@ -11,5 +11,5 @@ public interface ProductRepository {
     List<Product> findAll();
     void deleteById(Long id);
     List<Product> findPage(int page, int size);
-
+    int count();
 }
