@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    // 제거
+    // TODO: 제거
     private final Map<Long, Product> products = new HashMap<>();
 
     private final JdbcTemplate jdbcTemplate;
@@ -42,15 +42,22 @@ public class ProductRepositoryImpl implements ProductRepository {
             ));
 
         return productsList;
-
-//        return products.values().stream()
-//            .map(product -> new ProductGetResponseDto(product))
-//            .collect(Collectors.toList());
     }
 
     @Override
     public Product findProductByProductId(Long productId) {
-        return products.get(productId);
+
+        String sql = "SELECT productId, name, price, imageUrl FROM products WHERE productId = ?";
+        Product product = jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
+                new Product(
+                    rs.getLong("productId"),
+                    rs.getString("name"),
+                    rs.getDouble("price"),
+                    rs.getString("imageUrl")
+                ),
+            productId
+        );
+        return product;
     }
 
     @Override
