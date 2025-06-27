@@ -28,12 +28,10 @@ public class ProductService {
     }
 
     public Optional<ProductResponseDTO> update(Long id, ProductRequestDTO dto) {
-        Optional<Product> product = productRepository.findById(id);
-        if (product.isEmpty()) {
-            return Optional.empty();
-        }
-        product.get().updateFromProductRequestDTO(dto);
-        return Optional.of(new ProductResponseDTO(productRepository.update(product.get())));
+        return productRepository.findById(id).map(product -> {
+            product.updateFromProductRequestDTO(dto);
+            return productRepository.update(product);
+        }).map(ProductResponseDTO::new);
     }
 
     public Optional<ProductResponseDTO> findProductById(Long id) {
