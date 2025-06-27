@@ -29,11 +29,11 @@
 
 ## 3단계: 데이터 베이스 적용
 
-+ [ ] 데이터베이스 설정 + sql 스크립트 작성
-+ [ ] JdbcClient 이용한 상품 데이터베이스 CRUD 구현(ProductDao)
-  + [ ] JdbcClient + RowMapper 구현
-  + [ ] 관련 로직 구현
-+ [ ] repository와 연동
++ [X] 데이터베이스 설정 + sql 스크립트 작성
++ [X] JdbcClient 이용한 상품 데이터베이스 CRUD 구현(ProductDao)
+  + [X] JdbcClient + RowMapper 구현
+  + [X] 관련 로직 구현
++ [X] repository와 연동
 
 ## 커밋 컨벤션
 
