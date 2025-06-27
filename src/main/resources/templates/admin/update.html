@@ -1,10 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+  <title>상품 수정</title>
+  <style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  </style>
 </head>
 <body>
+
+<h1>상품 수정</h1>
+
+<form th:action="@{'/admin/products/' + ${product.id} + '/update'}" method="post">
+  <div>
+    <label>이름:</label>
+    <input type="text" name="name" th:value="${product.name}" required>
+  </div>
+  <div>
+    <label>가격 (숫자만):</label>
+    <input type="number" name="price" th:value="${product.price}" required
+           onkeydown="return event.keyCode !== 69 && event.keyCode !== 190">
+  </div>
+  <div>
+    <label>이미지 URL:</label>
+    <input type="text" name="imageUrl" th:value="${product.imageUrl}">
+  </div>
+  <button type="submit">수정 완료</button>
+</form>
+
+<a href="/admin/products">목록으로</a>
 
 </body>
 </html>
