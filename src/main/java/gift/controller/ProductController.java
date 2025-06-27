@@ -15,8 +15,8 @@ public class ProductController {
 
     private final ProductService productService;
 
-    public ProductController(ProductServiceImpl productServiceImpl) {
-        this.productService = productServiceImpl;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
     @PostMapping
