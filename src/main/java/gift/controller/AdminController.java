@@ -52,4 +52,18 @@ public class AdminController {
         productService.updateProduct(id, productRequest);
         return "redirect:/admin/products";
     }
+
+    @PostMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable("id") Long id) {
+        productService.deleteProduct(id);
+        return "redirect:/admin/products";
+    }
+
+    @PostMapping("/delete")
+    public String deleteSelectedProducts(@RequestParam(value = "productIds", required = false) List<Long> productIds) {
+        if (productIds != null && !productIds.isEmpty()) {
+            productService.deleteProducts(productIds);
+        }
+        return "redirect:/admin/products";
+    }
 }
