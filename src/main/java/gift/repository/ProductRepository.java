@@ -1,10 +1,12 @@
-package repository;
+package gift.repository;
 
-import domain.Product;
+import gift.domain.Product;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
+@Repository
 public class ProductRepository {
 
     private final Map<Long, Product> products = new HashMap<>();
