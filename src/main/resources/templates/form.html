@@ -1,29 +1,27 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
-<form th:action="@{/products}" method="post">
-  <p>
-    상품 등록하기
-  </p>
-  <p>
-    <strong>상품명</strong>
-    <input type="text" name="name" placeholder="상품명 입력">
-  </p>
-  <p>
-    <strong>가격</strong>
-    <input type="number" name="price" placeholder="상품 가격 입력">
-  </p>
-  <p>
-    <strong>이미지 주소</strong>
-    <input type="text" name="imageUrl" placeholder="상품 이미지 주소 입력">
-  </p>
-  <p>
-    <input type="submit" value="상품 등록하기">
-  </p>
-</form>
-</body>
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+  <div id="productForm">
+    <form th:action="@{/products}" method="post">
+      <p>
+        상품 등록하기
+      </p>
+      <p>
+        <strong>상품명</strong>
+        <input type="text" name="name" placeholder="상품명 입력">
+      </p>
+      <p>
+        <strong>가격</strong>
+        <input type="number" name="price" placeholder="상품 가격 입력">
+      </p>
+      <p>
+        <strong>이미지 주소</strong>
+        <input type="text" name="imageUrl" placeholder="상품 이미지 주소 입력">
+      </p>
+      <p>
+        <input type="submit" value="상품 등록하기">
+      </p>
+    </form>
+  </div>
+
+</div>
 </html>
