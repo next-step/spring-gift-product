@@ -46,9 +46,12 @@ public class AdminPageController {
     public String newProduct(
             @Valid @ModelAttribute ProductRequestDto request,
             BindingResult bindingResult,
+            Model model,
             RedirectAttributes redirectAttributes
     ) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("productId", null);
+            model.addAttribute("product", request);
             return "admin/product-form";
         }
         Product created = productService.createProduct(
@@ -77,10 +80,13 @@ public class AdminPageController {
             @PathVariable Long id,
             @Valid @ModelAttribute ProductRequestDto request,
             BindingResult bindingResult,
+            Model model,
             RedirectAttributes redirectAttributes
     ) {
         if (bindingResult.hasErrors()) {
             return "redirect:/admin/products/" + id;
+            model.addAttribute("productId", id);
+            model.addAttribute("product", request);
         }
         Product updated = productService.putProductById(
                 id,
