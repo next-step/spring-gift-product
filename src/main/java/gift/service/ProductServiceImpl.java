@@ -64,16 +64,14 @@ public class ProductServiceImpl implements ProductService {
         // 업데이트할 필드가 null이 아닌 경우에만 업데이트
 
         if (product.getName() != null)
-            updated = productRepository.updateNameById(updated.getId(), product.getName());
-
+            updated.setName(product.getName());
         if (product.getPrice() != null)
-            updated = productRepository.updatePriceById(updated.getId(), product.getPrice());
-
+            updated.setName(product.getName());
         if (product.getImageUrl() != null)
-            updated = productRepository.updateImageUrlById(updated.getId(), product.getImageUrl());
+            updated.setImageUrl(product.getImageUrl());
 
         // 업데이트된 상품을 반환
-        return updated;
+        return productRepository.save(updated);
     }
 
     @Override
