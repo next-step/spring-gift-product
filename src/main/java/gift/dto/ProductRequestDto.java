@@ -1,38 +1,22 @@
 package gift.dto;
 
+import gift.entity.Product;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
-public class ProductRequestDto {
-
-    @NotNull
-    private String name;
-
-    @NotNull
-    @Min(1)
-    private Integer price;
-
-    @NotNull
-    private String imageUrl;
-
-    public ProductRequestDto() {}
-
-    public String getName() {
-        return name;
+public record ProductRequestDto (
+        @NotNull String name,
+        @NotNull @Min(1) Integer price,
+        @NotNull String imageUrl
+) {
+    public static ProductRequestDto empty() {
+        return new ProductRequestDto("", 1, "");
     }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public Integer getPrice() {
-        return price;
-    }
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
-    public String getImageUrl() {
-        return imageUrl;
-    }
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public static ProductRequestDto from(Product product) {
+        return new ProductRequestDto(
+                product.getName(),
+                product.getPrice(),
+                product.getImageUrl()
+        );
     }
 }
