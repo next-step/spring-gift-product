@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -37,31 +38,34 @@ public class ItemService {
 		return item.getId();
 	}
 
-	public List<Item> getAllItems() {
-		return db.values().stream().toList();
+	public List<GetItemResponse> getAllItems() {
+		return db.values()
+			.stream()
+			.map(item -> new GetItemResponse(item.getId(), item.getName(), item.getPrice(), item.getImageUrl()))
+			.collect(Collectors.toList());
 	}
 
 
-	public Item getItem(Long itemId) {
+	public GetItemResponse getItem(Long itemId) {
 		Item item = db.get(itemId);
 		if (item == null) {
 			throw new RuntimeException("해당 ID는 존재하지 않습니다!");
 		}
-		return item;
+		return new GetItemResponse(item.getId(), item.getName(), item.getPrice(), item.getImageUrl());
 	}
 
 
-	public Item updateItem(Long itemId, ItemRequest req) {
-		Item item = getItem(itemId);
+	public GetItemResponse updateItem(Long itemId, ItemRequest req) {
+		Item item = db.get(itemId);
 		item.setName(req.name());
 		item.setPrice(req.price());
 		item.setImageUrl(req.imageUrl());
-		return item;
+		return new GetItemResponse(item.getId(), item.getName(), item.getPrice(), item.getImageUrl());
 	}
 
 
 	public void deleteItem(Long itemId) {
-		Item item = getItem(itemId);
+		Item item = db.get(itemId);
 		db.remove(itemId);
 	}
 
