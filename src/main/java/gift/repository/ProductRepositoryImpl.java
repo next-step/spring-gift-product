@@ -2,15 +2,13 @@ package gift.repository;
 
 import gift.dto.ProductAddRequestDto;
 import gift.entity.Product;
+import gift.exception.ProductNotFoundException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
@@ -32,12 +30,12 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product findProductById(Long id) {
-        Product product = jdbcClient.sql("select id, name, price, url from product where id = :id")
+    public Product findProductByIdOrElseThrow(Long id) {
+        Optional<Product> product = jdbcClient.sql("select id, name, price, url from product where id = :id")
                 .param("id", id)
                 .query(Product.class)
-                .single();
-        return product;
+                .optional();
+        return product.orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     @Override

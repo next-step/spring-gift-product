@@ -27,10 +27,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public ProductResponseDto findProductById(Long id) {
-        Product product = productRepository.findProductById(id);
-        if (product == null) {
-            throw new ProductNotFoundException(id);
-        }
+        Product product = productRepository.findProductByIdOrElseThrow(id);
         return new ProductResponseDto(product);
     }
 
@@ -43,20 +40,14 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public void updateProductById(Long id, ProductUpdateRequestDto requestDto) {
-        Product product = productRepository.findProductById(id);
-        if (product == null) {
-            throw new ProductNotFoundException(id);
-        }
+        Product product = productRepository.findProductByIdOrElseThrow(id);
         Product newProduct = new Product(id, requestDto);
         productRepository.updateProductById(newProduct);
     }
 
     @Override
     public void deleteProductById(Long id) {
-        Product product = productRepository.findProductById(id);
-        if (product == null) {
-            throw new ProductNotFoundException(id);
-        }
+        Product product = productRepository.findProductByIdOrElseThrow(id);
         productRepository.deleteProductById(product.id());
     }
 }
