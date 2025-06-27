@@ -106,7 +106,7 @@ public class AdminController {
 
     //delete
     //등록된 상품을 삭제
-    @GetMapping("/products/remove/{id}")
+    @PostMapping("/products/remove/{id}")
     public String removeProduct(@PathVariable Long id) {
         Long productId = findProductById(id).getId();
         products.remove(productId);

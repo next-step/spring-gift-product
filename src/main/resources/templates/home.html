@@ -22,9 +22,9 @@
 
 
       <td>
-        <!--PathVariable-->
-        <button th:onclick="|location.href='@{/admin/products/remove/{id}(id=${product.id})}'|">상품 삭제</button>
-        <!--RequestParam-->
+        <form th:action="@{/admin/products/remove/{id}(id=${product.id})}" method="post">
+          <button type="submit">상품 삭제</button>
+        </form>
         <button th:onclick="|location.href='@{/admin/products/modify/{id}(id=${product.id})}'|">상품 수정</button>
       </td>
 
