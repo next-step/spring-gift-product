@@ -4,6 +4,8 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.exception.NotFoundByIdException;
 import gift.service.ProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -53,12 +55,16 @@ public class ProductController {
 
     @ExceptionHandler
     public ResponseEntity<String> handleNotFoundByIdException(NotFoundByIdException e) {
+        log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                .body("Not Found by ID: " + e.getMessage());
+                .body("Not Found by ID");
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> handleJsonParseError(HttpMessageNotReadableException e) {
-        return ResponseEntity.badRequest().body("Invalid Request: " + e.getMessage());
+        log.error(e.getMessage());
+        return ResponseEntity.badRequest().body("Invalid Request");
     }
+
+    private static final Logger log = LoggerFactory.getLogger(ProductController.class);
 }
