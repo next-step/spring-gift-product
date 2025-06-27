@@ -30,7 +30,15 @@ public class ProductJdbcRepositoryImpl implements ProductRepository {
 
   @Override
   public ProductResponseDto findProductById(Long id) {
-    return null;
+    String sql = "select * from products where id=?";
+    return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
+            new ProductResponseDto(
+                rs.getLong("id"),
+                rs.getString("name"),
+                rs.getLong("price"),
+                rs.getString("imageUrl")
+            )
+        , id);
   }
 
   @Override
