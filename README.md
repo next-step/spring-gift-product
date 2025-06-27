@@ -1,47 +1,83 @@
-# spring-gift-product
+# Step 2 - 관리자 화면
 
-## 구조
-### Product Entity  
-getter/setter/프로퍼티 사용 X (DTO, Comparator를 위해서 getter만 부분 사용)
+# Thymeleaf 기반 상품 관리자 화면 HTTP API
 
-외부에서 상태를 꺼내 조작하지 않고, 객체에게 메시지를 보내 행동을 유도하도록 설계 (update메소드)
+## - 상품 조회
 
-유효성 검사도 객체 내에서 진행 (validate)
+### [GET] /admin/products?page=0&size=10&sort=name,asc&categoryId=1 
 
-### Repository 
-Map<Long, domain.Product> 기반 메모리 저장소
+상품 조회 폼 렌더링 
 
-Product의 ID는 Repository는 저장소에서 할당한다. (ID 생성 책임)
+return "admin/product/list";
 
-### Service 
-비즈니스 로직
+전체 상품을 페이지 단위로 조회한다.
 
-domain.Product create
+상품 ID 또는 이름으로 특정 상품 검색이 가능하다. 
 
-domain.Product getById, getAllByPage, getComparator
+stream().filter() 와 matchesKeyword() 메소드 이용
 
-domain.Product update
+---
 
-domain.Product delete
+## - 상품 생성
 
-예외처리 Service 계층에서 수행
+### [GET] /admin/products/new 
 
-### Controller
-요청 받아서 서비스 계층으로 전달
-HTTP Status Code 반영 
+상품 등록 폼 렌더링 
 
-## 상품 HTTP API
-### 상품 조회   
-    [GET] /api/products/{productId} productId 기반 특정 상품 조회
+return "admin/product/form";
 
-    [GET] /api/products?page=0&size=10&sort=name,asc&categoryId=1 페이지 단위 모든 상품 조회
+빈 ProductRequest() 객체를 생성하여 모델에 담는다.
 
-### 상품 생성
-    [POST] /api/products 새로운 상품 등록
-    
-### 상품 수정
-    [PUT] /api/products/{productId} productId 기반 특정 상품 수정
+isNew 를 이용하여 등록, 수정 폼을 구분한다. (isNew = true)
 
-### 상품 삭제
-    [DELETE] /api/products/{productId} productId 기반 특정 상품 삭제
+
+### [POST] /admin/products 
+
+상품 등록 처리
+
+ProductService.create() 메소드를 이용하여 상품을 등록한다.
+
+상품 등록 후 /admin/products 로 redirect
+
+return "redirect:/admin/products";
+
+---
+
+## - 상품 수정
+
+### [GET] /admin/products/{productId}/edit 
+
+상품 수정 폼 렌더링
+
+return "admin/product/form";
+
+상품 ID 를 기반으로 상품의 정보를 불러와서 수정 폼에 렌더링한다.
+
+isNew 를 이용하여 등록, 수정 폼을 구분한다. (isNew = false)
+
+### [POST] /admin/products/{productId}/edit
+
+상품 수정 처리
+
+ProductService.update() 메소드를 이용하여 상품을 수정한다.
+
+상품 수정 후 /admin/products/ 로 redirect
+
+return "redirect:/admin/products";
+
+---
+
+## - 상품 삭제
+
+### [DELETE] /admin/products/{productId}/delete 
+
+상품 삭제 처리
+
+ProductService.delete() 메소드를 이용하여 상품을 삭제한다.
+
+상품 삭제 후 /admin/products/ 로 redirect
+
+return "redirect:/admin/products";
+
+
 
