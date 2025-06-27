@@ -1,10 +1,8 @@
 package gift.controller;
 
-import gift.dto.AddProductRequestDto;
-import gift.dto.AddProductResponseDto;
-import gift.dto.FindProductResponseDto;
-import gift.dto.ModifyProductRequestDto;
-import gift.dto.ModifyProductResponseDto;
+import gift.dto.api.AddProductRequestDto;
+import gift.dto.api.ModifyProductRequestDto;
+import gift.dto.api.ProductResponseDto;
 import gift.service.ProductService;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -32,49 +30,46 @@ public class ProductController {
     
     //상품 추가 api
     @PostMapping
-    public ResponseEntity<AddProductResponseDto> addProduct(
+    public ResponseEntity<ProductResponseDto> addProduct(
         @RequestBody AddProductRequestDto requestDto
     ) {
-        AddProductResponseDto responseDto = productService.addProduct(requestDto);
+        ProductResponseDto responseDto = productService.addProduct(requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
     
     //상품 전체 조회 api
     @GetMapping
-    public ResponseEntity<List<FindProductResponseDto>> findAllProducts() {
-        List<FindProductResponseDto> responseDtoList = productService.findAllProducts();
-        if (responseDtoList.isEmpty()) {
-            return new ResponseEntity<>(responseDtoList, HttpStatus.NO_CONTENT);
-        }
+    public ResponseEntity<List<ProductResponseDto>> findAllProducts() {
+        List<ProductResponseDto> responseDtoList = productService.findAllProducts();
         return new ResponseEntity<>(responseDtoList, HttpStatus.OK);
     }
     
     //상품 단건 조회 api
     @GetMapping("{id}")
-    public ResponseEntity<FindProductResponseDto> findProductWithId(
+    public ResponseEntity<ProductResponseDto> findProductWithId(
         @PathVariable Long id
     ) {
-        FindProductResponseDto responseDto = productService.findProductWithId(id);
+        ProductResponseDto responseDto = productService.findProductWithId(id);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
     
     //상품 전체 수정 api
     @PutMapping("{id}")
-    public ResponseEntity<ModifyProductResponseDto> modifyProductWithId(
+    public ResponseEntity<ProductResponseDto> modifyProductWithId(
         @PathVariable Long id,
         @RequestBody ModifyProductRequestDto requestDto
     ) {
-        ModifyProductResponseDto responseDto = productService.modifyProductWithId(id, requestDto);
+        ProductResponseDto responseDto = productService.modifyProductWithId(id, requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
     
     //상품 일부 수정 api
     @PatchMapping("{id}")
-    public ResponseEntity<ModifyProductResponseDto> modifyProductInfoWithId(
+    public ResponseEntity<ProductResponseDto> modifyProductInfoWithId(
         @PathVariable Long id,
         @RequestBody ModifyProductRequestDto requestDto
     ) {
-        ModifyProductResponseDto responseDto = productService.modifyProductInfoWithId(id,
+        ProductResponseDto responseDto = productService.modifyProductInfoWithId(id,
             requestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -85,6 +80,6 @@ public class ProductController {
         @PathVariable Long id
     ) {
         productService.deleteProductWithId(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
