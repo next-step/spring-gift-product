@@ -30,9 +30,7 @@ public class ProductRepository {
 
     public Product save(Product product) {
         Long id = sequence++;
-        Product newProduct = new Product(product.getName(), product.getPrice(),
-                product.getImageUrl());
-        newProduct.setId(id);
+        Product newProduct = product.assignId(id);
         products.put(id, newProduct);
         return newProduct;
     }
@@ -43,8 +41,7 @@ public class ProductRepository {
             throw new NoSuchElementException("해당 ID의 상품이 존재하지 않습니다...");
         }
 
-        Product updated = new Product(name, price, imageUrl);
-        updated.setId(id);
+        Product updated = new Product(id, name, price, imageUrl);
         products.put(id, updated);
         return updated;
     }
