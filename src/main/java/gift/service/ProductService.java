@@ -5,6 +5,7 @@ import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.exception.ProductNotFoundException;
 import gift.repository.ProductRepository;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -57,12 +58,11 @@ public class ProductService {
     }
 
     public List<ProductResponseDto> findAllProducts() {
-        List<Product> products = productRepository.findAllProducts();
-        List<ProductResponseDto> result = new ArrayList<>();
-        for (Product product : products) {
-            result.add(product.toDto());
-        }
-        return result;
+        return
+            productRepository.findAllProducts()
+                .stream()
+                .map(Product::toDto)
+                .collect(Collectors.toList());
     }
 
     }
