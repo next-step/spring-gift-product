@@ -41,15 +41,20 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Product findProductByProductId(Long productId) {
 
         String sql = "SELECT productId, name, price, imageUrl FROM products WHERE productId = ?";
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
-                new Product(
-                    rs.getLong("productId"),
-                    rs.getString("name"),
-                    rs.getDouble("price"),
-                    rs.getString("imageUrl")
-                ),
-            productId
-        );
+        try {
+            return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
+                    new Product(
+                        rs.getLong("productId"),
+                        rs.getString("name"),
+                        rs.getDouble("price"),
+                        rs.getString("imageUrl")
+                    ),
+                productId
+            );
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 
     @Override

@@ -44,8 +44,6 @@ public class ProductServiceImpl implements ProductService {
     public ProductGetResponseDto findProductByProductId(Long productId) {
         Product product = productRepository.findProductByProductId(productId);
 
-        // TODO: id가 없을 때 404에러가 아니라 500이 뜬다.
-
         if (product == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                 "Does not exist productId = " + productId);
