@@ -5,15 +5,15 @@ public class Product {
     private Long id;
     private String name;
     private int price;
-    private String imgURL;
+    private String imgUrl;
 
     public Product() {}
 
-    public Product(Long id, String name, int price, String imgURL) {
+    public Product(Long id, String name, int price, String imgUrl) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.imgURL = imgURL;
+        this.imgUrl = imgUrl;
     }
 
     public Long getId() { return id; }
@@ -25,6 +25,6 @@ public class Product {
     public int getPrice() { return price; }
     public void setPrice(int price) { this.price = price; }
 
-    public String getImgURL() { return imgURL; }
-    public void setImgURL(String imgURL) { this.imgURL = imgURL; }
+    public String getImgUrl() { return imgUrl; }
+    public void setImgUrl(String imgUrl) { this.imgUrl = imgUrl; }
 }

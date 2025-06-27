@@ -18,13 +18,13 @@ public class AdminProductController {
     @GetMapping
     public String list(Model model) {
         model.addAttribute("products", repository.findAll());
-        return "product/list";
+        return "main";
     }
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("product", new Product());
-        return "product/form";
+        return "create";
     }
 
     @PostMapping("/new")
@@ -40,7 +40,7 @@ public class AdminProductController {
             return "redirect:/admin/products";
         }
         model.addAttribute("product", product);
-        return "product/form";
+        return "create";
     }
 
     @PostMapping("/edit/{id}")
