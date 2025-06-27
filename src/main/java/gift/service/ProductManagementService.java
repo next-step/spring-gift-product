@@ -2,12 +2,14 @@ package gift.service;
 
 import gift.domain.Product;
 import gift.dto.ProductRequest;
+import gift.dto.ProductResponse;
 import gift.dto.common.Page;
 import gift.exception.BusinessException;
 import gift.exception.ErrorCode;
 import gift.repository.ProductRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductManagementService {
@@ -18,24 +20,39 @@ public class ProductManagementService {
         this.productRepository = productRepository;
     }
 
-    public Product create(ProductRequest request) {
+    @Transactional
+    public ProductResponse create(ProductRequest request) {
         Product newProduct = Product.of(
                 request.name(),
                 request.validatedPrice(),
                 request.imageUrl()
         );
-        return productRepository.save(newProduct);
+        Product savedProduct = productRepository.save(newProduct);
+        return ProductResponse.from(savedProduct);
     }
 
-    public Page<Product> getAllByPage(int pageNumber, int pageSize) {
-        return productRepository.findAllByPage(pageNumber, pageSize);
+    public Page<ProductResponse> getAllByPage(int pageNumber, int pageSize) {
+        Page<Product> productPage = productRepository.findAllByPage(pageNumber, pageSize);
+
+        List<ProductResponse> responseContent = productPage.content().stream()
+                .map(ProductResponse::from)
+                .toList();
+
+        return new Page<>(
+                responseContent,
+                productPage.page(),
+                productPage.size(),
+                productPage.totalElements()
+        );
     }
 
-    public Product getById(Long id) {
-        return productRepository.findById(id)
+    public ProductResponse getById(Long id) {
+        Product foundProduct = productRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_NOT_FOUND));
+        return ProductResponse.from(foundProduct);
     }
 
+    @Transactional
     public void update(Long id, ProductRequest request) {
         if (productRepository.findById(id).isEmpty()) {
             throw new BusinessException(ErrorCode.PRODUCT_NOT_FOUND);
@@ -48,10 +65,12 @@ public class ProductManagementService {
         productRepository.update(id, updatedProduct);
     }
 
+    @Transactional
     public void deleteAllByIds(List<Long> ids) {
         productRepository.deleteAllByIds(ids);
     }
 
+    @Transactional
     public void deleteById(Long id) {
         if (productRepository.findById(id).isEmpty()) {
             throw new BusinessException(ErrorCode.PRODUCT_NOT_FOUND);
