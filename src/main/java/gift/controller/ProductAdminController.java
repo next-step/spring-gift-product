@@ -52,5 +52,16 @@ public class ProductAdminController {
                 String.valueOf(p.getId()).equals(keyword);
     }
 
+    /**
+     * 상품 등록 폼
+     */
+    @GetMapping("/new")
+    public String newForm(Model model) {
+        model.addAttribute("productRequest", new ProductRequest(null, "", 0, ""));
+        model.addAttribute("isNew", true);
+        return "admin/product/form";
+    }
+
+
 
 }
