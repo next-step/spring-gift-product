@@ -24,7 +24,7 @@ public class AdminController {
     }
 
     @GetMapping
-    public String fingAll(Model model) {
+    public String findAll(Model model) {
         List<ProductResponseDto> ProductResponseDtoList = productService.findAllProducts();
         model.addAttribute("products", ProductResponseDtoList);
         return "admin/product-list";
