@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class ProductRepositoryImpl implements ProductRepository {
 
     private final ConcurrentHashMap<Long, Product> products = new ConcurrentHashMap<>();
-    private AtomicLong initId = new AtomicLong();
+    private final AtomicLong initId = new AtomicLong();
 
     @Override
     public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
