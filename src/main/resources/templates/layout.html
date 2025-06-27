@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #333;
+    }
+
+    li {
+      float: left;
+    }
+
+    li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    li form {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    li a:hover {
+      background-color: #111;
+    }
+
+    table, td, th {
+      text-align: center;
+      border: 1px solid;
+    }
+
+    table {
+      margin-top: 10px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 75%;
+      border-collapse: collapse;
+    }
+
+    #productForm{
+      margin-top: 10px;
+      border: 1px solid;
+    }
+
+  </style>
+</head>
+<body>
+
+<nav>
+  <div>
+    <ul>
+      <li><a th:href="@{/products}">전체 상품 조회하기</a></li>
+      <li><a th:href="@{/products/new}">상품 등록하기</a></li>
+      <li>
+        <form th:action="@{/products/info}" method="get">
+          <input type="number" name="id" placeholder="상품ID 입력">
+          <input type="submit" value="상품 검색하기">
+        </form>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<th:block layout:fragment="content"></th:block>
+
+</body>
+</html>
