@@ -10,7 +10,7 @@ public record GetProductResDto(
 ) {
 
   public static GetProductResDto from(Product product) {
-    return new GetProductResDto(product.getId(), product.getName(), product.getPrice(),
-        product.getDescription());
+    return new GetProductResDto(product.id(), product.name(), product.price(),
+        product.description());
   }
 }
