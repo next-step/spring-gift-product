@@ -5,30 +5,30 @@ import gift.dto.ProductResponseDto;
 import gift.dto.ProductUpdateRequestDto;
 import gift.entity.Product;
 import gift.exception.ProductNotFoundException;
+import gift.repository.ProductRepository;
 import gift.repository.ProductRepositoryImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService{
 
-    private final ProductRepositoryImpl productRepositoryImpl;
+    private final ProductRepository productRepository;
 
     public ProductServiceImpl(ProductRepositoryImpl productRepositoryImpl) {
-        this.productRepositoryImpl = productRepositoryImpl;
+        this.productRepository = productRepositoryImpl;
     }
 
     @Override
     public ProductResponseDto addProduct(ProductAddRequestDto requestDto) {
-        Product product = productRepositoryImpl.addProduct(requestDto.getName(), requestDto.getPrice(), requestDto.getUrl());
+        Product product = productRepository.addProduct(requestDto.getName(), requestDto.getPrice(), requestDto.getUrl());
         return new ProductResponseDto(product);
     }
 
     @Override
     public ProductResponseDto findProductById(Long id) {
-        Product product = productRepositoryImpl.findProductById(id);
+        Product product = productRepository.findProductById(id);
         if (product == null) {
             throw new ProductNotFoundException(id);
         }
@@ -37,28 +37,28 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public List<ProductResponseDto> findAllProduct() {
-        List<Product> products = productRepositoryImpl.findAllProduct();
+        List<Product> products = productRepository.findAllProduct();
         List<ProductResponseDto> responseDto = products.stream().map(Product::toProductResponseDto).toList();
         return responseDto;
     }
 
     @Override
     public ProductResponseDto updateProductById(Long id, ProductUpdateRequestDto requestDto) {
-        Product product = productRepositoryImpl.findProductById(id);
+        Product product = productRepository.findProductById(id);
         if (product == null) {
             throw new ProductNotFoundException(id);
         }
         Product newProduct = new Product(product.id(), requestDto.getName(), requestDto.getPrice(), requestDto.getUrl());
-        productRepositoryImpl.updateProductById(newProduct);
+        productRepository.updateProductById(newProduct);
         return new ProductResponseDto(newProduct);
     }
 
     @Override
     public void deleteProductById(Long id) {
-        Product product = productRepositoryImpl.findProductById(id);
+        Product product = productRepository.findProductById(id);
         if (product == null) {
             throw new ProductNotFoundException(id);
         }
-        productRepositoryImpl.deleteProductById(product.id());
+        productRepository.deleteProductById(product.id());
     }
 }
