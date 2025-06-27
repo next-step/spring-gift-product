@@ -1,5 +1,6 @@
 package gift.repository;
 
+import gift.dto.ProductAddRequestDto;
 import gift.entity.Product;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -21,15 +22,13 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product addProduct(String name, Long price, String url) {
+    public void addProduct(ProductAddRequestDto requestDto) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcClient.sql("insert into product (name, price, url) values (:name, :price, :url)")
-                .param("name", name)
-                .param("price", price)
-                .param("url", url)
-                .update(keyHolder);
-        Long id = keyHolder.getKey().longValue();
-        return findProductById(id);
+                .param("name", requestDto.name())
+                .param("price", requestDto.price())
+                .param("url", requestDto.url())
+                .update();
     }
 
     @Override
@@ -50,12 +49,12 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public void updateProductById(Product newProduct) {
+    public void updateProductById(Product product) {
         jdbcClient.sql("update product set name = :name, price = :price, url = :url where id = :id")
-                .param("name", newProduct.name())
-                .param("price", newProduct.price())
-                .param("url", newProduct.url())
-                .param("id", newProduct.id())
+                .param("name", product.name())
+                .param("price", product.price())
+                .param("url", product.url())
+                .param("id", product.id())
                 .update();
     }
 

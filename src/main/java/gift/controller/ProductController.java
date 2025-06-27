@@ -20,11 +20,11 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDto> addProduct(
+    public ResponseEntity<Void> addProduct(
             @RequestBody ProductAddRequestDto requestDto
     ) {
-        ProductResponseDto responseDto = productService.addProduct(requestDto);
-        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+        productService.addProduct(requestDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -36,12 +36,12 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDto> updateProductById(
+    public ResponseEntity<Void> updateProductById(
             @PathVariable Long id,
             @RequestBody ProductUpdateRequestDto requestDto
     ) {
-        ProductResponseDto responseDto = productService.updateProductById(id, requestDto);
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        productService.updateProductById(id, requestDto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{id}")

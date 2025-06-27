@@ -21,9 +21,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ProductResponseDto addProduct(ProductAddRequestDto requestDto) {
-        Product product = productRepository.addProduct(requestDto.name(), requestDto.price(), requestDto.url());
-        return new ProductResponseDto(product);
+    public void addProduct(ProductAddRequestDto requestDto) {
+        productRepository.addProduct(requestDto);
     }
 
     @Override
@@ -43,14 +42,13 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ProductResponseDto updateProductById(Long id, ProductUpdateRequestDto requestDto) {
+    public void updateProductById(Long id, ProductUpdateRequestDto requestDto) {
         Product product = productRepository.findProductById(id);
         if (product == null) {
             throw new ProductNotFoundException(id);
         }
-        Product newProduct = new Product(product.id(), requestDto.name(), requestDto.price(), requestDto.url());
+        Product newProduct = new Product(id, requestDto);
         productRepository.updateProductById(newProduct);
-        return new ProductResponseDto(newProduct);
     }
 
     @Override
