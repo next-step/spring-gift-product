@@ -73,8 +73,16 @@
 
 ### 3단계 데이터베이스 적용
 
-- [ ] 저장공간을 hashMap -> h2로 바꾸기
-- [ ] productRepository가 JDBC를 활용하여 h2에 접근하도록 변경
-- [ ] dto를 사용해 ProductController, ProductManagerViewController에서 공통으로 사용하는 service 만들기
+- 데이터베이스 연동
+- [x] 저장공간을 hashMap -> h2로 바꾸기
+- [x] productRepository가 JDBC를 활용하여 h2에 접근하도록 변경
+- [x] dto를 사용해 ProductController, ProductManagerViewController에서 공통으로 사용하는 service 만들기
+
+
+- JDBC 연동 기능 요구사항
+- [x] 선택 일정 조회
+- [ ] 일정 추가
+- [ ] 일정 수정
+- [ ] 일정 삭제
 
 ---

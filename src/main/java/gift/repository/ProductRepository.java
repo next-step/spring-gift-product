@@ -1,33 +1,70 @@
 package gift.repository;
 
+import gift.dto.response.ProductResponseDto;
 import gift.entity.Product;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import org.springframework.stereotype.Component;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
-@Component
-public class ProductRepository {
+@Repository
+public class ProductRepository implements ProductRepositoryInterface {
 
-  final Map<Long, Product> products = new HashMap<>();
+    private final JdbcTemplate jdbcTemplate;
 
-  public Product get(long productId) {
-    return products.get(productId);
-  }
+    public ProductRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
-  public void add(Product product) {
-    products.put(product.productId(), product);
-  }
+    //상품 반환용 매퍼
+    private RowMapper<Product> productRowMapper() {
+        return new RowMapper<>() {
 
-  public void delete(long productId) {
-    products.remove(productId);
-  }
+            @Override
+            public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new Product(
+                    rs.getLong("productId"),
+                    rs.getString("name"),
+                    rs.getInt("price"),
+                    rs.getString("imageURL")
+                );
+            }
+        };
+    }
 
-  public Collection<Product> findAll() {
-    return products.values();
-  }
+    @Override
+    public Optional<Product> findById(long productId) {
+        return jdbcTemplate.query("select * from product where productId = ?",
+            productRowMapper(),
+            productId).stream().findFirst();
+    }
 
-  public boolean containsKey(long id) {
-    return products.containsKey(id);
-  }
+    @Override
+    public void add(Product product) {
+
+    }
+
+    @Override
+    public void update(Product product) {
+
+    }
+
+    @Override
+    public void delete(long productId) {
+
+    }
+
+    @Override
+    public Collection<ProductResponseDto> findAll() {
+        return List.of();
+    }
+
+    @Override
+    public boolean containsKey(long id) {
+        return false;
+    }
 }
