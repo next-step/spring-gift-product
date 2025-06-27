@@ -8,8 +8,9 @@ import java.util.List;
 public interface ProductRepository {
 
     List<ProductResponseDto> findAllProducts();
+    Product findProductById(Long id);
     Product findProductByIdElseThrow(Long id);
-    ProductResponseDto saveProduct(String name, Long price, String imageUrl);
+    Product saveProduct(String name, Long price, String imageUrl);
     Product updateProduct(Long id, String name, Long price, String imageUrl);
     void deleteProduct(Long id);
 }

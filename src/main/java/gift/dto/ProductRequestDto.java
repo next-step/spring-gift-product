@@ -3,7 +3,6 @@ package gift.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 
 public class ProductRequestDto {
 
@@ -14,8 +13,8 @@ public class ProductRequestDto {
     @Min(value = 0, message = "가격은 0원 이상입니다.")
     private final Long price;
 
-    private String imageUrl;
-
+    private final String imageUrl;
+  
     public ProductRequestDto(Long price, String name, String imageUrl) {
         this.price = price;
         this.name = name;
