@@ -8,4 +8,8 @@ public record CreateProductRequest(
         @NotNull(message = "가격은 필수 입력 값입니다.") Integer price,
         @NotNull(message = "수량은 필수 입력 값입니다.") Integer quantity
 ) {
+
+    public static CreateProductRequest empty() {
+        return new CreateProductRequest(null, null, null);
+    }
 }

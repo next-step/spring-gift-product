@@ -24,14 +24,14 @@ public class ProductManageController {
 
     @GetMapping
     public String getProductsForm(Model model) {
-        List<ProductManageResponse> products = productService.getAllProductsManagement();
+        List<ProductManageResponse> products = productService.getAllProducts().stream().map(ProductManageResponse::from).toList();
         model.addAttribute("products", products);
         return "/admin/productList";
     }
 
     @GetMapping("/new")
     public String createProductForm(Model model) {
-        model.addAttribute("request", new CreateProductRequest(null, null, null));
+        model.addAttribute("request", CreateProductRequest.empty());
         return "/admin/productCreate";
     }
 
@@ -47,7 +47,7 @@ public class ProductManageController {
 
     @GetMapping("/{id}/edit")
     public String updateProductForm(@PathVariable Long id, Model model) {
-        ProductManageResponse response = productService.getProductManagement(id);
+        ProductManageResponse response = ProductManageResponse.from(productService.getProduct(id));
         model.addAttribute("id", id);
         model.addAttribute("request", UpdateProductRequest.from(response));
         return "/admin/productUpdate";

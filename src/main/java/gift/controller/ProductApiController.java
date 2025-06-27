@@ -31,7 +31,7 @@ public class ProductApiController {
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getProducts() {
-        List<ProductResponse> products = productService.getAllProducts();
+        List<ProductResponse> products = productService.getAllProducts().stream().map(ProductResponse::from).toList();
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
