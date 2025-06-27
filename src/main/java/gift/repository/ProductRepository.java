@@ -1,12 +1,9 @@
 package gift.repository;
 
-import gift.dto.response.ProductResponseDto;
 import gift.entity.Product;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -70,12 +67,7 @@ public class ProductRepository implements ProductRepositoryInterface {
 
     @Override
     public void delete(long productId) {
-
-    }
-
-    @Override
-    public Collection<ProductResponseDto> findAll() {
-        return List.of();
+        jdbcTemplate.update("delete from product where PRODUCTID = ?", productId);
     }
 
     @Override

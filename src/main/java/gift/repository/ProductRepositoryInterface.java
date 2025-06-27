@@ -1,8 +1,6 @@
 package gift.repository;
 
-import gift.dto.response.ProductResponseDto;
 import gift.entity.Product;
-import java.util.Collection;
 import java.util.Optional;
 
 
@@ -15,8 +13,6 @@ public interface ProductRepositoryInterface {
     public void updateProduct(Product product);
 
     public void delete(long productId);
-
-    public Collection<ProductResponseDto> findAll();
 
     public boolean containsKey(long id);
 

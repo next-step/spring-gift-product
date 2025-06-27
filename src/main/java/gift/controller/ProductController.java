@@ -3,7 +3,6 @@ package gift.controller;
 import gift.dto.request.ProductRequestDto;
 import gift.dto.request.ProductUpdateRequestDto;
 import gift.dto.response.ProductResponseDto;
-import gift.entity.Product;
 import gift.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +52,7 @@ class ProductController {
 
     //상품 삭제
     @DeleteMapping("/api/products/{productId}")
-    public ResponseEntity<Product> deleteProduct(@PathVariable long productId) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable long productId) {
         if (!productService.containsProduct(productId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
