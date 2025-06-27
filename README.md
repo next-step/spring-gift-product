@@ -29,4 +29,4 @@
     - [x] form 태그 Thymeleaf 설정
     - [x] th:object 사용해 코드 간소화
 - [x] saveProduct의 EndPoint 분리
-- [ ] 도메인 객체를 뷰와 분리
+- [x] 도메인 객체를 뷰와 분리
