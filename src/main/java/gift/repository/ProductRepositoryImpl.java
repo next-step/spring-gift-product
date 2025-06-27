@@ -62,6 +62,15 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
+    public int updateProductByProductId(Long productId, String name, Double price,
+        String imageUrl) {
+
+        String sql = "UPDATE products SET name = ?, price = ?, imageUrl = ? WHERE productId = ?";
+        return jdbcTemplate.update(sql, name, price, imageUrl, productId);
+    }
+
+
+    @Override
     public int deleteProductByProductId(Long productId) {
 
         String sql = "DELETE FROM products WHERE productId = ?";

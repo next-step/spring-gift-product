@@ -12,5 +12,7 @@ public interface ProductRepository {
 
     Product findProductByProductId(Long productId);
 
+    int updateProductByProductId(Long productId, String name, Double price, String imageUrl);
+
     int deleteProductByProductId(Long productId);
 }

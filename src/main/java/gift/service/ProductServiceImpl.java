@@ -2,9 +2,7 @@ package gift.service;
 
 import gift.dto.request.ProductCreateRequestDto;
 import gift.dto.response.ProductCreateResponseDto;
-import gift.dto.response.ProductDeleteResponseDto;
 import gift.dto.response.ProductGetResponseDto;
-import gift.dto.response.ProductUpdateResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
@@ -52,25 +50,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductUpdateResponseDto updateProductByProductId(Long productId, String name,
+    public void updateProductByProductId(Long productId, String name,
         Double price,
         String imageUrl) {
-        Product product = productRepository.findProductByProductId(productId);
+        int updatedProductRows = productRepository.updateProductByProductId(productId, name, price,
+            imageUrl);
 
-        if (product == null) {
+        if (updatedProductRows == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Does not exist productId = " + productId);
+                "Failed to update productId = " + productId);
         }
-
-        if (name == null || price == null || imageUrl == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                "name, price, imageUrl must not be null.");
-        }
-
-        // 메모리 상(products)에 존재하는 Product를 직접 수정하기 때문에, 데이터베이스 접근을 하지 않았다.
-        product.update(name, price, imageUrl);
-
-        return new ProductUpdateResponseDto(product);
     }
 
     @Override

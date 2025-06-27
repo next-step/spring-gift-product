@@ -4,7 +4,6 @@ import gift.dto.request.ProductCreateRequestDto;
 import gift.dto.request.ProductUpdateRequestDto;
 import gift.dto.response.ProductCreateResponseDto;
 import gift.dto.response.ProductGetResponseDto;
-import gift.dto.response.ProductUpdateResponseDto;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -52,13 +51,14 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<ProductUpdateResponseDto> updateProduct(@PathVariable Long productId,
-        @RequestBody ProductUpdateRequestDto productUpdaterequestDto) {
+    public ResponseEntity<Void> updateProduct(@PathVariable Long productId,
+        @Valid @RequestBody ProductUpdateRequestDto productUpdaterequestDto) {
 
-        return new ResponseEntity<>(
-            productService.updateProductByProductId(productId, productUpdaterequestDto.name(),
-                productUpdaterequestDto.price(),
-                productUpdaterequestDto.imageUrl()), HttpStatus.OK);
+        productService.updateProductByProductId(productId, productUpdaterequestDto.name(),
+            productUpdaterequestDto.price(),
+            productUpdaterequestDto.imageUrl());
+
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{productId}")
