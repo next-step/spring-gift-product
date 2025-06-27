@@ -52,6 +52,21 @@ public class ProductViewController {
         return "products";
     }
 
+    @GetMapping("/{productId}")
+    public String getProductByProductId(@RequestParam Long productId, Model model) {
+        if (productId != null) {
+            try {
+                ProductGetResponseDto product = productService.findProductByProductId(productId);
+                model.addAttribute("products", List.of(product));
+            } catch (ResponseStatusException e) {
+                model.addAttribute("products", List.of());
+                model.addAttribute("error", "해당 상품이 없습니다.");
+            }
+        }
+
+        return "products";
+    }
+
     @GetMapping("/update/{productId}")
     public String updateProductPage(@PathVariable Long productId, Model model) {
         try {
