@@ -20,12 +20,14 @@ public class ProductService {
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
-
-    public ProductResponseDto findProductById(Long productId) {
-        Product product = productRepository.findById(productId);
-        if (product == null)
+    private Product findProductByIdFun(Long id) {
+        Product product =  productRepository.findById(id);
+        if(product == null)
             throw new ProductNotFoundException();
-        return product.toDto();
+        return product;
+    }
+    public ProductResponseDto findProductById(Long productId) {
+        return findProductByIdFun(productId).toDto();
     }
 
     public ProductResponseDto saveProduct(ProductRequestDto dto) {
@@ -34,10 +36,7 @@ public class ProductService {
     }
 
     public ProductResponseDto updateProduct(Long productId, ProductRequestDto dto) {
-        Product product = productRepository.findById(productId);
-        if(product == null) {
-            throw new ProductNotFoundException();
-        }
+        Product product = findProductByIdFun(productId);
         product.updateProductInfo(dto.name(), dto.price(), dto.imageUrl());
         return product.toDto();
     }
@@ -53,11 +52,8 @@ public class ProductService {
     }
 
     public void deleteProduct(Long productId) {
-        Product product = productRepository.findById(productId);
-        if(product == null) {
-            throw new ProductNotFoundException();
-        }
-        productRepository.deleteById(productId);
+            findProductByIdFun(productId);
+            productRepository.deleteById(productId);
     }
 
     public List<ProductResponseDto> findAllProducts() {
