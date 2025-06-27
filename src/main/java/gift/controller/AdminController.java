@@ -24,7 +24,6 @@ public class AdminController {
         this.productService = productService;
     }
 
-    // 상품 등록 폼 표시
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("productRequest", new ProductRequest(null, "", null, ""));
@@ -32,7 +31,6 @@ public class AdminController {
         return "admin/product-form";
     }
 
-    // 상품 등록
     @PostMapping("/new")
     public String createProduct(
         @ModelAttribute("productRequest")
@@ -56,7 +54,6 @@ public class AdminController {
         }
     }
 
-    // 상품 상세 정보 표시
     @GetMapping("/{id}")
     public String showProduct(
         @PathVariable Long id, Model model
@@ -71,7 +68,6 @@ public class AdminController {
         }
     }
 
-    // 상품 수정 폼 표시
     @GetMapping("/{id}/edit")
     public String showEditForm(
         @PathVariable Long id, Model model
@@ -93,7 +89,6 @@ public class AdminController {
         }
     }
 
-    // 상품 수정
     @PostMapping("/{id}/edit")
     public String updateProduct(
         @PathVariable Long id,
@@ -113,7 +108,6 @@ public class AdminController {
         }
     }
 
-    // 상품 삭제
     @DeleteMapping("/{id}")
     public String deleteProduct(
         @PathVariable
@@ -131,7 +125,6 @@ public class AdminController {
         }
     }
 
-    // 상품 목록 조회
     @GetMapping
     public String listProducts(Model model) {
         try {
