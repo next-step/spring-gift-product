@@ -1,7 +1,7 @@
 package gift.controller;
 
-import gift.dto.ProductRequestDto;
-import gift.dto.ProductResponseDto;
+import gift.dto.request.ProductRequestDto;
+import gift.dto.response.ProductResponseDto;
 import gift.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
