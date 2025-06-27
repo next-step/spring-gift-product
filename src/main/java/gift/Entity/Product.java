@@ -24,7 +24,7 @@ public class Product {
 
     public int getPrice() { return price; }
     public void setPrice(int price) { this.price = price; }
-
+  
     public String getImgUrl() { return imgUrl; }
     public void setImgUrl(String imgUrl) { this.imgUrl = imgUrl; }
 }

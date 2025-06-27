@@ -3,7 +3,6 @@ package gift.Controller;
 import gift.Dto.*;
 import gift.Entity.*;
 
-import gift.Repository.ProductRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,7 +64,7 @@ public class ProductController {
         if (error != null) {
             return ResponseEntity.badRequest().body(error);
         }
-
+      
         Product updated = new Product(
                 id,
                 request.getName(),
