@@ -22,3 +22,11 @@
 - [x] 관리자 상품 수정
 - [x] 관리자 상품 삭제
 - [x] 관리자 UI 개선 및 코드 주석 추가
+
+## Step2 Refactoring [ 06/27 ]
+
+- [ ] 관리자 페이지 구현
+    - [ ] form 태그 Thymeleaf 설정
+    - [ ] th:object 사용해 코드 간소화
+- [x] saveProduct의 EndPoint 분리
+- [ ] 도메인 객체를 뷰와 분리

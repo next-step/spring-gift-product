@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/admin/products")
@@ -32,7 +32,8 @@ public class AdminController {
   @GetMapping("/add")
   public String showAddForm(Model model) {
     model.addAttribute("product", new Product());
-    model.addAttribute("mode", "add");
+    model.addAttribute("action", "/admin/products");
+    model.addAttribute("method", "post");
     return "admin/product-form";
   }
 
@@ -42,19 +43,22 @@ public class AdminController {
     Product product = productService.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Product not found"));
     model.addAttribute("product", product);
-    model.addAttribute("mode", "edit");
+    model.addAttribute("action", "/admin/products/" + id);
+    model.addAttribute("method", "put");
     return "admin/product-form";
   }
 
-  // 상품 추가-add, 수정-mode -> 기능 후 전체 상품 page로 이동
-  // 두 페이지 모두 form을 사용해야 한다는 점이 동일해 함께 처리
+  // Post로 요청을 받는 경우(상품 추가)
   @PostMapping
-  public String saveProduct(@ModelAttribute Product product, @RequestParam String mode) {
-    if ("add".equals(mode)) {
-      productService.save(product);
-    } else {
-      productService.update(product.getId(), product);
-    }
+  public String addProduct(@ModelAttribute Product product) {
+    productService.save(product);
+    return "redirect:/admin/products";
+  }
+
+  // Put으로 요청을 받는 경우(상품 수정)
+  @PutMapping("/{id}")
+  public String updateProduct(@PathVariable Long id, @ModelAttribute Product product) {
+    productService.update(id, product);
     return "redirect:/admin/products";
   }
 }
