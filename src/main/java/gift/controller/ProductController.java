@@ -47,8 +47,8 @@ public class ProductController {
     public ResponseEntity<List<ProductResponseDto>> getProducts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        List<ProductResponseDto> all = productService.getProductList(0, Integer.MAX_VALUE);
         if (size == 0) {
+            List<ProductResponseDto> all = productService.getProductList(0, Integer.MAX_VALUE);
             return ResponseEntity.ok(all); // 전체 반환
         }
         return ResponseEntity.ok(productService.getProductList(page, size));
