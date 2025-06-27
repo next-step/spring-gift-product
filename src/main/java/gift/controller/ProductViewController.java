@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ProductViewController {
     
     private final ProductService productService;
+    private final String PRODUCTS_LIST_PATH = "/products";
     
     public ProductViewController(ProductService productService) {
         this.productService = productService;
@@ -59,7 +60,7 @@ public class ProductViewController {
     @PostMapping("/add")
     public String addProduct(@ModelAttribute AddProductRequestDto productForm) {
         productService.addProduct(productForm);
-        return "redirect:/products";
+        return "redirect:" + PRODUCTS_LIST_PATH;
     }
     
     //상품 목록에서 수정 버튼 누를 시 수정화면 불러옴, 구성은 추가와 유사
@@ -74,20 +75,20 @@ public class ProductViewController {
     public String modifyProduct(@PathVariable Long id,
         @ModelAttribute ModifyProductRequestDto productForm) {
         productService.modifyProductWithId(id, productForm);
-        return "redirect:/products";
+        return "redirect:" + PRODUCTS_LIST_PATH;
     }
     
     @PatchMapping("/edit/{id}")
     public String modifyInfoProduct(@PathVariable Long id,
         @ModelAttribute ModifyProductRequestDto modifyForm) {
         productService.modifyProductInfoWithId(id, modifyForm);
-        return "redirect:/products";
+        return "redirect:" + PRODUCTS_LIST_PATH;
     }
     
     //삭제 버튼 누를 시 동작
     @DeleteMapping("/{id}")
     public String deleteProduct(@PathVariable Long id) {
         productService.deleteProductWithId(id);
-        return "redirect:/products";
+        return "redirect:" + PRODUCTS_LIST_PATH;
     }
 }
