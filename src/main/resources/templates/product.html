@@ -1,356 +1,396 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>상품 상세</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #e9ecef;
-        }
-        .back-btn {
-            background-color: #6c757d;
-            color: white;
-            padding: 8px 16px;
-            text-decoration: none;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        .back-btn:hover {
-            background-color: #5a6268;
-        }
-        .product-detail {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        .product-image-container {
-            text-align: center;
-        }
-        .product-image {
-            width: 100%;
-            max-width: 350px;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
-        .no-image {
-            width: 100%;
-            max-width: 350px;
-            height: 300px;
-            background-color: #f8f9fa;
-            border: 2px dashed #dee2e6;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6c757d;
-            font-size: 16px;
-        }
-        .product-info {
-            padding: 20px 0;
-        }
-        .product-title {
-            font-size: 28px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .info-item {
-            margin-bottom: 15px;
-            padding: 12px;
-            background-color: #f8f9fa;
-            border-radius: 6px;
-        }
-        .info-label {
-            font-weight: bold;
-            color: #495057;
-            margin-bottom: 5px;
-        }
-        .info-value {
-            font-size: 16px;
-            color: #333;
-        }
-        .price {
-            font-size: 24px;
-            font-weight: bold;
-            color: #007bff;
-        }
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #e9ecef;
-        }
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-            min-width: 100px;
-        }
-        .btn-edit {
-            background-color: #28a745;
-            color: white;
-        }
-        .btn-edit:hover {
-            background-color: #218838;
-        }
-        .btn-delete {
-            background-color: #dc3545;
-            color: white;
-        }
-        .btn-delete:hover {
-            background-color: #c82333;
-        }
-        .edit-form {
-            display: none;
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #495057;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        .form-group input:focus {
-            outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
-        }
-        .form-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .btn-save {
-            background-color: #007bff;
-            color: white;
-        }
-        .btn-save:hover {
-            background-color: #0056b3;
-        }
-        .btn-cancel {
-            background-color: #6c757d;
-            color: white;
-        }
-        .btn-cancel:hover {
-            background-color: #5a6268;
-        }
-        .error {
-            color: #dc3545;
-            background-color: #f8d7da;
-            padding: 12px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            border: 1px solid #f5c6cb;
-        }
-        .success {
-            color: #155724;
-            background-color: #d4edda;
-            padding: 12px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            border: 1px solid #c3e6cb;
-        }
-        @media (max-width: 768px) {
-            .product-detail {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            .action-buttons {
-                flex-direction: column;
-            }
-            .form-buttons {
-                flex-direction: column;
-            }
-        }
-    </style>
+  <title>상품 상세</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #e9ecef;
+    }
+
+    .back-btn {
+      background-color: #6c757d;
+      color: white;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .back-btn:hover {
+      background-color: #5a6268;
+    }
+
+    .product-detail {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .product-image-container {
+      text-align: center;
+    }
+
+    .product-image {
+      width: 100%;
+      max-width: 350px;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+
+    .no-image {
+      width: 100%;
+      max-width: 350px;
+      height: 300px;
+      background-color: #f8f9fa;
+      border: 2px dashed #dee2e6;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6c757d;
+      font-size: 16px;
+    }
+
+    .product-info {
+      padding: 20px 0;
+    }
+
+    .product-title {
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .info-item {
+      margin-bottom: 15px;
+      padding: 12px;
+      background-color: #f8f9fa;
+      border-radius: 6px;
+    }
+
+    .info-label {
+      font-weight: bold;
+      color: #495057;
+      margin-bottom: 5px;
+    }
+
+    .info-value {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .price {
+      font-size: 24px;
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e9ecef;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      min-width: 100px;
+    }
+
+    .btn-edit {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .btn-edit:hover {
+      background-color: #218838;
+    }
+
+    .btn-delete {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn-delete:hover {
+      background-color: #c82333;
+    }
+
+    .edit-form {
+      display: none;
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #495057;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+
+    .form-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-save {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-save:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-cancel {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .btn-cancel:hover {
+      background-color: #5a6268;
+    }
+
+    .error {
+      color: #dc3545;
+      background-color: #f8d7da;
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      border: 1px solid #f5c6cb;
+    }
+
+    .success {
+      color: #155724;
+      background-color: #d4edda;
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      border: 1px solid #c3e6cb;
+    }
+
+    @media (max-width: 768px) {
+      .product-detail {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+
+      .form-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 <body>
 <div class="container">
-    <!-- 헤더 -->
-    <div class="header">
-        <h1>상품 상세 정보</h1>
-        <a href="/api/products" class="back-btn">← 목록으로</a>
-    </div>
+  <!-- 헤더 -->
+  <div class="header">
+    <h1>상품 상세 정보</h1>
+    <a href="/home" class="back-btn">← 목록으로</a>
+  </div>
 
-    <!-- 에러 메시지 -->
-    <div th:if="${errorMessage}" class="error">
-        <p th:text="${errorMessage}">에러 메시지</p>
-    </div>
+  <!-- 에러 메시지 -->
+  <div th:if="${errorMessage}" class="error">
+    <p th:text="${errorMessage}">에러 메시지</p>
+  </div>
 
-    <!-- 성공 메시지 -->
-    <div th:if="${successMessage}" class="success">
-        <p th:text="${successMessage}">성공 메시지</p>
-    </div>
+  <!-- 성공 메시지 -->
+  <div th:if="${successMessage}" class="success">
+    <p th:text="${successMessage}">성공 메시지</p>
+  </div>
 
-    <!-- 상품이 존재할 때 -->
-    <div th:if="${product != null}">
-        <!-- 상품 상세 정보 -->
-        <div class="product-detail">
-            <!-- 상품 이미지 -->
-            <div class="product-image-container">
-                <img th:if="${product.imageURL != null and !product.imageURL.isEmpty()}"
-                     th:src="${product.imageURL}"
-                     th:alt="${product.name}"
-                     class="product-image"
-                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                <div class="no-image" style="display: none;">
-                    이미지가 없습니다
-                </div>
-                <div th:if="${product.imageURL == null or product.imageURL.isEmpty()}" class="no-image">
-                    이미지가 없습니다
-                </div>
-            </div>
+  <!-- 상품이 존재할 때 -->
+  <div th:if="${product != null}">
+    <!-- 상품 상세 정보 -->
+    <div class="product-detail">
+      <!-- 상품 이미지 -->
+      <div class="product-image-container">
+        <img th:if="${product.imageURL != null and !product.imageURL.isEmpty()}"
+             th:src="${product.imageURL}"
+             th:alt="${product.name}"
+             class="product-image"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+        <div class="no-image" style="display: none;">
+          이미지가 없습니다
+        </div>
+        <div th:if="${product.imageURL == null or product.imageURL.isEmpty()}" class="no-image">
+          이미지가 없습니다
+        </div>
+      </div>
 
-            <!-- 상품 정보 -->
-            <div class="product-info">
-                <h2 class="product-title" th:text="${product.name}">상품명</h2>
+      <!-- 상품 정보 -->
+      <div class="product-info">
+        <h2 class="product-title" th:text="${product.name}">상품명</h2>
 
-                <div class="info-item">
-                    <div class="info-label">상품 ID</div>
-                    <div class="info-value" th:text="${product.productId}">1</div>
-                </div>
-
-                <div class="info-item">
-                    <div class="info-label">가격</div>
-                    <div class="info-value price" th:text="|${#numbers.formatInteger(product.price, 0, 'COMMA')}원|">10,000원</div>
-                </div>
-
-                <div class="info-item" th:if="${product.imageURL != null and !product.imageURL.isEmpty()}">
-                    <div class="info-label">이미지 URL</div>
-                    <div class="info-value" style="word-break: break-all; font-size: 14px; color: #6c757d;" th:text="${product.imageURL}">이미지 URL</div>
-                </div>
-            </div>
+        <div class="info-item">
+          <div class="info-label">상품 ID</div>
+          <div class="info-value" th:text="${product.productId}">1</div>
         </div>
 
-        <!-- 액션 버튼 -->
-        <div class="action-buttons">
-            <button type="button" class="btn btn-edit" onclick="toggleEditForm()">수정하기</button>
-            <form style="display: inline;" th:action="@{/api/products/delete(productId=${product.productId})}" method="post"
-                  onsubmit="return confirm('정말로 이 상품을 삭제하시겠습니까?');">
-                <input type="hidden" name="productId" th:value="${product.productId}" />
-                <button type="submit" class="btn btn-delete">삭제하기</button>
-            </form>
+        <div class="info-item">
+          <div class="info-label">가격</div>
+          <div class="info-value price"
+               th:text="|${#numbers.formatInteger(product.price, 0, 'COMMA')}원|">10,000원
+          </div>
         </div>
 
-        <!-- 수정 폼 -->
-        <div id="editForm" class="edit-form">
-            <h3>상품 정보 수정</h3>
-            <form th:action="@{/api/products/{productId}(productId=${product.productId})}" method="post">
-                <input type="hidden" name="productId" th:value="${product.productId}" />
-
-                <div class="form-group">
-                    <label for="name">상품명</label>
-                    <input type="text" id="name" name="name" required th:value="${product.name}" />
-                </div>
-
-                <div class="form-group">
-                    <label for="price">가격</label>
-                    <input type="text" id="price" name="price" required
-                           pattern="[0-9]*"
-                           inputmode="numeric"
-                           placeholder="숫자만 입력하세요"
-                           th:value="${product.price}" />
-                </div>
-
-                <div class="form-group">
-                    <label for="imageURL">이미지 URL</label>
-                    <input type="url" id="imageURL" name="imageURL"
-                           placeholder="예: https://example.com/image.jpg"
-                           pattern="https?://.+"
-                           title="http:// 또는 https://로 시작하는 올바른 URL을 입력하세요"
-                           th:value="${product.imageURL}" />
-                </div>
-
-                <div class="form-buttons">
-                    <button type="submit" class="btn btn-save">저장하기</button>
-                    <button type="button" class="btn btn-cancel" onclick="toggleEditForm()">취소</button>
-                </div>
-            </form>
+        <div class="info-item" th:if="${product.imageURL != null and !product.imageURL.isEmpty()}">
+          <div class="info-label">이미지 URL</div>
+          <div class="info-value" style="word-break: break-all; font-size: 14px; color: #6c757d;"
+               th:text="${product.imageURL}">이미지 URL
+          </div>
         </div>
+      </div>
     </div>
 
-    <!-- 상품이 존재하지 않을 때 -->
-    <div th:if="${product == null}">
-        <div style="text-align: center; padding: 50px; color: #6c757d;">
-            <h3>상품을 찾을 수 없습니다</h3>
-            <p>요청하신 상품이 존재하지 않거나 삭제되었습니다.</p>
-            <a href="/api/products" class="btn btn-edit" style="margin-top: 20px;">목록으로 돌아가기</a>
-        </div>
+    <!-- 액션 버튼 -->
+    <div class="action-buttons">
+      <button type="button" class="btn btn-edit" onclick="toggleEditForm()">수정하기</button>
+      <form style="display: inline;" th:action="@{/home/delete(productId=${product.productId})}"
+            method="post"
+            onsubmit="return confirm('정말로 이 상품을 삭제하시겠습니까?');">
+        <input type="hidden" name="productId" th:value="${product.productId}"/>
+        <button type="submit" class="btn btn-delete">삭제하기</button>
+      </form>
     </div>
+
+    <!-- 수정 폼 -->
+    <div id="editForm" class="edit-form">
+      <h3>상품 정보 수정</h3>
+      <form th:action="@{/home/{productId}(productId=${product.productId})}" method="post">
+        <input type="hidden" name="productId" th:value="${product.productId}"/>
+
+        <div class="form-group">
+          <label for="name">상품명</label>
+          <input type="text" id="name" name="name" required th:value="${product.name}"/>
+        </div>
+
+        <div class="form-group">
+          <label for="price">가격</label>
+          <input type="text" id="price" name="price" required
+                 pattern="[0-9]*"
+                 inputmode="numeric"
+                 placeholder="숫자만 입력하세요"
+                 th:value="${product.price}"/>
+        </div>
+
+        <div class="form-group">
+          <label for="imageURL">이미지 URL</label>
+          <input type="url" id="imageURL" name="imageURL"
+                 placeholder="예: https://example.com/image.jpg"
+                 pattern="https?://.+"
+                 title="http:// 또는 https://로 시작하는 올바른 URL을 입력하세요"
+                 th:value="${product.imageURL}"/>
+        </div>
+
+        <div class="form-buttons">
+          <button type="submit" class="btn btn-save">저장하기</button>
+          <button type="button" class="btn btn-cancel" onclick="toggleEditForm()">취소</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 상품이 존재하지 않을 때 -->
+  <div th:if="${product == null}">
+    <div style="text-align: center; padding: 50px; color: #6c757d;">
+      <h3>상품을 찾을 수 없습니다</h3>
+      <p>요청하신 상품이 존재하지 않거나 삭제되었습니다.</p>
+      <a href="/home" class="btn btn-edit" style="margin-top: 20px;">목록으로 돌아가기</a>
+    </div>
+  </div>
 </div>
 
 <script>
-    function toggleEditForm() {
-        const editForm = document.getElementById('editForm');
-        if (editForm.style.display === 'none' || editForm.style.display === '') {
-            editForm.style.display = 'block';
-            // 수정 폼이 열릴 때 첫 번째 입력 필드에 포커스
-            document.getElementById('name').focus();
-        } else {
-            editForm.style.display = 'none';
-            // 폼 초기화 (원래 값으로 되돌리기)
-            const form = editForm.querySelector('form');
-            form.reset();
-            // Thymeleaf 값으로 다시 설정
-            document.getElementById('name').value = '[[${product.name}]]';
-            document.getElementById('price').value = '[[${product.price}]]';
-            document.getElementById('imageURL').value = '[[${product.imageURL}]]';
-        }
+  function toggleEditForm() {
+    const editForm = document.getElementById('editForm');
+    if (editForm.style.display === 'none' || editForm.style.display === '') {
+      editForm.style.display = 'block';
+      // 수정 폼이 열릴 때 첫 번째 입력 필드에 포커스
+      document.getElementById('name').focus();
+    } else {
+      editForm.style.display = 'none';
+      // 폼 초기화 (원래 값으로 되돌리기)
+      const form = editForm.querySelector('form');
+      form.reset();
+      // Thymeleaf 값으로 다시 설정
+      document.getElementById('name').value = '[[${product.name}]]';
+      document.getElementById('price').value = '[[${product.price}]]';
+      document.getElementById('imageURL').value = '[[${product.imageURL}]]';
     }
+  }
 
-    // 페이지 로드 시 이미지 에러 처리
-    document.addEventListener('DOMContentLoaded', function() {
-        const productImage = document.querySelector('.product-image');
-        if (productImage) {
-            productImage.addEventListener('error', function() {
-                this.style.display = 'none';
-                const noImageDiv = this.parentElement.querySelector('.no-image');
-                if (noImageDiv) {
-                    noImageDiv.style.display = 'flex';
-                }
-            });
+  // 페이지 로드 시 이미지 에러 처리
+  document.addEventListener('DOMContentLoaded', function () {
+    const productImage = document.querySelector('.product-image');
+    if (productImage) {
+      productImage.addEventListener('error', function () {
+        this.style.display = 'none';
+        const noImageDiv = this.parentElement.querySelector('.no-image');
+        if (noImageDiv) {
+          noImageDiv.style.display = 'flex';
         }
-    });
+      });
+    }
+  });
 </script>
 </body>
 </html>
