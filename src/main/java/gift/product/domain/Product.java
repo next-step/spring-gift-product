@@ -19,6 +19,10 @@ public record Product(
     validateId(id);
     return new Product(id, name, price,description,imageUrl);
   }
+  public static Product withId(Long id, Product product){
+    validateId(id);
+    return new Product(id, product.name, product.price, product.description, product.imageUrl);
+  }
 
   public static Product of(String name, Integer price, String description, String imageUrl){
     return new Product(null, name, price,description,imageUrl);
@@ -47,7 +51,7 @@ public record Product(
       throw new IllegalArgumentException("상품 가격은 null일 수 없습니다.");
     }
     if(price <0){
-      throw new IllegalArgumentException("상품 각겨은 음수일 수 없습니다");
+      throw new IllegalArgumentException("상품 가격은 음수일 수 없습니다");
     }
   }
 
