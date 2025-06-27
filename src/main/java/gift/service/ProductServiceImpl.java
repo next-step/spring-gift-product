@@ -33,12 +33,17 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
+    //requestDto의 id와 path로 들어오는 id가 다른 경우.
+    if (requestDto.getId() != id) {
+      throw new IllegalStateException("request id와 실제 id가 일치하지 않습니다");
+    }
+
     return repository.updateProduct(id, requestDto);
   }
 
   @Override
-  public int deleteProduct(Long id) {
-    return repository.deleteProduct(id);
+  public void deleteProduct(Long id) {
+    repository.deleteProduct(id);
   }
 
 

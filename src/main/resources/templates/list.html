@@ -24,8 +24,10 @@
           <td>
             <a href="#" th:href="@{/admin/products/{id}/update (id=${responseDto.id})}"
                role="button">상품 수정</a>
-            <a href="#" th:href="@{/admin/products/{id}/delete (id=${responseDto.id})}"
-               role="button">상품 삭제</a>
+            <form th:action="@{/admin/products/{id}/delete(id=${responseDto.id})}" method="post">
+              <input type="hidden" name="_method" value="delete"/>
+              <button type="submit">상품 삭제</button>
+            </form>
           </td>
         </tr>
         </tbody>
