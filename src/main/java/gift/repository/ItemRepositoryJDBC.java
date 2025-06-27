@@ -46,7 +46,13 @@ public class ItemRepositoryJDBC implements ItemRepository{
 
     @Override
     public List<Item> getItems(String name, Integer price) {
-        return List.of();
+        var sql = "select id, name, price, image_url from items where name=? or price=?";
+        return jdbcTemplate.query(
+                sql,
+                new Object[]{name, price},
+                itemRowMapper
+        );
+
     }
 
     @Override
@@ -63,19 +69,7 @@ public class ItemRepositoryJDBC implements ItemRepository{
     public List<Item> getAllItems() {
         var sql = "select id, name, price, image_url from items";
 
-        RowMapper<Item> rowMapper = new RowMapper<Item>() {
-
-            @Override
-            public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new Item(
-                        rs.getLong("id"),
-                        rs.getString("name"),
-                        rs.getInt("price"),
-                        rs.getString("image_url")
-                );
-            }
-        };
-        return  jdbcTemplate.query(sql, rowMapper);
+        return  jdbcTemplate.query(sql, itemRowMapper);
     }
 
     @Override
@@ -87,4 +81,15 @@ public class ItemRepositoryJDBC implements ItemRepository{
     public Item updateItem(Long id, String name, int price, String imageUrl) {
         return null;
     }
+    private final RowMapper<Item> itemRowMapper = new RowMapper<>() {
+        @Override
+        public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new Item(
+                    rs.getLong("id"),
+                    rs.getString("name"),
+                    rs.getInt("price"),
+                    rs.getString("image_url")
+            );
+        }
+    };
 }
