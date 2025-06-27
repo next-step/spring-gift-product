@@ -5,10 +5,7 @@ import gift.dto.ProductResponse;
 import gift.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,6 +36,20 @@ public class AdminController {
     @PostMapping("/add")
     public String addProduct(@ModelAttribute ProductRequest productRequest) {
         productService.addProduct(productRequest);
+        return "redirect:/admin/products";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable("id") Long id, Model model) {
+        ProductResponse product = productService.findProductById(id);
+        model.addAttribute("productRequest", new ProductRequest(product.name(), product.price(), product.imageUrl()));
+        model.addAttribute("productId", id);
+        return "admin/product-edit-form";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editProduct(@PathVariable("id") Long id, @ModelAttribute ProductRequest productRequest) {
+        productService.updateProduct(id, productRequest);
         return "redirect:/admin/products";
     }
 }
