@@ -27,6 +27,7 @@
 </body>
 
 <script>
+    const productId = [[${product.getId()}]];
     document.getElementById("add-product-form").addEventListener("submit", async (event) => {
         event.preventDefault();
 
@@ -39,8 +40,8 @@
             productData[key] = value;
         });
         try {
-            const res = await fetch("/api/products", {
-                method: "POST",
+            const res = await fetch(`/api/products/${productId}`, {
+                method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
                 },
