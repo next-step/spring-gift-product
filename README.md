@@ -1,8 +1,8 @@
 
-feat:
-  1. admincontroller에서 상품 목록 확인 기능 추가
-  2. admincontroller에서 상품 목록 수정 기능 추가
-  3. admincontroller에서 상품 목록 삭제 기능 추가
-  4. html list 작업
-  5. html addform 작업
-  6. html editform 작업
+feat: H2 데이터베이스에 정보를 저장
+      ProductDad
+      ProductDBController 생성
+      기존의 코드 삭제 - (범위를 잘 모르겠음)
+
+refactor: 구분되어져 있던 addform, editform 병합
+
