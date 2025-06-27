@@ -39,10 +39,4 @@ public class Product {
     public void setProductId(Long productId) {
         this.productId = productId;
     }
-
-    public void update(String name, Double price, String imageUrl) {
-        this.name = name;
-        this.price = price;
-        this.imageUrl = imageUrl;
-    }
 }
