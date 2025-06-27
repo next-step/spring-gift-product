@@ -8,19 +8,16 @@ public record PagedResult<T>(
     int size,
     long totalElements,
     int totalPages,
-    boolean first,
-    boolean last
+    boolean isFirst,
+    boolean isLast
 ) {
 
-  public static <T> PagedResult<T> from(List<T> content, PagedResult<?> original) {
-    return new PagedResult<>(
-        content,
-        original.page(),
-        original.size(),
-        original.totalElements(),
-        original.totalPages(),
-        original.first(),
-        original.last()
-    );
+  public static <T> PagedResult<T> of(List<T> content, int page, int size) {
+    long totalElements = content.size();
+    int totalPages = (int) Math.ceil((double) totalElements / size);
+    boolean isFirst = page == 0;
+    boolean isLast = page >= totalPages - 1;
+
+    return new PagedResult<>(content, page, size, totalElements, totalPages, isFirst, isLast);
   }
 }
