@@ -43,5 +43,5 @@
 
 ## 🛠 2. 데이터베이스 적용
 
-- [ ] 기존 Map 제거 및 H2 DB 연동
-- [ ] JdbcTemplate을 이용한 repository 구현
+- [x] 기존 Map 제거 및 H2 DB 연동
+- [x] JdbcTemplate을 이용한 repository 구현
