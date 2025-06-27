@@ -31,4 +31,8 @@ public class Product {
     public String getImageUrl() {
         return imageUrl;
     }
+    
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

@@ -31,7 +31,7 @@ public class ProductServiceImpl implements ProductService {
         }
         
         Product product = new Product(
-            productRepository.getRecentId(),
+            0L,
             requestDto.getName(),
             requestDto.getPrice(),
             requestDto.getImageUrl()

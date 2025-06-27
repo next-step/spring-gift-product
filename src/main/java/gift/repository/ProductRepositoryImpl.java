@@ -7,6 +7,7 @@ import gift.entity.Product;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -15,7 +16,6 @@ public class ProductRepositoryImpl implements ProductRepository {
     
     //DB
     private final JdbcClient products;
-    private static Long recentId = 0L;
     
     //생성자 주입
     public ProductRepositoryImpl(JdbcClient products) {
@@ -28,14 +28,15 @@ public class ProductRepositoryImpl implements ProductRepository {
             insert into products(name, price, imageUrl)
             values (:name, :price, :imageUrl);
             """;
+        GeneratedKeyHolder generatedKey = new GeneratedKeyHolder();
         
         products.sql(sql)
             .param("name", product.getName())
             .param("price", product.getPrice())
             .param("imageUrl", product.getImageUrl())
-            .update();
+            .update(generatedKey);
         
-        recentId++;
+        product.setId(generatedKey.getKey().longValue());
         
         return new AddProductResponseDto(product);
     }
@@ -99,20 +100,4 @@ public class ProductRepositoryImpl implements ProductRepository {
             .param("id", id)
             .update();
     }
-    
-    @Override
-    public Long getRecentId() {
-        if (recentId == 0L) {
-            var sql = """
-                select count(*) from products;
-                """;
-            
-            recentId = products.sql(sql).query(Long.class).single() + 1;
-        }
-        
-        return recentId;
-    }
-    //hashmap에서는 가장 큰 key 값을 활용하여 최신 키를 구했지만
-    //db와 함께 auto increment를 적용하면서 더이상 적용 불가
-    //repository layer 자체에서 key를 관리하도록 만들어볼까?
 }
