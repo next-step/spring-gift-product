@@ -27,9 +27,6 @@ import org.springframework.web.server.ResponseStatusException;
 @Controller//Controller는 mvc에서 화면을 구성하기 위해서 뷰 이름을 반환하고 ViewResolver를 거치게 됩니다.
 public class AdminController {
 
-    private final Map<Long, Product> products = new HashMap<>();
-    private static Long pid = 0L;
-
     private JdbcTemplate jdbcTemplate;
 
     //의존성 주입(생성자가 1개인 경우 @Autowired 생략 가능)
@@ -93,10 +90,9 @@ public class AdminController {
             @PathVariable Long id,
             Model model
     ) {
-        Product product = products.get(id);
+        Product product = findProductById(id).get();
         model.addAttribute("product", product);
         return "modify";
-
     }
 
     //update
@@ -106,11 +102,8 @@ public class AdminController {
             @ModelAttribute ProductRequestDto requestDto,
             @PathVariable Long id
     ) {
-        Product product = new Product(id,
-                requestDto.getName(),
-                requestDto.getPrice(),
-                requestDto.getImageUrl());
-        products.put(id, product);
+        String sql = "update products set name = ?, price = ?, imageurl = ? where id = ?";
+        jdbcTemplate.update(sql, requestDto.getName(), requestDto.getPrice(),requestDto.getImageUrl(), id);
         return "redirect:/admin/products/list";
     }
 
