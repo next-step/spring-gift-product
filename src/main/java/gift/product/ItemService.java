@@ -4,6 +4,7 @@ package gift.product;
 import gift.product.dto.GetItemResponse;
 import gift.product.dto.ItemRequest;
 import jakarta.annotation.PostConstruct;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,19 +16,37 @@ import java.util.stream.Collectors;
 @Service
 public class ItemService {
 
+	private final JdbcTemplate jdbcTemplate;
+	public ItemService(JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}
+
+
 	private final Map<Long, Item> db = new HashMap<>();
+
+
+
 
 	// 테스트를 위해 서버 재실행마다 15개의 아이템을 채워놓기
 	@PostConstruct
 	public void init() {
-		for (int i = 1; i <= 15; i++) {
-			Item item = new Item(
-				"Item " + i,
-				i * 1000,
-				"url" + i
-			);
-			db.put(item.getId(), item);
+		jdbcTemplate.execute("drop table if exists item");
+		jdbcTemplate.execute("""
+			CREATE TABLE item (
+				id BIGINT PRIMARY KEY AUTO_INCREMENT,
+				name VARCHAR(255) NOT NULL,
+				price INT NOT NULL,
+				image_url VARCHAR(1000) NOT NULL
+			)
+		""");
+
+		for(int i=1; i<=15; i++){
+			String name = "item" + i;
+			Integer price = i * 1000;
+			String imageUrl = "url"+i;
+
+			jdbcTemplate.update("insert into item (name, price, image_url) values (?, ?, ?)", name, price, imageUrl);
 		}
+
+
 	}
 
 	public Long createItem(ItemRequest req) {
