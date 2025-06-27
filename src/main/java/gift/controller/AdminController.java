@@ -37,7 +37,7 @@ public class AdminController {
                     requestDto.getImageUrl()
             );
             products.put(product.getId(), product);
-            return "redirect:/admin/products"; //GetMapping 되어 있는 것을 호출,,,?
+            return "redirect:/admin/products/list"; //GetMapping 되어 있는 것을 호출,,,?
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                 "가격은 음수가 될 수 없으며, 상품명, 가격, 이미지 주소는 필수 값입니다.");
@@ -63,14 +63,13 @@ public class AdminController {
 
     //read
     //전체 상품을 조회
-    @GetMapping("/products")
+    @GetMapping("/products/list")
     public String getProducts(Model model) {
         List<Product> productList = products.values()
                 .stream()
                 .collect(Collectors.toList());
         model.addAttribute("productList",productList);
         return "home";
-        //return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
     //modify.html을 불러오기 위한 메서드

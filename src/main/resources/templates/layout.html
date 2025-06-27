@@ -61,10 +61,10 @@
 <nav>
   <div>
     <ul>
-      <li><a th:href="@{/products}">전체 상품 조회하기</a></li>
+      <li><a th:href="@{/admin/products/list}">전체 상품 조회하기</a></li>
       <li><a th:href="@{/admin/products/add}">상품 등록하기</a></li>
       <li>
-        <form th:action="@{/products/info}" method="get">
+        <form th:action="@{/admin/products/info}" method="get">
           <input type="number" name="id" placeholder="상품ID 입력">
           <input type="submit" value="상품 검색하기">
         </form>
