@@ -7,6 +7,7 @@ import gift.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +37,10 @@ public class ProductManageController {
 
 
     @PostMapping
-    public String createProduct(@ModelAttribute @Valid CreateProductRequest request) {
+    public String createProduct(@ModelAttribute(name = "request") @Valid CreateProductRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/admin/productCreate";
+        }
         productService.saveProduct(request);
         return "redirect:/admin/products";
     }
@@ -50,7 +54,10 @@ public class ProductManageController {
     }
 
     @PostMapping("/{id}")
-    public String updateProduct(@PathVariable Long id, @ModelAttribute @Valid UpdateProductRequest request) {
+    public String updateProduct(@PathVariable Long id, @ModelAttribute(name = "request") @Valid UpdateProductRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/admin/productUpdate";
+        }
         productService.updateProduct(id, request);
         return "redirect:/admin/products";
     }
