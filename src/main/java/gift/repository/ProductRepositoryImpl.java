@@ -28,7 +28,7 @@ public class ProductRepositoryImpl implements ProductRepository {
             insert into products(name, price, imageUrl)
             values (:name, :price, :imageUrl);
             """;
-        GeneratedKeyHolder generatedKey = new GeneratedKeyHolder();
+        GeneratedKeyHolder generatedKey = new GeneratedKeyHolder(); //auto increment로 생성된 key 불러오기
         
         products.sql(sql)
             .param("name", product.getName())
@@ -36,7 +36,7 @@ public class ProductRepositoryImpl implements ProductRepository {
             .param("imageUrl", product.getImageUrl())
             .update(generatedKey);
         
-        product.setId(generatedKey.getKey().longValue());
+        product.setId(generatedKey.getKey().longValue()); //생성된 product의 id setting
         
         return new AddProductResponseDto(product);
     }
