@@ -3,11 +3,9 @@ package gift.repository;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.boot.autoconfigure.task.TaskExecutionProperties.Simple;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -25,26 +23,26 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public List<ProductResponseDto> findAll() {
+    public List<Product> findAll() {
         String sql = "select * from product";
 
-        List<ProductResponseDto> productList = jdbcTemplate.query(sql, productRowMapper());
+        List<Product> productList = jdbcTemplate.query(sql, productRowMapper());
         return productList;
     }
 
-    private RowMapper<ProductResponseDto> productRowMapper() {
+    private RowMapper<Product> productRowMapper() {
         return (rs, rowNum) -> {
             var id = rs.getLong("id");
             var name = rs.getString("name");
             var price = rs.getInt("price");
             var imageUrl = rs.getString("imageUrl");
 
-            return new ProductResponseDto(id, name, price, imageUrl);
+            return new Product(id, name, price, imageUrl);
         };
     }
 
     @Override
-    public ProductResponseDto createProduct(ProductRequestDto requestDto) {
+    public Long createProduct(ProductRequestDto requestDto) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("product").usingGeneratedKeyColumns("id");
 
@@ -54,22 +52,22 @@ public class ProductRepositoryImpl implements ProductRepository {
         params.put("imageUrl", requestDto.imageUrl());
 
         Long id = (Long) jdbcInsert.executeAndReturnKey(params);
-        return new ProductResponseDto(id, requestDto.name(), requestDto.price(), requestDto.imageUrl());
+        return id;
     }
 
     @Override
-    public ProductResponseDto findProduct(Long id) {
+    public Product findProduct(Long id) {
         String sql = "select * from product where id = ?";
 
-        ProductResponseDto productResponseDto = jdbcTemplate.queryForObject(sql, productRowMapper(), id);
-        return productResponseDto;
+        Product product = jdbcTemplate.queryForObject(sql, productRowMapper(), id);
+        return product;
     }
 
     @Override
-    public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
+    public int updateProduct(Long id, ProductRequestDto requestDto) {
         String sql = "update product set name = ?, price = ?, imageUrl = ? where id = ?";
 
-        jdbcTemplate.update(
+        int updateRowCount = jdbcTemplate.update(
             sql,
             requestDto.name(),
             requestDto.price(),
@@ -77,7 +75,7 @@ public class ProductRepositoryImpl implements ProductRepository {
             id
         );
 
-        return new ProductResponseDto(id, requestDto.name(), requestDto.price(), requestDto.imageUrl());
+        return updateRowCount;
     }
 
     @Override

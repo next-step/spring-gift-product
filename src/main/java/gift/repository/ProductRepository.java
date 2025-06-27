@@ -10,13 +10,13 @@ import java.util.Map;
 
 public interface ProductRepository {
 
-    List<ProductResponseDto> findAll();
+    List<Product> findAll();
 
-    ProductResponseDto createProduct(ProductRequestDto requestDto);
+    Long createProduct(ProductRequestDto requestDto);
 
-    ProductResponseDto findProduct(Long productId);
+    Product findProduct(Long productId);
 
-    ProductResponseDto updateProduct(Long productId, ProductRequestDto requestDto);
+    int updateProduct(Long productId, ProductRequestDto requestDto);
 
     void deleteProduct(Long productId);
 }
