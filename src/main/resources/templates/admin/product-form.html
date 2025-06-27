@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>새 상품 등록</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        .form-container { max-width: 500px; }
+        .form-group { margin-bottom: 1em; }
+        .form-group label { display: block; margin-bottom: 0.5em; }
+        .form-group input { width: 100%; padding: 8px; box-sizing: border-box; }
+        .form-actions { margin-top: 1.5em; }
+        .button { padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; }
+        .button-primary { background-color: #007bff; color: white; }
+        .button-secondary { background-color: #6c757d; color: white; text-decoration: none; }
+    </style>
+</head>
+<body>
+<h1>새 상품 등록</h1>
+<div class="form-container">
+    <!--
+      - th:action : form이 제출될 URL을 지정합니다.
+      - th:object : form 데이터를 바인딩할 객체를 지정합니다. (컨트롤러에서 넘겨준 "productRequest")
+      - method="post" : 데이터를 POST 방식으로 전송합니다.
+    -->
+    <form th:action="@{/admin/products/add}" th:object="${productRequest}" method="post">
+        <div class="form-group">
+            <label for="name">상품명</label>
+            <!-- th:field : input 태그와 객체의 필드를 연결합니다. -->
+            <input type="text" id="name" th:field="*{name}" required>
+        </div>
+        <div class="form-group">
+            <label for="price">가격</label>
+            <input type="number" id="price" th:field="*{price}" required>
+        </div>
+        <div class="form-group">
+            <label for="imageUrl">이미지 URL</label>
+            <input type="text" id="imageUrl" th:field="*{imageUrl}" required>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="button button-primary">등록</button>
+            <a href="/admin/products" th:href="@{/admin/products}" class="button button-secondary">취소</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

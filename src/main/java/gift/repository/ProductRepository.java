@@ -4,17 +4,18 @@ import gift.entity.Product;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class ProductRepository {
-
-    private static final Map<Long, Product> store = new HashMap<>();
+    private static final Map<Long, Product> store = new ConcurrentHashMap<>();
     private static final AtomicLong sequence = new AtomicLong(0L);
 
     public Product save(Product product) {
-        product.setId(sequence.incrementAndGet());
-        store.put(product.getId(), product);
+        Long newId = sequence.incrementAndGet();
+        product.assignId(newId);
+        store.put(newId, product);
         return product;
     }
 
@@ -22,11 +23,8 @@ public class ProductRepository {
         return Optional.ofNullable(store.get(id));
     }
 
-    public void update(Long id, Product updateParam) {
-        Product findProduct = findById(id).get();
-        findProduct.setName(updateParam.getName());
-        findProduct.setPrice(updateParam.getPrice());
-        findProduct.setImageURL(updateParam.getImageURL());
+    public void update(Product product) {
+        store.put(product.getId(), product);
     }
 
     public List<Product> findAll() {
@@ -36,5 +34,4 @@ public class ProductRepository {
     public void delete(Long id) {
         store.remove(id);
     }
-
 }
