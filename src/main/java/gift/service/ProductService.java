@@ -27,13 +27,13 @@ public class ProductService {
 
     // 추가
     public Product createProduct(ProductRequestDto req) {
-        Product product = new Product(null, req.getName(), req.getPrice(), req.getImageUrl());
+        Product product = new Product(null, req.name(), req.price(), req.imageUrl());
         return repo.createProduct(product);
     }
 
     // 수정
     public Product updateProduct(Long id, ProductRequestDto req) {
-        Product updatedProduct = new Product(id, req.getName(), req.getPrice(), req.getImageUrl());
+        Product updatedProduct = new Product(id, req.name(), req.price(), req.imageUrl());
         return repo.updateProduct(id, updatedProduct);
     }
 
