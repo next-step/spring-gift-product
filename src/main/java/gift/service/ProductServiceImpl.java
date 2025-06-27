@@ -32,24 +32,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponseDto findProduct(Long productId) {
-        return productRepository.findProduct(productId);
+    public ProductResponseDto findProduct(Long id) {
+        return productRepository.findProduct(id);
     }
 
     @Override
-    public ProductResponseDto updateProduct(Long productId, ProductRequestDto requestDto) {
-        return productRepository.updateProduct(productId, requestDto);
+    public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
+        return productRepository.updateProduct(id, requestDto);
     }
 
     @Override
-    public void deleteProduct(Long productId) {
-        productRepository.deleteProduct(productId);
-    }
-
-    @Override
-    public Map<Long, Product> findAllMap() {
-        return Collections.unmodifiableMap(
-            productRepository.findAllMap()
-        );
+    public void deleteProduct(Long id) {
+        productRepository.deleteProduct(id);
     }
 }

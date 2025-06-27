@@ -13,11 +13,9 @@ public interface ProductService {
 
     ProductResponseDto createProduct(ProductRequestDto requestDto);
 
-    ProductResponseDto findProduct(Long productId);
+    ProductResponseDto findProduct(Long id);
 
-    ProductResponseDto updateProduct(Long productId, ProductRequestDto requestDto);
+    ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto);
 
-    void deleteProduct(Long productId);
-
-    Map<Long, Product> findAllMap();
+    void deleteProduct(Long id);
 }

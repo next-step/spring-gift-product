@@ -19,6 +19,4 @@ public interface ProductRepository {
     ProductResponseDto updateProduct(Long productId, ProductRequestDto requestDto);
 
     void deleteProduct(Long productId);
-
-    Map<Long, Product> findAllMap();
 }

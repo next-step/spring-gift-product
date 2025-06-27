@@ -7,71 +7,87 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.boot.autoconfigure.task.TaskExecutionProperties.Simple;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    // DB connection 하지 않음에 따라 Collection인 HashMap을 사용 (DB 연결 시 없어질 예정)
-    private final Map<Long, Product> products = new HashMap<>();
-    private long productId = 1L;
+    private final JdbcTemplate jdbcTemplate;
+
+    public ProductRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public List<ProductResponseDto> findAll() {
-        List<ProductResponseDto> productList = new ArrayList<>();
+        String sql = "select * from product";
 
-        for (Map.Entry<Long, Product> entry : products.entrySet()) {
-            productList.add(
-                ProductResponseDto.from(entry.getValue())
-            ); // Product -> ProductResponseDto
-        }
+        List<ProductResponseDto> productList = jdbcTemplate.query(sql, productRowMapper());
         return productList;
+    }
+
+    private RowMapper<ProductResponseDto> productRowMapper() {
+        return (rs, rowNum) -> {
+            var id = rs.getLong("id");
+            var name = rs.getString("name");
+            var price = rs.getInt("price");
+            var imageUrl = rs.getString("imageUrl");
+
+            return new ProductResponseDto(id, name, price, imageUrl);
+        };
     }
 
     @Override
     public ProductResponseDto createProduct(ProductRequestDto requestDto) {
-        products.put(productId,
-            new Product(requestDto.id(), requestDto.name(), requestDto.price(),
-                requestDto.imageUrl()));
-        productId++; // id 값 1 증가
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("product").usingGeneratedKeyColumns("id");
 
-        return new ProductResponseDto(requestDto.id(), requestDto.name(),
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", requestDto.name());
+        params.put("price", requestDto.price());
+        params.put("imageUrl", requestDto.imageUrl());
+
+        Long id = (Long) jdbcInsert.executeAndReturnKey(params);
+        return new ProductResponseDto(id, requestDto.name(), requestDto.price(), requestDto.imageUrl());
+    }
+
+    @Override
+    public ProductResponseDto findProduct(Long id) {
+        String sql = "select * from product where id = ?";
+
+        ProductResponseDto productResponseDto = jdbcTemplate.queryForObject(sql, productRowMapper(), id);
+        return productResponseDto;
+    }
+
+    @Override
+    public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
+        String sql = "update product set name = ?, price = ?, imageUrl = ? where id = ?";
+
+        jdbcTemplate.update(
+            sql,
+            requestDto.name(),
             requestDto.price(),
-            requestDto.imageUrl());
+            requestDto.imageUrl(),
+            id
+        );
+
+        return new ProductResponseDto(id, requestDto.name(), requestDto.price(), requestDto.imageUrl());
     }
 
     @Override
-    public ProductResponseDto findProduct(Long productId) {
-        Product product = products.get(productId);
-        return ProductResponseDto.from(product);
-    }
+    public void deleteProduct(Long id) {
+        String sql = "delete from product where id = ?";
 
-    @Override
-    public ProductResponseDto updateProduct(Long productId, ProductRequestDto requestDto) {
-        Product product = products.get(productId);
+        int deleteRowCount = jdbcTemplate.update(sql, id);
 
-        // product 내용 update
-        product.setId(requestDto.id());
-        product.setName(requestDto.name());
-        product.setPrice(requestDto.price());
-        product.setImageUrl(requestDto.imageUrl());
-
-        products.put(productId, product);
-
-        return ProductResponseDto.from(product);
-    }
-
-    @Override
-    public void deleteProduct(Long productId) {
-        if (products.remove(productId) == null) {
+        if (deleteRowCount <= 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-    }
-
-    @Override
-    public Map<Long, Product> findAllMap() {
-        return products;
     }
 }
