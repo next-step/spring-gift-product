@@ -1,5 +1,8 @@
 package gift.product.entity;
 
+import gift.product.dto.ProductCreateRequestDto;
+import gift.product.dto.ProductUpdateRequestDto;
+
 public class Product {
 
     private final Long id;
@@ -7,22 +10,22 @@ public class Product {
     private Long price;
     private String imageUrl;
 
-    public Product(Long id, String name, Long price, String imageUrl) {
+    public Product(Long id, ProductCreateRequestDto dto) {
         this.id = id;
-        this.name = name;
-        this.price = price;
-        this.imageUrl = imageUrl;
+        this.name = dto.name();
+        this.price = dto.price();
+        this.imageUrl = dto.imageUrl();
     }
 
-    public void update(String name, Long price, String imageUrl) {
-        if (name != null) {
-            this.name = name;
+    public void update(ProductUpdateRequestDto dto) {
+        if (dto.name() != null) {
+            this.name = dto.name();
         }
         if (price != null) {
-            this.price = price;
+            this.price = dto.price();
         }
         if (imageUrl != null) {
-            this.imageUrl = imageUrl;
+            this.imageUrl = dto.imageUrl();
         }
     }
 

@@ -26,7 +26,7 @@ public class ProductService {
     public ProductResponseDto createProduct(ProductCreateRequestDto product) {
         final long newProductId = nextId.incrementAndGet();
 
-        Product newProduct = new Product(newProductId, product.name(), product.price(), product.imageUrl());
+        Product newProduct = new Product(newProductId, product);
         products.put(newProductId, newProduct);
         return new ProductResponseDto(newProduct);
     }
@@ -36,7 +36,7 @@ public class ProductService {
         validateProduct(existingProduct);
 
         synchronized (existingProduct) {
-            existingProduct.update(product.name(), product.price(), product.imageUrl());
+            existingProduct.update(product);
             return new ProductResponseDto(existingProduct);
         }
     }
