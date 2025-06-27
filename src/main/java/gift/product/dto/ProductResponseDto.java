@@ -8,14 +8,15 @@ public class ProductResponseDto {
     private Integer price;
     private String imageUrl;
 
-    public static ProductResponseDto fromEntity(Product product) {
-        ProductResponseDto dto = new ProductResponseDto();
-        dto.id = product.getId();
-        dto.name = product.getName();
-        dto.price = product.getPrice();
-        dto.imageUrl = product.getImageUrl();
+    private ProductResponseDto(Product product) {
+        this.id = product.getId();
+        this.name = product.getName();
+        this.price = product.getPrice();
+        this.imageUrl = product.getImageUrl();
+    }
 
-        return dto;
+    public static ProductResponseDto fromEntity(Product product) {
+        return new ProductResponseDto(product);
     }
 
     public Long getId() {
