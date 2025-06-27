@@ -1,4 +1,4 @@
-package gift.entity;
+package gift.domain;
 
 public class Product {
 
@@ -7,18 +7,13 @@ public class Product {
   private Integer price;
   private String imageUrl;
 
-  public Product() {
-
-  }
-
-  public Product(Long id, String name, Integer price, String imageUrl) {
-    this.id = id;
+  public Product(String name, Integer price, String imageUrl) {
     this.name = name;
     this.price = price;
     this.imageUrl = imageUrl;
   }
 
-  public void updateInfo(String name, Integer price, String imageUrl) {
+  public void update(String name, Integer price, String imageUrl) {
     this.name = name;
     this.price = price;
     this.imageUrl = imageUrl;
@@ -42,17 +37,5 @@ public class Product {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public void setPrice(Integer price) {
-    this.price = price;
-  }
-
-  public void setImageUrl(String imageUrl) {
-    this.imageUrl = imageUrl;
   }
 }
