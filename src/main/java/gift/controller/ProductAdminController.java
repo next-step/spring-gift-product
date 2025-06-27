@@ -89,6 +89,15 @@ public class ProductAdminController {
         return "admin/product/form";
     }
 
+    /**
+     * 상품 수정 처리
+     */
+    @PostMapping("/{id}/edit")
+    public String update(@PathVariable Long id, @ModelAttribute ProductRequest request) {
+        productService.update(id, request.name(), request.price(), request.imageUrl());
+        return "redirect:/admin/products";
+    }
+
 
 
 }
