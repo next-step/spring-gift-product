@@ -183,11 +183,11 @@ JdbcTemplate을 활용해 상품의 등록, 조회, 수정, 삭제 기능을 데
 - 애플리케이션 실행 시 테이블 자동 생성 및 초기 데이터 삽입
 - `JdbcTemplate`을 활용한 CRUD 구현
 
-- [x] `schema.sql`로 테이블 자동 생성
-- [x] `data.sql`로 초기 상품 데이터 삽입
-- [x] `application.properties`에 H2 설정 추가
-- [x] `JdbcTemplate`을 통한 상품 등록/조회/삭제 구현
-- [x] 메모리 저장소 코드 제거
+- [ ] `schema.sql`로 테이블 자동 생성
+- [ ] `data.sql`로 초기 상품 데이터 삽입
+- [ ] `application.properties`에 H2 설정 추가
+- [ ] `JdbcTemplate`을 통한 상품 등록/조회/삭제 구현
+- [ ] 메모리 저장소 코드 제거
 
 ### 📂 디렉터리 구조
 
