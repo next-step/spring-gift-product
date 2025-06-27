@@ -7,7 +7,7 @@
 <body>
 <h1>상품 수정</h1>
 
-<form th:action="@{/admin/boards/{id}(id=${id})}" th:object="${requestDto}" th:method="patch">
+<form th:action="@{/admin/boards/{id}(id=${id})}" th:object="${requestDto}" th:method="put">
   <div>
     <input type="text" th:field="*{name}" placeholder="이름">
   </div>
