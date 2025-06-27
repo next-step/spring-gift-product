@@ -5,7 +5,6 @@ import gift.entity.Product;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -24,7 +23,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public Product saveProduct(Product product) {
 
-        String sql = "INSERT INTO products(name, price, image_url) VALUES(?,?,?)";
+        String sql = "INSERT INTO products(name, price, imageUrl) VALUES(?,?,?)";
         jdbcTemplate.update(sql, product.getName(), product.getPrice(), product.getImageUrl());
 
         return product;
@@ -32,9 +31,21 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public List<ProductGetResponseDto> findAllProducts() {
-        return products.values().stream()
-            .map(product -> new ProductGetResponseDto(product))
-            .collect(Collectors.toList());
+
+        String sql = "SELECT productId, name, price, imageUrl FROM products";
+        List<ProductGetResponseDto> productsList = jdbcTemplate.query(sql, (rs, rowNum) ->
+            new ProductGetResponseDto(
+                rs.getLong("productId"),
+                rs.getString("name"),
+                rs.getDouble("price"),
+                rs.getString("imageUrl")
+            ));
+
+        return productsList;
+
+//        return products.values().stream()
+//            .map(product -> new ProductGetResponseDto(product))
+//            .collect(Collectors.toList());
     }
 
     @Override
