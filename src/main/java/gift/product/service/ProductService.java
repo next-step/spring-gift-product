@@ -22,7 +22,8 @@ public class ProductService {
 
     //단건 조회
     public ProductResponseDto getProduct(Long id) {
-        Product product = productRepository.findById(id).orElse(null);
+        Product product = productRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("id가 옳바르지 않습니다."));
         return fromEntity(product);
     }
 
@@ -51,9 +52,9 @@ public class ProductService {
 
     //수정
     public ProductResponseDto updateProduct(Long id ,ProductRequestDto productRequestDto) {
-        Product product = new Product();
+        Product product = productRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("id가 옳바르지 않습니다."));
         if(productRequestDto != null) {
-            product.setId(id);
             product.setName(productRequestDto.getName());
             product.setPrice(productRequestDto.getPrice());
             product.setImageUrl(productRequestDto.getImageUrl());
