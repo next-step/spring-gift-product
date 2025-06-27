@@ -105,7 +105,7 @@ public class AdminController {
     public String removeProduct(@PathVariable Long id) {
         Long found = findProductById(id).getId();
         products.remove(found);
-        return "redirect:/products";
+        return "redirect:/admin/products/list";
     }
 
     public boolean checkProduct(ProductRequestDto requestDto) {
