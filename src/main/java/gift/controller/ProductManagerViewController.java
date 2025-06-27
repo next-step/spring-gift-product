@@ -21,7 +21,7 @@ public class ProductManagerViewController {
 
     //상품 조회
     @GetMapping("/home")
-    public String getProduct(Model model) {
+    public String managerHome(Model model) {
         return "products";
     }
 

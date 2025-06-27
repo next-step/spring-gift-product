@@ -8,16 +8,16 @@ import java.util.Optional;
 
 public interface ProductRepositoryInterface {
 
-  public Optional<Product> findById(long productId);
+    public Optional<Product> findById(long productId);
 
-  public void add(Product product);
+    public void createProduct(Product product);
 
-  public void update(Product product);
+    public void update(Product product);
 
-  public void delete(long productId);
+    public void delete(long productId);
 
-  public Collection<ProductResponseDto> findAll();
+    public Collection<ProductResponseDto> findAll();
 
-  public boolean containsKey(long id);
+    public boolean containsKey(long id);
 
 }
