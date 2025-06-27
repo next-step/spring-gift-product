@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/dist/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}">
+  <title>관리자 화면</title>
+</head>
+<body>
+<div class="container">
+  <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+    <span th:text="${message}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <span th:text="${error}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
+  <div class="card">
+    <div class="card-header bg-dark text-light">
+      <div class="d-flex flex-row">
+        <span class="flex-grow-1 display-5">상품 관리</span>
+        <div class="align-self-end">
+          <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                  data-bs-target="#addProductModal">
+            <i class="bi bi-plus-circle-fill"></i>상품 추가
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th style="width: 10%">ID</th>
+            <th style="width: 25%">상품명</th>
+            <th style="width: 15%">가격</th>
+            <th style="width: 35%">이미지 주소</th>
+            <th style="width: 15%"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="product : ${products}">
+            <td th:text="${product.id()}"></td>
+            <td th:text="${product.name()}"></td>
+            <td th:text="${#numbers.formatInteger(product.price(), 0, 'COMMA') + '원'}"></td>
+            <td>
+              <div class="text-truncate" style="max-width: 300px;" th:title="${product.imageUrl()}"
+                   th:text="${product.imageUrl()}">
+              </div>
+            </td>
+            <td>
+              <button type="button" class="btn btn-outline-warning"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editProductModal"
+                      th:attr="onclick=|openEditModal('${product.id()}', '${product.name()}', '${product.price()}', '${product.imageUrl()}')|">
+                <i class="bi bi-pencil-fill"></i>
+              </button>
+              <form th:action="@{/admin/products/{id}/delete(id=${product.id()})}"
+                    method="post"
+                    style="display: inline;">
+                <button type="submit" class="btn btn-outline-danger">
+                  <i class="bi bi-trash-fill"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">상품 추가</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+          </div>
+          <form th:action="@{/admin/products/new}" th:object="${productCreateRequestDto}"
+                method="post"
+                id="productForm">
+            <div class="modal-body">
+              <div class="input-group mb-3">
+                <span class="input-group-text">상품명</span>
+                <input type="text" class="form-control" th:field="*{name}" required>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text">상품 가격</span>
+                <input type="number" class="form-control" th:field="*{price}" min="0" required>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text">이미지 URL</span>
+                <input type="url" class="form-control" th:field="*{imageUrl}">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+              <button type="submit" class="btn btn-primary">추가</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">상품 편집</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <form method="post" id="editProductForm">
+          <div class="modal-body">
+            <div class="input-group mb-3">
+              <span class="input-group-text">상품명</span>
+              <input type="text" class="form-control" name="name" required>
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text">상품 가격</span>
+              <input type="number" class="form-control" name="price" min="0" required>
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text">이미지 URL</span>
+              <input type="url" class="form-control" name="imageUrl">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+            <button type="submit" class="btn btn-warning">편집</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script th:src="@{/webjars/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+<script>
+  function openEditModal(id, name, price, imageUrl) {
+    let form = document.getElementById('editProductForm');
+    form.action = `/admin/products/${id}/edit`;
+
+    let inputs = form.elements;
+    inputs.name.value = name;
+    inputs.price.value = price;
+    inputs.imageUrl.value = imageUrl || '';
+  }
+</script>
+</body>
+</html>
