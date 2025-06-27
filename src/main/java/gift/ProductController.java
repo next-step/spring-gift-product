@@ -1,6 +1,7 @@
 package gift;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -13,17 +14,18 @@ import java.util.concurrent.atomic.AtomicLong;
 @RequestMapping("/api/products")
 
 public class ProductController {
-    private final Map<Long, Product> products = new HashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong();
+    private final ProductStorage products;
+
+    public ProductController(ProductStorage products) { this.products = products; }
 
     @GetMapping
     public List<Product> getProducts() {
-        return new ArrayList<>(products.values());
+        return new ArrayList<>(products.getProducts());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProducts(@PathVariable Long id) {
-        Product storedProduct = products.get(id);
+        Product storedProduct = products.findById(id);
         if (storedProduct == null) {
             return ResponseEntity.notFound().build();
         }
@@ -32,26 +34,22 @@ public class ProductController {
 
     @PostMapping
     public Product addProducts(@RequestBody Product product) {
-        Long id = idGenerator.getAndDecrement();
-        product.setId(id);
-        products.put(id, product);
-        return product;
+        return products.save(product);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProducts(@PathVariable Long id, @RequestBody Product update) {
-        Product storedProduct = products.get(id);
-        if (storedProduct == null) {
+        if (products.findById(id)== null) {
             return ResponseEntity.notFound().build();
         }
         update.setId(id);
-        products.put(id, update);
+        products.update(id, update);
         return ResponseEntity.ok(update);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
-        if (products.remove(id) != null) {
+        if (products.findById(id) != null) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
