@@ -57,7 +57,15 @@ public class ItemRepositoryJDBC implements ItemRepository{
 
     @Override
     public Item deleteItems(String name) {
-        return null;
+        String selectSql = "SELECT id, name, price, image_url FROM items WHERE name = ? LIMIT 1";
+        Item item = jdbcTemplate.queryForObject(selectSql, new Object[]{name}, itemRowMapper);
+
+
+
+        String deleteSql = "DELETE FROM items WHERE id = ?";
+        jdbcTemplate.update(deleteSql, item.getId());
+
+        return item;
     }
 
     @Override
