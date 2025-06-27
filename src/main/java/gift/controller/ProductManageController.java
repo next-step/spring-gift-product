@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/management/products")
+@RequestMapping("/admin/products")
 public class ProductManageController {
 
     private final ProductService productService;
@@ -24,20 +24,20 @@ public class ProductManageController {
     public String getProductsForm(Model model) {
         List<ProductManageResponse> products = productService.getAllProductsManagement();
         model.addAttribute("products", products);
-        return "/management/productList";
+        return "/admin/productList";
     }
 
     @GetMapping("/new")
     public String createProductForm(Model model) {
         model.addAttribute("request", new CreateProductRequest(null, null, null));
-        return "/management/productCreate";
+        return "/admin/productCreate";
     }
 
 
     @PostMapping
     public String createProduct(@ModelAttribute CreateProductRequest request) {
         productService.saveProduct(request);
-        return "redirect:/management/products";
+        return "redirect:/admin/products";
     }
 
     @GetMapping("/{id}/edit")
@@ -45,18 +45,18 @@ public class ProductManageController {
         ProductManageResponse response = productService.getProductManagement(id);
         model.addAttribute("id", id);
         model.addAttribute("request", UpdateProductRequest.from(response));
-        return "/management/productUpdate";
+        return "/admin/productUpdate";
     }
 
     @PostMapping("/{id}")
     public String updateProduct(@PathVariable Long id, @ModelAttribute UpdateProductRequest request) {
         productService.updateProduct(id, request);
-        return "redirect:/management/products";
+        return "redirect:/admin/products";
     }
 
     @PostMapping("/{id}/delete")
     public String deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
-        return "redirect:/management/products";
+        return "redirect:/admin/products";
     }
 }
