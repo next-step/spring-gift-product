@@ -32,7 +32,7 @@ public class AdminController {
 
     //create
     //생성한 product는 HashMap에 저장
-    @PostMapping("/products")
+    @PostMapping("/products/add")
     public String createProduct(@ModelAttribute ProductRequestDto requestDto) {
         if (checkProduct(requestDto)) {
             Product product = new Product(
