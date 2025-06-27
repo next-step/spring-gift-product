@@ -78,9 +78,9 @@ public class AdminController {
     }
 
     //modify.html을 불러오기 위한 메서드
-    @GetMapping("/products/modify")
+    @GetMapping("/products/modify/{id}")
     public String modifyForm(
-            @RequestParam Long id,
+            @PathVariable Long id,
             Model model
     ){
         Product product = products.get(id);
@@ -91,10 +91,10 @@ public class AdminController {
 
     //update
     //상품 수정
-    @PutMapping("/products/modify")
+    @PutMapping("/products/modify/{id}")
     public String modifyProduct(
             @ModelAttribute ProductRequestDto requestDto,
-            @RequestParam Long id
+            @PathVariable Long id
     ) {
         Product product = new Product(id,
                 requestDto.getName(),
