@@ -1,6 +1,7 @@
 package gift.global;
 
 import gift.global.exception.BadProductRequestException;
+import gift.global.exception.CustomDatabaseException;
 import gift.global.exception.NotFoundProductException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,5 +21,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadProductRequestException.class)
     public ResponseEntity<Map<String, String>> handleBadProductRequestException(BadProductRequestException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", ex.getMessage()));
+    }
+
+    @ExceptionHandler(CustomDatabaseException.class)
+    public ResponseEntity<Map<String, String>> handleCustomDatabaseException(CustomDatabaseException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", ex.getMessage()));
     }
 }

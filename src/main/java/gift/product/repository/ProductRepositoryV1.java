@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 
 
-@Repository
+//@Repository
 public class ProductRepositoryV1 implements ProductRepository{
     private final Map<UUID, Product> products = new HashMap<>();
 
