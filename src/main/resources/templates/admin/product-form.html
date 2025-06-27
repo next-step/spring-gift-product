@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>상품정보 작성</title>
 </head>
 <body>
     <h2>상품정보 작성</h2>
@@ -38,5 +38,10 @@
           method="get" style="display:inline">
         <button type="submit">Go to Product List</button>
     </form>
+    <script th:if="${message}" th:inline="javascript">
+        /*<![CDATA[*/
+        alert([[${message}]]);
+        /*]]>*/
+    </script>
 </body>
 </html>

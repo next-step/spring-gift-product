@@ -52,6 +52,7 @@ public class AdminPageController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("productId", null);
             model.addAttribute("product", request);
+            model.addAttribute("message", "Invalid input. Check again.");
             return "admin/product-form";
         }
         Product created = productService.createProduct(
@@ -84,9 +85,10 @@ public class AdminPageController {
             RedirectAttributes redirectAttributes
     ) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/admin/products/" + id;
             model.addAttribute("productId", id);
             model.addAttribute("product", request);
+            model.addAttribute("message", "Invalid input. Check again.");
+            return "admin/product-form";
         }
         Product updated = productService.putProductById(
                 id,
