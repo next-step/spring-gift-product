@@ -25,9 +25,14 @@ public class ProductServiceImpl implements ProductService {
         Product product = new Product(productCreateRequestDto.name(),
             productCreateRequestDto.price(), productCreateRequestDto.imageUrl());
 
-        Product savedProduct = productRepository.saveProduct(product);
+        int savedProductRows = productRepository.saveProduct(product);
 
-        return new ProductCreateResponseDto(savedProduct);
+        if (savedProductRows == 0) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                "Failed to save product.");
+        }
+
+        return new ProductCreateResponseDto(product);
     }
 
     @Override

@@ -16,34 +16,32 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product saveProduct(Product product) {
+    public int saveProduct(Product product) {
 
         String sql = "INSERT INTO products(name, price, imageUrl) VALUES(?,?,?)";
-        jdbcTemplate.update(sql, product.getName(), product.getPrice(), product.getImageUrl());
 
-        return product;
+        return jdbcTemplate.update(sql, product.getName(), product.getPrice(),
+            product.getImageUrl());
     }
 
     @Override
     public List<ProductGetResponseDto> findAllProducts() {
 
         String sql = "SELECT productId, name, price, imageUrl FROM products";
-        List<ProductGetResponseDto> productsList = jdbcTemplate.query(sql, (rs, rowNum) ->
+        return jdbcTemplate.query(sql, (rs, rowNum) ->
             new ProductGetResponseDto(
                 rs.getLong("productId"),
                 rs.getString("name"),
                 rs.getDouble("price"),
                 rs.getString("imageUrl")
             ));
-
-        return productsList;
     }
 
     @Override
     public Product findProductByProductId(Long productId) {
 
         String sql = "SELECT productId, name, price, imageUrl FROM products WHERE productId = ?";
-        Product product = jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
+        return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
                 new Product(
                     rs.getLong("productId"),
                     rs.getString("name"),
@@ -52,8 +50,6 @@ public class ProductRepositoryImpl implements ProductRepository {
                 ),
             productId
         );
-
-        return product;
     }
 
     @Override
