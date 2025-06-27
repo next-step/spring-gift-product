@@ -18,3 +18,10 @@
 - [x] 상품 목록 조회 html 작성
 - [x] 상품 추가 html 작성
 - [x] 상품 수정 html 작성
+
+### 상품관리 - 1, 2단계 피드백 반영 목록
+
+- [x] 변수 네이밍 수정 (MemoryProductRepository의 productMap -> products)
+- [x] 패키지 이름 변경 entity -> domain
+- [x] 매직 넘버 상수화 (MemoryProductRepository)
+- [x] Product의 setter, 기본 생성자 사용 지양에 따른 ProductServiceImpl의 createProduct 수정 
