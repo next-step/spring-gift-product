@@ -46,15 +46,16 @@ public class AdminController {
         if (id == null) {
             List<ProductResponseDto> dtoList = productService.findAllProducts();
             model.addAttribute("products", dtoList);
-        }
-        else {
-            ProductResponseDto dto = productService.findProductById(id);
 
-            if (dto != null)
-                model.addAttribute("products", List.of(dto));
-            else
-                model.addAttribute("products", Collections.emptyList());
+            return "admin/products";
         }
+        
+        ProductResponseDto dto = productService.findProductById(id);
+
+        if (dto != null)
+            model.addAttribute("products", List.of(dto));
+        else
+            model.addAttribute("products", Collections.emptyList());
 
         return "admin/products";
     }
