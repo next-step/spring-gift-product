@@ -1,22 +1,23 @@
 package gift.Controller;
 
 import gift.Entity.Product;
+import gift.Repository.ProductRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.*;
 
 @Controller
 @RequestMapping("/admin/products")
 public class AdminProductController {
 
-    private final Map<Long, Product> productMap = new LinkedHashMap<>();
-    private long nextId = 1;
+    private final ProductRepository repository;
+    public AdminProductController(ProductRepository repository) {
+        this.repository = repository;
+    }
 
     @GetMapping
     public String list(Model model) {
-        model.addAttribute("products", productMap.values());
+        model.addAttribute("products", repository.findAll());
         return "product/list";
     }
 
@@ -28,14 +29,13 @@ public class AdminProductController {
 
     @PostMapping("/new")
     public String create(@ModelAttribute Product product) {
-        product.setId(nextId++);
-        productMap.put(product.getId(), product);
+        repository.save(product);
         return "redirect:/admin/products";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
-        Product product = productMap.get(id);
+        Product product = repository.findById(id).orElse(null);
         if (product == null) {
             return "redirect:/admin/products";
         }
@@ -46,13 +46,13 @@ public class AdminProductController {
     @PostMapping("/edit/{id}")
     public String update(@PathVariable Long id, @ModelAttribute Product product) {
         product.setId(id);
-        productMap.put(id, product);
+        repository.save(product);
         return "redirect:/admin/products";
     }
 
     @PostMapping("/{id}")
     public String delete(@PathVariable Long id) {
-        productMap.remove(id);
+        repository.deleteById(id);
         return "redirect:/admin/products";
     }
 }
