@@ -62,12 +62,8 @@ public class ProductController {
 
     @DeleteMapping
     public ResponseEntity<Void> deleteAllByIds(
-            @RequestBody(required = false) List<Long> ids) {
-        if (ids == null || ids.isEmpty()) {
-            productService.deleteAll();
-        } else {
-            productService.deleteAllByIds(ids);
-        }
+            @RequestBody List<Long> ids) {
+        productService.deleteAllByIds(ids);
         return ResponseEntity.noContent().build();
     }
 
