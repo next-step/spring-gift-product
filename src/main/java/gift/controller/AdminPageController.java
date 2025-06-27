@@ -42,7 +42,7 @@ public class AdminPageController {
     }
 
     // 신규상품 등록 form 받고, 검증 및 redirection 수행
-    @PostMapping("/new")
+    @PostMapping
     public String newProduct(
             @Valid @ModelAttribute ProductRequestDto request,
             BindingResult bindingResult,

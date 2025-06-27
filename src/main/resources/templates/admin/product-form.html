@@ -8,7 +8,7 @@
     <h2>상품정보 작성</h2>
     <h3 th:if="${productId != null}" th:inline="text">- [[${productId}]]번 상품</h3>
     <h3 th:if="${productId == null}">- 신규 상품</h3>
-    <form th:action="${productId == null} ? @{/admin/products/new} : @{/admin/products/{id}(id=${productId})}"
+    <form th:action="${productId == null} ? @{/admin/products} : @{/admin/products/{id}(id=${productId})}"
           method="post"
           th:object="${product}">
         <input type="hidden" name="_method" value="put" th:if="${productId != null}" />
