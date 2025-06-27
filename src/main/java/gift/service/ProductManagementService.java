@@ -48,10 +48,6 @@ public class ProductManagementService {
         productRepository.update(id, updatedProduct);
     }
 
-    public void deleteAll() {
-        productRepository.deleteAll();
-    }
-
     public void deleteAllByIds(List<Long> ids) {
         productRepository.deleteAllByIds(ids);
     }
