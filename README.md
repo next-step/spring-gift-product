@@ -40,8 +40,8 @@ step 2. 관리자 페이지 구현
 
 step 3. DB 연결
 
-1. h2 db 정보 등록 및 연결 테스트
-2. schema.sql, data.sql 작성
-3. hashmap db로 교체 및 sql 작성 (JdbcClient 활용)
-4. 기능 test 및 버그 수정
-5. 2단계 지적사항 수정
+1. h2 db 정보 등록 및 연결 테스트 (완료)
+2. schema.sql, data.sql 작성 (완료)
+3. hashmap db로 교체 및 sql 작성 (JdbcClient 활용) (완료)
+4. 기능 test 및 버그 수정 (완료)
+5. 1, 2단계 지적사항 수정 (완료)
