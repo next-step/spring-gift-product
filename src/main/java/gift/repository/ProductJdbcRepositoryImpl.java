@@ -59,7 +59,11 @@ public class ProductJdbcRepositoryImpl implements ProductRepository {
 
   @Override
   public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
-    return null;
+    String sql = "update products set name=?, price=?, imageUrl=? where id=?";
+    jdbcTemplate.update(sql, requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl(),
+        id);
+    return new ProductResponseDto(requestDto.getId(), requestDto.getName(), requestDto.getPrice(),
+        requestDto.getImageUrl());
   }
 
   @Override
