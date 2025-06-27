@@ -1,10 +1,13 @@
 package gift.controller;
 
+import gift.dto.request.ProductRequestDto;
+import gift.dto.request.ProductUpdateRequestDto;
 import gift.entity.Product;
 import gift.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,12 +44,8 @@ public class ProductManagerViewController {
     //상품 추가
     @PostMapping("/home")
     public String createProduct(
-        @RequestParam long productId,
-        @RequestParam String name,
-        @RequestParam int price,
-        @RequestParam String imageURL) {
-        Product product = new Product(productId, name, price, imageURL);
-        productService.createProduct(product);
+        @ModelAttribute ProductRequestDto productRequestDto) {
+        productService.createProduct(productRequestDto);
         return "redirect:/home";
     }
 
@@ -55,16 +54,13 @@ public class ProductManagerViewController {
     @PostMapping("/home/{productId}")
     public String updateProduct(
         @PathVariable long productId,
-        @RequestParam String name,
-        @RequestParam int price,
-        @RequestParam String imageURL,
+        @ModelAttribute ProductUpdateRequestDto productUpdateRequestDto,
         RedirectAttributes redirectAttributes) {
         if (!productService.containsProduct(productId)) {
             redirectAttributes.addFlashAttribute("errorMessage", "상품이 존재하지 않음");
             return "redirect:/home";
         }
-        Product product = new Product(productId, name, price, imageURL);
-        productService.createProduct(product);
+        productService.updateProduct(productId, productUpdateRequestDto);
         return "redirect:/home";
     }
 

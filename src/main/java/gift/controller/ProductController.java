@@ -1,5 +1,7 @@
 package gift.controller;
 
+import gift.dto.request.ProductRequestDto;
+import gift.dto.request.ProductUpdateRequestDto;
 import gift.dto.response.ProductResponseDto;
 import gift.entity.Product;
 import gift.service.ProductService;
@@ -32,20 +34,21 @@ class ProductController {
 
     //상품 추가
     @PostMapping("/api/products")
-    public ResponseEntity<ProductResponseDto> createProduct(@RequestBody Product product) {
-        productService.createProduct(product);
-        return new ResponseEntity<>(product.toResponseDto(), HttpStatus.CREATED);
+    public ResponseEntity<ProductResponseDto> createProduct(
+        @RequestBody ProductRequestDto productRequestDto) {
+        return new ResponseEntity<>(productService.createProduct(productRequestDto),
+            HttpStatus.CREATED);
     }
 
     //상품 수정
     @PatchMapping("/api/products/{productId}")
-    public ResponseEntity<Product> updateProduct(@PathVariable long productId,
-        @RequestBody Product product) {
+    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable long productId,
+        @RequestBody ProductUpdateRequestDto productUpdateRequestDto) {
         if (!productService.containsProduct(productId)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        productService.updateProduct(product);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        return new ResponseEntity<>(
+            productService.updateProduct(productId, productUpdateRequestDto), HttpStatus.OK);
     }
 
     //상품 삭제

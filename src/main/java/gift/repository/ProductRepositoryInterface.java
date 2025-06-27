@@ -12,7 +12,7 @@ public interface ProductRepositoryInterface {
 
     public void createProduct(Product product);
 
-    public void update(Product product);
+    public void updateProduct(Product product);
 
     public void delete(long productId);
 

@@ -1,5 +1,8 @@
 package gift.service;
 
+import gift.dto.request.ProductRequestDto;
+import gift.dto.request.ProductUpdateRequestDto;
+import gift.dto.response.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepositoryInterface;
 import org.springframework.stereotype.Service;
@@ -20,13 +23,28 @@ public class ProductService {
     }
 
     //상품 추가
-    public void createProduct(Product product) {
+    public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
+        Product product = new Product(
+            productRequestDto.productId(),
+            productRequestDto.name(),
+            productRequestDto.price(),
+            productRequestDto.imageURL());
         productRepository.createProduct(product);
+
+        return product.toResponseDto();
     }
 
     //상품 수정
-    public void updateProduct(Product product) {
-        productRepository.update(product);
+    public ProductResponseDto updateProduct(long productId,
+        ProductUpdateRequestDto productUpdateRequestDto) {
+        Product product = new Product(
+            productId,
+            productUpdateRequestDto.name(),
+            productUpdateRequestDto.price(),
+            productUpdateRequestDto.imageURL());
+        productRepository.updateProduct(product);
+
+        return product.toResponseDto();
     }
 
     //상품 삭제

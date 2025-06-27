@@ -62,8 +62,10 @@ public class ProductRepository implements ProductRepositoryInterface {
     }
 
     @Override
-    public void update(Product product) {
-
+    public void updateProduct(Product product) {
+        jdbcTemplate.update(
+            "update PRODUCT set name = ?, price = ?, imageURL = ? where PRODUCTID = ?",
+            product.name(), product.price(), product.imageURL(), product.productId());
     }
 
     @Override
@@ -78,6 +80,7 @@ public class ProductRepository implements ProductRepositoryInterface {
 
     @Override
     public boolean containsKey(long id) {
-        return false;
+        return !jdbcTemplate.query("select * from product where productId = ?", productRowMapper(),
+            id).isEmpty();
     }
 }
