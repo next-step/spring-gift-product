@@ -9,6 +9,7 @@
   <div>
     <form th:action="@{'/admin/products/' + ${requestDto.id} + '/update'}" th:object="${requestDto}"
           method="post">
+      <input type="hidden" name="_method" value="put"/>
       <label>id</label>
       <input type="text" th:field="*{id}" placeholder="id를 입력하세요">
       <label>이름</label>

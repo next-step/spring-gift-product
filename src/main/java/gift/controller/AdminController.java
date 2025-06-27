@@ -6,10 +6,12 @@ import gift.service.ProductService;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AdminController {
 
   ProductService service;
+  private final String PRODUCTS_LIST_PAGE_PATH = "/admin/products";
 
   public AdminController(ProductService service) {
     this.service = service;
@@ -37,8 +40,9 @@ public class AdminController {
 
   @PostMapping("/new")
   public String create(@ModelAttribute ProductRequestDto requestDto) {
+    System.out.println(requestDto.getName());
     service.createProduct(requestDto);
-    return "redirect:/admin/products";
+    return "redirect:" + PRODUCTS_LIST_PAGE_PATH;
   }
 
   @GetMapping("/{id}/update")
@@ -49,16 +53,16 @@ public class AdminController {
     return "updateProductForm";
   }
 
-  @PostMapping(value = "/{id}/update")
+  @PutMapping("/{id}/update")
   public String update(@PathVariable("id") Long id, ProductRequestDto requestDto) {
     service.updateProduct(id, requestDto);
-    return "redirect:/admin/products";
+    return "redirect:" + PRODUCTS_LIST_PAGE_PATH;
   }
 
-  @GetMapping("/{id}/delete")
+  @DeleteMapping("/{id}/delete")
   public String delete(@PathVariable("id") Long id) {
     service.deleteProduct(id);
-    return "redirect:/admin/products";
+    return "redirect:" + PRODUCTS_LIST_PAGE_PATH;
   }
 
 }

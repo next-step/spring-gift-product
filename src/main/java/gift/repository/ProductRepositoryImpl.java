@@ -7,9 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.springframework.stereotype.Repository;
 
-@Repository
+//@Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
   private final Map<Long, Product> productMap = new ConcurrentHashMap<>();
@@ -54,8 +53,7 @@ public class ProductRepositoryImpl implements ProductRepository {
   }
 
   @Override
-  public int deleteProduct(Long id) {
+  public void deleteProduct(Long id) {
     productMap.remove(id);
-    return 0;
   }
 }

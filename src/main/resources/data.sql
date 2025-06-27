@@ -1,0 +1,1 @@
+insert into products (name, price, imageUrl) values ('물통', 1000, 'https://www.naver.com/');
