@@ -9,7 +9,6 @@ import java.util.*;
 
 @Repository
 public class ProductRepository {
-    private final Map<Long, Product> products = new HashMap<>();
     private final JdbcClient jdbcClient;
     private long Id = 1;
 
@@ -20,7 +19,6 @@ public class ProductRepository {
         if (product.getId() == null) {
             product.setId(Id++);
         }
-        products.put(product.getId(), product);
         var sql ="insert into Product (id, name,price,imageUrl) values (:id, :name, :price, :imageUrl)";
         jdbcClient.sql(sql)
                 .param("id", product.getId())
