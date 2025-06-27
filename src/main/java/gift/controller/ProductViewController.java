@@ -1,8 +1,8 @@
 package gift.controller;
 
 import gift.dto.api.AddProductRequestDto;
-import gift.dto.api.FindProductResponseDto;
 import gift.dto.api.ModifyProductRequestDto;
+import gift.dto.api.ProductResponseDto;
 import gift.dto.htmlform.AddProductForm;
 import gift.dto.htmlform.ModifyProductForm;
 import gift.service.ProductService;
@@ -32,7 +32,7 @@ public class ProductViewController {
     //main 화면, 상품 목록
     @GetMapping
     public String showListView(Model model) {
-        List<FindProductResponseDto> products = productService.findAllProducts();
+        List<ProductResponseDto> products = productService.findAllProducts();
         model.addAttribute("products", products);
         return "product-list";
     }
@@ -43,7 +43,7 @@ public class ProductViewController {
         @PathVariable Long id,
         Model model
     ) {
-        FindProductResponseDto product = productService.findProductWithId(id);
+        ProductResponseDto product = productService.findProductWithId(id);
         ModifyProductForm modifyForm = new ModifyProductForm(product.getName(),
             product.getPrice(), product.getImageUrl());
         

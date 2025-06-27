@@ -1,21 +1,19 @@
 package gift.repository;
 
-import gift.dto.api.AddProductResponseDto;
-import gift.dto.api.FindProductResponseDto;
-import gift.dto.api.ModifyProductResponseDto;
+import gift.dto.api.ProductResponseDto;
 import gift.entity.Product;
 import java.util.List;
 
 public interface ProductRepository {
     
     //상품 추가 api
-    AddProductResponseDto addProduct(Product product);
+    ProductResponseDto addProduct(Product product);
     
-    List<FindProductResponseDto> findAllProducts();
+    List<ProductResponseDto> findAllProducts();
     
     Product findProductWithId(Long id);
     
-    ModifyProductResponseDto modifyProductWithId(Long id, Product newProduct);
+    ProductResponseDto modifyProductWithId(Long id, Product newProduct);
     
     void deleteProductWithId(Long id);
 }

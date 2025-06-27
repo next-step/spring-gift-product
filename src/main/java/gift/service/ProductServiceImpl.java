@@ -1,10 +1,8 @@
 package gift.service;
 
 import gift.dto.api.AddProductRequestDto;
-import gift.dto.api.AddProductResponseDto;
-import gift.dto.api.FindProductResponseDto;
 import gift.dto.api.ModifyProductRequestDto;
-import gift.dto.api.ModifyProductResponseDto;
+import gift.dto.api.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
@@ -24,7 +22,7 @@ public class ProductServiceImpl implements ProductService {
     
     //상품 추가 Service
     @Override
-    public AddProductResponseDto addProduct(AddProductRequestDto requestDto) {
+    public ProductResponseDto addProduct(AddProductRequestDto requestDto) {
         
         if (requestDto.isNotValid()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -32,9 +30,9 @@ public class ProductServiceImpl implements ProductService {
         
         Product product = new Product(
             0L,
-            requestDto.name(),
-            requestDto.price(),
-            requestDto.imageUrl()
+            requestDto.getName(),
+            requestDto.getPrice(),
+            requestDto.getImageUrl()
         );
         
         return productRepository.addProduct(product);
@@ -42,20 +40,20 @@ public class ProductServiceImpl implements ProductService {
     
     //상품 전체 조회
     @Override
-    public List<FindProductResponseDto> findAllProducts() {
+    public List<ProductResponseDto> findAllProducts() {
         return productRepository.findAllProducts();
     }
     
     //상품 단건 조회
     @Override
-    public FindProductResponseDto findProductWithId(Long id) {
+    public ProductResponseDto findProductWithId(Long id) {
         Product product = productRepository.findProductWithId(id);
-        return new FindProductResponseDto(product);
+        return new ProductResponseDto(product);
     }
     
     //상품 수정 (상품 자체가 다른 것으로 바뀜)
     @Override
-    public ModifyProductResponseDto modifyProductWithId(Long id,
+    public ProductResponseDto modifyProductWithId(Long id,
         ModifyProductRequestDto requestDto) {
         Product product = productRepository.findProductWithId(id);
         
@@ -65,9 +63,9 @@ public class ProductServiceImpl implements ProductService {
         
         Product newProduct = new Product(
             id,
-            requestDto.name(),
-            requestDto.price(),
-            requestDto.imageUrl()
+            requestDto.getName(),
+            requestDto.getPrice(),
+            requestDto.getImageUrl()
         );
         
         return productRepository.modifyProductWithId(id,
@@ -82,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
     }
     
     @Override
-    public ModifyProductResponseDto modifyProductInfoWithId(Long id,
+    public ProductResponseDto modifyProductInfoWithId(Long id,
         ModifyProductRequestDto requestDto) {
         Product product = productRepository.findProductWithId(id);
         
@@ -92,9 +90,9 @@ public class ProductServiceImpl implements ProductService {
         
         Product newProduct = new Product(
             id,
-            requestDto.name() != null ? requestDto.name() : product.getName(),
-            requestDto.price() != null ? requestDto.price() : product.getPrice(),
-            requestDto.imageUrl() != null ? requestDto.imageUrl() : product.getImageUrl()
+            requestDto.getName() != null ? requestDto.getName() : product.getName(),
+            requestDto.getPrice() != null ? requestDto.getPrice() : product.getPrice(),
+            requestDto.getImageUrl() != null ? requestDto.getImageUrl() : product.getImageUrl()
         );
         
         return productRepository.modifyProductWithId(id,

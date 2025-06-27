@@ -1,8 +1,6 @@
 package gift.repository;
 
-import gift.dto.api.AddProductResponseDto;
-import gift.dto.api.FindProductResponseDto;
-import gift.dto.api.ModifyProductResponseDto;
+import gift.dto.api.ProductResponseDto;
 import gift.entity.Product;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -23,7 +21,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
     
     @Override
-    public AddProductResponseDto addProduct(Product product) {
+    public ProductResponseDto addProduct(Product product) {
         var sql = """
             insert into products(name, price, imageUrl)
             values (:name, :price, :imageUrl);
@@ -38,18 +36,18 @@ public class ProductRepositoryImpl implements ProductRepository {
         
         Long recentKey = generatedKey.getKey().longValue();
         
-        return new AddProductResponseDto(recentKey, product.getName(), product.getPrice(),
+        return new ProductResponseDto(recentKey, product.getName(), product.getPrice(),
             product.getImageUrl());
     }
     
     @Override
-    public List<FindProductResponseDto> findAllProducts() {
+    public List<ProductResponseDto> findAllProducts() {
         var sql = """
             select id, name, price, imageUrl from products;
             """;
         
         return products.sql(sql)
-            .query((rs, rowNum) -> new FindProductResponseDto(
+            .query((rs, rowNum) -> new ProductResponseDto(
                 rs.getLong("id"),
                 rs.getString("name"),
                 rs.getLong("price"),
@@ -76,7 +74,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
     
     @Override
-    public ModifyProductResponseDto modifyProductWithId(Long id, Product newProduct) {
+    public ProductResponseDto modifyProductWithId(Long id, Product newProduct) {
         var sql = """
             update products set name = :name, price = :price, imageUrl = :imageUrl where id = :id;
             """;
@@ -88,7 +86,7 @@ public class ProductRepositoryImpl implements ProductRepository {
             .param("imageUrl", newProduct.getImageUrl())
             .update();
         
-        return new ModifyProductResponseDto(newProduct);
+        return new ProductResponseDto(newProduct);
     }
     
     @Override
