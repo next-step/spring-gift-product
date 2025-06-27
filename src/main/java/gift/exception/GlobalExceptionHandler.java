@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 import java.util.NoSuchElementException;
 
 @RestControllerAdvice
@@ -29,5 +30,15 @@ public class GlobalExceptionHandler {
                 .stackTrace(e.getStackTrace() != null ? e.getStackTrace()[0].toString() : "")
                 .build();
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DBServerException.class)
+    public ResponseEntity<ErrorMessageResponse> handleDBServerException(
+            DBServerException e, HttpServletRequest request
+    ) {
+        var errorMessage = new ErrorMessageResponse.Builder(request, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR)
+                .stackTrace(e.getStackTrace() != null ? e.getStackTrace()[0].toString() : "")
+                .build();
+        return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
