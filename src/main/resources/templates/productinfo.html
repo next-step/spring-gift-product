@@ -24,7 +24,7 @@
         <!--PathVariable-->
         <button th:onclick="|location.href='@{/products/remove/{id}(id=${product.id})}'|">상품 삭제</button>
         <!--RequestParam-->
-        <button th:onclick="|location.href='@{/products/modify(id=${product.id})}'|">상품 수정</button>
+        <button th:onclick="|location.href='@{/admin/products/modify(id=${product.id})}'|">상품 수정</button>
       </td>
 
     </tr>

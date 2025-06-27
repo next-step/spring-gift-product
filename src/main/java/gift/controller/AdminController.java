@@ -96,7 +96,7 @@ public class AdminController {
                 requestDto.getPrice(),
                 requestDto.getImageUrl());
         products.put(id, product);
-        return "redirect:/products";
+        return "redirect:/admin/products/list";
     }
 
     //delete
