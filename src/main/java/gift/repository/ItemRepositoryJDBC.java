@@ -1,0 +1,76 @@
+package gift.repository;
+
+import gift.entity.Item;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+
+@Repository
+public class ItemRepositoryJDBC implements ItemRepository{
+
+    private final JdbcTemplate jdbcTemplate;
+
+    public ItemRepositoryJDBC(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public Item saveItem(Item item) {
+        var sql = "insert into items (name, price, image_url) values (?, ?, ?)";
+
+        KeyHolder keyholder = new GeneratedKeyHolder();
+
+
+        jdbcTemplate.update(connection ->{
+            PreparedStatement ps = connection.prepareStatement(
+                    sql,
+                    Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, item.getName());
+            ps.setInt(2, item.getPrice());
+            ps.setString(3, item.getImageUrl());
+            return ps;
+        },keyholder);
+
+        Long id = keyholder.getKey().longValue();
+        return new Item(id,item.getName(),item.getPrice(),item.getImageUrl());
+
+    }
+
+    @Override
+    public List<Item> getItems(String name, Integer price) {
+        return List.of();
+    }
+
+    @Override
+    public Item deleteItems(String name) {
+        return null;
+    }
+
+    @Override
+    public Item findById(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<Item> getAllItems() {
+        return null;
+    }
+
+    @Override
+    public Item deleteById(Long id) {
+        return null;
+    }
+
+    @Override
+    public Item updateItem(Long id, String name, int price, String imageUrl) {
+        return null;
+    }
+}
