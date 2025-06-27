@@ -17,6 +17,10 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product save(Product product) {
+        if (product == null) {
+            throw new IllegalArgumentException("product not found");
+        }
+        
         if (product.getId() == null) {
             product = new Product(
                 idGenerator.getAndIncrement(),
@@ -43,5 +47,5 @@ public class ProductRepositoryImpl implements ProductRepository {
     public List<Product> findAll() {
         return new ArrayList<>(products.values());
     }
-    
+
 }
