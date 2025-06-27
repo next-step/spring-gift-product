@@ -22,7 +22,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void addProduct(ProductAddRequestDto requestDto) {
-        productRepository.addProduct(requestDto);
+        Product product = new Product(null, requestDto.name(), requestDto.price(), requestDto.url());
+        productRepository.addProduct(product);
     }
 
     @Override

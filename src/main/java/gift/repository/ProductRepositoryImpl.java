@@ -20,12 +20,12 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public void addProduct(ProductAddRequestDto requestDto) {
+    public void addProduct(Product product) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcClient.sql("insert into product (name, price, url) values (:name, :price, :url)")
-                .param("name", requestDto.name())
-                .param("price", requestDto.price())
-                .param("url", requestDto.url())
+                .param("name", product.name())
+                .param("price", product.price())
+                .param("url", product.url())
                 .update();
     }
 

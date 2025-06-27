@@ -6,7 +6,7 @@ import gift.entity.Product;
 import java.util.List;
 
 public interface ProductRepository {
-    public void addProduct(ProductAddRequestDto requestDto);
+    public void addProduct(Product product);
     public Product findProductByIdOrElseThrow(Long id);
     public List<Product> findAllProduct();
     public int updateProductById(Product product);
