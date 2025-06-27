@@ -1,65 +1,76 @@
 package gift.repository;
 
 import gift.entity.Product;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
-public class ProductRepository {
+public class ProductRepository{
 
-    private final Map<Long, Product> products = new HashMap<>();
+    private final JdbcTemplate jdbcTemplate;
+    public ProductRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     Long nextId = 1L;
 
     public Product save(Product product) {
 
         Long id = nextId++;
         product.setId(id);
-        products.put(id, product);
+
+        String sql = "insert into products (id, name, price, imageUrl) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
 
         return product;
     }
 
     public Optional<Product> findById(Long productId) {
-        return Optional.ofNullable(products.get(productId));
+        String sql = "SELECT * FROM products WHERE id = ?";
+
+        Product product = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Product.class), productId);
+        return Optional.ofNullable(product);
     }
 
     public Optional<Product> update(Long id, String name, Integer price, String imageUrl) {
-        Product existingProduct = products.get(id);
-        if (existingProduct == null) {
-            return Optional.empty();
+
+        Optional<Product> product = findById(id);
+
+        if (product.isPresent()) {
+            String sql = "UPDATE products SET name = ?, price = ?, imageUrl = ? WHERE id = ?";
+            jdbcTemplate.update(sql, name, price, imageUrl, id);
         }
 
-        existingProduct.setName(name);
-        existingProduct.setPrice(price);
-        existingProduct.setImageUrl(imageUrl);
-
-        return Optional.of(existingProduct);
+        return product;
     }
 
     public Optional<Product> deleteById(Long id) {
-        return Optional.ofNullable(products.remove(id));
+        Optional<Product> product = findById(id);
+        if (product.isPresent()) {
+            String sql = "DELETE FROM products WHERE id = ?";
+            jdbcTemplate.update(sql, id);
+        }
+
+        return product;
     }
 
     public List<Product> findAll(int page, int size, String sortField, String sortDir) {
-        Comparator<Product> comparator;
 
-        if ("name".equals(sortField)) {
-            comparator = Comparator.comparing(Product::getName, String.CASE_INSENSITIVE_ORDER);
-        } else if ("price".equals(sortField)) {
-            comparator = Comparator.comparing(Product::getPrice);
-        } else {
-            comparator = Comparator.comparing(Product::getId);
-        }
+        List<String> sortFields = List.of("id", "name", "price");
+        if (!sortFields.contains(sortField)) {
+            sortField = "id";
+        } // sortField 입력값이 없는 경우 기본값을 id로 설정
 
-        if ("desc".equalsIgnoreCase(sortDir)) {
-            comparator = comparator.reversed();
-        }
+        String direction = "asc".equalsIgnoreCase(sortDir) ? "ASC" : "DESC";
 
-        return products.values().stream()
-                .sorted(comparator)
-                .skip((long) page * size) // 페이지 지정
-                .limit(size) // 개수 지정
-                .toList();
+        String sql = String.format(
+                "SELECT * FROM products ORDER BY %s %s LIMIT ? OFFSET ?",
+                sortField, direction
+        );
+
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Product.class), size, page * size);
     }
 }

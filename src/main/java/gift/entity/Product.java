@@ -7,6 +7,8 @@ public class Product {
     private Integer price;
     private String imageUrl;
 
+    public Product(){}
+
     public Product(String name, Integer price, String imageUrl) {
         this.name = name;
         this.price = price;
