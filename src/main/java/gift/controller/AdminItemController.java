@@ -3,6 +3,7 @@ package gift.controller;
 
 import gift.dto.ItemCreateDTO;
 import gift.dto.ItemDTO;
+import gift.dto.ItemUpdateDTO;
 import gift.entity.Item;
 import gift.service.ItemService;
 import jakarta.validation.Valid;
@@ -61,7 +62,7 @@ public class AdminItemController {
     }
 
     @PostMapping("/{id}/edit")
-    public String updateItem(@PathVariable Long id, @ModelAttribute @Valid ItemDTO dto) {
+    public String updateItem(@PathVariable Long id, @ModelAttribute @Valid ItemUpdateDTO dto) {
         itemService.updateItem(id, dto);
         return "redirect:/admin/products";
     }

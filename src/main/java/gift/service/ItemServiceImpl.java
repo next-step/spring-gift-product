@@ -3,6 +3,7 @@ package gift.service;
 
 import gift.dto.ItemCreateDTO;
 import gift.dto.ItemDTO;
+import gift.dto.ItemUpdateDTO;
 import gift.entity.Item;
 import gift.exception.ItemNotFoundException;
 import gift.repository.ItemRepository;
@@ -56,18 +57,16 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDTO updateItem(Long id, ItemDTO dto) {
+    public ItemUpdateDTO updateItem(Long id, ItemUpdateDTO dto) {
         Item item = itemRepository.findById(id);
-        if(item != null) {
-            if (dto.getId().equals(item.getId())) {
-                item.setName(dto.getName());
-                item.setPrice(dto.getPrice());
-                item.setImageUrl(dto.getImageUrl());
-            }
-            return new ItemDTO(item);
-        }else
+        if (item != null) {
+            if (dto.id().equals(item.getId())) {
+                Item updatedItem = itemRepository.updateItem(id, dto.name(), dto.price(), dto.imageUrl());
+                return new ItemUpdateDTO(updatedItem);
+            }else
+                throw new ItemNotFoundException();
+        } else
             throw new ItemNotFoundException();
-
     }
 
     @Override

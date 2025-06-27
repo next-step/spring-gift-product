@@ -18,5 +18,7 @@ public interface ItemRepository {
 
     Item deleteById(Long id);
 
+    Item updateItem(Long id, String name, int price, String imageUrl);
+
 
 }

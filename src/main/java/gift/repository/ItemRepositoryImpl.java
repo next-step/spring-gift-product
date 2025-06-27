@@ -80,4 +80,17 @@ public class ItemRepositoryImpl implements ItemRepository {
         return items.remove(id);
     }
 
+    @Override
+    public Item updateItem(Long id, String name, int price, String imageUrl) {
+        Item item = items.get(id);
+        if (item == null) {
+            return null;
+        }
+        item.setName(name);
+        item.setPrice(price);
+        item.setImageUrl(imageUrl);
+
+        return item;
+    }
+
 }

@@ -3,6 +3,7 @@ package gift.controller;
 
 import gift.dto.ItemCreateDTO;
 import gift.dto.ItemDTO;
+import gift.dto.ItemUpdateDTO;
 import gift.service.ItemService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpEntity;
@@ -48,11 +49,11 @@ public class ItemController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ItemDTO> updateItems(
+    public ResponseEntity<ItemUpdateDTO> updateItems(
             @PathVariable Long id,
-            @RequestBody @Valid ItemDTO dto
+            @RequestBody @Valid ItemUpdateDTO dto
     ) {
-        ItemDTO item = itemService.updateItem(id, dto);
+        ItemUpdateDTO item = itemService.updateItem(id, dto);
         return  ResponseEntity.ok(item);
     }
 }
