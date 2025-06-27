@@ -24,7 +24,6 @@ public class ProductController {
         this.productService = productService;
     }
 
-    // 상품 생성
     @PostMapping
     public ResponseEntity<?> createProduct(@RequestBody ProductRequest request) {
         try {
@@ -35,7 +34,6 @@ public class ProductController {
         }
     }
 
-    // 상품 조회
     @GetMapping("/{productId}")
     public ResponseEntity<?> getProduct(@PathVariable Long productId) {
         try {
@@ -46,7 +44,6 @@ public class ProductController {
         }
     }
 
-    // 상품 수정
     @PutMapping("/{productId}")
     public ResponseEntity<?> updateProduct(
         @PathVariable Long productId,
@@ -59,7 +56,6 @@ public class ProductController {
         }
     }
 
-    // 상품 삭제
     @DeleteMapping("/{productId}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long productId) {
         try {
@@ -70,7 +66,6 @@ public class ProductController {
         }
     }
 
-    // 모든 상품 목록 조회
     @GetMapping
     public ResponseEntity<?> getAllProducts() {
         try {
