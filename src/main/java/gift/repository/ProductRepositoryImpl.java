@@ -2,17 +2,12 @@ package gift.repository;
 
 import gift.dto.response.ProductGetResponseDto;
 import gift.entity.Product;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
-
-    // TODO: 제거
-    private final Map<Long, Product> products = new HashMap<>();
 
     private final JdbcTemplate jdbcTemplate;
 
