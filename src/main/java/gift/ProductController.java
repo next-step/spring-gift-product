@@ -32,9 +32,14 @@ public class ProductController {
     @PostMapping("/product/add")
     public String createProduct(@ModelAttribute ProductDTO productdto) {
         long id = idGenerator.getAndIncrement();
-        Product product = new Product(id, productdto);
-        products.put(product.getId(), product);
-        return "redirect:/api/products";
+        try {
+            Product product = new Product(id, productdto);
+            products.put(product.getId(), product);
+            return "redirect:/api/products";
+        }
+        catch(IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "가격이 음수입니다.");
+        }
     }
 
     @ResponseBody
