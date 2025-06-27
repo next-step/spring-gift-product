@@ -3,6 +3,7 @@ package gift.repository;
 import gift.dto.response.ProductGetResponseDto;
 import gift.entity.Product;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -38,23 +39,19 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product findProductById(Long productId) {
+    public Optional<Product> findProductById(Long productId) {
 
         String sql = "SELECT productId, name, price, imageUrl FROM products WHERE productId = ?";
-        try {
-            return jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
-                    new Product(
-                        rs.getLong("productId"),
-                        rs.getString("name"),
-                        rs.getDouble("price"),
-                        rs.getString("imageUrl")
-                    ),
-                productId
-            );
-        } catch (Exception e) {
-            return null;
-        }
-
+        Product product = jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
+                new Product(
+                    rs.getLong("productId"),
+                    rs.getString("name"),
+                    rs.getDouble("price"),
+                    rs.getString("imageUrl")
+                ),
+            productId
+        );
+        return Optional.ofNullable(product);
     }
 
     @Override

@@ -42,20 +42,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductGetResponseDto findProductById(Long productId) {
-        Product product = productRepository.findProductById(productId);
-
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Does not exist productId = " + productId);
-        }
-
-        return new ProductGetResponseDto(product);
+        return productRepository.findProductById(productId)
+            .map(ProductGetResponseDto::new)
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Does not exist productId = " + productId)
+            );
     }
 
     @Override
     public void updateProductById(Long productId, String name,
         Double price,
         String imageUrl) {
+
         int updatedProductRows = productRepository.updateProductById(productId, name, price,
             imageUrl);
 
