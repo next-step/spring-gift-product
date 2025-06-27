@@ -2,9 +2,19 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>상품 목록</title>
+    <title>상품 관리</title>
     <style>
         body { font-family: sans-serif; margin: 2em; }
+        h1, h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        /* Form & Button Styles */
+        .form-container { max-width: 600px; margin-bottom: 2em; padding: 1.5em; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9; }
+        .form-group { margin-bottom: 1em; }
+        .form-group label { display: block; margin-bottom: 0.5em; font-weight: bold; }
+        .form-group input { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        .button { display: inline-block; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; color: white; }
+        .button-primary { background-color: #007bff; }
+        .button-secondary { background-color: #17a2b8; }
+        /* Table Styles */
         table { width: 100%; border-collapse: collapse; margin-top: 1em; }
         th, td { border: 1px solid #ccc; padding: 10px; text-align: left; vertical-align: middle;}
         th { background-color: #f8f8f8; }
@@ -14,8 +24,34 @@
 </head>
 <body>
 
-<h1>상품 관리</h1>
+<h1>상품 관리 시스템</h1>
+
+<!-- 상품 바로 추가 폼 -->
+<div class="form-container">
+    <h2>새 상품 바로 추가</h2>
+    <form th:action="@{/admin/products/add}" th:object="${productRequest}" method="post">
+        <div class="form-group">
+            <label for="name">상품명</label>
+            <input type="text" id="name" th:field="*{name}" required>
+        </div>
+        <div class="form-group">
+            <label for="price">가격</label>
+            <input type="number" id="price" th:field="*{price}" required>
+        </div>
+        <div class="form-group">
+            <label for="imageUrl">이미지 URL</label>
+            <input type="text" id="imageUrl" th:field="*{imageUrl}" required>
+        </div>
+        <button type="submit" class="button button-primary">바로 등록</button>
+    </form>
+</div>
+
+
+<h2>상품 목록</h2>
 <p>등록된 모든 상품의 목록입니다.</p>
+
+<!-- 별도의 '새 상품 등록' 페이지로 이동하는 버튼 -->
+<a th:href="@{/admin/products/add}" class="button button-secondary">새 상품 등록 페이지로 이동</a>
 
 <!-- 상품이 있을 경우에만 테이블을 보여줍니다. -->
 <div th:if="${!products.isEmpty()}">
