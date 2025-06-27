@@ -1,8 +1,8 @@
 package gift.service;
 
+import gift.domain.Product;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
-import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -19,11 +19,8 @@ public class ProductServiceImpl implements ProductService {
   }
 
   public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
-    Product product = new Product();
-    product.setName(productRequestDto.name());
-    product.setPrice(productRequestDto.price());
-    product.setImageUrl(productRequestDto.imageUrl());
-
+    Product product = new Product(productRequestDto.name(), productRequestDto.price(),
+        productRequestDto.imageUrl());
     return productRepository.createProduct(product);
   }
 
