@@ -46,8 +46,11 @@ public class ProductDao implements ProductRepository {
     }
 
     @Override
-    public List<ProductResponseDto> findAllProducts() {
-        return List.of();
+    public List<Product> findAllProducts() {
+        String sql = "select id, name, price, imageUrl from products;";
+        return client.sql(sql)
+                .query(getProductRowMapper())
+                .list();
     }
 
     @Override

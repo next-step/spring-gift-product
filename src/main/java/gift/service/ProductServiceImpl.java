@@ -4,6 +4,7 @@ import gift.dto.CreateProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductResponseDto> findAllProducts() {
-        return productRepository.findAllProducts();
+
+        List<Product> products = productRepository.findAllProducts();
+        List<ProductResponseDto> productsList = new ArrayList<>();
+        for (Product product : products) {
+            ProductResponseDto responseDto = new ProductResponseDto(product.getId(),
+                    product.getName(), product.getPrice(), product.getImageUrl());
+            productsList.add(responseDto);
+        }
+        return productsList;
     }
 
     @Override

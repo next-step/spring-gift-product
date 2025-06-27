@@ -10,7 +10,7 @@ public interface ProductRepository {
 
     Product createProduct(Product newProduct);
 
-    List<ProductResponseDto> findAllProducts();
+    List<Product> findAllProducts();
 
     Optional<Product> findProductById(Long id);
 
