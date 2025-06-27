@@ -4,8 +4,11 @@ import gift.dto.response.ProductGetResponseDto;
 import gift.entity.Product;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
@@ -40,18 +43,25 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Optional<Product> findProductById(Long productId) {
-
         String sql = "SELECT productId, name, price, imageUrl FROM products WHERE productId = ?";
-        Product product = jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
-                new Product(
-                    rs.getLong("productId"),
-                    rs.getString("name"),
-                    rs.getDouble("price"),
-                    rs.getString("imageUrl")
-                ),
-            productId
-        );
-        return Optional.ofNullable(product);
+
+        try {
+            Product product = jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
+                    new Product(
+                        rs.getLong("productId"),
+                        rs.getString("name"),
+                        rs.getDouble("price"),
+                        rs.getString("imageUrl")
+                    ),
+                productId
+            );
+            return Optional.of(product);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                "ProductRepositoryImpl.findProductById");
+        }
     }
 
     @Override
