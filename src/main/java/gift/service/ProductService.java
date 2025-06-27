@@ -53,7 +53,6 @@ public class ProductService {
         }
         Product existingProduct = productRepository.findById(productId).get();
 
-        // 요청된 필드만 수정, 나머지 필드는 기존 값 유지
         String updatedName = existingProduct.getName();
         if (request.name() != null) {
             updatedName = request.name();
