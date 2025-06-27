@@ -3,6 +3,7 @@ package gift.controller;
 
 import gift.dto.ItemCreateDTO;
 import gift.dto.ItemDTO;
+import gift.dto.ItemResponseDTO;
 import gift.dto.ItemUpdateDTO;
 import gift.entity.Item;
 import gift.service.ItemService;
@@ -28,7 +29,7 @@ public class AdminItemController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false) Integer price) {
 
-        List<ItemDTO> items;
+        List<ItemResponseDTO> items;
 
         if(name == null && price == null){
             items = itemService.getAllItems();

@@ -2,6 +2,7 @@ package gift.service;
 
 import gift.dto.ItemCreateDTO;
 import gift.dto.ItemDTO;
+import gift.dto.ItemResponseDTO;
 import gift.dto.ItemUpdateDTO;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 public interface ItemService {
     ItemCreateDTO saveItem(ItemCreateDTO dto);
 
-    List<ItemDTO> getItems(String name, Integer price);
+    List<ItemResponseDTO> getItems(String name, Integer price);
 
     void delete(String name);
 
@@ -20,5 +21,5 @@ public interface ItemService {
 
     void deleteById(Long id);
 
-    List<ItemDTO> getAllItems();
+    List<ItemResponseDTO> getAllItems();
 }

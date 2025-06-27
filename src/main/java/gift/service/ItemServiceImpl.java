@@ -3,6 +3,7 @@ package gift.service;
 
 import gift.dto.ItemCreateDTO;
 import gift.dto.ItemDTO;
+import gift.dto.ItemResponseDTO;
 import gift.dto.ItemUpdateDTO;
 import gift.entity.Item;
 import gift.exception.ItemNotFoundException;
@@ -29,9 +30,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDTO> getItems(String name, Integer price) {
+    public List<ItemResponseDTO> getItems(String name, Integer price) {
         List<Item> items;
-        List<ItemDTO> result = new  ArrayList<>();
+        List<ItemResponseDTO> result = new  ArrayList<>();
         if (name == null && price == null) {
             items = itemRepository.getAllItems();
         }else
@@ -42,7 +43,7 @@ public class ItemServiceImpl implements ItemService {
         }
 
         for (Item item : items) {
-            result.add(new ItemDTO(item));
+            result.add(ItemResponseDTO.from(item));
 
         }
         return result;
@@ -90,12 +91,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDTO> getAllItems() {
+    public List<ItemResponseDTO> getAllItems() {
         List<Item> items = itemRepository.getAllItems();
-        List<ItemDTO> result = new ArrayList<>();
+        List<ItemResponseDTO> result = new ArrayList<>();
 
         for (Item item : items) {
-            result.add(new ItemDTO(item));
+            result.add(ItemResponseDTO.from(item));
         }
 
         return result;
