@@ -9,7 +9,7 @@ public class ProductNotFoundException extends RuntimeException {
   private final ErrorCode errorCode;
 
   public ProductNotFoundException(ErrorCode errorCode) {
-    super(errorCode.getMessage());
+    super(errorCode.getErrorMessage());
     this.errorCode = errorCode;
   }
 }
