@@ -1,5 +1,6 @@
 package gift.admin.controller;
 
+import gift.exception.EntityNotFoundException;
 import gift.product.dto.ProductCreateRequestDto;
 import gift.product.dto.ProductUpdateRequestDto;
 import gift.product.service.ProductService;
@@ -64,7 +65,7 @@ public class AdminController {
         try {
             productService.deleteProduct(id);
             redirectAttributes.addFlashAttribute("message", "상품이 삭제되었습니다.");
-        } catch (Exception e) {
+        } catch (EntityNotFoundException e) {
             redirectAttributes.addFlashAttribute("error", "삭제 실패: " + e.getMessage());
         }
         return "redirect:/admin";
