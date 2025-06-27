@@ -1,6 +1,7 @@
 package gift.repository;
 
 import gift.entity.Product;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -31,8 +32,20 @@ public class ProductRepository {
     }
 
     public List<Product> findAll() {
-        return new ArrayList<>(products.values());
+        var sql ="select * from Product";
+        return jdbcClient.sql(sql).query(getProductRowMapper()).list();
     }
+
+    private static RowMapper<Product> getProductRowMapper() {
+        return (rs, rowNum) -> {
+            var id = rs.getLong(    "id");
+            var name = rs.getString("name");
+            var price = rs.getInt("price");
+            var imageUrl = rs.getString("imageUrl");
+            return new Product(id, name, price, imageUrl);
+        };
+    }
+
 
 
     public Optional<Product> findById(Long id) {
