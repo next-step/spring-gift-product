@@ -36,9 +36,10 @@ public class ProductRepositoryImpl implements ProductRepository {
             .param("imageUrl", product.getImageUrl())
             .update(generatedKey);
         
-        product.setId(generatedKey.getKey().longValue()); //생성된 product의 id setting
+        Long recentKey = generatedKey.getKey().longValue();
         
-        return new AddProductResponseDto(product);
+        return new AddProductResponseDto(recentKey, product.getName(), product.getPrice(),
+            product.getImageUrl());
     }
     
     @Override

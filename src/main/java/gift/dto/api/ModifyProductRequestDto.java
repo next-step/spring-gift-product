@@ -1,11 +1,43 @@
 package gift.dto.api;
 
-/**
- * @param name     상품의 이름
- * @param price    상품의 가격
- * @param imageUrl 상품의 이미지 URL
- */
-public record ModifyProductRequestDto(String name, Long price, String imageUrl) {
+public class ModifyProductRequestDto {
+    
+    private String name;
+    private Long price;
+    private String imageUrl;
+    
+    public ModifyProductRequestDto() {
+    }
+    
+    public ModifyProductRequestDto(String name, Long price, String imageUrl) {
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public Long getPrice() {
+        return price;
+    }
+    
+    public String getImageUrl() {
+        return imageUrl;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+    
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
     
     public Boolean isNotValidForModify() {
         return (name == null || price == null || imageUrl == null);
