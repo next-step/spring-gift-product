@@ -1,7 +1,7 @@
 package gift.repository;
 
+import gift.domain.Product;
 import gift.dto.ProductResponseDto;
-import gift.entity.Product;
 import java.util.List;
 import java.util.Optional;
 
