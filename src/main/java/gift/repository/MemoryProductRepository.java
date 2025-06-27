@@ -1,7 +1,7 @@
 package gift.repository;
 
+import gift.domain.Product;
 import gift.dto.ProductResponseDto;
-import gift.entity.Product;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,13 +14,16 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class MemoryProductRepository implements ProductRepository {
 
-  private final Map<Long, Product> productMap = new HashMap<>();
+  private final Map<Long, Product> products = new HashMap<>();
+
+  public final Long InitId = 1L;
+  public final Long IncIdCnt = 1L;
 
   public ProductResponseDto createProduct(Product product) {
-    Long productId = productMap.isEmpty() ? 1 : Collections.max(productMap.keySet()) + 1;
+    Long productId = products.isEmpty() ? InitId : Collections.max(products.keySet()) + IncIdCnt;
     product.setId(productId);
 
-    productMap.put(productId, product);
+    products.put(productId, product);
 
     return new ProductResponseDto(product);
   }
@@ -28,7 +31,7 @@ public class MemoryProductRepository implements ProductRepository {
   public List<ProductResponseDto> searchAllProducts() {
     List<ProductResponseDto> allProducts = new ArrayList<>();
 
-    for (Product product : productMap.values()) {
+    for (Product product : products.values()) {
       ProductResponseDto productResponseDto = new ProductResponseDto(product);
       allProducts.add(productResponseDto);
     }
@@ -37,21 +40,21 @@ public class MemoryProductRepository implements ProductRepository {
   }
 
   public Optional<Product> searchProductById(Long id) {
-    return Optional.ofNullable(productMap.get(id));
+    return Optional.ofNullable(products.get(id));
   }
 
   public Product updateProduct(Long id, String name, Integer price, String imageUrl) {
-    if (!productMap.containsKey(id)) {
+    if (!products.containsKey(id)) {
       throw new NoSuchElementException("해당 ID = " + id + " 의 상품이 존재하지 않습니다.");
     }
-    Product product = productMap.get(id);
+    Product product = products.get(id);
 
-    product.updateInfo(name, price, imageUrl);
+    product.update(name, price, imageUrl);
 
     return product;
   }
 
   public void deleteProduct(Long id) {
-    productMap.remove(id);
+    products.remove(id);
   }
 }
