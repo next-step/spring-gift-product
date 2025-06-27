@@ -43,7 +43,18 @@ public class ProductJdbcRepositoryImpl implements ProductRepository {
 
   @Override
   public ProductResponseDto createProduct(ProductRequestDto requestDto) {
-    return null;
+    String checkSql = "select count(*) from products where id=?";
+    int count = jdbcTemplate.queryForObject(checkSql, Integer.class, requestDto.getId());
+
+    if (count != 0) {
+      throw new IllegalStateException("이미 존재하는 id");
+    }
+    String sql = "insert into products (id,name,price,imageUrl) values (?, ?, ?, ?)";
+    jdbcTemplate.update(sql, requestDto.getId(), requestDto.getName(), requestDto.getPrice(),
+        requestDto.getImageUrl());
+
+    return new ProductResponseDto(requestDto.getId(), requestDto.getName(), requestDto.getPrice(),
+        requestDto.getImageUrl());
   }
 
   @Override
