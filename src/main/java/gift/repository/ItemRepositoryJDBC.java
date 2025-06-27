@@ -61,7 +61,21 @@ public class ItemRepositoryJDBC implements ItemRepository{
 
     @Override
     public List<Item> getAllItems() {
-        return null;
+        var sql = "select id, name, price, image_url from items";
+
+        RowMapper<Item> rowMapper = new RowMapper<Item>() {
+
+            @Override
+            public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new Item(
+                        rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getInt("price"),
+                        rs.getString("image_url")
+                );
+            }
+        };
+        return  jdbcTemplate.query(sql, rowMapper);
     }
 
     @Override
