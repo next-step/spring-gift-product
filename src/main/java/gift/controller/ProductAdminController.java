@@ -62,6 +62,14 @@ public class ProductAdminController {
         return "admin/product/form";
     }
 
+    /**
+     * 상품 등록 처리
+     */
+    @PostMapping
+    public String create(@ModelAttribute ProductRequest request) {
+        productService.create(request.name(), request.price(), request.imageUrl());
+        return "redirect:/admin/products";
+    }
 
 
 }
