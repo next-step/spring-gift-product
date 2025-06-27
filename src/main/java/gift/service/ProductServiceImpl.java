@@ -22,7 +22,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public ProductResponseDto addProduct(ProductAddRequestDto requestDto) {
-        Product product = productRepository.addProduct(requestDto.getName(), requestDto.getPrice(), requestDto.getUrl());
+        Product product = productRepository.addProduct(requestDto.name(), requestDto.price(), requestDto.url());
         return new ProductResponseDto(product);
     }
 
@@ -48,7 +48,7 @@ public class ProductServiceImpl implements ProductService{
         if (product == null) {
             throw new ProductNotFoundException(id);
         }
-        Product newProduct = new Product(product.id(), requestDto.getName(), requestDto.getPrice(), requestDto.getUrl());
+        Product newProduct = new Product(product.id(), requestDto.name(), requestDto.price(), requestDto.url());
         productRepository.updateProductById(newProduct);
         return new ProductResponseDto(newProduct);
     }
