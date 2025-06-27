@@ -6,6 +6,7 @@ import gift.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -113,7 +114,7 @@ public class AdminController {
     }
 
     // 상품 삭제
-    @PostMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     public String deleteProduct(
         @PathVariable
         Long id,
@@ -126,7 +127,7 @@ public class AdminController {
             return "redirect:/admin/products";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
-            return "admin/products";
+            return "admin/product-list";
         }
     }
 
