@@ -43,18 +43,18 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<ProductGetResponseDto> getProductByproductId(
+    public ResponseEntity<ProductGetResponseDto> getProductById(
         @PathVariable Long productId) {
 
-        return new ResponseEntity<>(productService.findProductByProductId(productId),
+        return new ResponseEntity<>(productService.findProductById(productId),
             HttpStatus.OK);
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<Void> updateProduct(@PathVariable Long productId,
+    public ResponseEntity<Void> updateProductById(@PathVariable Long productId,
         @Valid @RequestBody ProductUpdateRequestDto productUpdaterequestDto) {
 
-        productService.updateProductByProductId(productId, productUpdaterequestDto.name(),
+        productService.updateProductById(productId, productUpdaterequestDto.name(),
             productUpdaterequestDto.price(),
             productUpdaterequestDto.imageUrl());
 
@@ -62,9 +62,9 @@ public class ProductController {
     }
 
     @DeleteMapping("/{productId}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+    public ResponseEntity<Void> deleteProductById(@PathVariable Long productId) {
 
-        productService.deleteProductByProductId(productId);
+        productService.deleteProductById(productId);
         return ResponseEntity.noContent().build();
     }
 }

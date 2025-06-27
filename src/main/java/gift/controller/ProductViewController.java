@@ -53,10 +53,10 @@ public class ProductViewController {
     }
 
     @GetMapping("/{productId}")
-    public String getProductByProductId(@RequestParam Long productId, Model model) {
+    public String getProductById(@RequestParam Long productId, Model model) {
         if (productId != null) {
             try {
-                ProductGetResponseDto product = productService.findProductByProductId(productId);
+                ProductGetResponseDto product = productService.findProductById(productId);
                 model.addAttribute("products", List.of(product));
             } catch (ResponseStatusException e) {
                 model.addAttribute("products", List.of());
@@ -70,7 +70,7 @@ public class ProductViewController {
     @GetMapping("/update/{productId}")
     public String updateProductPage(@PathVariable Long productId, Model model) {
         try {
-            ProductGetResponseDto product = productService.findProductByProductId(productId);
+            ProductGetResponseDto product = productService.findProductById(productId);
             model.addAttribute("product", product);
             return "update-product";
         } catch (ResponseStatusException e) {
@@ -79,14 +79,14 @@ public class ProductViewController {
     }
 
     @PostMapping("/update/{productId}")
-    public String updateProduct(
+    public String updateProductById(
         @PathVariable Long productId,
         @RequestParam String name,
         @RequestParam Double price,
         @RequestParam String imageUrl
     ) {
         try {
-            productService.updateProductByProductId(productId, name, price, imageUrl);
+            productService.updateProductById(productId, name, price, imageUrl);
             return "redirect:/admin/products";
         } catch (ResponseStatusException e) {
             return "redirect:/admin/products/update/" + productId;
@@ -94,9 +94,9 @@ public class ProductViewController {
     }
 
     @PostMapping("/delete/{productId}")
-    public String deleteProduct(@PathVariable Long productId) {
+    public String deleteProductById(@PathVariable Long productId) {
         try {
-            productService.deleteProductByProductId(productId);
+            productService.deleteProductById(productId);
             return "redirect:/admin/products";
         } catch (ResponseStatusException e) {
             return "redirect:/admin/products";

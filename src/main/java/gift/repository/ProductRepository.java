@@ -10,9 +10,9 @@ public interface ProductRepository {
 
     List<ProductGetResponseDto> findAllProducts();
 
-    Product findProductByProductId(Long productId);
+    Product findProductById(Long productId);
 
-    int updateProductByProductId(Long productId, String name, Double price, String imageUrl);
+    int updateProductById(Long productId, String name, Double price, String imageUrl);
 
-    int deleteProductByProductId(Long productId);
+    int deleteProductById(Long productId);
 }

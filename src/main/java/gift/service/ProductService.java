@@ -11,10 +11,10 @@ public interface ProductService {
 
     List<ProductGetResponseDto> findAllProducts();
 
-    ProductGetResponseDto findProductByProductId(Long productId);
+    ProductGetResponseDto findProductById(Long productId);
 
-    void updateProductByProductId(Long productId, String name, Double price,
+    void updateProductById(Long productId, String name, Double price,
         String imageUrl);
 
-    void deleteProductByProductId(Long productId);
+    void deleteProductById(Long productId);
 }

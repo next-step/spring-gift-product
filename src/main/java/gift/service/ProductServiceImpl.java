@@ -41,8 +41,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductGetResponseDto findProductByProductId(Long productId) {
-        Product product = productRepository.findProductByProductId(productId);
+    public ProductGetResponseDto findProductById(Long productId) {
+        Product product = productRepository.findProductById(productId);
 
         if (product == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -53,10 +53,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateProductByProductId(Long productId, String name,
+    public void updateProductById(Long productId, String name,
         Double price,
         String imageUrl) {
-        int updatedProductRows = productRepository.updateProductByProductId(productId, name, price,
+        int updatedProductRows = productRepository.updateProductById(productId, name, price,
             imageUrl);
 
         if (updatedProductRows == 0) {
@@ -66,8 +66,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProductByProductId(Long productId) {
-        int deletedProductRows = productRepository.deleteProductByProductId(productId);
+    public void deleteProductById(Long productId) {
+        int deletedProductRows = productRepository.deleteProductById(productId);
 
         if (deletedProductRows == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,

@@ -38,7 +38,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product findProductByProductId(Long productId) {
+    public Product findProductById(Long productId) {
 
         String sql = "SELECT productId, name, price, imageUrl FROM products WHERE productId = ?";
         try {
@@ -58,7 +58,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public int updateProductByProductId(Long productId, String name, Double price,
+    public int updateProductById(Long productId, String name, Double price,
         String imageUrl) {
 
         String sql = "UPDATE products SET name = ?, price = ?, imageUrl = ? WHERE productId = ?";
@@ -67,7 +67,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
 
     @Override
-    public int deleteProductByProductId(Long productId) {
+    public int deleteProductById(Long productId) {
 
         String sql = "DELETE FROM products WHERE productId = ?";
         return jdbcTemplate.update(sql, productId);
