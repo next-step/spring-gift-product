@@ -62,7 +62,8 @@ public class ItemRepositoryJDBC implements ItemRepository{
 
     @Override
     public Item findById(Long id) {
-        return null;
+        String sql = "SELECT id, name, price, image_url FROM items WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{id}, itemRowMapper);
     }
 
     @Override
