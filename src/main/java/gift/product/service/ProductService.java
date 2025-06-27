@@ -42,7 +42,7 @@ public class ProductService {
   public void updateProduct(Long id, UpdateProductReqDto dto) throws ProductNotFoundException {
     Product product = productRepository.findById(id)
         .orElseThrow(() -> new ProductNotFoundException(ErrorCode.NOT_FOUND));
-    product.updateProduct(dto);
+    product.update(dto);
     productRepository.update(id, product);
   }
 
