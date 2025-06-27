@@ -1,14 +1,24 @@
 package gift.entity;
 
 public class Gift {
+    private Long id;
     private String name;
     private Integer price;
     private String imageUrl;
 
-    public Gift(String name, Integer price, String imageUrl) {
+    public Gift(Long id, String name, Integer price, String imageUrl) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

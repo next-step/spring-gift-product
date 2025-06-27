@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>상품 관리 ADMIN</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/gift.css}">
+</head>
+<body>
+<main class="container">
+    <section class="title-container">
+        <span class="title">상품 관리 ADMIN</span>
+        <div class="button-container">
+            <button
+                    type="button"
+                    class="add-button"
+                    onclick="location.href='addItem.html'"
+                    th:onclick="|location.href='@{/addItem}'|"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                </svg>
+                Add New Gift
+            </button>
+        </div>
+    </section>
+    <form method="post" th:action="@{/addItem}">
+        <section class="content-container">
+            <div class="input-box">
+                <span class="text">
+                    ID
+                </span>
+                <label>
+                    <input type="text" name="id" id="id" placeholder="ID 를 입력해주세요 Ex) 10015" required />
+                </label>
+            </div>
+            <div class="input-box">
+                <span class="text">
+                    상품 명
+                </span>
+                <label>
+                    <input type="text" name="name" id="name" placeholder="상품 명을 입력해주세요 Ex) 고양이 사료" required />
+                </label>
+            </div>
+            <div class="input-box">
+                <span class="text">
+                    상품 가격
+                </span>
+                <label>
+                    <input type="text" name="price" id="price" placeholder="상품 가격을 입력해주세요 Ex) 10000" required />
+                </label>
+            </div>
+            <div class="input-box">
+                <span class="text">
+                    상품 사진 URL
+                </span>
+                <label>
+                    <input type="text" name="imageUrl" id="imageUrl" placeholder="상품 사진 URL을 입력해주세요." required />
+                </label>
+            </div>
+        </section>
+        <section class="button-container">
+            <button
+                    type="button"
+                    class="cancel-button"
+                    onclick="location.href='admin.html'"
+                    th:onclick="|location.href='@{/admin}'|"
+            >
+                취소하기
+            </button>
+            <button type="submit" class="submit-button">
+                등록하기
+            </button>
+        </section>
+    </form>
+</main>
+</body>
+</html>
