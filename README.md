@@ -1,6 +1,6 @@
 # spring-gift-product
 
-# 리뷰받은 사항 수정하기
+# step1 리뷰받은 사항 수정하기
 
 ## 1. layered architecture
 
@@ -25,3 +25,17 @@
 ## 상품 업데이트 처리 POST /admin/products/{id}/update
 
 ## 상품 삭제 처리 GET /admin/products/{id}/delete
+
+# step2 리뷰 사항 수정
+
+## 1. 매직넘버를 상수로 선언해 명확하게 나타내기
+
+## 2. delete함수 반환타입 void로 변환
+
+## 3. product를 업데이트할때 파라미터의 id와 ProductRequestDto의 id필드가 일치하지 않는 경우 처리
+
+# step3 구현
+
+## 데이터베이스 연동
+
+## repository 코드 추가하기
