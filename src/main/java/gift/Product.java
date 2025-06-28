@@ -7,10 +7,37 @@ public class Product {
     private String imageUrl;
 
     public Product(Long id, String name, int price, String imageUrl) {
+        if(price < 0) {
+            throw new IllegalArgumentException("Price should be positive");
+        }
         this.id = id;
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;
+    }
+
+    public Product(Long id, ProductDTO productdto) {
+        if(productdto.getPrice() < 0) {
+            throw new IllegalArgumentException("Price should be positive");
+        }
+        this.id = id;
+        this.name = productdto.getName();
+        this.price = productdto.getPrice();
+        this.imageUrl = productdto.getImageUrl();
+    }
+
+    public void updateProduct(ProductDTO newProductdto) {
+        if(newProductdto.getName() != null) {
+            this.setName(newProductdto.getName());
+        }
+
+        if(newProductdto.getPrice() != 0) {
+            this.setPrice(newProductdto.getPrice());
+        }
+
+        if(newProductdto.getImageUrl() != null) {
+            this.setImageUrl(newProductdto.getImageUrl());
+        }
     }
 
     public Long getId() {

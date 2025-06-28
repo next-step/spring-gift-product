@@ -1,54 +1,79 @@
 package gift;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
-@RestController
+@Controller
 @RequestMapping("/api")
 public class ProductController {
-    private final Map<Long, Product> products = new HashMap<>();
+    private final Map<Long, Product> products = new ConcurrentHashMap<>();
+    private final AtomicLong idGenerator = new AtomicLong(1);
 
-    @PostMapping("/product")
-    public String createProduct(@RequestBody Product product) {
-        products.put(product.getId(), product);
-        return "상품 생성: " + product.getId();
+    @GetMapping("/products")
+    public String listProducts(Model model) {
+        Collection<Product> productList = products.values();
+        model.addAttribute("products", productList);
+        return "products";
     }
 
+    @GetMapping("/product/add")
+    public String addForm(Model model) {
+        model.addAttribute("productdto", new ProductDTO());
+        return "addForm";
+    }
+
+    @PostMapping("/product/add")
+    public String createProduct(@ModelAttribute ProductDTO productdto) {
+        long id = idGenerator.getAndIncrement();
+        try {
+            Product product = new Product(id, productdto);
+            products.put(product.getId(), product);
+            return "redirect:/api/products";
+        }
+        catch(IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "가격이 음수입니다.");
+        }
+    }
+
+    @ResponseBody
     @GetMapping("/product/{id}")
     public Product getProduct(@PathVariable Long id) {
         Product product = products.get(id);
         return product;
     }
 
-    @GetMapping("/products")
-    public Collection<Product> getAllProducts() {
-        Collection<Product> productList = products.values();
-        return productList;
+    @GetMapping("/product/{id}/update")
+    public String updateForm(@PathVariable Long id, Model model) {
+        Product product = products.get(id);
+        model.addAttribute("product", product);
+        return "updateForm";
     }
 
-    @PatchMapping("/product/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product updateProduct) {
+    @PatchMapping("/product/{id}/update")
+    public String updateProduct(@PathVariable Long id, @ModelAttribute ProductDTO updateProductdto) {
+        checkId(id);
         Product oldProduct = products.get(id);
-
-        if(updateProduct.getName() != null) {
-            oldProduct.setName(updateProduct.getName());
-        }
-
-        if(updateProduct.getPrice() != 0) {
-            oldProduct.setPrice(updateProduct.getPrice());
-        }
-
-        if(updateProduct.getImageUrl() != null) {
-            oldProduct.setImageUrl(updateProduct.getImageUrl());
-        }
-
-        return oldProduct;
+        oldProduct.updateProduct(updateProductdto);
+        return "redirect:/api/products";
     }
 
-    @DeleteMapping("/product/{id}")
+    @DeleteMapping("/product/{id}/delete")
     public String deleteProduct(@PathVariable Long id) {
+        checkId(id);
         products.remove(id);
-        return "상품 삭제: " + id;
+        return "redirect:/api/products";
+    }
+
+    private void checkId(Long id) {
+        if(!products.containsKey(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 데이터가 존재하지 않습니다.");
+        }
     }
 }
