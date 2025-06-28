@@ -29,14 +29,14 @@ public class ProductService {
     return GetProductResDto.from(product);
   }
 
-  public void createProduct(CreateProductReqDto dto) {
+  public Long createProduct(CreateProductReqDto dto) {
     Product newProduct = Product.of(
         dto.name(),
         dto.price(),
         dto.description(),
         dto.imageUrl()
     );
-    productRepository.save(newProduct);
+    return productRepository.save(newProduct);
   }
 
   public void updateProduct(Long id, UpdateProductReqDto dto) throws ProductNotFoundException {

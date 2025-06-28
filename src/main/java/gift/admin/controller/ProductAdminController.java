@@ -22,14 +22,14 @@ public class ProductAdminController {
 
   @GetMapping
   public String listProducts(Model model) {
-    var result = productService.getAllProducts(0, 100, "name", true);
+    var result = productService.getAllByPage(0, 100, "name", true);
     model.addAttribute("products", result.content());
     return "product-list";
   }
 
   @GetMapping("/add")
   public String showAddForm(Model model) {
-    model.addAttribute("product", new CreateProductReqDto(null, null, null));
+    model.addAttribute("product", new CreateProductReqDto(null, null, null,null));
     return "product-add";
   }
 

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository {
-  void save(Product product);
+  Long save(Product product);
   Optional<Product> findById(Long id);
   PagedResult<Product> findAll(int page, int size, String sortField, boolean asc);
   void update(Long id, Product updateProduct);

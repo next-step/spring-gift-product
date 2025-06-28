@@ -21,12 +21,13 @@ public class InMemoryProductRepository implements ProductRepository {
   private final AtomicLong idGenerator = new AtomicLong();
 
   @Override
-  public void save(Product product) {
+  public Long save(Product product) {
     Objects.requireNonNull(product,"상품은 null일 수 없습니다");
 
     Long id = idGenerator.incrementAndGet();
     Product newProduct = Product.withId(id,product);
     productMap.put(id, newProduct);
+    return id;
   }
 
   @Override
