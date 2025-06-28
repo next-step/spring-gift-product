@@ -1,3 +1,16 @@
 # spring-gift-product
-* 조회, 추가, 수정, 삭제 구현
-* Product 를 ProductName, Price, ImgUrl로 분리
+
+## step1 상품 API("/api/products")
+* 전체 조회 
+* 개별 조회 ("/{id}")
+* 상품 추가
+* 상품 수정 ("/{id}")
+* 상품 삭제 ("/{id}")
+## step2 관리자 화면
+* 상품 목록 조회 화면
+* 상품 추가/수정 화면
+* 상품 삭제
+* ![상품 목록](src/main/resources/tempImg/%EA%B8%B0%EB%B3%B8.png)
+* ![상품 추가/수정](src/main/resources/tempImg/%EC%83%88_%EC%83%81%ED%92%88_%EC%B6%94%EA%B0%80_%EC%88%98%EC%A0%95.png)
+* ![상품 추가 후](src/main/resources/tempImg/%EC%83%81%ED%92%88_%EC%B6%94%EA%B0%80_%ED%9B%84.png)
+* ![상품 삭제 후](src/main/resources/tempImg/%EC%83%81%ED%92%88_%EC%82%AD%EC%A0%9C_%ED%9B%84.png)
