@@ -1,4 +1,15 @@
 package gift.dto.product;
 
-public record CreateProductRequest(String name, Integer price, Integer quantity) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public record CreateProductRequest(
+        @NotBlank(message = "이름은 필수 입력 값입니다.") String name,
+        @NotNull(message = "가격은 필수 입력 값입니다.") Integer price,
+        @NotNull(message = "수량은 필수 입력 값입니다.") Integer quantity
+) {
+
+    public static CreateProductRequest empty() {
+        return new CreateProductRequest(null, null, null);
+    }
 }

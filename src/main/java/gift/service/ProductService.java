@@ -1,9 +1,8 @@
 package gift.service;
 
+import gift.common.exception.ProductNotFoundException;
 import gift.domain.Product;
 import gift.dto.product.CreateProductRequest;
-import gift.dto.product.ProductManageResponse;
-import gift.dto.product.ProductResponse;
 import gift.dto.product.UpdateProductRequest;
 import gift.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -25,32 +24,28 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public List<ProductResponse> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        return products.stream().map(ProductResponse::from).toList();
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    public Product getProduct(Long id) {
+        return getById(id);
     }
 
     public Product updateProduct(Long id, UpdateProductRequest request) {
         Product product = getById(id);
-        return product.update(request.name(), request.price(), request.quantity());
+        product.update(request.name(), request.price(), request.quantity());
+        productRepository.update(product);
+        return product;
     }
 
     public void deleteProduct(Long id) {
         productRepository.deleteByid(id);
     }
 
-    public List<ProductManageResponse> getAllProductsManagement() {
-        List<Product> products = productRepository.findAll();
-        return products.stream().map(ProductManageResponse::from).toList();
-    }
-
-    public ProductManageResponse getProductManagement(Long id) {
-        Product product = getById(id);
-        return ProductManageResponse.from(product);
-    }
 
     private Product getById(Long id) {
         Optional<Product> getProduct = productRepository.findById(id);
-        return getProduct.orElseThrow(() -> new IllegalStateException("Product를 찾을 수 없습니다."));
+        return getProduct.orElseThrow(ProductNotFoundException::new);
     }
 }

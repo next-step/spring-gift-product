@@ -15,3 +15,12 @@
 - 상품 추가 폼 구현
 - 상품 수정 폼 구현
 - 상품 삭제 폼 구현
+
+## step3 구현 기능
+- step2 PR 피드백 반영하여 리팩토링 진행
+- validation 유효성 검증 도입
+- 관리자 페이지에도 BindingResult 사용하여 유효성 검증 진행
+- ControllerAdvice 사용하여 글로벌 예외 처리
+- h2 db 세팅
+- h2 db 적용
+- service 코드의 테스트 코드 작성
