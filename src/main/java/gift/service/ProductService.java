@@ -1,6 +1,7 @@
 package gift.service;
 
 import gift.dto.ProductRequest;
+import gift.dto.ProductResponse;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
@@ -15,35 +16,39 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product createProduct(ProductRequest request) {
+    public ProductResponse createProduct(ProductRequest request) {
         if (request == null) {
             throw new IllegalArgumentException("Request cannot be null");
         }
 
-        if (request.name() == null || request.price() == null || request.imageUrl() == null) {
-            throw new IllegalArgumentException("Required fields are missing");
-        }
-
-        if (request.id() != null && productRepository.findById(request.id()).isPresent()) {
-            throw new IllegalArgumentException("ID(" + request.id() + ") already exists");
-        }
-
         Product product = new Product(
-            request.id(),
+            null,
             request.name(),
             request.price(),
             request.imageUrl()
         );
-        return productRepository.save(product);
+        product = productRepository.save(product);
+        return new ProductResponse(
+            product.getId(),
+            product.getName(),
+            product.getPrice(),
+            product.getImageUrl()
+        );
     }
 
-    public Product getProduct(Long productId) {
-        return productRepository.findById(productId)
+    public ProductResponse getProduct(Long productId) {
+        Product product = productRepository.findById(productId)
             .orElseThrow(
                 () -> new IllegalArgumentException("Product(id: " + productId + ") not found"));
+        return new ProductResponse(
+            product.getId(),
+            product.getName(),
+            product.getPrice(),
+            product.getImageUrl()
+        );
     }
 
-    public Product updateProduct(Long productId, ProductRequest request) {
+    public ProductResponse updateProduct(Long productId, ProductRequest request) {
         if (request == null) {
             throw new IllegalArgumentException("Request cannot be null");
         }
@@ -74,7 +79,13 @@ public class ProductService {
             updatedPrice,
             updatedImageUrl
         );
-        return productRepository.save(updatedProduct);
+        updatedProduct = productRepository.save(updatedProduct);
+        return new ProductResponse(
+            updatedProduct.getId(),
+            updatedProduct.getName(),
+            updatedProduct.getPrice(),
+            updatedProduct.getImageUrl()
+        );
     }
 
     public void deleteProduct(Long productId) {
@@ -84,7 +95,14 @@ public class ProductService {
         productRepository.delete(productId);
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponse> getAllProducts() {
+        return productRepository.findAll().stream()
+            .map(product -> new ProductResponse(
+                product.getId(),
+                product.getName(),
+                product.getPrice(),
+                product.getImageUrl()
+            ))
+            .toList();
     }
 }
