@@ -59,19 +59,28 @@ public class ItemService {
 	}
 
 	public List<GetItemResponse> getAllItems() {
-		return db.values()
-			.stream()
-			.map(item -> new GetItemResponse(item.getId(), item.getName(), item.getPrice(), item.getImageUrl()))
-			.collect(Collectors.toList());
+
+		final String sql = "select * from item";
+
+		return jdbcTemplate.query(sql, (rs, rowNum) -> new GetItemResponse(
+			rs.getLong("id"),
+			rs.getString("name"),
+			rs.getInt("price"),
+			rs.getString("image_url")
+		));
 	}
 
 
 	public GetItemResponse getItem(Long itemId) {
-		Item item = db.get(itemId);
-		if (item == null) {
-			throw new RuntimeException("해당 ID는 존재하지 않습니다!");
-		}
-		return new GetItemResponse(item.getId(), item.getName(), item.getPrice(), item.getImageUrl());
+
+		final String sql = "select * from item where id = ?";
+
+		return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new GetItemResponse(
+			rs.getLong("ID"),
+			rs.getString("NAME"),
+			rs.getInt("PRICE"),
+			rs.getString("IMAGE_URL")
+		), itemId);
 	}
 
 
