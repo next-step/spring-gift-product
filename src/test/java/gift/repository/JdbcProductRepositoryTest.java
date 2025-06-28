@@ -7,7 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import gift.config.TestRepositoryConfiguration;
 import gift.domain.Product;
+import gift.repository.support.TestRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
@@ -15,15 +17,23 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.context.annotation.Import;
 
-class InMemoryProductRepositoryTest {
+@JdbcTest
+@Import({JdbcProductRepository.class, TestRepositoryConfiguration.class})
+class JdbcProductRepositoryTest {
 
-    private ProductRepository repository;
+    @Autowired
+    private JdbcProductRepository repository;
+
+    @Autowired
+    private TestRepository testRepository;
 
     @BeforeEach
     void setup() {
-        repository = new InMemoryProductRepository();
-        repository.deleteAll();
+        testRepository.deleteAll();
     }
 
     @Test
@@ -119,7 +129,7 @@ class InMemoryProductRepositoryTest {
         repository.save(Product.of("Product2", 20, "p2.jpg"));
         assertFalse(repository.findAll().isEmpty());
 
-        repository.deleteAll();
+        testRepository.deleteAll();
         assertTrue(repository.findAll().isEmpty());
     }
 

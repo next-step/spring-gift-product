@@ -5,3 +5,13 @@ spring:
     suffix: .html
     mode: HTML
     encoding: UTF-8
+  datasource:
+    url: jdbc:h2:mem:test
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
+  sql:
+    init:
+      mode: embedded
+      schema-locations: classpath:db/schema.sql
