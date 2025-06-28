@@ -1,11 +1,11 @@
-package controller;
+package gift.controller;
 
-import domain.Product;
-import dto.ProductRequest;
-import dto.ProductResponse;
+import gift.domain.Product;
+import gift.dto.ProductRequest;
+import gift.dto.ProductResponse;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import service.ProductService;
+import gift.service.ProductService;
 
 import java.util.List;
 

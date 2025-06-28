@@ -1,6 +1,6 @@
-package dto;
+package gift.dto;
 
-import domain.Product;
+import gift.domain.Product;
 
 public record ProductResponse(Long id, String name, int price, String imageUrl) {
     public static ProductResponse from(Product product) {

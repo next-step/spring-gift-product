@@ -1,4 +1,4 @@
-package domain;
+package gift.domain;
 
 public class Product {
     private final Long id;
