@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
     private final JdbcClient jdbcClient;
@@ -18,8 +19,8 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public void register(Product product){
         jdbcClient.sql("""
-                insert into prouct (name, price, image_url)
-                values (:name, :price. :imageUrl)
+                insert into product (name, price, image_url)
+                values (:name, :price, :imageUrl)
                 """)
                 .param("name", product.getName())
                 .param("price", product.getPrice())
