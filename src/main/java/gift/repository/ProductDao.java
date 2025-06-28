@@ -66,4 +66,20 @@ public class ProductDao implements ProductRepository {
     public void deleteProductById(Long id) {
 
     }
+
+    @Override
+    public Product updateProductById(Long id, Product newProduct) {
+        String sql = "update products set name = :name, price = :price, imageUrl = :imageUrl where id = :id;";
+        client.sql(sql)
+                .param("name", newProduct.getName())
+                .param("price", newProduct.getPrice())
+                .param("imageUrl", newProduct.getImageUrl())
+                .param("id", newProduct.getId())
+                .update();
+
+        Product updatedProduct = new Product(id, newProduct.getName(),
+                newProduct.getPrice(),
+                newProduct.getImageUrl());
+        return updatedProduct;
+    }
 }
