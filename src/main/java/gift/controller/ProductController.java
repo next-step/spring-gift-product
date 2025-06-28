@@ -4,7 +4,6 @@ import gift.dto.Product;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,6 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Controller
 @RequestMapping("/admin/products")
+
 public class ProductController {
     private final Map<Long, Product> products = new ConcurrentHashMap<>();
     private final AtomicLong idGenerator = new AtomicLong();
@@ -62,6 +62,7 @@ public class ProductController {
     public String deleteProduct(@PathVariable Long id) {
         products.remove(id);
         return "redirect:/admin/products";
+
     }
 
 }
