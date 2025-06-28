@@ -1,7 +1,7 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
   <div id="productForm">
-    <form th:action="@{/admin/products(id=${product.id})}" th:method="put">
+    <form th:action="@{/admin/products/modify/{id}(id=${product.id})}" th:method="put">
       <p>
         상품 수정하기
       </p>

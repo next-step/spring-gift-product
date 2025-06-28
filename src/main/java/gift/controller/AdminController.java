@@ -2,12 +2,16 @@ package gift.controller;
 
 import gift.dto.ProductRequestDto;
 import gift.entity.Product;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,26 +26,27 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/admin") //prefix설정
 @Controller//Controller는 mvc에서 화면을 구성하기 위해서 뷰 이름을 반환하고 ViewResolver를 거치게 됩니다.
 public class AdminController {
-    private final Map<Long, Product> products = new HashMap<>();
-    private static Long pid = 0L;
+
+    private JdbcTemplate jdbcTemplate;
+
+    //의존성 주입(생성자가 1개인 경우 @Autowired 생략 가능)
+    public AdminController(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @GetMapping
-    public String home(){
+    public String home() {
         return "redirect:/admin/products/list";
     }
 
     //create
     //생성한 product는 HashMap에 저장
-    @PostMapping("/products")
+    @PostMapping("/products/add")
     public String createProduct(@ModelAttribute ProductRequestDto requestDto) {
         if (checkProduct(requestDto)) {
-            Product product = new Product(
-                    ++pid,
-                    requestDto.getName(),
-                    requestDto.getPrice(),
-                    requestDto.getImageUrl()
-            );
-            products.put(product.getId(), product);
+            String sql = "INSERT INTO PRODUCTS (NAME, PRICE, IMAGEURL) VALUES (?, ?, ?)";
+            jdbcTemplate.update(sql, requestDto.getName(), requestDto.getPrice(),
+                    requestDto.getImageUrl());
             return "redirect:/admin/products/list"; //GetMapping 되어 있는 것을 호출,,,?
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -50,7 +55,7 @@ public class AdminController {
 
     //form.html을 불러오기 위한 메서드
     @GetMapping("/products/add")
-    public String productForm(){
+    public String productForm() {
         return "form";
     }
 
@@ -61,55 +66,54 @@ public class AdminController {
             @RequestParam Long id,
             Model model
     ) {
-        Product product = findProductById(id);
-        model.addAttribute("product", product);
-        return "productinfo";
+        Optional<Product> product = findProductById(id);
+        if (product.isPresent()) {
+            model.addAttribute("product", product.get());
+            return "productinfo";
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "존재하지 않는 상품입니다.");
     }
 
     //read
     //전체 상품을 조회
     @GetMapping("/products/list")
     public String getProducts(Model model) {
-        List<Product> productList = products.values()
-                .stream()
-                .collect(Collectors.toList());
-        model.addAttribute("productList",productList);
+        String sql = "select id, name, price, imageurl from products";
+        List<Product> productList = jdbcTemplate.query(sql, productRowMapper());
+        model.addAttribute("productList", productList);
         return "home";
     }
 
     //modify.html을 불러오기 위한 메서드
-    @GetMapping("/products/modify")
+    @GetMapping("/products/modify/{id}")
     public String modifyForm(
-            @RequestParam Long id,
+            @PathVariable Long id,
             Model model
-    ){
-        Product product = products.get(id);
-        model.addAttribute("product",product);
+    ) {
+        Product product = findProductById(id).get();
+        model.addAttribute("product", product);
         return "modify";
-
     }
 
     //update
     //상품 수정
-    @PutMapping("/products")
+    @PutMapping("/products/modify/{id}")
     public String modifyProduct(
             @ModelAttribute ProductRequestDto requestDto,
-            @RequestParam Long id
+            @PathVariable Long id
     ) {
-        Product product = new Product(id,
-                requestDto.getName(),
-                requestDto.getPrice(),
-                requestDto.getImageUrl());
-        products.put(id, product);
+        String sql = "update products set name = ?, price = ?, imageurl = ? where id = ?";
+        jdbcTemplate.update(sql, requestDto.getName(), requestDto.getPrice(),requestDto.getImageUrl(), id);
         return "redirect:/admin/products/list";
     }
 
     //delete
     //등록된 상품을 삭제
-    @GetMapping("/products/remove/{id}")
+    @PostMapping("/products/remove/{id}")
     public String removeProduct(@PathVariable Long id) {
-        Long found = findProductById(id).getId();
-        products.remove(found);
+        Long productId = findProductById(id).get().getId();
+        String sql = "delete from products where id = ?";
+        jdbcTemplate.update(sql, productId);
         return "redirect:/admin/products/list";
     }
 
@@ -126,12 +130,23 @@ public class AdminController {
         return true;
     }
 
-    public Product findProductById(Long id){
-        Optional<Product> optionalProduct = Optional.ofNullable(products.get(id));
-        if (optionalProduct.isPresent()) {
-            return optionalProduct.get();
-        }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "존재하지 않는 상품입니다.");
+    public Optional<Product> findProductById(Long id) {
+        String sql = "select * from products where id = ?";
+        List<Product> productList = jdbcTemplate.query(sql, productRowMapper(), id);
+        return productList.stream().findAny();
+    }
+
+    private RowMapper<Product> productRowMapper() {
+        return new RowMapper<Product>() {
+            @Override
+            public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Long id = rs.getLong("id");
+                String name = rs.getString("name");
+                Integer price = rs.getInt("price");
+                String imageUrl = rs.getString("imageurl");
+                return new Product(id, name, price, imageUrl);
+            }
+        };
     }
 }
 

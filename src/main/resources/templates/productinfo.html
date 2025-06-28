@@ -18,13 +18,11 @@
       <td th:text="${product.name}"></td>
       <td th:text="${product.price}"></td>
       <td><img th:src="${product.imageUrl}" width="100px" alt = "상품 이미지"></td>
-
-
       <td>
-        <!--PathVariable-->
-        <button th:onclick="|location.href='@{/admin/products/remove/{id}(id=${product.id})}'|">상품 삭제</button>
-        <!--RequestParam-->
-        <button th:onclick="|location.href='@{/admin/products/modify(id=${product.id})}'|">상품 수정</button>
+        <form th:action="@{/admin/products/remove/{id}(id=${product.id})}" method="post">
+          <button type="submit">상품 삭제</button>
+        </form>
+        <button th:onclick="|location.href='@{/admin/products/modify/{id}(id=${product.id})}'|">상품 수정</button>
       </td>
 
     </tr>
