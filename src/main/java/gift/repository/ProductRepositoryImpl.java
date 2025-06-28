@@ -23,9 +23,9 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
         Product product = new Product(initId.incrementAndGet(),
-                productRequestDto.getName(),
-                productRequestDto.getPrice(),
-                productRequestDto.getImageUrl()
+                productRequestDto.name(),
+                productRequestDto.price(),
+                productRequestDto.imageUrl()
         );
         products.put(initId.get(), product);
         return new ProductResponseDto(product.getId(),
@@ -78,9 +78,9 @@ public class ProductRepositoryImpl implements ProductRepository {
         }
 
         product.update(
-                productRequestDto.getName(),
-                productRequestDto.getPrice(),
-                productRequestDto.getImageUrl()
+                productRequestDto.name(),
+                productRequestDto.price(),
+                productRequestDto.imageUrl()
         );
         return new ProductResponseDto(
                 product.getId(),
