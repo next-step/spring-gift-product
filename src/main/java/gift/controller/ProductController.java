@@ -1,7 +1,7 @@
 package gift.controller;
 
 import gift.dto.ProductRequest;
-import gift.entity.Product;
+import gift.dto.ProductResponse;
 import gift.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +27,8 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<?> createProduct(@RequestBody ProductRequest request) {
         try {
-            Product product = productService.createProduct(request);
-            return new ResponseEntity<>(product, HttpStatus.CREATED);
+            ProductResponse productResponse = productService.createProduct(request);
+            return new ResponseEntity<>(productResponse, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
@@ -37,8 +37,8 @@ public class ProductController {
     @GetMapping("/{productId}")
     public ResponseEntity<?> getProduct(@PathVariable Long productId) {
         try {
-            Product product = productService.getProduct(productId);
-            return new ResponseEntity<>(product, HttpStatus.OK);
+            ProductResponse productResponse = productService.getProduct(productId);
+            return new ResponseEntity<>(productResponse, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -49,8 +49,9 @@ public class ProductController {
         @PathVariable Long productId,
         @RequestBody ProductRequest request) {
         try {
-            Product updatedProduct = productService.updateProduct(productId, request);
-            return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+            ProductResponse updatedProductResponse = productService.updateProduct(productId,
+                request);
+            return new ResponseEntity<>(updatedProductResponse, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
