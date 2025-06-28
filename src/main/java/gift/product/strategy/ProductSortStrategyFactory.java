@@ -13,7 +13,7 @@ public class ProductSortStrategyFactory {
       "price", new ProductPriceSortStrategy()
   );
 
-  public static SortStrategy<Product> getStrategy(String sortField) {
+  public static SortStrategy<Product> getStrategy(String sortField) throws InvalidSortFieldException {
     SortStrategy<Product> strategy = strategyMap.get(sortField);
     if (strategy == null) {
       throw new InvalidSortFieldException(ErrorCode.INVALID_SORT_FIELD_ERROR);
