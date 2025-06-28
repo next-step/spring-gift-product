@@ -64,7 +64,10 @@ public class ProductDao implements ProductRepository {
 
     @Override
     public void deleteProductById(Long id) {
-
+        String sql = "delete from products where id = :id;";
+        client.sql(sql)
+                .param("id", id)
+                .update();
     }
 
     @Override
