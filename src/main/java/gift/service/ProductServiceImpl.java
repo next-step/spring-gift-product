@@ -53,7 +53,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponseDto updateProductById(Long id, CreateProductRequestDto requestDto) {
         Product find = findProductByIdOrElseThrow(id);
-        Product newProduct = new Product(id, requestDto.name(), requestDto.price(), requestDto.imageUrl());
+        Product newProduct = new Product(id, requestDto.name(), requestDto.price(),
+                requestDto.imageUrl());
         productRepository.updateProductById(id, newProduct);
         Product updated = findProductByIdOrElseThrow(id);
         return new ProductResponseDto(updated.getId(), updated.getName(), updated.getPrice(),
@@ -66,7 +67,8 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteProductById(id);
     }
 
-    public Product findProductByIdOrElseThrow(Long id){
-        return productRepository.findProductById(id).orElseThrow(() ->new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public Product findProductByIdOrElseThrow(Long id) {
+        return productRepository.findProductById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 }
