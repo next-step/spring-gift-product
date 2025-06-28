@@ -1,8 +1,9 @@
 package gift.controller;
 
 import gift.dto.ProductRequest;
-import gift.entity.Product;
+import gift.dto.ProductResponse;
 import gift.service.ProductService;
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +26,7 @@ public class AdminController {
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
-        model.addAttribute("productRequest", new ProductRequest(null, "", null, ""));
+        model.addAttribute("productRequest", new ProductRequest("", null, ""));
         model.addAttribute("action", "/admin/products/new");
         return "admin/product-form";
     }
@@ -58,8 +59,8 @@ public class AdminController {
         @PathVariable Long id, Model model
     ) {
         try {
-            Product product = productService.getProduct(id);
-            model.addAttribute("product", product);
+            ProductResponse productResponse = productService.getProduct(id);
+            model.addAttribute("productResponse", productResponse);
             return "admin/product-detail";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
@@ -72,12 +73,11 @@ public class AdminController {
         @PathVariable Long id, Model model
     ) {
         try {
-            Product product = productService.getProduct(id);
+            ProductResponse productResponse = productService.getProduct(id);
             ProductRequest productRequest = new ProductRequest(
-                product.getId(),
-                product.getName(),
-                product.getPrice(),
-                product.getImageUrl()
+                productResponse.name(),
+                productResponse.price(),
+                productResponse.imageUrl()
             );
             model.addAttribute("productRequest", productRequest);
             model.addAttribute("action", "/admin/products/" + id + "/edit");
@@ -127,7 +127,8 @@ public class AdminController {
     @GetMapping
     public String listProducts(Model model) {
         try {
-            model.addAttribute("products", productService.getAllProducts());
+            List<ProductResponse> productResponses = productService.getAllProducts();
+            model.addAttribute("productResponses", productResponses);
             return "admin/product-list";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
