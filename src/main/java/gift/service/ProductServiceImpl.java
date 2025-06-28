@@ -4,6 +4,7 @@ import gift.dto.ProductAddRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.dto.ProductUpdateRequestDto;
 import gift.entity.Product;
+import gift.exception.OperationFailedException;
 import gift.exception.ProductNotFoundException;
 import gift.repository.ProductRepository;
 import gift.repository.ProductRepositoryImpl;
@@ -24,6 +25,9 @@ public class ProductServiceImpl implements ProductService {
     public void addProduct(ProductAddRequestDto requestDto) {
         Product product = new Product(null, requestDto.name(), requestDto.price(), requestDto.url());
         int result = productRepository.addProduct(product);
+        if (result == 0) {
+            throw new OperationFailedException();
+        }
     }
 
     @Override
@@ -43,12 +47,18 @@ public class ProductServiceImpl implements ProductService {
     public void updateProductById(Long id, ProductUpdateRequestDto requestDto) {
         Product product = productRepository.findProductByIdOrElseThrow(id);
         Product newProduct = new Product(id, requestDto);
-        int result = productRepository.updateProductById(newProduct); //1 -> 성공, 0 -> 실패
+        int result = productRepository.updateProductById(newProduct);
+        if (result == 0) {
+            throw new OperationFailedException();
+        }
     }
 
     @Override
     public void deleteProductById(Long id) {
         Product product = productRepository.findProductByIdOrElseThrow(id);
         int result = productRepository.deleteProductById(product.id());
+        if (result == 0) {
+            throw new OperationFailedException();
+        }
     }
 }
