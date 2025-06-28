@@ -3,7 +3,7 @@ package gift.controller;
 import gift.domain.Product;
 import gift.dto.ProductMapper;
 import gift.dto.ProductRequest;
-import gift.service.ProductServiceAdminImpl;
+import gift.service.ProductServiceAdmin;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin/products")
 public class ProductPageController {
 
-    private final ProductServiceAdminImpl productServiceAdmin;
+    private final ProductServiceAdmin productServiceAdmin;
 
-    public ProductPageController(ProductServiceAdminImpl productServiceAdmin) {
+    public ProductPageController(ProductServiceAdmin productServiceAdmin) {
         this.productServiceAdmin = productServiceAdmin;
     }
 
@@ -64,7 +64,7 @@ public class ProductPageController {
         @PathVariable Long productId,
         @ModelAttribute ProductRequest request
     ){
-        productServiceAdmin.update(request);
+        productServiceAdmin.updateAdmin(request);
 
         return "redirect:/admin/products";
     }
@@ -74,7 +74,7 @@ public class ProductPageController {
     public String deleteProduct(
         @PathVariable Long productId
     ){
-        productServiceAdmin.deleteById(productId);
+        productServiceAdmin.deleteByIdAdmin(productId);
 
         return "redirect:/admin/products";
     }
