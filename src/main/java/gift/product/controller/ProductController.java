@@ -1,6 +1,8 @@
 package gift.product.controller;
 
+import gift.common.annotation.SortParam;
 import gift.common.dto.PagedResult;
+import gift.common.dto.SortInfo;
 import gift.product.dto.CreateProductReqDto;
 import gift.product.dto.GetProductResDto;
 import gift.product.dto.UpdateProductReqDto;
@@ -8,7 +10,6 @@ import gift.product.service.ProductService;
 import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,13 +37,9 @@ public class ProductController {
   public ResponseEntity<PagedResult<GetProductResDto>> getAllProducts(
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size,
-      @RequestParam(defaultValue = "id,asc") String sort
+      @SortParam SortInfo sortInfo
   ) {
-    String[] sortParams = sort.split(",");
-    String sortField = sortParams[0];
-    boolean ascending = sortParams.length < 2 || sortParams[1].equalsIgnoreCase("asc");
-
-    PagedResult<GetProductResDto> pagedResult = productService.getAllByPage(page, size, sortField, ascending);
+    PagedResult<GetProductResDto> pagedResult = productService.getAllByPage(page, size, sortInfo);
     return ResponseEntity.ok(pagedResult);
   }
 

@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Sort;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -38,13 +39,7 @@ public class InMemoryProductRepository implements ProductRepository {
   }
 
   @Override
-  public PagedResult<Product> findAll(int page, int size, String sortField, boolean isAscending) {
-    Objects.requireNonNull(sortField, "정렬 필드값은 null일 수 없습니다");
-    SortStrategy<Product> sortStrategy = ProductSortStrategyFactory.getStrategy(sortField);
-
-    Comparator<Product> comparator = isAscending ?
-        sortStrategy.getComparator() :
-        sortStrategy.getComparator().reversed();
+  public PagedResult<Product> findAll(int page, int size, Comparator<Product> comparator) {
 
     List<Product> content = productMap.values().stream()
         .sorted(comparator)
