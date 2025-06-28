@@ -1,38 +1,29 @@
 # spring-gift-product
 
-## 상품 관리 - 1단계 과제: 상품 API
-- HashMap<>을 이용해 임시 데이터베이스를 구현했습니다. key로는 Product.id를 사용합니다.
-- 사용자가 상품의 id를 숙지하고 있다고 가정하고 구현했습니다. 생성/수정 요청 시에 사용자가 상품 id를 전달해야 합니다.
+## 상품 관리 - 2단계 과제: 상품 API 관리자 페이지 구현
+- /admin/products 경로로 관리자 페이지를 구현해 놨습니다.
+- 기본적인 html, css와 form 전송을 통해 상품 CRUD 기능을 구현했습니다.
+- 아직 SSR에 익숙하지 않아서 페이지도 정말 간단하게만 만들어 봤습니다.
 
+### 상품 목록 조회 기능
+- path: /admin/products(GET)
+- 메인 페이지이자 상품 목록 조회 페이지입니다. 상품의 id, name, price, imageUrl이 모두 조회되며, 새로운 상품의 생성/수정/삭제 버튼도 존재합니다.
+- 페이지네이션은 아직 구현하지 않았고 상품 목록이 테이블 형태로 조회됩니다.
+- 상품 정보도 아직 4개 필드밖에 존재하지 않아서 상품 단건 조회는 구현하지 않았습니다. 이후 상품 정보가 추가되거나 단건 조회 기능도 필요한 시점이 오면 추가하려고 합니다.
 
-0. 예외처리
-- 상품 id나 요청 객체가 null인 경우 NOT_EXSISTS_PRODUCT(InvalidProductException)
-- 생성/수정 요청 시 요청 객체에 null인 필드값이 있는 경우 INVALID_PRODUCT_REQUEST(InvalidProductException)
-- 생성/수정 요청 시 상품 가격이 음수인 경우 INVALID_PRODUCT_PRICE(InvalidProductException)
-- 전달받은 상품 id에 해당하는 객체가 데이터베이스에 없는 경우 NOT_EXSISTS_PRODUCT(InvalidProductException)
-- 이외 다른 예외는 INTERNAL_SERVER_ERROR
+### 상품 생성 기능
+- path: /admin/products(POST)
+- 메인 페이지 상단 컨테이너에 입력폼이 존재합니다. 입력폼을 채우고 등록 버튼을 누르면 메인페이지로 리다이렉트되고 상품이 등록됩니다.
+- id 필드는 필수 입력값입니다.
 
-1. 상품 생성
-- POST: /api/products
-- request: {상품 id, 상품 이름, 상품 가격, 상품 이미지 url}
-- response: 201(성공), {}
+### 상품 수정 기능
+- path: /admin/products/update/{productId}
+- 수정 페이지 이동(GET), 수정 완료 버튼(POST)
+- 상품 목록의 상품마다 수정 버튼이 존재합니다. 수정 버튼을 누르면 자동으로 해당 상품의 수정 페이지로 이동합니다.
+- 수정 페이지에서는 id를 제외한 필드들을 수정할 수 있고 null 값을 전달할 수도 있습니다.
 
-2. 단일 상품 조회
-- GET: /api/products/{productId}
-- request: {}
-- response: 200(성공), {상품 이름, 상품 가격, 상품 이미지 url}
-
-3. 상품 목록 조회
-- GET: /api/products/all
-- request: {}
-- response: 200(성공), {{상품 이름1, 상품 가격1, 상품 이미지 url1}, {상품 이름2, 상품 가격2, 상품 이미지 url2}...}
-
-4. 상품 정보 수정
-- PATCH: /api/products/{productId}
-- request: {상품 id, 상품 이름, 상품 가격, 상품 이미지 url}
-- response: 204(성공), {}
-
-5. 상품 삭제
-- DELETE: /api/products/{productId}
-- request: {}
-- response: 204(성공), {}
+### 상품 삭제 기능
+- path: /admin/products/delete/{productId}(GET)
+- 메인 페이지 상품 목록에 상품 별로 삭제 버튼이 존재합니다.
+- 단순히 상품 삭제 요청만 해 주면 돼서 GET 요청으로 처리했습니다.
+- 삭제 후에는 다시 메인페이지로 리다이렉트됩니다.
