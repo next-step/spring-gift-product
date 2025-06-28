@@ -6,9 +6,9 @@ import gift.entity.Product;
 import java.util.List;
 
 public interface ProductRepository {
-    public void addProduct(Product product);
+    public int addProduct(Product product);
     public Product findProductByIdOrElseThrow(Long id);
     public List<Product> findAllProduct();
     public int updateProductById(Product product);
-    public void deleteProductById(Long id);
+    public int deleteProductById(Long id);
 }

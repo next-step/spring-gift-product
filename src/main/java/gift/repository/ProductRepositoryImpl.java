@@ -20,13 +20,14 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public void addProduct(Product product) {
+    public int addProduct(Product product) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcClient.sql("insert into product (name, price, url) values (:name, :price, :url)")
+        int result = jdbcClient.sql("insert into product (name, price, url) values (:name, :price, :url)")
                 .param("name", product.name())
                 .param("price", product.price())
                 .param("url", product.url())
                 .update();
+        return result;
     }
 
     @Override
@@ -58,9 +59,10 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public void deleteProductById(Long id) {
-        jdbcClient.sql("delete from product where id = :id")
+    public int deleteProductById(Long id) {
+        int result = jdbcClient.sql("delete from product where id = :id")
                 .param("id", id)
                 .update();
+        return result;
     }
 }

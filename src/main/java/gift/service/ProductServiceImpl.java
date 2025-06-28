@@ -23,7 +23,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void addProduct(ProductAddRequestDto requestDto) {
         Product product = new Product(null, requestDto.name(), requestDto.price(), requestDto.url());
-        productRepository.addProduct(product);
+        int result = productRepository.addProduct(product);
     }
 
     @Override
@@ -49,6 +49,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProductById(Long id) {
         Product product = productRepository.findProductByIdOrElseThrow(id);
-        productRepository.deleteProductById(product.id());
+        int result = productRepository.deleteProductById(product.id());
     }
 }
