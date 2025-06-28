@@ -1,6 +1,6 @@
-package gift.dto;
+package gift.item.dto;
 
-import gift.entity.Item;
+import gift.item.entity.Item;
 
 public class ItemDto {
 
@@ -35,4 +35,6 @@ public class ItemDto {
     public String getImageUrl() {
         return imageUrl;
     }
+
+
 }
