@@ -44,10 +44,11 @@ public class JdbcProductRepository implements ProductRepository {
             return ps;
         }, keyHolder);
 
-        Long generatedId = Optional.of(keyHolder.getKey())
-                .map(Number::longValue)
-                .orElseThrow(() -> new IllegalStateException("ID 생성에 실패했습니다."));
-
+        Number key = keyHolder.getKey();
+        if (key == null) {
+            throw new IllegalStateException("ID 생성에 실패했습니다.");
+        }
+        Long generatedId = key.longValue();
         return new Product(generatedId, product.name(), product.price(), product.imageUrl());
     }
 
