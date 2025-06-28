@@ -109,12 +109,21 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     public void deleteById(Long id) {
-//        products.remove(id);
+        jdbcClient.sql(
+                        """
+                                DELETE FROM PRODUCT
+                                WHERE id = :id
+                                """
+                ).param("id", id)
+                .update();
     }
 
     public boolean existsById(Long id) {
-//        return products.containsKey(id);
-        return true;
+        return jdbcClient.sql("SELECT 1 FROM product WHERE id = :id")
+                .param("id", id)
+                .query(Integer.class)
+                .optional()
+                .isPresent();
     }
-    
+
 }
