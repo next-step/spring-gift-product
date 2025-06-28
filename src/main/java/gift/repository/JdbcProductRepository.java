@@ -87,7 +87,7 @@ public class JdbcProductRepository implements ProductRepository {
     @Override
     public List<Product> findAll() {
         return jdbcTemplate.query(
-                "SELECT id, name, price, image_url FROM product ORDER BY id",
+                "SELECT id, name, price, image_url FROM product",
                 this::mapRowToProduct
         );
     }
@@ -106,7 +106,7 @@ public class JdbcProductRepository implements ProductRepository {
         int offset = (pageNumber - 1) * pageSize;
 
         List<Product> content = jdbcTemplate.query(
-                "SELECT id, name, price, image_url FROM product ORDER BY id LIMIT ? OFFSET ?",
+                "SELECT id, name, price, image_url FROM product LIMIT ? OFFSET ?",
                 this::mapRowToProduct,
                 pageSize,
                 offset
