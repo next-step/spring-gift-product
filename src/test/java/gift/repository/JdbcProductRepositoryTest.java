@@ -7,7 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import gift.config.TestRepositoryConfiguration;
 import gift.domain.Product;
+import gift.repository.support.TestRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
@@ -20,15 +22,18 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 
 @JdbcTest
-@Import(JdbcProductRepository.class)
+@Import({JdbcProductRepository.class, TestRepositoryConfiguration.class})
 class JdbcProductRepositoryTest {
 
     @Autowired
     private JdbcProductRepository repository;
 
+    @Autowired
+    private TestRepository testRepository;
+
     @BeforeEach
     void setup() {
-        repository.deleteAll();
+        testRepository.deleteAll();
     }
 
     @Test
@@ -124,7 +129,7 @@ class JdbcProductRepositoryTest {
         repository.save(Product.of("Product2", 20, "p2.jpg"));
         assertFalse(repository.findAll().isEmpty());
 
-        repository.deleteAll();
+        testRepository.deleteAll();
         assertTrue(repository.findAll().isEmpty());
     }
 
