@@ -6,10 +6,12 @@ import gift.dto.UpdateProductRequestDto;
 import gift.entity.Product;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping("/admin/products")
@@ -27,6 +29,16 @@ public class AdminProductController {
         model.addAttribute("products",productService.getAll());
         return "admin/products/list";
     }
+
+    @GetMapping("/{id}")
+    public String showDetail(@PathVariable Long id, Model model)
+    {
+        Product product=productService.getById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "상품을 찾을 수 없습니다."));
+        model.addAttribute("product",product);
+        return "admin/products/detail";
+    }
+
     //register
     @GetMapping("/new")
     public String showCreateForm(Model model)
@@ -52,9 +64,8 @@ public class AdminProductController {
     public String showEditForm(@PathVariable Long id, Model model)
     {
         Product product=productService.getById(id)
-                .orElseThrow(()->new RuntimeException("Product not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "상품을 찾을 수 없습니다."));
         UpdateProductRequestDto dto=new UpdateProductRequestDto();
-        dto.setId(product.getId());
         dto.setName(product.getName());
         dto.setPrice(product.getPrice());
         dto.setImageUrl(product.getImageUrl());

@@ -1,32 +1,74 @@
 package gift.repository;
 
 import gift.entity.Product;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
 public class ProductRepository {
-    private final Map<Long, Product> store = new HashMap<>();
-    private long sequence = 1L;
-
-    public List<Product> findAll() {
-        return new ArrayList<>(store.values());
+    private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert insert;
+    public ProductRepository(JdbcTemplate jdbcTemplate)
+    {
+        this.jdbcTemplate = jdbcTemplate;
+        this.insert = new SimpleJdbcInsert(jdbcTemplate)
+                .usingGeneratedKeyColumns("id")
+                .withTableName("products");
     }
 
-    public Optional<Product> findById(Long id) {
-        return Optional.ofNullable(store.get(id));
-    }
-    public Product save(Product product) {
-        product.setId(sequence++);
-        store.put(product.getId(), product);
+    //상품 추가하기
+    public Product save(Product product)
+    {
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", product.getName());
+        map.put("price", product.getPrice());
+        map.put("image_url", product.getImageUrl());
+        Number key= insert.executeAndReturnKey(new MapSqlParameterSource(map));
+        product.setId(key.longValue());
         return product;
     }
-    public void update(Long id, Product updated) {
-        store.put(id, updated);
+
+    //조회하기 (전체, id)
+    public List<Product> findAll()
+    {
+        String sql = "select * from products";
+        return jdbcTemplate.query(sql,rowMapper());
     }
-    public void delete(Long id) {
-        store.remove(id);
+
+    public Optional<Product> findById(Long id)
+    {
+        String sql = "select * from products where id=?";
+        List<Product>res=jdbcTemplate.query(sql,rowMapper(),id);
+        return res.stream().findFirst();
+    }
+
+    //기존 상품 수정하기
+    public void update(Long id,Product product)
+    {
+        String sql = "update products set name = ?, price = ?, image_url = ? where id = ?";
+        jdbcTemplate.update(sql,product.getName(),product.getPrice(),product.getImageUrl(),id);
+    }
+
+    //기존 상품 삭제하기
+    public void delete(Long id)
+    {
+        String sql = "delete from products where id = ?";
+        jdbcTemplate.update(sql,id);
+    }
+
+    private RowMapper<Product> rowMapper()
+    {
+        return (rs, rowNum) -> new Product(
+          rs.getLong("id"),
+          rs.getString("name"),
+          rs.getInt("price"),
+          rs.getString("image_url")
+        );
     }
 }
 
