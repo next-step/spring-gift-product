@@ -20,12 +20,10 @@ public class ProductService {
     public Page<ProductResponseDto> findAllProducts(Pageable pageable, Long categoryId) {
         Page<Product> page = productRepository.findAllProducts(pageable, categoryId);
 
-        return page.map(product -> new ProductResponseDto(
-                product.getId(), product.getName(), product.getPrice(), product.getImageUrl()
-        ));
+        return page.map(ProductResponseDto::from);
     }
 
-    public ProductResponseDto findProductById(Long id) throws IllegalArgumentException {
+    public ProductResponseDto findProductById(Long id) {
         Product product = productRepository.findProductById(id);
 
         return new ProductResponseDto(
@@ -54,8 +52,7 @@ public class ProductService {
         );
     }
 
-    public ProductResponseDto updateProduct(Long id, ProductRequestDto productRequestDto)
-            throws IllegalArgumentException {
+    public ProductResponseDto updateProduct(Long id, ProductRequestDto productRequestDto) {
         Product product = productRepository.updateProduct(
                 new Product(
                         id,
@@ -73,7 +70,7 @@ public class ProductService {
         );
     }
 
-    public void deleteProduct(Long id) throws IllegalArgumentException {
+    public void deleteProduct(Long id) {
         productRepository.deleteProduct(id);
     }
 }

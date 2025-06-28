@@ -149,3 +149,25 @@ HTTP/1.1 204 No Content
 → HTML `<form>`에서 `_method=delete`로 전송됩니다.  
 → 실제 HTTP 메서드는 `POST`이며,  
 → AdminController에서 `@DeleteMapping`으로 처리합니다.
+
+---
+
+# 💾 데이터베이스
+
+---
+
+## 🛠️ 사용 DB
+### H2 Database (인메모리 DB)
+- JDBC URL: `jdbc:h2:mem:spring-gift`
+- Username: `sa`
+- Password: ``
+
+## 📌 DB 초기화
+```sql
+create table product (
+    id bigint auto_increment primary key,
+    name varchar(255) not null,
+    price bigint not null,
+    image_url varchar(1000)
+);
+```

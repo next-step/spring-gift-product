@@ -1,113 +1,108 @@
 package gift.api.repository;
 
 import gift.api.domain.Product;
-import java.util.Comparator;
+import gift.exception.ProductNotFoundException;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Stream;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    private final Map<Long, Product> products = new ConcurrentHashMap<>();
-    private final AtomicLong currentProductId = new AtomicLong(1L);
+    private final JdbcClient jdbcClient;
 
-    @Override
-    public Page<Product> findAllProducts(Pageable pageable, Long categoryId) {
-        // Step 1: 전체 스트림 준비
-        Stream<Product> stream = products.values().stream();
-
-        // Step 2: categoryId로 필터링 (나중에 필요시 주석 해제)
-//        if (categoryId != null) {
-//            stream = stream.filter(product -> categoryId.equals(product.getCategoryId()));
-//        }
-
-        // Step 3: 정렬
-        if (pageable.getSort().isSorted()) {
-            for (Sort.Order order : pageable.getSort()) {
-                if (order.getProperty().equals("name")) {
-                    Comparator<Product> comparator = Comparator.comparing(Product::getName);
-                    if (order.isDescending()) {
-                        comparator = comparator.reversed();
-                    }
-                    stream = stream.sorted(comparator);
-                }
-                if (order.getProperty().equals("price")) {
-                    Comparator<Product> comparator = Comparator.comparing(Product::getPrice);
-                    if (order.isDescending()) {
-                        comparator = comparator.reversed();
-                    }
-                    stream = stream.sorted(comparator);
-                }
-                // 필요 시 다른 정렬 필드도 추가
-            }
-        }
-
-        // Step 4: 정렬된 리스트 만들기
-        List<Product> sortedList = stream.toList();
-
-        // Step 5: 페이지 계산
-        int start = (int) pageable.getOffset();
-        int end = Math.min(start + pageable.getPageSize(), sortedList.size());
-        List<Product> pageContent = (start > end) ? List.of() : sortedList.subList(start, end);
-
-        // Step 6: Page 객체로 감싸서 반환
-        return new PageImpl<>(pageContent, pageable, sortedList.size());
+    public ProductRepositoryImpl(JdbcClient jdbcClient) {
+        this.jdbcClient = jdbcClient;
     }
 
     @Override
-    public Product findProductById(Long id) throws IllegalArgumentException {
-        Product product = products.get(id);
+    public Page<Product> findAllProducts(Pageable pageable, Long categoryId) {
+        String baseSql = "select * from product";
+        String countSql = "select count(*) from product";
 
-        if (product == null) {
-            throw new IllegalArgumentException("해당 ID의 상품이 존재하지 않습니다: " + id);
+        if (categoryId != null) {
+            baseSql += " where category_id = ?";
+            countSql += " where category_id = ?";
         }
 
-        return product;
+        List<Product> products = jdbcClient.sql(baseSql +
+                        " order by " + getSortOrder(pageable.getSort()) +
+                        " limit :limit offset :offset")
+                .param("limit", pageable.getPageSize())
+                .param("offset", pageable.getOffset())
+                .query(Product.class)
+                .list();
+
+        long total = jdbcClient.sql(countSql).query(Long.class).single();
+
+        return new PageImpl<>(products, pageable, total);
+    }
+
+    @Override
+    public Product findProductById(Long id) {
+        return jdbcClient.sql("select * from product where id = :id")
+                .param("id", id)
+                .query(Product.class)
+                .optional()
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     @Override
     public Product createProduct(Product product) {
-        Product newProduct = new Product(
-                currentProductId.getAndIncrement(),
-                product.getName(),
-                product.getPrice(),
-                product.getImageUrl());
+        jdbcClient.sql(
+                        "insert into product (name, price, image_url) values (:name, :price, :image_url)")
+                .param("name", product.getName())
+                .param("price", product.getPrice())
+                .param("image_url", product.getImageUrl())
+                .update();
 
-        products.put(newProduct.getId(), newProduct);
+        Long newId = jdbcClient.sql("select max(id) from product")
+                .query(Long.class)
+                .single();
 
-        return newProduct;
+        return findProductById(newId);
     }
 
     @Override
-    public Product updateProduct(Product product)
-            throws IllegalArgumentException {
-        Product newProduct = products.get(product.getId());
+    public Product updateProduct(Product product) {
+        int updated = jdbcClient.sql(
+                        "update product set name = :name, price = :price, image_url = :image_url where id = :id")
+                .param("name", product.getName())
+                .param("price", product.getPrice())
+                .param("image_url", product.getImageUrl())
+                .param("id", product.getId())
+                .update();
 
-        if (newProduct == null) {
-            throw new IllegalArgumentException("해당 ID의 상품이 존재하지 않습니다: " + product.getId());
+        if (updated == 0) {
+            throw new ProductNotFoundException(product.getId());
         }
 
-        newProduct.setName(product.getName());
-        newProduct.setPrice(product.getPrice());
-        newProduct.setImageUrl(product.getImageUrl());
-
-        return newProduct;
+        return findProductById(product.getId());
     }
 
     @Override
-    public void deleteProduct(Long id) throws IllegalArgumentException {
-        if (!products.containsKey(id)) {
-            throw new IllegalArgumentException("해당 ID의 상품이 존재하지 않습니다: " + id);
+    public void deleteProduct(Long id) {
+        int deleted = jdbcClient.sql("delete from product where id = :id")
+                .param("id", id)
+                .update();
+
+        if (deleted == 0) {
+            throw new ProductNotFoundException(id);
+        }
+    }
+
+    private String getSortOrder(Sort sort) {
+        if (sort.isSorted()) {
+            return "id ASC";
         }
 
-        products.remove(id);
+        return sort.stream()
+                .map(order -> order.getProperty() + (order.isDescending() ? " DESC" : " ASC"))
+                .reduce((a, b) -> a + ", " + b)
+                .orElse("id ASC");
     }
 }
