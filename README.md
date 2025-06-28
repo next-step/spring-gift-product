@@ -138,7 +138,7 @@
 
 - [x] H2 데이터베이스 설정
 - [x] 데이터베이스 초기화(schema.sql, data.sql)
-- [ ] Repository 레이어 분리 및 구현 
+- [x] Repository 레이어 분리 및 구현 
 - [ ] 메모리 코드 제거 및 DB 연동 적용 
 
 ---
