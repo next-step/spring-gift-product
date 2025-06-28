@@ -21,11 +21,19 @@
 + [X] 기본 레이아웃 및 템플릿 구조 설계
 + [X] 관리자가 상품 목록을 조회할 수 있는 템플릿 & View Controller 구현
 + [X] 세부 상품 정보 조회 템플릿 & View Controller 구현
-+ [ ] 상품 등록 템플릿 & View Controller 구현
-+ [ ] 상품 수정 템플릿 구현 & View Controller 구현
-+ [ ] 상품 삭제 기능 & View Controller 구현
++ [X] 상품 등록 템플릿 & View Controller 구현
++ [X] 상품 수정 템플릿 구현 & View Controller 구현
++ [X] 상품 삭제 기능 & View Controller 구현
++ [X] 페이지네이션 구현 
++ [X] 리펙토링 완료
 
+## 3단계: 데이터 베이스 적용
 
++ [X] 데이터베이스 설정 + sql 스크립트 작성
++ [X] JdbcClient 이용한 상품 데이터베이스 CRUD 구현(ProductDao)
+  + [X] JdbcClient + RowMapper 구현
+  + [X] 관련 로직 구현
++ [X] repository와 연동
 
 ## 커밋 컨벤션
 
