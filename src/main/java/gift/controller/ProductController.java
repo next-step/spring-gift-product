@@ -1,5 +1,8 @@
-package gift;
+package gift.controller;
 
+import gift.dto.ProductRequest;
+import gift.dto.ProductResponse;
+import gift.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,42 +24,39 @@ public class ProductController {
         this.productService = productService;
     }
 
-    // 상품 생성
     @PostMapping
     public ResponseEntity<?> createProduct(@RequestBody ProductRequest request) {
         try {
-            Product product = productService.createProduct(request);
-            return new ResponseEntity<>(product, HttpStatus.CREATED);
+            ProductResponse productResponse = productService.createProduct(request);
+            return new ResponseEntity<>(productResponse, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
 
-    // 상품 조회
     @GetMapping("/{productId}")
     public ResponseEntity<?> getProduct(@PathVariable Long productId) {
         try {
-            Product product = productService.getProduct(productId);
-            return new ResponseEntity<>(product, HttpStatus.OK);
+            ProductResponse productResponse = productService.getProduct(productId);
+            return new ResponseEntity<>(productResponse, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
-    // 상품 수정
     @PutMapping("/{productId}")
     public ResponseEntity<?> updateProduct(
         @PathVariable Long productId,
         @RequestBody ProductRequest request) {
         try {
-            Product updatedProduct = productService.updateProduct(productId, request);
-            return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+            ProductResponse updatedProductResponse = productService.updateProduct(productId,
+                request);
+            return new ResponseEntity<>(updatedProductResponse, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
-    // 상품 삭제
     @DeleteMapping("/{productId}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long productId) {
         try {
@@ -67,7 +67,6 @@ public class ProductController {
         }
     }
 
-    // 모든 상품 목록 조회
     @GetMapping
     public ResponseEntity<?> getAllProducts() {
         try {
