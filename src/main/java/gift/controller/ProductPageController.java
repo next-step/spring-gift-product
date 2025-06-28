@@ -70,7 +70,7 @@ public class ProductPageController {
     }
 
     // 상품 삭제
-    @GetMapping("/delete/{productId}")
+    @PostMapping("/delete/{productId}")
     public String deleteProduct(
         @PathVariable Long productId
     ){
