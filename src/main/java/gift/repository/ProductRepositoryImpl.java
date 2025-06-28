@@ -1,33 +1,29 @@
 package gift.repository;
 
-import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import org.springframework.stereotype.Repository;
-
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
-    private final Map<Long, Product> productList = new HashMap<>();
-
+    private final Map<Long, Product> productList = new ConcurrentHashMap<>();
+    private final AtomicLong idGenerator = new AtomicLong(0);
 
     @Override
-    public List<ProductResponseDto> findAllProducts() {
-        List<ProductResponseDto> allProducts = new ArrayList<>();
-
-        for (Product product : productList.values()) {
-            ProductResponseDto productResponseDto = new ProductResponseDto(product);
-            allProducts.add(productResponseDto);
-        }
-        return allProducts;
+    public List<Product> findAllProducts() {
+        return new ArrayList<>(productList.values()); // 엔티티 그대로 반환
     }
 
     @Override
-    public ProductResponseDto saveProduct(Product product) {
-        Long productId = productList.isEmpty() ? 1 : Collections.max(productList.keySet()) + 1;
+    public Product saveProduct(Product product) {
+        long productId = idGenerator.incrementAndGet();
         product.setId(productId);
         productList.put(productId, product);
-        return new ProductResponseDto(product);
+        return product;
     }
 
     @Override

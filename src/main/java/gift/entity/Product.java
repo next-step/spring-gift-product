@@ -20,6 +20,10 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
+    public Product() {
+
+    }
+
     public Long getId() {
         return id;
     }
