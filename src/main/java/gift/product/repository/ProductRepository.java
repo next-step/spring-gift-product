@@ -5,9 +5,7 @@ import gift.product.dto.ProductRequest;
 import gift.product.dto.ProductUpdateRequest;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class ProductRepository {
@@ -34,5 +32,10 @@ public class ProductRepository {
 
     public void delete(Long id){
         products.remove(id);
+    }
+
+    public Optional<List<Product>> getAll(){
+        List<Product> productList = new ArrayList<>(products.values());
+        return Optional.of(productList);
     }
 }

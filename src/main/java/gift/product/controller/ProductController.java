@@ -1,5 +1,6 @@
 package gift.product.controller;
 
+import gift.product.dto.ProductListResponse;
 import gift.product.dto.ProductRequest;
 import gift.product.dto.ProductResponse;
 import gift.product.dto.ProductUpdateRequest;
@@ -37,6 +38,11 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
         productService.deleteProduct(productId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping
+    public ResponseEntity<ProductListResponse> productList() {
+        return new ResponseEntity<>(new ProductListResponse(productService.getAllProducts()), HttpStatus.OK);
     }
 
 }

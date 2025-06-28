@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -56,5 +57,16 @@ public class ProductService {
             throw new RuntimeException("ProductService : deleteProduct() failed - 404 Not Found Error");
         }
         productRepository.delete(id);
+    }
+
+    public List<ProductResponse> getAllProducts() {
+        Optional<List<Product>> optionalProducts = productRepository.getAll();
+        if (optionalProducts.isEmpty()) {
+            throw new RuntimeException("ProductService : getAllProducts() failed - 404 Not Found Error");
+        }
+        return optionalProducts.get()
+                .stream()
+                .map(ProductResponse::from)
+                .toList();
     }
 }
