@@ -99,17 +99,15 @@ public class ItemService {
 
 
 	public GetItemResponse updateItem(Long itemId, ItemRequest req) {
-		Item item = db.get(itemId);
-		item.setName(req.name());
-		item.setPrice(req.price());
-		item.setImageUrl(req.imageUrl());
-		return new GetItemResponse(item.getId(), item.getName(), item.getPrice(), item.getImageUrl());
+		final String sql = "update item set name = ?, price = ?, image_url = ? where id = ?";
+		jdbcTemplate.update(sql, req.name(), req.price(), req.imageUrl(), itemId);
+		return getItem(itemId);
 	}
 
 
 	public void deleteItem(Long itemId) {
-		Item item = db.get(itemId);
-		db.remove(itemId);
+		final String sql = "delete from item where id = ?";
+		jdbcTemplate.update(sql, itemId);
 	}
 
 }
