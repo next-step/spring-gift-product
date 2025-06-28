@@ -8,7 +8,7 @@ public record CreateProductRequestDto(String name, Long price, String imageUrl) 
 
     public CreateProductRequestDto {
         if (name == null || price == null || imageUrl == null || price < 0L) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 }
