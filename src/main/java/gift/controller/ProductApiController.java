@@ -3,7 +3,6 @@ package gift.controller;
 import gift.dto.ProductRequest;
 import gift.dto.ProductResponse;
 import gift.service.ProductService;
-import gift.service.ProductServiceAdminImpl;
 import gift.service.ProductServiceImpl;
 import java.util.List;
 import org.springframework.http.HttpStatus;
