@@ -70,11 +70,6 @@ public class JdbcProductRepository implements ProductRepository {
     }
 
     @Override
-    public void deleteAll() {
-        jdbcTemplate.update("DELETE FROM product");
-    }
-
-    @Override
     public void deleteAllByIds(List<Long> ids) {
         if (ids == null || ids.isEmpty()) {
             return;
