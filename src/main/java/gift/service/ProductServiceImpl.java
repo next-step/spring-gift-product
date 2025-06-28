@@ -58,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
             .toList();
     }
 
-    public void validateRequest(ProductRequest request) {
+    private void validateRequest(ProductRequest request) {
         if (request == null || request.id() == null) {
             throw new InvalidProductException(ErrorCode.NOT_EXISTS_PRODUCT);
         }

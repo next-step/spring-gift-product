@@ -77,7 +77,7 @@ public class ProductServiceAdminImpl implements ProductService{
 
 
     // 검증용 메서드
-    public void validateRequest(ProductRequest request) {
+    private void validateRequest(ProductRequest request) {
         if (request == null || request.id() == null) {
             throw new InvalidProductException(ErrorCode.NOT_EXISTS_PRODUCT);
         }
