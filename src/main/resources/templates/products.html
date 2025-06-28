@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Products Management Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/products.css}" />
+</head>
+<body>
+<button type="button"
+        class="create-btn">상품 추가</button>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>상품명</th>
+        <th>가격</th>
+        <th>이미지 URL</th>
+        <th>액션</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p: ${products}">
+        <td th:text="${p.id}">ID</td>
+        <td th:text="${p.name}">상품명</td>
+        <td th:text="${p.price}">가격</td>
+        <td th:text="${p.imageUrl}">이미지 URL</td>
+        <td>
+            <button type="button"
+                    class="update-btn"
+                    th:attr="data-id=${p.id}, data-name=${p.name}, data-price=${p.price}, data-image-url=${p.imageUrl}">수정</button>
+            <button type="button"
+                    class="delete-btn"
+                    th:attr="data-id=${p.id}">삭제</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div id="createModal" class="modal" style="display: none;">
+    <form th:action="@{/products/create}" method="post">
+        <input type="hidden" name="id" id="create-id">
+        <label>이름<input type="text" name="name" id="create-name"></label>
+        <label>가격<input type="number" name="price" id="create-price"></label>
+        <label>이미지 URL<input type="text" name="imageUrl" id="create-image-url"></label>
+        <button type="submit">추가</button>
+        <button type="button" class="cancel-btn">취소</button>
+    </form>
+</div>
+<div id="updateModal" class="modal" style="display: none;">
+    <form th:action="@{/products/update}" method="post">
+        <input type="hidden" name="id" id="update-id">
+        <label>이름<input type="text" name="name" id="update-name"></label>
+        <label>가격<input type="number" name="price" id="update-price"></label>
+        <label>이미지 URL<input type="text" name="imageUrl" id="update-image-url"></label>
+        <button type="submit">저장</button>
+        <button type="button" class="cancel-btn">취소</button>
+    </form>
+</div>
+<div id="deleteModal" class="modal" style="display: none;">
+    <form th:action="@{/products/delete}" method="post">
+        <input type="hidden" name="id" id="delete-id">
+        <p>삭제하시겠습니까?</p>
+        <button type="submit">삭제</button>
+        <button type="button" class="cancel-btn">취소</button>
+    </form>
+</div>
+<script th:src="@{/js/products.js}"></script>
+</body>
+</html>

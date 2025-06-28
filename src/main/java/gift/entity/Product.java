@@ -1,14 +1,16 @@
 package gift.entity;
 
+import java.math.BigInteger;
+
 public class Product {
     private Integer id;
     private String name;
-    private Integer price;
+    private BigInteger price;
     private String imageUrl;
 
     public Product() {}
 
-    public Product(Integer id, String name, Integer price, String imageUrl) {
+    public Product(Integer id, String name, BigInteger price, String imageUrl) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -23,7 +25,7 @@ public class Product {
         return name;
     }
 
-    public Integer getPrice() {
+    public BigInteger getPrice() {
         return price;
     }
 
@@ -31,7 +33,7 @@ public class Product {
         return imageUrl;
     }
 
-    public void update(String name, Integer price, String imageUrl) {
+    public void update(String name, BigInteger price, String imageUrl) {
         this.name = name;
         this.price = price;
         this.imageUrl = imageUrl;
