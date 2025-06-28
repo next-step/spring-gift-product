@@ -137,6 +137,13 @@
 상품 정보를 메모리 대신 H2 DB에 저장하도록 변경(JdbcClient 사용)
 
 - [x] H2 데이터베이스 설정
-- [ ] 데이터베이스 초기화(schema.sql, data.sql)
+- [x] 데이터베이스 초기화(schema.sql, data.sql)
 - [ ] Repository 레이어 분리 및 구현 
 - [ ] 메모리 코드 제거 및 DB 연동 적용 
+
+---
+### H2 콘솔 확인
+[http://localhost:8080/h2-console](http://localhost:8080/h2-console)접속
+→ `PRODUCT` 테이블이 생성 & 초기 데이터 삽입 확인
+
+![H2 콘솔 확인](images/2025-06-29-020928.png)
