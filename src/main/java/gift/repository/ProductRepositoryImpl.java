@@ -20,7 +20,11 @@ public class ProductRepositoryImpl implements ProductRepository {
         if (product == null) {
             throw new IllegalArgumentException("product not found");
         }
-        
+
+        if (product.getName() == null || product.getPrice() == null) {
+            throw new IllegalArgumentException("Required fields are missing");
+        }
+
         if (product.getId() == null) {
             product = new Product(
                 idGenerator.getAndIncrement(),
@@ -29,6 +33,7 @@ public class ProductRepositoryImpl implements ProductRepository {
                 product.getImageUrl()
             );
         }
+
         products.put(product.getId(), product);
         return product;
     }
