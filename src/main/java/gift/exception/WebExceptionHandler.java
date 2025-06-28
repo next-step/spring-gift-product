@@ -21,13 +21,12 @@ public class WebExceptionHandler {
         String errorMessageForUser = "작업 실패: API 서버에서 오류가 발생했습니다.";
 
         if (e.getStatusCode().is4xxClientError()) {
-            if (e.getStatusCode() == HttpStatus.BAD_REQUEST) {
-                errorMessageForUser = "입력 데이터가 유효하지 않습니다. 이름을 채우고, 가격은 양수, URL 형식을 확인하세요.";
-            } else if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
-                errorMessageForUser = "요청한 리소스를 찾을 수 없습니다.";
-            } else if (e.getStatusCode() == HttpStatus.CONFLICT) {
-                errorMessageForUser = "이미 존재하는 리소스입니다. 다른 ID를 사용해 주세요.";
-            }
+            errorMessageForUser = switch (e.getStatusCode()) {
+                case HttpStatus.BAD_REQUEST -> "입력 데이터가 유효하지 않습니다. 이름을 채우고, 가격은 양수, URL 형식을 확인하세요.";
+                case HttpStatus.NOT_FOUND -> "요청한 리소스를 찾을 수 없습니다.";
+                case HttpStatus.CONFLICT -> "이미 존재하는 리소스입니다. 다른 ID를 사용해 주세요.";
+                default -> errorMessageForUser;
+            };
         }
         model.addAttribute("errorMessage", errorMessageForUser);
         return "error/error_page";

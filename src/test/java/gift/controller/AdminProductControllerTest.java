@@ -14,9 +14,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import gift.model.Product;
+import gift.service.ApiErrorMappingService;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,9 @@ class AdminProductControllerTest {
 
     @MockBean
     private RestTemplate restTemplate;
+
+    @MockBean // ApiErrorMappingService도 MockBean으로 등록
+    private ApiErrorMappingService apiErrorMappingService;
 
     // GET /admin/products 테스트
     @Test
@@ -98,33 +103,35 @@ class AdminProductControllerTest {
     @Test
     @DisplayName("GET /admin/products - 상품 목록 조회 실패: API 호출 중 ResourceAccessException 발생 시 목록으로 리다이렉트하며 에러 메시지 전달")
     void getAllProducts_shouldHandleResourceAccessException() throws Exception {
+        String errorMessage = "API 서버에 연결할 수 없습니다. 서버가 실행 중인지 확인하세요.";
         when(restTemplate.exchange(
                 eq("http://localhost:8080/api/products"),
                 eq(HttpMethod.GET),
                 any(),
                 any(ParameterizedTypeReference.class)
         )).thenThrow(new ResourceAccessException("Connection refused"));
+        when(apiErrorMappingService.getErrorMessageForResourceAccess()).thenReturn(errorMessage);
 
         mockMvc.perform(get("/admin/products"))
-                .andExpect(status().is3xxRedirection()) // 리다이렉션으로 변경
-                .andExpect(redirectedUrlPattern(
-                        "/admin/products?error=API 서버에 연결할 수 없습니다. 서버가 실행 중인지 확인하세요.")); // 정확한 메시지 패턴
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/admin/products?error=" + errorMessage));
     }
 
     @Test
     @DisplayName("GET /admin/products - 상품 목록 조회 실패: API 호출 중 기타 예외 발생 시 목록으로 리다이렉트하며 에러 메시지 전달")
     void getAllProducts_shouldHandleGenericException() throws Exception {
+        String errorMessage = "상품 데이터를 가져오는 중 알 수 없는 오류가 발생했습니다.";
         when(restTemplate.exchange(
                 eq("http://localhost:8080/api/products"),
                 eq(HttpMethod.GET),
                 any(),
                 any(ParameterizedTypeReference.class)
         )).thenThrow(new RuntimeException("예상치 못한 오류 발생"));
+        when(apiErrorMappingService.getGenericErrorMessage()).thenReturn(errorMessage);
 
         mockMvc.perform(get("/admin/products"))
-                .andExpect(status().is3xxRedirection()) // 리다이렉션으로 변경
-                .andExpect(redirectedUrlPattern(
-                        "/admin/products?error=상품 데이터를 가져오는 중 알 수 없는 오류가 발생했습니다.")); // 정확한 메시지 패턴
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/admin/products?error=" + errorMessage));
     }
 
     // POST /admin/products 테스트 (상품 추가)
@@ -154,12 +161,15 @@ class AdminProductControllerTest {
     @Test
     @DisplayName("POST /admin/products - 상품 추가 실패: API에서 400 Bad Request 반환 시 폼 페이지로 돌아가며 에러 메시지 표시")
     void addProduct_shouldReturnFormAndErrorMessageOnBadRequest() throws Exception {
+        String errorMessage = "입력 데이터가 유효하지 않습니다. 이름을 채우고, 가격은 양수, URL 형식을 확인하세요.";
         when(restTemplate.exchange(
                 eq("http://localhost:8080/api/products"),
                 eq(HttpMethod.POST),
                 any(HttpEntity.class),
                 eq(Product.class)
         )).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Invalid input"));
+        when(apiErrorMappingService.mapApiErrorToUserMessage(HttpStatus.BAD_REQUEST)).thenReturn(
+                errorMessage);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/products")
                         .param("id", "3")
@@ -169,19 +179,21 @@ class AdminProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/product_form"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage",
-                        "입력 데이터가 유효하지 않습니다. 이름을 채우고, 가격은 양수, URL 형식을 확인하세요."));
+                .andExpect(model().attribute("errorMessage", errorMessage));
     }
 
     @Test
     @DisplayName("POST /admin/products - 상품 추가 실패: API에서 409 Conflict 반환 시 폼 페이지로 돌아가며 에러 메시지 표시")
     void addProduct_shouldReturnFormAndErrorMessageOnConflict() throws Exception {
+        String errorMessage = "이미 존재하는 ID입니다. 다른 ID를 사용해 주세요.";
         when(restTemplate.exchange(
                 eq("http://localhost:8080/api/products"),
                 eq(HttpMethod.POST),
                 any(HttpEntity.class),
                 eq(Product.class)
         )).thenThrow(new HttpClientErrorException(HttpStatus.CONFLICT, "ID already exists"));
+        when(apiErrorMappingService.mapApiErrorToUserMessage(HttpStatus.CONFLICT)).thenReturn(
+                errorMessage);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/products")
                         .param("id", "1")
@@ -191,18 +203,20 @@ class AdminProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/product_form"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", "이미 존재하는 ID입니다. 다른 ID를 사용해 주세요."));
+                .andExpect(model().attribute("errorMessage", errorMessage));
     }
 
     @Test
     @DisplayName("POST /admin/products - 상품 추가 실패: API 호출 중 ResourceAccessException 발생 시 폼 페이지로 돌아가며 에러 메시지 표시")
     void addProduct_shouldHandleResourceAccessException() throws Exception {
+        String errorMessage = "API 서버에 연결할 수 없습니다. 서버가 실행 중인지 확인하세요.";
         when(restTemplate.exchange(
                 eq("http://localhost:8080/api/products"),
                 eq(HttpMethod.POST),
                 any(HttpEntity.class),
                 eq(Product.class)
         )).thenThrow(new ResourceAccessException("Connection refused"));
+        when(apiErrorMappingService.getErrorMessageForResourceAccess()).thenReturn(errorMessage);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/products")
                         .param("id", "3")
@@ -212,19 +226,21 @@ class AdminProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/product_form"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(
-                        model().attribute("errorMessage", "API 서버에 연결할 수 없습니다. 서버가 실행 중인지 확인하세요."));
+                .andExpect(model().attribute("errorMessage", errorMessage));
     }
 
     @Test
     @DisplayName("POST /admin/products - 상품 추가 실패: API 호출 중 기타 예외 발생 시 폼 페이지로 돌아가며 일반 에러 메시지 표시")
     void addProduct_shouldHandleGenericError() throws Exception {
+        String genericErrorMessage = "알 수 없는 오류가 발생했습니다. 다시 시도해주세요.";
+        String exceptionMessage = "알 수 없는 오류";
         when(restTemplate.exchange(
                 eq("http://localhost:8080/api/products"),
                 eq(HttpMethod.POST),
                 any(HttpEntity.class),
                 eq(Product.class)
-        )).thenThrow(new RuntimeException("알 수 없는 오류"));
+        )).thenThrow(new RuntimeException(exceptionMessage));
+        when(apiErrorMappingService.getGenericErrorMessage()).thenReturn(genericErrorMessage);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/products")
                         .param("id", "3")
@@ -234,8 +250,8 @@ class AdminProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/product_form"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(
-                        model().attribute("errorMessage", "상품 추가 중 예상치 못한 오류가 발생했습니다: 알 수 없는 오류"));
+                .andExpect(model().attribute("errorMessage",
+                        genericErrorMessage + ": " + exceptionMessage));
     }
 
     // GET /admin/products/new 테스트 (기존)
@@ -246,7 +262,8 @@ class AdminProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/product_form"))
                 .andExpect(model().attributeExists("product"))
-                .andExpect(model().attribute("product", org.hamcrest.Matchers.notNullValue()))
+                .andExpect(model().attribute("product",
+                        Matchers.isA(Product.class))) // Specific type check
                 .andExpect(model().attribute("formAction", "/admin/products"))
                 .andExpect(model().attribute("pageTitle", "새 상품 추가"));
     }
@@ -282,52 +299,58 @@ class AdminProductControllerTest {
     @DisplayName("GET /admin/products/{id}/edit - 상품이 없으면 /admin/products로 리다이렉트하며 에러 메시지 전달")
     void showEditProductForm_shouldRedirectWhenProductNotFound() throws Exception {
         long nonExistingProductId = 999L;
+        String notFoundMessage = "수정할 상품을 찾을 수 없습니다.";
+
         when(restTemplate.exchange(
                 eq("http://localhost:8080/api/products/" + nonExistingProductId),
                 eq(HttpMethod.GET),
                 any(),
                 eq(Product.class)
         )).thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND,
-                "수정할 상품을 찾을 수 없습니다. " + nonExistingProductId));
+                notFoundMessage));
+        when(apiErrorMappingService.getErrorMessageForNotFoundProduct()).thenReturn(
+                notFoundMessage);
 
         mockMvc.perform(
                         MockMvcRequestBuilders.get("/admin/products/{id}/edit", nonExistingProductId))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/products?error=수정할 상품을 찾을 수 없습니다."));
+                .andExpect(redirectedUrl("/admin/products?error=" + notFoundMessage));
     }
 
     @Test
     @DisplayName("GET /admin/products/{id}/edit - API 호출 중 ResourceAccessException 발생 시 목록으로 리다이렉트하며 에러 메시지 전달")
     void showEditProductForm_shouldHandleResourceAccessException() throws Exception {
         long productId = 1L;
+        String errorMessage = "상품 정보를 가져오는 API 서버에 연결할 수 없습니다.";
         when(restTemplate.exchange(
                 eq("http://localhost:8080/api/products/" + productId),
                 eq(HttpMethod.GET),
                 any(),
                 eq(Product.class)
         )).thenThrow(new ResourceAccessException("Connection refused"));
+        when(apiErrorMappingService.getErrorMessageForResourceAccess()).thenReturn(errorMessage);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/products/{id}/edit", productId))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(
-                        "/admin/products?error=상품 정보를 가져오는 API 서버에 연결할 수 없습니다.")); // 정확한 메시지
+                .andExpect(redirectedUrl("/admin/products?error=" + errorMessage));
     }
 
     @Test
     @DisplayName("GET /admin/products/{id}/edit - API 호출 중 기타 예외 발생 시 목록으로 리다이렉트하며 에러 메시지 전달")
     void showEditProductForm_shouldHandleGenericError() throws Exception {
         long productId = 1L;
+        String errorMessage = "상품 수정 폼 로드 중 알 수 없는 오류가 발생했습니다.";
         when(restTemplate.exchange(
                 eq("http://localhost:8080/api/products/" + productId),
                 eq(HttpMethod.GET),
                 any(),
                 eq(Product.class)
         )).thenThrow(new RuntimeException("알 수 없는 오류"));
-
+        when(apiErrorMappingService.getGenericErrorMessage()).thenReturn(
+                "상품 수정 폼 로드 중 알 수 없는 오류가 발생했습니다.");
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/products/{id}/edit", productId))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern(
-                        "/admin/products?error=상품 수정 폼 로드 중 알 수 없는 오류가 발생했습니다.*")); // 정확한 메시지
+                .andExpect(redirectedUrlPattern("/admin/products?error=" + errorMessage));
     }
 
     // PUT /admin/products/{id} 테스트
@@ -361,12 +384,15 @@ class AdminProductControllerTest {
     @DisplayName("PUT /admin/products/{id} - 상품 수정 실패: API에서 400 Bad Request 반환 시 폼 페이지로 돌아가며 에러 메시지 표시")
     void updateProduct_shouldReturnFormAndErrorMessageOnBadRequest() throws Exception {
         long existingProductId = 1L;
+        String errorMessage = "입력 데이터가 유효하지 않습니다. 이름을 채우고, 가격은 양수, URL 형식을 확인하세요.";
         when(restTemplate.exchange(
                 eq("http://localhost:8080/api/products/" + existingProductId),
                 eq(HttpMethod.PUT),
                 any(HttpEntity.class),
                 eq(Product.class)
         )).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Invalid update data"));
+        when(apiErrorMappingService.mapApiErrorToUserMessage(HttpStatus.BAD_REQUEST)).thenReturn(
+                errorMessage);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/products/{id}", existingProductId)
                         .param("_method", "PUT")
@@ -377,20 +403,24 @@ class AdminProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/product_form"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage",
-                        "입력 데이터가 유효하지 않습니다. 이름을 채우고, 가격은 양수, URL 형식을 확인하세요."));
+                .andExpect(model().attribute("errorMessage", errorMessage));
     }
 
     @Test
     @DisplayName("PUT /admin/products/{id} - 상품 수정 실패: API에서 404 Not Found 반환 시 폼 페이지로 돌아가며 에러 메시지 표시")
     void updateProduct_shouldReturnErrorPageOnNotFound() throws Exception {
         long nonExistingProductId = 999L;
+        String errorMessage = "수정하려는 상품을 찾을 수 없습니다."; // 이 메시지는 ApiErrorMappingService에서 가져옴
         when(restTemplate.exchange(
                 eq("http://localhost:8080/api/products/" + nonExistingProductId),
                 eq(HttpMethod.PUT),
                 any(HttpEntity.class),
                 eq(Product.class)
         )).thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, "Product not found"));
+        when(apiErrorMappingService.mapApiErrorToUserMessage(HttpStatus.NOT_FOUND)).thenReturn(
+                "요청한 리소스를 찾을 수 없습니다."); // 실제 mapApiErrorToUserMessage 호출 결과
+        when(apiErrorMappingService.getErrorMessageForNotFoundProduct()).thenReturn(
+                errorMessage); // 컨트롤러에서 Not Found일 때 특별히 반환하는 메시지
 
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/products/{id}", nonExistingProductId)
                         .param("_method", "PUT")
@@ -401,20 +431,25 @@ class AdminProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/product_form"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", "수정하려는 상품을 찾을 수 없습니다."));
+                .andExpect(model().attribute("errorMessage", errorMessage));
     }
 
     @Test
     @DisplayName("PUT /admin/products/{id} - 상품 수정 실패: API 호출 중 ResourceAccessException 발생 시 폼 페이지로 돌아가며 에러 메시지 표시")
     void updateProduct_shouldHandleResourceAccessException() throws Exception {
         long existingProductId = 1L;
+        String errorMessage = "API 서버에 연결할 수 없거나 상품 수정 중 오류가 발생했습니다.";
         when(restTemplate.exchange(
                 eq("http://localhost:8080/api/products/" + existingProductId),
                 eq(HttpMethod.PUT),
                 any(HttpEntity.class),
                 eq(Product.class)
         )).thenThrow(new ResourceAccessException("Connection refused"));
-
+        when(apiErrorMappingService.getErrorMessageForResourceAccess()).thenReturn(
+                errorMessage.split(
+                        "또는")[0].trim()); // split because the controller adds "또는 상품 수정 중 오류가 발생했습니다."
+        // For tests, match the exact expected string or use a pattern.
+        // A more robust way would be to make the service return the exact string.
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/products/{id}", existingProductId)
                         .param("_method", "PUT")
                         .param("id", String.valueOf(existingProductId))
@@ -424,20 +459,22 @@ class AdminProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/product_form"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(
-                        model().attribute("errorMessage", "API 서버에 연결할 수 없거나 상품 수정 중 오류가 발생했습니다."));
+                .andExpect(model().attribute("errorMessage", errorMessage));
     }
 
     @Test
     @DisplayName("PUT /admin/products/{id} - 상품 수정 실패: API 호출 중 기타 예외 발생 시 폼 페이지로 돌아가며 일반 에러 메시지 표시")
     void updateProduct_shouldHandleGenericError() throws Exception {
         long existingProductId = 1L;
+        String genericErrorMessage = "알 수 없는 오류가 발생했습니다. 다시 시도해주세요.";
+        String exceptionMessage = "알 수 없는 오류";
         when(restTemplate.exchange(
                 eq("http://localhost:8080/api/products/" + existingProductId),
                 eq(HttpMethod.PUT),
                 any(HttpEntity.class),
                 eq(Product.class)
-        )).thenThrow(new RuntimeException("알 수 없는 오류"));
+        )).thenThrow(new RuntimeException(exceptionMessage));
+        when(apiErrorMappingService.getGenericErrorMessage()).thenReturn(genericErrorMessage);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/products/{id}", existingProductId)
                         .param("_method", "PUT")
@@ -448,7 +485,7 @@ class AdminProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/product_form"))
                 .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(
-                        model().attribute("errorMessage", "상품 수정 중 예상치 못한 오류가 발생했습니다: 알 수 없는 오류"));
+                .andExpect(model().attribute("errorMessage",
+                        genericErrorMessage + ": " + exceptionMessage));
     }
 }
