@@ -1,16 +1,16 @@
 package gift.domain.product.repository;
 
-import java.util.List;
-
 import gift.common.pagination.Page;
 import gift.common.pagination.Pageable;
 import gift.domain.product.model.Product;
 
+import java.util.Optional;
+
 public interface ProductRepository {
 
-    Page<Product> findAll(Pageable pageable);
+    Page<Product> find(Pageable pageable);
 
-    Product findById(Long id);
+    Optional<Product> findById(Long id);
 
     Product save(Product product);
 
