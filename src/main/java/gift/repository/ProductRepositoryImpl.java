@@ -71,11 +71,10 @@ public class ProductRepositoryImpl implements ProductRepository {
         isUpdateSuccessful(jdbcTemplate.update(sql, productId));
     }
 
-    public boolean isUpdateSuccessful(int productRows) {
+    public void isUpdateSuccessful(int productRows) {
         if (productRows == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                 "Failed to update." + productRows);
         }
-        return true;
     }
 }
