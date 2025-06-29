@@ -17,12 +17,12 @@ public class ProductService {
     }
 
     public ProductResponseDto saveProduct(ProductRequestDto productRequestDto) {
-        Product product = new Product(null, productRequestDto.getName(),
-                productRequestDto.getPrice(), productRequestDto.getImageUrl());
+        Product product = new Product(null, productRequestDto.name(),
+                productRequestDto.price(), productRequestDto.imageUrl());
 
         Product savedProduct = productRepository.saveProduct(product);
 
-        return new ProductResponseDto(savedProduct);
+        return ProductResponseDto.from(savedProduct);
     }
 
     public ProductResponseDto findProduct(Long productId) {
@@ -31,7 +31,7 @@ public class ProductService {
             throw new IllegalArgumentException();
         }
 
-        return new ProductResponseDto(product);
+        return ProductResponseDto.from(product);
     }
 
     public ProductResponseDto updateProduct(Long productId, ProductRequestDto productRequestDto) {
@@ -41,12 +41,12 @@ public class ProductService {
         }
 
         product.update(
-                productRequestDto.getName(),
-                productRequestDto.getPrice(),
-                productRequestDto.getImageUrl()
+                productRequestDto.name(),
+                productRequestDto.price(),
+                productRequestDto.imageUrl()
         );
 
-        return new ProductResponseDto(product);
+        return ProductResponseDto.from(product);
     }
 
     public void deleteProduct(Long productId) {
@@ -60,7 +60,7 @@ public class ProductService {
 
         return productRepository.findAllProducts()
                                 .stream()
-                                .map(ProductResponseDto::new)
+                                .map(ProductResponseDto::from)
                                 .toList();
     }
 }
