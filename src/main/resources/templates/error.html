@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
@@ -8,7 +9,12 @@
 <body>
 <div class="product-detail">
   <h1>⚠ 오류가 발생했습니다</h1>
-  <p th:text="${errorMessage}" class="error">예기치 않은 문제가 발생했습니다.</p>
+
+  <div class="error-message-box">
+    <span class="status" th:text="'[' + ${errorInfo?.status} + ' ' + ${errorInfo?.error} + ']'">[404 Not Found]</span>
+    <span class="message" th:text="${errorInfo?.message}">예기치 않은 문제가 발생했습니다.</span>
+  </div>
+
   <div class="buttons">
     <a href="/admin/products" class="button">상품 목록으로 돌아가기</a>
   </div>
