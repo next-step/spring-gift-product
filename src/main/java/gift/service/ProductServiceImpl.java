@@ -55,14 +55,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDto update(Long id, ProductRequestDto requestDto) {
-        int updateRowCount = productRepository.update(id, requestDto);
 
-        if (updateRowCount < 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        return new ProductResponseDto(id, requestDto.name(), requestDto.price(),
-            requestDto.imageUrl());
+        productRepository.update(id, requestDto);
+
+        Product updatedProduct = productRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return ProductResponseDto.from(updatedProduct);
     }
 
     @Override
