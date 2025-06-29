@@ -44,9 +44,6 @@ public class ProductService {
     }
 
     public void deleteProductById(Long id) {
-        Product product = productRepository.deleteById(id);
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "id를 찾을 수 없습니다.");
-        }
+        productRepository.deleteById(id);
     }
 }
