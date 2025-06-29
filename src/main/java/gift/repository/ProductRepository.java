@@ -76,11 +76,14 @@ public class ProductRepository{
 
         String direction = "asc".equalsIgnoreCase(sortDir) ? "ASC" : "DESC";
 
+        int safePage = Math.max(page, 1);
+        int offset = (safePage - 1) * size;
+
         String sql = String.format(
                 "SELECT * FROM products ORDER BY %s %s LIMIT ? OFFSET ?",
                 sortField, direction
         );
 
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Product.class), size, page * size);
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Product.class), size, offset);
     }
 }
