@@ -31,7 +31,7 @@ public class ApiExceptionHandler {
         ErrorResponseDto error = new ErrorResponseDto(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-                "서버 오류가 발생했습니다.",
+                ex.getMessage(),
                 request.getRequestURI()
         );
 
