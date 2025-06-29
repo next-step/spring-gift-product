@@ -1,6 +1,7 @@
 package gift;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,14 +33,9 @@ public class ProductController {
     @PostMapping("/product/add")
     public String createProduct(@ModelAttribute ProductDTO productdto) {
         long id = idGenerator.getAndIncrement();
-        try {
-            Product product = new Product(id, productdto);
-            products.put(product.getId(), product);
-            return "redirect:/api/products";
-        }
-        catch(IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "가격이 음수입니다.");
-        }
+        Product product = new Product(id, productdto);
+        products.put(product.getId(), product);
+        return "redirect:/api/products";
     }
 
     @ResponseBody
@@ -75,5 +71,11 @@ public class ProductController {
         if(!products.containsKey(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 데이터가 존재하지 않습니다.");
         }
+    }
+
+    @ResponseBody
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
