@@ -1,7 +1,6 @@
 package gift.repository;
 
 import gift.dto.ProductRequestDto;
-import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +17,9 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
+    private static final RowMapper<Product> productRowMapper = (rs, rowNum) -> new Product(
+        rs.getLong("id"), rs.getString("name"), rs.getInt("price"), rs.getString("imageUrl"));
+
     public ProductRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -26,19 +28,8 @@ public class ProductRepositoryImpl implements ProductRepository {
     public List<Product> findAll() {
         String sql = "select * from product";
 
-        List<Product> productList = jdbcTemplate.query(sql, productRowMapper());
+        List<Product> productList = jdbcTemplate.query(sql, productRowMapper);
         return productList;
-    }
-
-    private RowMapper<Product> productRowMapper() {
-        return (rs, rowNum) -> {
-            var id = rs.getLong("id");
-            var name = rs.getString("name");
-            var price = rs.getInt("price");
-            var imageUrl = rs.getString("imageUrl");
-
-            return new Product(id, name, price, imageUrl);
-        };
     }
 
     @Override
@@ -59,7 +50,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Product findProduct(Long id) {
         String sql = "select * from product where id = ?";
 
-        Product product = jdbcTemplate.queryForObject(sql, productRowMapper(), id);
+        Product product = jdbcTemplate.queryForObject(sql, productRowMapper, id);
         return product;
     }
 
