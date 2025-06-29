@@ -24,24 +24,24 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto requestDto) {
-        return new ResponseEntity<>(productService.saveProduct(requestDto), HttpStatus.CREATED);
+        return ResponseEntity.ok(productService.saveProduct(requestDto));
 
     }
 
     @GetMapping
     public ResponseEntity<List<ProductResponseDto>> findAllProducts() {
-        return new ResponseEntity<>(productService.findAllProducts(), HttpStatus.OK);
+        return ResponseEntity.ok(productService.findAllProducts());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDto requestDto) {
-        return new ResponseEntity<>(productService.updateProduct(id, requestDto), HttpStatus.OK);
+        return ResponseEntity.ok(productService.updateProduct(id, requestDto));
     }
 
 
