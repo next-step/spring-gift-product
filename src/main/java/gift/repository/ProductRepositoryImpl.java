@@ -5,6 +5,7 @@ import gift.entity.Product;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -50,8 +51,12 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Product find(Long id) {
         String sql = "select * from product where id = ?";
 
-        Product product = jdbcTemplate.queryForObject(sql, productRowMapper, id);
-        return product;
+        try {
+            Product product = jdbcTemplate.queryForObject(sql, productRowMapper, id);
+            return product;
+        } catch (DataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     @Override
