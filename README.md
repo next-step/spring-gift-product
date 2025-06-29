@@ -19,6 +19,6 @@
 | `/admin/delete/{id}` | POST   | (상품 삭제 처리) 특정 상품을 삭제한다.        |
 
 # DB Apply
-[ ] h2 DB 설정하기
-[ ] 스키마 스크립트, 데이터 스크립트를 각각 schema.sql, data.sql에 작성하기
+[O] h2 DB 설정하기
+[O] 스키마 스크립트, 데이터 스크립트를 각각 schema.sql, data.sql에 작성하기
 [ ] 상품 정보를 Map 대신 DB에 저장하도록 Repository 클래스 수정하기
