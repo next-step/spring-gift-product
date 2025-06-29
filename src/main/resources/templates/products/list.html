@@ -53,7 +53,7 @@
                 Edit
               </a>
               <!-- 삭제 버튼 -->
-              <form th:action="@{'/admin/products/delete/' + ${product.id}}" method="post" class="d-inline">
+              <form th:action="@{'/admin/products/' + ${product.id}}" method="post" class="d-inline">
                 <input type="hidden" name="_method" value="delete"/>
                 <button type="submit"
                         class="btn btn-sm btn-danger d-flex align-items-center justify-content-center"

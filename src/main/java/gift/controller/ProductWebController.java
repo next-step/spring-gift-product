@@ -31,14 +31,11 @@ public class ProductWebController {
     @GetMapping("/new")
     public String createForm(Model model) {
         model.addAttribute("productId", null);
-        String NAME_EMPTY = "";
-        int PRICE_ZERO = 0;
-        String IMG_URL_EMPTY = "";
-        model.addAttribute("product", new ProductRequestDto(NAME_EMPTY, PRICE_ZERO, IMG_URL_EMPTY));
+        model.addAttribute("product", ProductRequestDto.from());
         return "products/form";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
         ProductResponseDto product = productService.findProductById(id);
         model.addAttribute("productId", id);
@@ -60,7 +57,7 @@ public class ProductWebController {
         return "redirect:/admin/products";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id) {
         productService.deleteProduct(id);
         return "redirect:/admin/products";
