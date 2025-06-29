@@ -36,6 +36,13 @@ public class ProductService {
     }
 
 
+    public List<Product> getAllProducts(String sort, String keyword) {
+        return repository.findAll().stream()
+                .filter(p -> matchesKeyword(p, keyword))
+                .sorted(getComparator(sort))
+                .toList();
+    }
+
     private boolean matchesKeyword(Product p, String keyword) {
         return p.getName().toLowerCase().contains(keyword.toLowerCase()) ||
                 String.valueOf(p.getId()).equals(keyword);
