@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:fragment="productFormFields">
+<body>
+<div>
+    <label>상품명:</label>
+    <input type="text" th:field="*{name}" placeholder="예: 제주 한라봉 선물세트" required/>
+</div>
+
+<div>
+    <label>가격:</label>
+    <input type="number" th:field="*{price}" placeholder="예: 15000" required/>
+</div>
+
+<div>
+    <label>이미지 URL:</label>
+    <input type="text" th:field="*{imageUrl}" placeholder="예: https://example.com/img.jpg" required/>
+</div>
+</body>
+</html>

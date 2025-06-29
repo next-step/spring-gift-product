@@ -48,8 +48,7 @@ public class ProductAdminController {
     @GetMapping("/new")
     public String newForm(Model model) {
         model.addAttribute("productRequest", new ProductRequest(null, "", 0, ""));
-        model.addAttribute("isNew", true);
-        return "admin/product/form";
+        return "admin/product/create-product-form";
     }
 
     /**
@@ -75,8 +74,7 @@ public class ProductAdminController {
         );
         model.addAttribute("productId", product.getId());
         model.addAttribute("productRequest", request);
-        model.addAttribute("isNew", false);
-        return "admin/product/form";
+        return "admin/product/edit-product-form";
     }
 
     /**

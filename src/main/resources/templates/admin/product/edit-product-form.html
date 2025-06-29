@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>상품 수정</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<h1>상품 수정</h1>
+
+<form th:action="@{/admin/products/{id}/edit(id=${productId})}" th:object="${productRequest}" method="post">
+
+    <div th:replace="admin/product/form-fields :: productFormFields"></div>
+
+
+    <div style="margin-top: 10px;">
+        <button type="submit">수정</button>
+        <a th:href="@{/admin/products}">뒤로가기</a>
+    </div>
+</form>
+
+</body>
+</html>
