@@ -23,12 +23,6 @@ public class ItemService {
 	private final JdbcTemplate jdbcTemplate;
 	public ItemService(JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}
 
-
-	private final Map<Long, Item> db = new HashMap<>();
-
-
-
-
 	// 테스트를 위해 서버 재실행마다 15개의 아이템을 채워놓기
 	@PostConstruct
 	public void init() {
