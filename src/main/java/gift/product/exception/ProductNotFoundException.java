@@ -1,6 +1,6 @@
 package gift.product.exception;
 
-import gift.common.exception.ErrorCode;
+import gift.global.exception.ErrorCode;
 
 
 public class ProductNotFoundException extends RuntimeException {

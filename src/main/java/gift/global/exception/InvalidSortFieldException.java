@@ -1,6 +1,7 @@
-package gift.common.exception;
+package gift.global.exception;
 
 
+import gift.global.exception.ErrorCode;
 
 public class InvalidSortFieldException extends RuntimeException {
 

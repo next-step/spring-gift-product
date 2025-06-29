@@ -1,6 +1,6 @@
 package gift.product.repository;
 
-import gift.common.dto.SortInfo;
+import gift.global.common.dto.SortInfo;
 import gift.product.domain.Product;
 import gift.product.strategy.ProductSortStrategyFactory;
 import java.util.ArrayList;

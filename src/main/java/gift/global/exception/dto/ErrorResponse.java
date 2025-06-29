@@ -1,6 +1,6 @@
-package gift.common.dto;
+package gift.global.exception.dto;
 
-import gift.common.exception.ErrorCode;
+import gift.global.exception.ErrorCode;
 
 public record ErrorResponse(String errorCode, String errorMessage) {
 

@@ -1,8 +1,8 @@
-package gift.common.resolver;
+package gift.global.common.resolver;
 
-import gift.common.annotation.PageParam;
-import gift.common.dto.PageRequest;
-import gift.common.dto.SortInfo;
+import gift.global.common.annotation.PageParam;
+import gift.global.common.dto.PageRequest;
+import gift.global.common.dto.SortInfo;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;

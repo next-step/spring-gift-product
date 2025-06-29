@@ -1,6 +1,6 @@
 package gift.product.strategy;
 
-import gift.common.strategy.SortStrategy;
+import gift.global.common.strategy.SortStrategy;
 import gift.product.domain.Product;
 import java.util.Comparator;
 

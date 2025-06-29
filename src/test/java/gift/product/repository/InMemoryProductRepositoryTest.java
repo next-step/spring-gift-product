@@ -3,7 +3,7 @@ package gift.product.repository;
 
 import static org.assertj.core.api.Assertions.*;
 
-import gift.common.dto.SortInfo;
+import gift.global.common.dto.SortInfo;
 import gift.product.domain.Product;
 import java.util.ArrayList;
 import java.util.Collections;

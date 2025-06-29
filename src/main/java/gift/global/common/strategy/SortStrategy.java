@@ -1,4 +1,4 @@
-package gift.common.strategy;
+package gift.global.common.strategy;
 
 import java.util.Comparator;
 

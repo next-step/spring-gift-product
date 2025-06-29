@@ -1,6 +1,6 @@
-package gift.common.config;
+package gift.global.config;
 
-import gift.common.resolver.PageParamArgumentResolver;
+import gift.global.common.resolver.PageParamArgumentResolver;
 import java.util.List;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

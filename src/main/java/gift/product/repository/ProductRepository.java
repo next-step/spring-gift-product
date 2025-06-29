@@ -1,6 +1,6 @@
 package gift.product.repository;
 
-import gift.common.dto.SortInfo;
+import gift.global.common.dto.SortInfo;
 import gift.product.domain.Product;
 import java.util.List;
 import java.util.Optional;

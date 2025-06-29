@@ -1,8 +1,7 @@
 package gift.admin.controller;
 
-import gift.common.annotation.PageParam;
-import gift.common.dto.PageRequest;
-import gift.common.dto.SortInfo;
+import gift.global.common.annotation.PageParam;
+import gift.global.common.dto.PageRequest;
 import gift.product.dto.CreateProductReqDto;
 import gift.product.dto.UpdateProductReqDto;
 import gift.product.exception.ProductNotFoundException;
@@ -11,7 +10,6 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;

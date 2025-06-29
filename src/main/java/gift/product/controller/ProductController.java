@@ -1,8 +1,8 @@
 package gift.product.controller;
 
-import gift.common.annotation.PageParam;
-import gift.common.dto.PageRequest;
-import gift.common.dto.PagedResult;
+import gift.global.common.annotation.PageParam;
+import gift.global.common.dto.PageRequest;
+import gift.global.common.dto.PagedResult;
 import gift.product.dto.CreateProductReqDto;
 import gift.product.dto.GetProductResDto;
 import gift.product.dto.UpdateProductReqDto;

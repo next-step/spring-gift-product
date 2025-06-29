@@ -1,4 +1,4 @@
-package gift.common.dto;
+package gift.global.common.dto;
 
 public record PageRequest(
     int offset,

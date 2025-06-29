@@ -1,4 +1,4 @@
-package gift.common.dto;
+package gift.global.common.dto;
 
 import java.util.List;
 import java.util.function.Function;

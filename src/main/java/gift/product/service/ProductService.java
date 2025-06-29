@@ -1,8 +1,8 @@
 package gift.product.service;
 
-import gift.common.dto.PageRequest;
-import gift.common.dto.PagedResult;
-import gift.common.exception.ErrorCode;
+import gift.global.common.dto.PageRequest;
+import gift.global.common.dto.PagedResult;
+import gift.global.exception.ErrorCode;
 import gift.product.domain.Product;
 import gift.product.dto.CreateProductReqDto;
 import gift.product.dto.GetProductResDto;

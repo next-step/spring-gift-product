@@ -1,6 +1,6 @@
-package gift.common.exception;
+package gift.global.exception;
 
-import gift.common.dto.ErrorResponse;
+import gift.global.exception.dto.ErrorResponse;
 import gift.product.exception.ProductNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
