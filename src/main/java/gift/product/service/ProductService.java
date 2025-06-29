@@ -8,47 +8,64 @@ import gift.product.repository.ProductRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
-    public ProductService() {
-        this.productRepository = new ProductRepository();
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
-    public ResponseEntity<ProductResponse> addProduct(ProductRequest req) {
-        Product product = new Product(req.name(), req.price(), req.imageUrl());
-        boolean result = productRepository.save(product);
-        if (result) {
-            return new ResponseEntity<>(ProductResponse.from(product), HttpStatus.CREATED);
+    @Transactional
+    public ProductResponse addProduct(ProductRequest req) {
+        Optional<Product> product = productRepository.save(req);
+        if (product.isPresent()) {
+            return ProductResponse.from(product.get());
         }
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        throw new RuntimeException("ProductService : addProduct() failed - 500 Internal Server Error");
     }
 
-    public ResponseEntity<ProductResponse> getProduct(Long id) {
-        Product product = productRepository.get(id);
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    public ProductResponse getProduct(Long id) {
+        Optional<Product> optionalProduct = productRepository.get(id);
+        if (optionalProduct.isEmpty()) {
+            throw new RuntimeException("ProductService : getProduct() failed - 404 Not Found Error");
         }
-        return new ResponseEntity<>(ProductResponse.from(product), HttpStatus.OK);
+        Product product = optionalProduct.get();
+        return ProductResponse.from(product);
     }
 
-    public ResponseEntity<ProductResponse> updateProduct(Long id, ProductUpdateRequest req) {
-        Product product = productRepository.get(id);
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    @Transactional
+    public ProductResponse updateProduct(Long id, ProductUpdateRequest req) {
+        Optional<Product> optionalProduct = productRepository.get(id);
+        if (optionalProduct.isEmpty()) {
+            throw new RuntimeException("ProductService : updateProduct() failed - 404 Not Found Error");
         }
-        product.update(req);
-        return new ResponseEntity<>(ProductResponse.from(product), HttpStatus.OK);
+        Product product = optionalProduct.get();
+        return ProductResponse.from(productRepository.update(id, req));
     }
 
-    public ResponseEntity<Void> deleteProduct(Long id) {
-        Product product = productRepository.get(id);
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    @Transactional
+    public void deleteProduct(Long id) {
+        Optional<Product> optionalProduct = productRepository.get(id);
+        if (optionalProduct.isEmpty()) {
+            throw new RuntimeException("ProductService : deleteProduct() failed - 404 Not Found Error");
         }
         productRepository.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    public List<ProductResponse> getAllProducts() {
+        Optional<List<Product>> optionalProducts = productRepository.getAll();
+        if (optionalProducts.isEmpty()) {
+            throw new RuntimeException("ProductService : getAllProducts() failed - 404 Not Found Error");
+        }
+        return optionalProducts.get()
+                .stream()
+                .map(ProductResponse::from)
+                .toList();
     }
 }
