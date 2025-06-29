@@ -7,6 +7,7 @@ import gift.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -20,8 +21,7 @@ public class ProductService {
     }
 
     public ProductResponseDto getProduct(Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+        Product product = findProductOrThrow(id);
         return new ProductResponseDto(product);
     }
 
@@ -32,38 +32,31 @@ public class ProductService {
     }
 
     public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
-        Optional<Product> optional = productRepository.findById(id);
-        if (optional.isEmpty()) {
-            throw new IllegalArgumentException("존재하지 않는 상품입니다.");
-        }
+        Product product = findProductOrThrow(id);
 
-        Product product = optional.get();
-        product.setName(requestDto.getName());
-        product.setPrice(requestDto.getPrice());
-        product.setImageUrl(requestDto.getImageUrl());
-
-        return new ProductResponseDto(productRepository.save(product));
+        product.update(requestDto);
+        return new ProductResponseDto(product);
     }
 
     public void deleteProduct(Long id) {
-        if (productRepository.findById(id).isEmpty()) {
-            throw new IllegalArgumentException("존재하지 않는 상품입니다.");
-        }
+        findProductOrThrow(id);
         productRepository.deleteById(id);
     }
 
     public List<ProductResponseDto> getProductList(int page, int size) {
-        List<Product> all = productRepository.findAll();
-
-        int fromIndex = page * size;
-        int toIndex = Math.min(fromIndex + size, all.size());
-
-        if (fromIndex >= all.size()) {
-            return List.of();
-        }
-
-        return all.subList(fromIndex, toIndex).stream()
+        return productRepository.findPage(page, size).stream()
                 .map(ProductResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+
+    private Product findProductOrThrow(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 상품입니다."));
+    }
+
+    public int getProductCount() {
+        return productRepository.count();
+    }
+
 }

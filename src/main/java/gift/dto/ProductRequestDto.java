@@ -1,7 +1,11 @@
 package gift.dto;
 
+import jakarta.validation.constraints.Min;
+
 public class ProductRequestDto {
     private String name;
+
+    @Min(value = 0, message = "가격은 음수일 수 없습니다.")// 유효성 검사 추가
     private int price;
     private String imageUrl;
 
@@ -16,4 +20,9 @@ public class ProductRequestDto {
     public String getName() { return name; }
     public int getPrice() { return price; }
     public String getImageUrl() { return imageUrl; }
+
+    public void setName(String name) { this.name = name; }
+    public void setPrice(int price) { this.price = price; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl;}
+
 }

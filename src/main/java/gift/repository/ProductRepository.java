@@ -10,4 +10,6 @@ public interface ProductRepository {
     Optional<Product> findById(Long id);
     List<Product> findAll();
     void deleteById(Long id);
+    List<Product> findPage(int page, int size);
+    int count();
 }

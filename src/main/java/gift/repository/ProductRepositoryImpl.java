@@ -4,11 +4,12 @@ import gift.entity.Product;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    private final Map<Long, Product> store = new HashMap<>();
+    private final Map<Long, Product> store = new ConcurrentHashMap<>(); // Thread-safe 를 위해 ConcurrentHashMap 사용
     private Long sequence = 1L;
 
     @Override
@@ -33,5 +34,23 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public void deleteById(Long id) {
         store.remove(id);
+    }
+
+    @Override
+    public List<Product> findPage(int page, int size) {
+        List<Product> all = new ArrayList<>(store.values());
+
+        int fromIndex = page * size;
+        int toIndex = Math.min(fromIndex + size, all.size());
+
+        if (fromIndex >= all.size()) {
+            return List.of();
+        }
+
+        return all.subList(fromIndex, toIndex);
+    }
+
+    public int count() {
+        return store.size(); // 상품의 개수 반환
     }
 }
