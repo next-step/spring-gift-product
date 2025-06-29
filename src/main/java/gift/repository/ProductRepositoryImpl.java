@@ -3,44 +3,57 @@ package gift.repository;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
+import gift.exception.FailedGenerateKeyException;
 import gift.exception.ProductNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
-import java.util.Map;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
-    private final Map<Long, Product> products = new HashMap<>();
-    private Long nextId = 1L;
+    private final JdbcTemplate jdbcTemplate;
+
+    public ProductRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public ProductResponseDto createProduct(ProductRequestDto requestDto) {
-        Long id = nextId++;
-        String name = requestDto.name();
-        Integer price = requestDto.price();
-        String imageUrl = requestDto.imageUrl();
+        String sql = "INSERT INTO products (name, price, image_url) VALUES (?, ?, ?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        Product product = new Product(id, name, price, imageUrl);
-        products.put(id, product);
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, requestDto.name());
+            ps.setInt(2, requestDto.price());
+            ps.setString(3, requestDto.imageUrl());
+            return ps;
+        }, keyHolder);
+        Number key = keyHolder.getKey();
+        if (key == null) {
+            throw new FailedGenerateKeyException();
+        }
 
-        return ProductResponseDto.from(product);
+        return findProductById(key.longValue());
     }
 
     @Override
     public List<ProductResponseDto> findAllProducts() {
-        List<ProductResponseDto> productList = new ArrayList<>();
-        for (Map.Entry<Long, Product> entry : products.entrySet()) {
-            productList.add(ProductResponseDto.from(entry.getValue()));
-        }
+        String sql = "SELECT * FROM products";
 
-        return productList;
+        return jdbcTemplate.query(sql, productRowMapper())
+            .stream().map(ProductResponseDto::from).toList();
     }
 
     @Override
     public ProductResponseDto findProductById(Long id) {
-        Product product = products.get(id);
+        String sql = "SELECT * FROM products WHERE id = ?";
+        Product product = jdbcTemplate.queryForObject(sql, productRowMapper(), id);
         if (product == null) {
             throw new ProductNotFoundException(id);
         }
@@ -50,20 +63,31 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
-        Product product = new Product(
-            id,
-            requestDto.name(),
-            requestDto.price(),
-            requestDto.imageUrl());
-        products.put(id, product);
+        String sql = "UPDATE products SET name = ?, price = ?, image_url = ? WHERE id = ?";
+        int updated = jdbcTemplate.update(sql, requestDto.name(), requestDto.price(), requestDto.imageUrl(), id);
+        if (updated == 0) {
+            throw new ProductNotFoundException(id);
+        }
 
-        return ProductResponseDto.from(product);
+        return findProductById(id);
     }
 
     @Override
     public void deleteProduct(Long id) {
-        if (products.remove(id) == null) {
+        String sql = "DELETE FROM products WHERE id = ?";
+        int deleted = jdbcTemplate.update(sql, id);
+        if (deleted == 0) {
             throw new ProductNotFoundException(id);
         }
+    }
+
+    // DB -> 객체 매핑
+    private RowMapper<Product> productRowMapper() {
+        return (rs, rowNum) -> new Product(
+            rs.getLong("id"),
+            rs.getString("name"),
+            rs.getInt("price"),
+            rs.getString("image_url")
+        );
     }
 }

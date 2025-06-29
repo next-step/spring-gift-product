@@ -2,7 +2,6 @@ package gift.service;
 
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
-import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
