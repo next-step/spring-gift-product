@@ -24,8 +24,8 @@ public class ProductAdminController {
      */
     @GetMapping
     public String list(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "0") int page, // 삭제
+            @RequestParam(defaultValue = "10") int size, // 삭제
             @RequestParam(defaultValue = "id,asc") String sort,
             @RequestParam(required = false) String keyword,
             Model model) {
@@ -39,18 +39,15 @@ public class ProductAdminController {
                 .toList();
 
         model.addAttribute("products", products);
-        model.addAttribute("page", page);
-        model.addAttribute("size", size);
+        model.addAttribute("page", page);   // 삭제
+        model.addAttribute("size", size);   // 삭제
         model.addAttribute("sort", sort);
         model.addAttribute("keyword", keyword);
 
         return "admin/product/list";
     }
 
-    private boolean matchesKeyword(Product p, String keyword) {
-        return p.getName().toLowerCase().contains(keyword.toLowerCase()) ||
-                String.valueOf(p.getId()).equals(keyword);
-    }
+
 
     /**
      * 상품 등록 폼

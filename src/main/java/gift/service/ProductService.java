@@ -35,6 +35,12 @@ public class ProductService {
                 .toList();
     }
 
+
+    private boolean matchesKeyword(Product p, String keyword) {
+        return p.getName().toLowerCase().contains(keyword.toLowerCase()) ||
+                String.valueOf(p.getId()).equals(keyword);
+    }
+
     private Comparator<Product> getComparator(String sort) {
         String[] parts = sort.split(",");
         String key = parts[0];
