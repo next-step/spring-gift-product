@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
   }
 
   private static ResponseEntity<ErrorResponse> createErrorResponse(ErrorCode errorCode, Exception exception){
-    logger.error("Business exception occurred: {}",exception.getMessage());
+    logger.error("Exception occurred: {}",exception.getMessage());
     return ResponseEntity
         .status(errorCode.getStatus())
         .body(ErrorResponse.from(errorCode));
