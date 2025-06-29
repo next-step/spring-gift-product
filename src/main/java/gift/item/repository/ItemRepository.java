@@ -2,10 +2,11 @@ package gift.item.repository;
 
 import gift.item.Item;
 import java.util.List;
+import java.util.Optional;
 
 public interface ItemRepository {
 
-    Item findById(Long id);
+    Optional<Item> findById(Long id);
 
     List<Item> findAll();
 
