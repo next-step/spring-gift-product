@@ -4,7 +4,6 @@ import gift.entity.Product;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,10 +42,18 @@ public class ProductRepository {
     }
 
     public Product save(Product product) {
-        product.setId(nextId++);
-        store.put(product.getId(), product);
+        jdbcClient.sql("""
+        INSERT INTO product (name, price, image_url)
+        VALUES (:name, :price, :imageUrl)
+    """)
+                .param("name", product.getName())
+                .param("price", product.getPrice())
+                .param("imageUrl", product.getImageUrl())
+                .update();
+
         return product;
     }
+
 
     public void update(Long id, Product updatedProduct) {
         Product existing = store.get(id);
