@@ -1,10 +1,12 @@
 package gift.repository;
 
 import gift.entity.Product;
+import gift.exception.NotFoundByIdException;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +44,7 @@ public class DatabaseProductRepository implements ProductRepository {
         this.jdbcClient = jdbcClient;
     }
 
+    @Transactional
     @Override
     public Long saveProduct(String name, Integer price, String imageUrl) {
         GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
@@ -72,14 +75,15 @@ public class DatabaseProductRepository implements ProductRepository {
     }
 
     @Override
-    public boolean updateProduct(Product product) {
+    public void updateProduct(Product product) {
         int numOfUpdatedRows = jdbcClient.sql(UPDATE_PRODUCT)
                 .param("id", product.id())
                 .param("name", product.name())
                 .param("price", product.price())
                 .param("imageUrl", product.imageUrl())
                 .update();
-        return numOfUpdatedRows > 0;
+        if (numOfUpdatedRows == 0)
+            throw new NotFoundByIdException("Not Found id: " + product.id());
     }
 
     @Override

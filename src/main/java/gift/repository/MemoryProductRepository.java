@@ -34,14 +34,10 @@ public class MemoryProductRepository implements ProductRepository {
     }
 
     @Override
-    public boolean updateProduct(Product product) {
-
-        if (!products.containsKey(product.id())) {
-            return false;
-        }
-
+    public void updateProduct(Product product) {
+        if (!products.containsKey(product.id()))
+            throw new NotFoundByIdException("Product with id " + product.id() + " does not exist.");
         products.put(product.id(), product);
-        return true;
     }
 
     @Override

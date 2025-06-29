@@ -33,11 +33,9 @@ public class ProductService {
     }
 
     public void updateProduct(Long id, ProductRequestDto productUpdateDto) {
-        boolean isSuccessful = productRepository.updateProduct(
+        productRepository.updateProduct(
                 productUpdateDto.toEntity(id)
         );
-        if (!isSuccessful)
-            throw new NotFoundByIdException("Not found by id: " + id);
     }
 
     public List<ProductResponseDto> findAllProducts() {
