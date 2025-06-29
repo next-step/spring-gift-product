@@ -1,5 +1,6 @@
 package gift.product.repository;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import gift.product.entity.Product;
 
@@ -9,13 +10,34 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class ProductRepository {
-    //임시 저장소
-    private final Map<Long, Product> products = new ConcurrentHashMap<>();
-    private final AtomicLong id = new AtomicLong(1L);
+
+    private final JdbcTemplate jdbcTemplate;
+
+    public ProductRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+        //임시 저장소
+        private final Map<Long, Product> products = new ConcurrentHashMap<>();
+        private final AtomicLong id = new AtomicLong(1L);
 
     //단건 조회
     public Optional<Product> findById(Long id) {
-        return Optional.ofNullable(products.get(id));
+
+        String sql = "select * from product where id = ?";
+        List<Product> productList = jdbcTemplate.query(sql ,(rs, rowNum) -> {
+
+            // 추후 refactor
+            Product product = new Product();
+            product.setId(rs.getLong("id"));
+            product.setName(rs.getString("name"));
+            product.setPrice(rs.getInt("price"));
+            product.setImageUrl(rs.getString("image_url"));
+            return product;
+
+        }, id);
+
+        return Optional.ofNullable(productList.getFirst());
     }
 
     //전체 조회
