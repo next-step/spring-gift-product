@@ -13,6 +13,6 @@ public record ProductRequestDto(
         @Min(value = 0, message = "가격은 0 이상이어야 합니다.")
         @Max(value = 9_999_999_999L, message = "가격은 9,999,999,999 이하여야합니다.")
         Long price,
-        @Size(max = 2000, message = "이미지 URL은 2000자 이하여야 합니다.")
+        @Size(max = 1000, message = "이미지 URL은 1,000자 이하여야 합니다.")
         String imageUrl) {
 }
