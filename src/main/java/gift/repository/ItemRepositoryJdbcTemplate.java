@@ -13,21 +13,20 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+
 @Repository
-public class ItemRepositoryJDBC implements ItemRepository{
+public class ItemRepositoryJdbcTemplate implements ItemRepository{
 
     private final JdbcTemplate jdbcTemplate;
 
-    public ItemRepositoryJDBC(JdbcTemplate jdbcTemplate) {
+    public ItemRepositoryJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
     public Item saveItem(Item item) {
         var sql = "insert into items (name, price, image_url) values (?, ?, ?)";
-
         KeyHolder keyholder = new GeneratedKeyHolder();
-
 
         jdbcTemplate.update(connection ->{
             PreparedStatement ps = connection.prepareStatement(
