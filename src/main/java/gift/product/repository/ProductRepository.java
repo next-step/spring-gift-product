@@ -17,9 +17,9 @@ public class ProductRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-        //임시 저장소
-        private final Map<Long, Product> products = new ConcurrentHashMap<>();
-        private final AtomicLong id = new AtomicLong(1L);
+    //임시 저장소
+    private final Map<Long, Product> products = new ConcurrentHashMap<>();
+    private final AtomicLong id = new AtomicLong(1L);
 
     //단건 조회
     public Optional<Product> findById(Long id) {
@@ -42,7 +42,18 @@ public class ProductRepository {
 
     //전체 조회
     public List<Product> findAll() {
-        return new ArrayList<>(products.values());
+        String sql = "select * from product";
+        return jdbcTemplate.query(sql ,(rs, rowNum) -> {
+
+            // 추후 refactor
+            Product product = new Product();
+            product.setId(rs.getLong("id"));
+            product.setName(rs.getString("name"));
+            product.setPrice(rs.getInt("price"));
+            product.setImageUrl(rs.getString("image_url"));
+            return product;
+
+        });
     }
 
     //추가
