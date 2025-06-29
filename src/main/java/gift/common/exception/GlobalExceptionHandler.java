@@ -1,7 +1,9 @@
 package gift.common.exception;
 
-import gift.common.ErrorResponse;
+import gift.common.dto.ErrorResponse;
 import gift.product.exception.ProductNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+  private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(Exception exception) {
@@ -37,8 +41,9 @@ public class GlobalExceptionHandler {
   }
 
   private static ResponseEntity<ErrorResponse> createErrorResponse(ErrorCode errorCode, Exception exception){
+    logger.error("Business exception occurred: {}",exception.getMessage());
     return ResponseEntity
         .status(errorCode.getStatus())
-        .body(ErrorResponse.from(errorCode, exception));
+        .body(ErrorResponse.from(errorCode));
   }
 }

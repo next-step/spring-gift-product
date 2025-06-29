@@ -10,8 +10,8 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 public class PageParamArgumentResolver implements HandlerMethodArgumentResolver {
-  private static final String OFFSET_PARAM_KEY = "offset";
-  private static final String PAGE_SIZE_PARAM_KEY = "pageSize";
+  private static final String OFFSET_PARAM_KEY = "page";
+  private static final String PAGE_SIZE_PARAM_KEY = "size";
   private static final String SORT_PARAM_KEY = "sort";
   private static final String SORT_DELIMITER = ",";
   private static final int DEFAULT_OFFSET = 0;
