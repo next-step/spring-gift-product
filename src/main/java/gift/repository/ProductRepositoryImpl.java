@@ -1,12 +1,11 @@
 package gift.repository;
 
+import gift.dto.PageRequestDto;
+import gift.dto.PageResult;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.exception.ProductNotFoundException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -35,14 +34,13 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Page<ProductResponseDto> findAllProducts(Pageable pageable) {
+    public PageResult<ProductResponseDto> findAllProducts(PageRequestDto pageRequestDto) {
         List<Product> allProducts = new ArrayList<>(products.values());
 
         int total = allProducts.size();
-
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
-        int startIdx = currentPage * pageSize;
+        int pageSize = pageRequestDto.size();
+        int currentPage = pageRequestDto.page();
+        int startIdx = pageSize * currentPage;
         int endIdx = Math.min(startIdx + pageSize, total);
 
         List<ProductResponseDto> pageList = new ArrayList<>();
@@ -52,7 +50,9 @@ public class ProductRepositoryImpl implements ProductRepository {
                     .toList();
         }
 
-        return new PageImpl<>(pageList, pageable, total);
+        int totalPages = (int) Math.ceil((double) total / pageSize);
+
+        return new PageResult<>(pageList, currentPage, totalPages, pageSize, total);
     }
 
     @Override
