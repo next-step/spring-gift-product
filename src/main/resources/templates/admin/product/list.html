@@ -46,16 +46,6 @@
     </tbody>
 </table>
 
-<div style="margin-top: 20px;">
-    <span>페이지: </span>
-    <span th:each="i : ${#numbers.sequence(1, 5)}">
-    <a th:href="@{|/admin/products?page=${i - 1}|}"
-       th:text="${i}"
-       th:classappend="${page + 1 == i} ? 'current' : ''"
-       style="margin: 0 4px; text-decoration: none;">
-    </a>
-  </span>
-</div>
 
 </body>
 </html>
