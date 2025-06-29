@@ -17,7 +17,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         List<ProductResponseDto> allProducts = new ArrayList<>();
         for (Product product : products.values()) {
-            ProductResponseDto productResponseDto = new ProductResponseDto(product);
+            ProductResponseDto productResponseDto = new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
             allProducts.add(productResponseDto);
         }
         return allProducts;

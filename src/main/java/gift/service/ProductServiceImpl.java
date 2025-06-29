@@ -23,7 +23,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = new Product(requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
         Product saveProduct = productRepository.saveProduct(product);
 
-        return new ProductResponseDto(saveProduct);
+        return new ProductResponseDto(saveProduct.getId(), saveProduct.getName(), saveProduct.getPrice(), saveProduct.getImageUrl());
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
             product.setImageUrl(requestDto.getImageUrl());
         }
 
-        return new ProductResponseDto(product);
+        return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
     }
 
     @Override
