@@ -42,7 +42,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> getById(@PathVariable Long id) {
-        Product product = productService.getById(id);
+        Product product = productService.findById(id);
         return ResponseEntity.ok(ProductResponse.from(product));
     }
 
@@ -53,7 +53,7 @@ public class ProductController {
             @RequestParam(defaultValue = "id,asc") String sort,
             @RequestParam(required = false) Long categoryId
     ) {
-        List<Product> products = productService.getAllByPage(page, size, sort, categoryId);
+        List<Product> products = productService.findAllByPage(page, size, sort, categoryId);
         List<ProductResponse> response = products.stream()
                 .map(ProductResponse::from)
                 .toList();

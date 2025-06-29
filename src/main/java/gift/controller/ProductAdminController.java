@@ -28,7 +28,7 @@ public class ProductAdminController {
             @RequestParam(required = false) String keyword,
             Model model) {
 
-        List<Product> filtered = productService.getAllProducts(sort, keyword);
+        List<Product> filtered = productService.findAllProducts(sort, keyword);
         List<ProductResponse> products = filtered.stream()
                 .map(ProductResponse::from)
                 .toList();
@@ -66,7 +66,7 @@ public class ProductAdminController {
      */
     @GetMapping("/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
-        Product product = productService.getById(id);
+        Product product = productService.findById(id);
         ProductRequest request = new ProductRequest(
                 product.getCategoryId(),
                 product.getName(),

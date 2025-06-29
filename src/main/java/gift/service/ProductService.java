@@ -21,25 +21,25 @@ public class ProductService {
         return repository.save(name, price, imageUrl);
     }
 
-    public Product getById(Long id) {
+    public Product findById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
-    public List<Product> getAllByPage(int page, int size, String sort, Long categoryId) {
+    public List<Product> findAllByPage(int page, int size, String sort, Long categoryId) {
         return repository.findAll().stream()
                 .filter(product -> categoryId == null || product.getCategoryId().equals(categoryId))
-                .sorted(getComparator(sort))
+                .sorted(createComparator(sort))
                 .skip((long) page * size)
                 .limit(size)
                 .toList();
     }
 
 
-    public List<Product> getAllProducts(String sort, String keyword) {
+    public List<Product> findAllProducts(String sort, String keyword) {
         return repository.findAll().stream()
                 .filter(p -> matchesKeyword(p, keyword))
-                .sorted(getComparator(sort))
+                .sorted(createComparator(sort))
                 .toList();
     }
 
@@ -50,7 +50,7 @@ public class ProductService {
                 String.valueOf(p.getId()).equals(keyword);
     }
 
-    private Comparator<Product> getComparator(String sort) {
+    private Comparator<Product> createComparator(String sort) {
         String[] parts = sort.split(",");
         String key = parts[0];
         boolean ascending = parts.length < 2 || parts[1].equalsIgnoreCase("asc");
