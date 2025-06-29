@@ -47,7 +47,7 @@
           <td class="text-center align-middle">
             <div class="d-inline-flex gap-2 align-items-center">
               <!-- 수정 버튼 -->
-              <a th:href="@{'/admin/products/edit/' + ${product.id}}"
+              <a th:href="@{'/admin/products/' + ${product.id} + '/edit'}"
                  class="btn btn-sm btn-warning d-flex align-items-center justify-content-center"
                  style="color: black; min-width: 70px; height: 40px;">
                 Edit
