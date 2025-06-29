@@ -7,18 +7,17 @@ import gift.entity.Product;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface ProductRepository {
 
-    List<ProductResponseDto> findAll();
+    List<Product> findAll();
 
-    ProductResponseDto createProduct(ProductRequestDto requestDto);
+    Long create(ProductRequestDto requestDto);
 
-    ProductResponseDto findProduct(Long productId);
+    Optional<Product> findById(Long productId);
 
-    ProductResponseDto updateProduct(Long productId, ProductRequestDto requestDto);
+    int update(Long productId, ProductRequestDto requestDto);
 
-    void deleteProduct(Long productId);
-
-    Map<Long, Product> findAllMap();
+    void delete(Long productId);
 }

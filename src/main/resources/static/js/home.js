@@ -20,16 +20,16 @@ function closeModal() {
 
 // 체크박스 클릭 후, 모두 삭제 버튼
 document.getElementById('delete-button').addEventListener('click', () => {
-    const selectKeys = document.querySelectorAll('input[name=selectedKey]:checked');
-    const selectkeyList = Array.from(selectKeys).map(selectKeys => selectKeys.value);
-    const selectkeyLength = selectkeyList.length;
+    const selectIds = document.querySelectorAll('input[name=selectedId]:checked');
+    const selectIdList = Array.from(selectIds).map(selectIds => selectIds.value);
+    const selectIdLength = selectIdList.length;
 
-    if (!selectkeyLength) {
+    if (!selectIdLength) {
         alert('선택된 물품이 없습니다!')
     }
     else {
-        const promises = selectkeyList.map(key =>
-            fetch(`/view/products/${key}`, {
+        const promises = selectIdList.map(id =>
+            fetch(`/view/products/${id}`, {
                         method: 'DELETE'
             })
         );
@@ -48,21 +48,20 @@ document.querySelectorAll('.update-button').forEach(button => {
         const row = event.currentTarget.closest('tr');
         const cells = Array.from(row.cells);
 
-        const productId = cells[1].textContent.trim();
-        const id        = cells[2].textContent.trim();
-        const name      = cells[3].textContent.trim();
-        const price     = cells[4].textContent.trim();
-        const imageUrl  = cells[5].textContent.trim();
+        const id        = cells[1].textContent.trim();
+        const name      = cells[2].textContent.trim();
+        const price     = cells[3].textContent.trim();
+        const imageUrl  = cells[4].textContent.trim();
 
         openCreateModal('물품 수정 창', 'update-product.html');
 
         const modalEl = document.getElementById('product-modal');
         modalEl.addEventListener('modalready', () => {
-          document.getElementById('productId').value = productId;
-          document.getElementById('id').value         = id;
           document.getElementById('name').value       = name;
           document.getElementById('price').value      = price;
           document.getElementById('imageUrl').value   = imageUrl;
+
+          document.getElementById('update-form').action = `/view/products/update/${id}`;
         }, { once: true });
     });
 });

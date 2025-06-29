@@ -3,13 +3,7 @@
   <link rel="stylesheet" href="/css/modal-form-style.css">
 </head>
 <body>
-<form action="/view/products/update" method="post">
-  <label for="productId">번호</label>
-  <input id="productId" type="number" name="productId" readonly>
-
-  <label for="id">아이디</label>
-  <input id="id" type="number" name="id" placeholder="아이디를 입력하세요">
-
+<form id="update-form" action="/view/products/update" method="post">
   <label for="name">물품 이름</label>
   <input id="name" type="text" name="name" placeholder="물품 이름을 입력하세요">
 
@@ -19,7 +13,7 @@
   <label for="imageUrl">이미지 URL</label>
   <input id="imageUrl" type="text" name="imageUrl" placeholder="이미지 URL을 입력하세요">
 
-  <button id="update-submit-button" type="submit">물품 등록</button>
+  <button id="update-submit-button" type="submit">물품 수정</button>
 </form>
 </body>
 </html>

@@ -10,6 +10,23 @@
 | 같은 열에 존재하는 물품 삭제 |
 | 선택한 물품들 모두 삭제    |
 
+#### H2 DB 적용 및 Repository 구조 리팩토링
+
+- **Feat: H2 DB 설정 및 초기 데이터 스크립트 적용**
+    - H2 in-memory DB 도입 및 application.properties 설정
+    - `schema.sql`, `data.sql`을 통해 product 테이블 구조와 초기 데이터 삽입
+    - `spring.sql.init.mode=always` 등 SQL 스크립트 자동 실행 설정
+
+- **Refactor: 임시 Map 저장소를 H2 DB 연동 방식으로 리팩토링**
+    - 기존의 `Map<Long, Product>` 형태의 임시 저장소 제거
+    - `JdbcTemplate` 기반의 실제 DB 연동 Repository 구현
+    - DB 기반 저장/조회/수정/삭제 기능으로 대체
+
+- **Refactor: Repository의 DTO 반환 책임을 제거하여 SRP 준수**
+    - Repository에서 `ProductResponseDto` 반환 제거
+    - DB에서 도메인 객체(`Product`)만 반환하도록 수정
+    - DTO 변환은 Service 계층에서 처리하도록 역할 분리
+
 #### API 명세서
 
 - 상품 API
