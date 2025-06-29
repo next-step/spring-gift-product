@@ -6,3 +6,4 @@
 - Database에 테스트용 데이터를 static/sql/data.sql에 정의
 - Database를 통해 동작하는 DatabaseProductRepository 구현
 - Database에 관련된 정보를 application.yml에 정의
+- ProductRequestDto에 validate 메서드를 통해서 유효성 검사 로직 추가
