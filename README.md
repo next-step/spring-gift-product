@@ -29,3 +29,8 @@
     Repository는 무조건 Product만 입력 받고 반환하도록 변경. 이에 따른 RequestDto -> Entity 생성자 구현
 
     Service에서 ResponseStatusException로 응답코드 반환 하지 않고 @RestControllerAdvice에서 처리하도록 변경
+
+# 데이터베이스 적용
+
+1. H2 Database 사용 및 이에 따른 Repository 레이어 수정
+2. jdbcTemplate 의존성 주입 관련 에러 수정
