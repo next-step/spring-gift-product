@@ -1,44 +1,69 @@
 package gift.repository;
 
 import gift.model.Product;
-import java.util.ArrayList;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ProductRepository {
 
-  private final Map<Long, Product> products = new HashMap<>();
-  private Long id = 0L;
+  private final JdbcTemplate jdbcTemplate;
+  private final SimpleJdbcInsert insert;
+
+  public ProductRepository(JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+    this.insert = new SimpleJdbcInsert(jdbcTemplate)
+        .withTableName("product")
+        .usingGeneratedKeyColumns("id");
+  }
 
   public List<Product> findAll() {
-    return new ArrayList<>(products.values());
+    String sql = "select * from product";
+    return jdbcTemplate.query(sql, this::mapRow);
   }
 
   public Optional<Product> findById(Long id) {
-    return Optional.ofNullable(products.get(id));
+    String sql = "select * from product where id = ?";
+    return jdbcTemplate.query(sql, this::mapRow, id)
+        .stream()
+        .findFirst();
   }
 
   public Product save(Product product) {
-    product.setId(id++);
-    products.put(product.getId(), product);
+    Map<String, Object> params = new HashMap<>();
+    params.put("name", product.getName());
+    params.put("price", product.getPrice());
+    params.put("imageUrl", product.getImageUrl());
+
+    Number key = insert.executeAndReturnKey(params);
+    product.setId(key.longValue());
     return product;
   }
 
-  public Product update(Long id, Product updateProduct) {
-    updateProduct.setId(id);
-    products.put(id, updateProduct);
-    return updateProduct;
+  public void update(Long id, Product updateProduct) {
+    String sql = "update product set name = ?, price = ?, imageurl = ? where id = ?";
+    jdbcTemplate.update(sql, updateProduct.getName(), updateProduct.getPrice(),
+        updateProduct.getImageUrl(), id);
   }
 
   public void delete(Long id) {
-    products.remove(id);
+    String sql = "delete from product where id = ?";
+    jdbcTemplate.update(sql, id);
   }
 
-  public boolean exists(Long id) {
-    return products.containsKey(id);
+  private Product mapRow(ResultSet rs, int rowNum) throws SQLException {
+    return new Product(
+        rs.getLong("id"),
+        rs.getString("name"),
+        rs.getInt("price"),
+        rs.getString("imageUrl")
+    );
   }
 }

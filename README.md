@@ -30,3 +30,9 @@
     - [x] th:object 사용해 코드 간소화
 - [x] saveProduct의 EndPoint 분리
 - [x] 도메인 객체를 뷰와 분리
+
+<hr>
+
+## Step3 [ 06/29 ]
+
+- [x] HashMap 대신 H2 DB 연동
