@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>상품 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        img {
+            border-radius: 5px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .actions form {
+            margin: 0;
+        }
+
+        .edit-link {
+            padding: 8px 12px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+        .edit-link:hover {
+            background-color: #e7f0ff;
+        }
+
+        .new-product {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .new-product:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<h1>상품 목록</h1>
+
+<form method="get" th:action="@{/admin/products}">
+    <input type="text" name="name" placeholder="상품명 검색" th:value="${param.name}" />
+    <input type="number" name="price" placeholder="가격 검색" th:value="${param.price}" />
+    <button type="submit">검색</button>
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>이름</th>
+        <th>가격</th>
+        <th>이미지</th>
+        <th>관리</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${items}">
+        <td th:text="${item.name}">상품명</td>
+        <td th:text="${item.price}">가격</td>
+        <td><img th:src="${item.imageUrl}" alt="이미지" width="100"/></td>
+        <td class="actions">
+            <form th:action="@{/admin/products/delete}" method="post">
+                <input type="hidden" name="id" th:value="${item.id}" />
+                <button type="submit">삭제</button>
+            </form>
+            <a th:href="@{/admin/products/{id}/edit(id=${item.id})}" class="edit-link">수정</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a class="new-product" th:href="@{/admin/products/new}">상품 등록</a>
+
+</body>
+</html>
