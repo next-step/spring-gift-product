@@ -58,14 +58,13 @@ public class ProductRepository{
         return Optional.of(new Product(id, name, price, imageUrl));
     }
 
-    public Optional<Product> deleteById(Long id) {
+    public boolean deleteById(Long id) {
         Optional<Product> product = findById(id);
-        if (product.isPresent()) {
-            String sql = "DELETE FROM products WHERE id = ?";
-            jdbcTemplate.update(sql, id);
-        }
+        if (product.isEmpty()) return false;
 
-        return product;
+        String sql = "DELETE FROM products WHERE id = ?";
+        return jdbcTemplate.update(sql, id) > 0 ;
+
     }
 
     public List<Product> findAll(int page, int size, String sortField, String sortDir) {
