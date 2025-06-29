@@ -40,13 +40,11 @@ public class ProductService {
     }
 
     @Transactional
-    public ProductResponse updateProduct(Long id, ProductUpdateRequest req) {
-        Optional<Product> optionalProduct = productRepository.get(id);
-        if (optionalProduct.isEmpty()) {
-            throw new RuntimeException("ProductService : updateProduct() failed - 404 Not Found Error");
+    public void updateProduct(Long id, ProductUpdateRequest req) {
+        int affectedRows = productRepository.update(id, req);
+        if (affectedRows == 0) {
+            throw new RuntimeException("ProductService : updateProduct() failed - 500 Internal Server Error");
         }
-        Product product = optionalProduct.get();
-        return ProductResponse.from(productRepository.update(id, req));
     }
 
     @Transactional

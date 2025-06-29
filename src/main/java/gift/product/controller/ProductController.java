@@ -30,8 +30,9 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long productId, @RequestBody ProductUpdateRequest productUpdateRequest) {
-        return new ResponseEntity<>(productService.updateProduct(productId, productUpdateRequest), HttpStatus.OK);
+    public ResponseEntity<Void> updateProduct(@PathVariable Long productId, @RequestBody ProductUpdateRequest productUpdateRequest) {
+        productService.updateProduct(productId, productUpdateRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{productId}")
