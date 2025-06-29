@@ -47,10 +47,11 @@ public class ProductViewController {
             return "products/form";     // 유효성 오류 있으면 다시 폼으로
         }
 
-        Product product = new Product();
-        product.setName(request.getName());
-        product.setPrice(request.getPrice());
-        product.setImageUrl(request.getImageUrl());
+        Product product = new Product(
+            request.getName(),
+            request.getPrice(),
+            request.getImageUrl()
+        );
 
         productService.registerProduct(product);
         return "redirect:/admin/products";
