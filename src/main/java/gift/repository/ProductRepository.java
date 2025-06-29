@@ -43,8 +43,8 @@ public class ProductRepository{
     public Optional<Product> findById(Long productId) {
         String sql = "SELECT * FROM products WHERE id = ?";
 
-        Product product = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Product.class), productId);
-        return Optional.ofNullable(product);
+        List<Product> products = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Product.class), productId);
+        return Optional.ofNullable(products.isEmpty() ? null : products.get(0));
     }
 
     public Optional<Product> update(Long id, String name, Integer price, String imageUrl) {
