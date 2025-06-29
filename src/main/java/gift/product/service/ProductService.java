@@ -47,7 +47,8 @@ public class ProductService {
     if(productRepository.findById(id).isEmpty()){
       throw new ProductNotFoundException(ErrorCode.PRODUCT_NOT_FOUND);
     }
-    Product newProduct = Product.of(
+    Product newProduct = Product.withId(
+        id,
         dto.name(),
         dto.price(),
         dto.description(),

@@ -1,6 +1,5 @@
 package gift.product.repository;
 
-import gift.common.dto.PagedResult;
 import gift.common.dto.SortInfo;
 import gift.product.domain.Product;
 import gift.product.strategy.ProductSortStrategyFactory;
