@@ -7,6 +7,7 @@ import gift.entity.Product;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface ProductRepository {
 
@@ -14,7 +15,7 @@ public interface ProductRepository {
 
     Long create(ProductRequestDto requestDto);
 
-    Product findById(Long productId);
+    Optional<Product> findById(Long productId);
 
     int update(Long productId, ProductRequestDto requestDto);
 

@@ -41,12 +41,14 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponseDto create(ProductRequestDto requestDto) {
         Long id = productRepository.create(requestDto);
 
-        return new ProductResponseDto(id, requestDto.name(), requestDto.price(), requestDto.imageUrl());
+        return new ProductResponseDto(id, requestDto.name(), requestDto.price(),
+            requestDto.imageUrl());
     }
 
     @Override
     public ProductResponseDto findById(Long id) {
-        Product product = productRepository.findById(id);
+        Product product = productRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         return ProductResponseDto.from(product);
     }
@@ -59,7 +61,8 @@ public class ProductServiceImpl implements ProductService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
-        return new ProductResponseDto(id, requestDto.name(), requestDto.price(), requestDto.imageUrl());
+        return new ProductResponseDto(id, requestDto.name(), requestDto.price(),
+            requestDto.imageUrl());
     }
 
     @Override
