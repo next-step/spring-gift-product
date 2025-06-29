@@ -58,20 +58,20 @@ public class ProductController {
 
     @ExceptionHandler(NotFoundByIdException.class)
     public ResponseEntity<String> handleNotFoundByIdException(NotFoundByIdException e) {
-        log.error(e.getMessage());
+        log.trace(e.getMessage());
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body("Not Found by ID");
     }
 
     @ExceptionHandler(NotValidRequestException.class)
     public ResponseEntity<String> handleNotValidRequest(NotValidRequestException e) {
-        log.error(e.getMessage());
+        log.trace(e.getMessage());
         return ResponseEntity.badRequest().body("Not Valid Request");
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<String> handleJsonParseError(HttpMessageNotReadableException e) {
-        log.error(e.getMessage());
+        log.trace(e.getMessage());
         return ResponseEntity.badRequest().body("Invalid Request");
     }
 
