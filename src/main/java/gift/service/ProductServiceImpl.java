@@ -38,16 +38,9 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = productRepository.findProduct(id);
 
-        if(requestDto.getName() != null) {
-            product.setName(requestDto.getName());
-        }
-
-        if(requestDto.getPrice() != null) {
-            product.setPrice(requestDto.getPrice());
-        }
-        if(requestDto.getImageUrl() != null) {
-            product.setImageUrl(requestDto.getImageUrl());
-        }
+        product.changeName(requestDto.getName());
+        product.changePrice(requestDto.getPrice());
+        product.changImageUrl(requestDto.getImageUrl());
 
         return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
     }
