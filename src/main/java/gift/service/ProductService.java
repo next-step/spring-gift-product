@@ -2,14 +2,12 @@ package gift.service;
 
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
-import gift.entity.Product;
 import gift.exception.NotFoundByIdException;
 import gift.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -48,12 +46,8 @@ public class ProductService {
     }
 
     public ProductResponseDto findProductById(Long id) {
-        Optional<Product> optionalProduct = productRepository.findProductById(id);
-        if (optionalProduct.isEmpty())
-            throw new NotFoundByIdException("Not Found by id: " + id);
-
-        return new ProductResponseDto(
-                optionalProduct.get()
-        );
+        return productRepository.findProductById(id)
+                .map(ProductResponseDto::new)
+                .orElseThrow(() -> new NotFoundByIdException("Not Found by id: " + id));
     }
 }
