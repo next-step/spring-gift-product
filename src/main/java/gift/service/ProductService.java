@@ -2,9 +2,7 @@ package gift.service;
 
 import gift.dto.request.ProductCreateRequestDto;
 import gift.dto.response.ProductCreateResponseDto;
-import gift.dto.response.ProductDeleteResponseDto;
 import gift.dto.response.ProductGetResponseDto;
-import gift.dto.response.ProductUpdateResponseDto;
 import java.util.List;
 
 public interface ProductService {
@@ -13,10 +11,9 @@ public interface ProductService {
 
     List<ProductGetResponseDto> findAllProducts();
 
-    ProductGetResponseDto findProductByProductId(Long productId);
+    ProductGetResponseDto findProductById(Long productId);
 
-    ProductUpdateResponseDto updateProductByProductId(Long productId, String name, Double price,
-        String imageUrl);
+    void updateProductById(Long productId, String name, Double price, String imageUrl);
 
-    ProductDeleteResponseDto deleteProductByProductId(Long productId);
+    void deleteProductById(Long productId);
 }

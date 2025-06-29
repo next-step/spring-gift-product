@@ -3,9 +3,7 @@ package gift.controller;
 import gift.dto.request.ProductCreateRequestDto;
 import gift.dto.request.ProductUpdateRequestDto;
 import gift.dto.response.ProductCreateResponseDto;
-import gift.dto.response.ProductDeleteResponseDto;
 import gift.dto.response.ProductGetResponseDto;
-import gift.dto.response.ProductUpdateResponseDto;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -45,27 +43,25 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<ProductGetResponseDto> getProductByproductId(
-        @PathVariable Long productId) {
+    public ResponseEntity<ProductGetResponseDto> getProductById(@PathVariable Long productId) {
 
-        return new ResponseEntity<>(productService.findProductByProductId(productId),
-            HttpStatus.OK);
+        return new ResponseEntity<>(productService.findProductById(productId), HttpStatus.OK);
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<ProductUpdateResponseDto> updateProduct(@PathVariable Long productId,
-        @RequestBody ProductUpdateRequestDto productUpdaterequestDto) {
+    public ResponseEntity<Void> updateProductById(@PathVariable Long productId,
+        @Valid @RequestBody ProductUpdateRequestDto productUpdateRequestDto) {
 
-        return new ResponseEntity<>(
-            productService.updateProductByProductId(productId, productUpdaterequestDto.name(),
-                productUpdaterequestDto.price(),
-                productUpdaterequestDto.imageUrl()), HttpStatus.OK);
+        productService.updateProductById(productId, productUpdateRequestDto.name(),
+            productUpdateRequestDto.price(), productUpdateRequestDto.imageUrl());
+
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{productId}")
-    public ResponseEntity<ProductDeleteResponseDto> deleteProduct(@PathVariable Long productId) {
+    public ResponseEntity<Void> deleteProductById(@PathVariable Long productId) {
 
-        return new ResponseEntity<>(productService.deleteProductByProductId(productId),
-            HttpStatus.OK);
+        productService.deleteProductById(productId);
+        return ResponseEntity.noContent().build();
     }
 }

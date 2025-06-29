@@ -2,9 +2,7 @@ package gift.service;
 
 import gift.dto.request.ProductCreateRequestDto;
 import gift.dto.response.ProductCreateResponseDto;
-import gift.dto.response.ProductDeleteResponseDto;
 import gift.dto.response.ProductGetResponseDto;
-import gift.dto.response.ProductUpdateResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
@@ -27,9 +25,9 @@ public class ProductServiceImpl implements ProductService {
         Product product = new Product(productCreateRequestDto.name(),
             productCreateRequestDto.price(), productCreateRequestDto.imageUrl());
 
-        Product savedProduct = productRepository.saveProduct(product);
+        productRepository.saveProduct(product);
 
-        return new ProductCreateResponseDto(savedProduct);
+        return new ProductCreateResponseDto(product);
     }
 
     @Override
@@ -38,50 +36,25 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductGetResponseDto findProductByProductId(Long productId) {
-        Product product = productRepository.findProductByProductId(productId);
-
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Does not exist productId = " + productId);
-        }
-
-        return new ProductGetResponseDto(product);
+    public ProductGetResponseDto findProductById(Long productId) {
+        return productRepository.findProductById(productId)
+            .map(ProductGetResponseDto::new)
+            .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "Does not exist productId = " + productId)
+            );
     }
 
     @Override
-    public ProductUpdateResponseDto updateProductByProductId(Long productId, String name,
-        Double price,
-        String imageUrl) {
-        Product product = productRepository.findProductByProductId(productId);
+    public void updateProductById(Long productId, String name, Double price, String imageUrl) {
 
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Does not exist productId = " + productId);
-        }
+        Product product = new Product(productId, name, price, imageUrl);
 
-        if (name == null || price == null || imageUrl == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                "name, price, imageUrl must not be null.");
-        }
-
-        // 메모리 상(products)에 존재하는 Product를 직접 수정하기 때문에, 데이터베이스 접근을 하지 않았다.
-        product.update(name, price, imageUrl);
-
-        return new ProductUpdateResponseDto(product);
+        productRepository.updateProductById(product);
     }
 
     @Override
-    public ProductDeleteResponseDto deleteProductByProductId(Long productId) {
-        Product product = productRepository.findProductByProductId(productId);
-
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Does not exist productId = " + productId);
-        }
-
-        Product deletedProduct = productRepository.deleteProductByProductId(productId);
-
-        return new ProductDeleteResponseDto(deletedProduct);
+    public void deleteProductById(Long productId) {
+        productRepository.deleteProductById(productId);
     }
 }

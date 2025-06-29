@@ -3,14 +3,17 @@ package gift.repository;
 import gift.dto.response.ProductGetResponseDto;
 import gift.entity.Product;
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductRepository {
 
-    Product saveProduct(Product product);
+    void saveProduct(Product product);
 
     List<ProductGetResponseDto> findAllProducts();
 
-    Product findProductByProductId(Long productId);
+    Optional<Product> findProductById(Long productId);
 
-    Product deleteProductByProductId(Long productId);
+    void updateProductById(Product product);
+
+    void deleteProductById(Long productId);
 }
