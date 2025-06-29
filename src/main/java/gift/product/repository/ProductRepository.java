@@ -38,4 +38,12 @@ public class ProductRepository {
         List<Product> productList = new ArrayList<>(products.values());
         return Optional.of(productList);
     }
+
+    public Product update(Long id, ProductUpdateRequest request){
+        Product product = products.get(id);
+        products.remove(id);
+        Product updatedProduct = new Product(id, request.name(), request.price(), request.imageUrl());
+        products.put(id, updatedProduct);
+        return updatedProduct;
+    }
 }

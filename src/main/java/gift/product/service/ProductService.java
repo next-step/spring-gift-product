@@ -46,8 +46,7 @@ public class ProductService {
             throw new RuntimeException("ProductService : updateProduct() failed - 404 Not Found Error");
         }
         Product product = optionalProduct.get();
-        product.update(req);
-        return ProductResponse.from(product);
+        return ProductResponse.from(productRepository.update(id, req));
     }
 
     @Transactional
