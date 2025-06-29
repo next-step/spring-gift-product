@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -34,15 +35,11 @@ public class AdminController {
 
     @GetMapping("/add")
     public String showCreatePage(Model model) {
-        CreateProductRequestDto requestDto = new CreateProductRequestDto();
-        model.addAttribute("requestDto", requestDto);
         return "createForm";
     }
 
     @GetMapping("/update/{id}")
     public String showUpdatePage(@PathVariable Long id, Model model) {
-        CreateProductRequestDto requestDto = new CreateProductRequestDto();
-        model.addAttribute("requestDto", requestDto);
         model.addAttribute("id", id);
         return "updateForm";
     }
@@ -53,7 +50,7 @@ public class AdminController {
         return "redirect:/admin/boards";
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public String updateProduct(@PathVariable Long id,
             @ModelAttribute CreateProductRequestDto requestDto) {
         productService.updateProductById(id, requestDto);

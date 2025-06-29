@@ -1,32 +1,14 @@
 package gift.dto;
 
-public class CreateProductRequestDto {
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
-    private String name;
-    private Long price;
-    private String imageUrl;
+public record CreateProductRequestDto(String name, Long price, String imageUrl) {
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getPrice() {
-        return price;
-    }
-
-    public void setPrice(Long price) {
-        this.price = price;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public CreateProductRequestDto {
+        if (name == null || price == null || imageUrl == null || price < 0L) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 }
