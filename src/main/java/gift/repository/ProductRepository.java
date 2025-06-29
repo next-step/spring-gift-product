@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ProductRepository {
 
-    List<ProductResponseDto> findAllProducts();
+    List<Product> findAllProducts();
 
     Product saveProduct(Product product);
 

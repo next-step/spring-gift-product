@@ -13,13 +13,10 @@ public class ProductRepositoryImpl implements ProductRepository {
     private final Map<Long, Product> products = new HashMap<>();
 
     @Override
-    public List<ProductResponseDto> findAllProducts() {
+    public List<Product> findAllProducts() {
 
-        List<ProductResponseDto> allProducts = new ArrayList<>();
-        for (Product product : products.values()) {
-            ProductResponseDto productResponseDto = new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
-            allProducts.add(productResponseDto);
-        }
+        List<Product> allProducts = new ArrayList<>();
+        allProducts.addAll(products.values());
         return allProducts;
     }
 
