@@ -12,6 +12,7 @@
 ## Step 2
 - [x] AdminController 생성
 - [x] step1 피드백 기반 리팩토링
+
 - [x] step1 예외 처리 추가
 
 
@@ -27,3 +28,4 @@
 - [x] feat - 수동 JDBC getItem 구현
 - [x] feat - 수동 JDBC deleteItems 구현
 - [x] feat - 질문 주석 추가  
+
