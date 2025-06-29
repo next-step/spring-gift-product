@@ -121,10 +121,10 @@
 ## Step3 - DB 적용
 ### 구현 기능 상세
 
-- [ ] H2 데이터베이스 적용
-  - [ ] 메모리 저장 방식 제거
-  - [ ] H2 데이터베이스 의존성 추가
-  - [ ] 데이터 베이스 스키마 정의 (schema.sql)
-  - [ ] 초기 데이터 삽입 (data.sql)
-  - [ ] JDBCTemplate 사용해서 DB 연동
-  - [ ] ProductRepository를 데이터베이스 기반으로 변경하기
+- [X] H2 데이터베이스 적용
+  - [X] 메모리 저장 방식 제거
+  - [X] H2 데이터베이스 의존성 추가
+  - [X] 데이터 베이스 스키마 정의 (schema.sql)
+  - [X] 초기 데이터 삽입 (data.sql)
+  - [X] JDBCTemplate 사용해서 DB 연동
+  - [X] ProductRepository를 데이터베이스 기반으로 변경하기
