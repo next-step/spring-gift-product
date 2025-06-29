@@ -26,20 +26,13 @@ public class ProductService {
     }
 
     public ProductResponseDto findProduct(Long productId) {
-        Product product = productRepository.findProduct(productId);
-        if (product == null) {
-            throw new IllegalArgumentException();
-        }
+        Product product = findProductOrThrow(productId);
 
         return ProductResponseDto.from(product);
     }
 
     public ProductResponseDto updateProduct(Long productId, ProductRequestDto productRequestDto) {
-        Product product = productRepository.findProduct(productId);
-        if (product == null) {
-            throw new IllegalArgumentException();
-        }
-
+        Product product = findProductOrThrow(productId);
         product.update(
                 productRequestDto.name(),
                 productRequestDto.price(),
@@ -62,5 +55,10 @@ public class ProductService {
                                 .stream()
                                 .map(ProductResponseDto::from)
                                 .toList();
+    }
+
+    private Product findProductOrThrow(Long productId) {
+        return productRepository.findProduct(productId)
+                                .orElseThrow(IllegalArgumentException::new);
     }
 }

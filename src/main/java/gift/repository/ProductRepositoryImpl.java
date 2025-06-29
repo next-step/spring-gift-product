@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -26,9 +27,9 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product findProduct(Long productId) {
+    public Optional<Product> findProduct(Long productId) {
 
-        return products.get(productId);
+        return Optional.ofNullable(products.get(productId));
     }
 
     @Override
