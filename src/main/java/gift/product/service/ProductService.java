@@ -1,17 +1,15 @@
 package gift.product.service;
 
+import gift.common.dto.PageRequest;
 import gift.common.dto.PagedResult;
-import gift.common.dto.SortInfo;
 import gift.common.exception.ErrorCode;
-import gift.common.strategy.SortStrategy;
 import gift.product.domain.Product;
 import gift.product.dto.CreateProductReqDto;
 import gift.product.dto.GetProductResDto;
 import gift.product.dto.UpdateProductReqDto;
 import gift.product.exception.ProductNotFoundException;
 import gift.product.repository.InMemoryProductRepository;
-import gift.product.strategy.ProductSortStrategyFactory;
-import java.util.Comparator;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +19,10 @@ public class ProductService {
 
   private final InMemoryProductRepository productRepository;
 
-  public PagedResult<GetProductResDto> getAllByPage(int page, int size, SortInfo sortInfo) throws IllegalArgumentException {
-    Comparator<Product> comparator = ProductSortStrategyFactory.getComparator(sortInfo);
-    PagedResult<Product> pagedResult = productRepository.findAll(page, size, comparator);
-    return pagedResult.map(GetProductResDto::from);
+  public PagedResult<GetProductResDto> getAllByPage(PageRequest pageRequest) throws IllegalArgumentException {
+    List<Product> pagedProductList = productRepository.findAll(pageRequest.offset(),
+        pageRequest.pageSize(),pageRequest.sortInfo());
+    return PagedResult.of(pagedProductList, pageRequest.offset(), pageRequest.pageSize()).map(GetProductResDto::from);
   }
 
   public GetProductResDto getProductById(Long id) throws ProductNotFoundException {

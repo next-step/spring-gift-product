@@ -1,18 +1,16 @@
 package gift.product.repository;
 
 import gift.common.dto.PagedResult;
-import gift.common.exception.ErrorCode;
-import gift.common.exception.InvalidSortFieldException;
-import gift.common.strategy.SortStrategy;
+import gift.common.dto.SortInfo;
 import gift.product.domain.Product;
 import gift.product.strategy.ProductSortStrategyFactory;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Sort;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -39,16 +37,16 @@ public class InMemoryProductRepository implements ProductRepository {
   }
 
   @Override
-  public PagedResult<Product> findAll(int page, int size, Comparator<Product> comparator) {
+  public List<Product> findAll(int offset, int pageSize, SortInfo sortInfo) {
+    Comparator<Product> comparator = ProductSortStrategyFactory.getComparator(sortInfo);
 
-    List<Product> content = productMap.values().stream()
+    List<Product> sortedAndPaged = productMap.values().stream()
         .sorted(comparator)
-        .skip((long) page * size)
-        .limit(size)
+        .skip((long) offset * pageSize)
+        .limit(pageSize)
         .toList();
 
-    return PagedResult.of(content,page,size);
-
+    return new ArrayList<>(sortedAndPaged);
   }
 
   @Override

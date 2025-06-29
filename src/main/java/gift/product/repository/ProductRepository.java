@@ -1,6 +1,6 @@
 package gift.product.repository;
 
-import gift.common.dto.PagedResult;
+import gift.common.dto.SortInfo;
 import gift.product.domain.Product;
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ProductRepository {
   Long save(Product product);
   Optional<Product> findById(Long id);
-  PagedResult<Product> findAll(int page, int size, String sortField, boolean asc);
+  List<Product> findAll(int offset, int pageSize, SortInfo sortInfo);
   void update(Long id, Product updateProduct);
   void deleteById(Long id);
 

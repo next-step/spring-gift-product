@@ -1,8 +1,8 @@
 package gift.product.controller;
 
-import gift.common.annotation.SortParam;
+import gift.common.annotation.PageParam;
+import gift.common.dto.PageRequest;
 import gift.common.dto.PagedResult;
-import gift.common.dto.SortInfo;
 import gift.product.dto.CreateProductReqDto;
 import gift.product.dto.GetProductResDto;
 import gift.product.dto.UpdateProductReqDto;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -35,11 +34,9 @@ public class ProductController {
 
   @GetMapping
   public ResponseEntity<PagedResult<GetProductResDto>> getAllProducts(
-      @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size,
-      @SortParam SortInfo sortInfo
+      @PageParam PageRequest pageRequest
   ) {
-    PagedResult<GetProductResDto> pagedResult = productService.getAllByPage(page, size, sortInfo);
+    PagedResult<GetProductResDto> pagedResult = productService.getAllByPage(pageRequest);
     return ResponseEntity.ok(pagedResult);
   }
 

@@ -7,6 +7,5 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SortParam {
-  String defaultValue() default "id,asc";
+public @interface PageParam {
 }
