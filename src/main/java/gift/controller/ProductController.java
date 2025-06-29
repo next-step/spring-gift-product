@@ -1,4 +1,4 @@
-package gift.Controller;
+package gift.controller;
 
 import gift.domain.Product;
 import gift.service.ProductService;
@@ -32,9 +32,12 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getById(@PathVariable Long id) {
-        return productService.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            Product product = productService.getById(id);
+            return ResponseEntity.ok(product);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{id}")

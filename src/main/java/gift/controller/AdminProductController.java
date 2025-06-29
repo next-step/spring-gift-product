@@ -1,4 +1,4 @@
-package gift.Controller;
+package gift.controller;
 
 import gift.domain.Product;
 import gift.service.ProductService;
@@ -32,8 +32,7 @@ public class AdminProductController {
 
     @GetMapping("/{id}")
     public String detail(@PathVariable Long id, Model model) {
-        Product product = productService.getById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 존재하지 않습니다: " + id));
+        Product product = productService.getById(id);
         model.addAttribute("product", product);
         return "admin/product-detail";
     }
@@ -52,8 +51,7 @@ public class AdminProductController {
 
     @GetMapping("/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
-        Product product = productService.getById(id)
-                .orElseThrow(() -> new IllegalArgumentException("상품이 없습니다."));
+        Product product = productService.getById(id);
         model.addAttribute("product", product);
         return "admin/product-form";
     }

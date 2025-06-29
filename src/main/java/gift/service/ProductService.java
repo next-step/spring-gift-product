@@ -6,23 +6,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Service
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private static final Logger log = LoggerFactory.getLogger(ProductService.class);
 
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
     public Product create(Product product) {
-
         return productRepository.save(product);
     }
 
@@ -30,8 +25,9 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Optional<Product> getById(Long id) {
-        return productRepository.findById(id);
+    public Product getById(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("해당 상품이 존재하지 않습니다."));
     }
 
     public void delete(Long id) {
