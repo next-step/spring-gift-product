@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${editMode} ? '상품 수정' : '상품 추가'"></title>
+</head>
+<body>
+
+<h1 th:text="${editMode} ? '상품 수정' : '상품 추가'"></h1>
+
+<!-- 수정 모드 -->
+<form th:if="${editMode}" th:action="@{/admin/products/{id}(id=${product.id})}" method="post">
+    <label>이름: <input type="text" name="name" th:value="${product.name}"/></label><br>
+    <label>가격: <input type="number" name="price" th:value="${product.price}"/></label><br>
+    <label>이미지 URL: <input type="text" name="imageUrl" th:value="${product.imageUrl}"/></label><br>
+    <button type="submit">수정</button>
+</form>
+
+<!-- 추가 모드 -->
+<form th:unless="${editMode}" th:action="@{/admin/products}" method="post">
+    <label>이름: <input type="text" name="name" th:value="${product.name}"/></label><br>
+    <label>가격: <input type="number" name="price" th:value="${product.price}"/></label><br>
+    <label>이미지 URL: <input type="text" name="imageUrl" th:value="${product.imageUrl}"/></label><br>
+    <button type="submit">등록</button>
+</form>
+
+<a th:href="@{/admin/products}">← 목록으로</a>
+</body>
+</html>
