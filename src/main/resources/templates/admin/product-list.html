@@ -23,6 +23,10 @@
   </tr>
   </thead>
   <tbody>
+  <tr th:if="${products.empty}">
+    <td colspan="4">등록된 상품이 없습니다.</td>
+  </tr>
+
   <tr th:each="product : ${products}" style="cursor: pointer;" class="clickable-row"
       th:data-id="${product.id}">
     <td th:text="${product.name}">상품명</td>
@@ -44,13 +48,13 @@
 
 <div class="pagination">
   <span th:if="${products.hasPrevious()}">
-    <a th:href="@{/products(page=${products.number - 1})}">&laquo; 이전</a>
+    <a th:href="@{/admin/products(page=${products.number - 1})}">&laquo; 이전</a>
   </span>
 
   <span>페이지 <b th:text="${products.number + 1}"></b></span>
 
   <span th:if="${products.hasNext()}">
-    <a th:href="@{/products(page=${products.number + 1})}">다음 &raquo;</a>
+    <a th:href="@{/admin/products(page=${products.number + 1})}">다음 &raquo;</a>
   </span>
 </div>
 
