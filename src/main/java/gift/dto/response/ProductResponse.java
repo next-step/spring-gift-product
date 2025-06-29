@@ -5,4 +5,3 @@ public record ProductResponse(Long id, String name, int price, String imageUrl) 
         this(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
     }
 }
-

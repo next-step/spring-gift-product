@@ -8,6 +8,7 @@
 
 ## 구현 기능 목록
 
+
 - [x] 상품 등록 API (POST `/api/products`)
 - [x] 상품 단건 조회 API (GET `/api/products/{productId}`)
 - [x] 상품 전체 목록 조회 API (GET `/api/products`) - 페이지네이션은 DB 연동 후 구현 예정
@@ -99,6 +100,7 @@
 ```
   성공 시 204, 실패 시 404
 ```
+<<<<<<< HEAD
 
 ---
 
@@ -128,3 +130,20 @@
 ![상품 검색 화면](images/2025-06-26-232130.png)
 ---
 
+# [step3] 데이터베이스 적용
+
+## 구현 기능 목록
+
+상품 정보를 메모리 대신 H2 DB에 저장하도록 변경(JdbcClient 사용)
+
+- [x] H2 데이터베이스 설정
+- [x] 데이터베이스 초기화(schema.sql, data.sql)
+- [x] Repository 레이어 분리 및 구현 
+- [x] 메모리 코드 제거 및 DB 연동 적용 
+
+---
+### H2 콘솔 확인
+[http://localhost:8080/h2-console](http://localhost:8080/h2-console)접속
+→ `PRODUCT` 테이블이 생성 & 초기 데이터 삽입 확인
+
+![H2 콘솔 확인](images/2025-06-29-020928.png)
