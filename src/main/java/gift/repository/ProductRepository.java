@@ -82,7 +82,9 @@ public class ProductRepository {
     }
 
     public void deleteById(Long id) {
-        store.remove(id);
+        jdbcClient.sql("DELETE FROM product WHERE id = :id")
+                .param("id", id)
+                .update();
     }
 
 
