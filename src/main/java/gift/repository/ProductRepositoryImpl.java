@@ -20,25 +20,21 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public int saveProduct(Product product) {
+    public void saveProduct(Product product) {
 
         String sql = "INSERT INTO products(name, price, imageUrl) VALUES(?,?,?)";
 
-        return jdbcTemplate.update(sql, product.getName(), product.getPrice(),
-            product.getImageUrl());
+        isUpdateSuccessful(
+            jdbcTemplate.update(sql, product.getName(), product.getPrice(), product.getImageUrl()));
     }
 
     @Override
     public List<ProductGetResponseDto> findAllProducts() {
 
         String sql = "SELECT productId, name, price, imageUrl FROM products";
-        return jdbcTemplate.query(sql, (rs, rowNum) ->
-            new ProductGetResponseDto(
-                rs.getLong("productId"),
-                rs.getString("name"),
-                rs.getDouble("price"),
-                rs.getString("imageUrl")
-            ));
+        return jdbcTemplate.query(sql,
+            (rs, rowNum) -> new ProductGetResponseDto(rs.getLong("productId"), rs.getString("name"),
+                rs.getDouble("price"), rs.getString("imageUrl")));
     }
 
     @Override
@@ -46,15 +42,9 @@ public class ProductRepositoryImpl implements ProductRepository {
         String sql = "SELECT productId, name, price, imageUrl FROM products WHERE productId = ?";
 
         try {
-            Product product = jdbcTemplate.queryForObject(sql, (rs, rowNum) ->
-                    new Product(
-                        rs.getLong("productId"),
-                        rs.getString("name"),
-                        rs.getDouble("price"),
-                        rs.getString("imageUrl")
-                    ),
-                productId
-            );
+            Product product = jdbcTemplate.queryForObject(sql,
+                (rs, rowNum) -> new Product(rs.getLong("productId"), rs.getString("name"),
+                    rs.getDouble("price"), rs.getString("imageUrl")), productId);
             return Optional.of(product);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
@@ -65,18 +55,27 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public int updateProductById(Long productId, String name, Double price,
-        String imageUrl) {
+    public void updateProductById(Long productId, String name, Double price, String imageUrl) {
 
         String sql = "UPDATE products SET name = ?, price = ?, imageUrl = ? WHERE productId = ?";
-        return jdbcTemplate.update(sql, name, price, imageUrl, productId);
+
+        isUpdateSuccessful(jdbcTemplate.update(sql, name, price, imageUrl, productId));
     }
 
 
     @Override
-    public int deleteProductById(Long productId) {
+    public void deleteProductById(Long productId) {
 
         String sql = "DELETE FROM products WHERE productId = ?";
-        return jdbcTemplate.update(sql, productId);
+
+        isUpdateSuccessful(jdbcTemplate.update(sql, productId));
+    }
+
+    public boolean isUpdateSuccessful(int productRows) {
+        if (productRows == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                "Failed to update." + productRows);
+        }
+        return true;
     }
 }

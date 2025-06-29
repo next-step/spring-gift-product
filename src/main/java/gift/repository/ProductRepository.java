@@ -7,13 +7,13 @@ import java.util.Optional;
 
 public interface ProductRepository {
 
-    int saveProduct(Product product);
+    void saveProduct(Product product);
 
     List<ProductGetResponseDto> findAllProducts();
 
     Optional<Product> findProductById(Long productId);
 
-    int updateProductById(Long productId, String name, Double price, String imageUrl);
+    void updateProductById(Long productId, String name, Double price, String imageUrl);
 
-    int deleteProductById(Long productId);
+    void deleteProductById(Long productId);
 }

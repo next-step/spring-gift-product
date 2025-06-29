@@ -25,7 +25,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = new Product(productCreateRequestDto.name(),
             productCreateRequestDto.price(), productCreateRequestDto.imageUrl());
 
-        isUpdateSuccessful(productRepository.saveProduct(product));
+        productRepository.saveProduct(product);
 
         return new ProductCreateResponseDto(product);
     }
@@ -49,20 +49,12 @@ public class ProductServiceImpl implements ProductService {
     public void updateProductById(Long productId, String name,
         Double price,
         String imageUrl) {
-        isUpdateSuccessful(productRepository.updateProductById(productId, name, price,
-            imageUrl));
+        productRepository.updateProductById(productId, name, price,
+            imageUrl);
     }
 
     @Override
     public void deleteProductById(Long productId) {
-        isUpdateSuccessful(productRepository.deleteProductById(productId));
-    }
-
-    public boolean isUpdateSuccessful(int productRows) {
-        if (productRows == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "Failed to update." + productRows);
-        }
-        return true;
+        productRepository.deleteProductById(productId);
     }
 }
