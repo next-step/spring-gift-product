@@ -18,3 +18,6 @@ step 2
 - 관리자 페이지 구현
 - view Controller 구현
 
+step 3
+- 데이터 베이스 연동
+
