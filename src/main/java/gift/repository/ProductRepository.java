@@ -55,13 +55,17 @@ public class ProductRepository {
     }
 
 
-    public void update(Long id, Product updatedProduct) {
-        Product existing = store.get(id);
-        if (existing != null) {
-            existing.setName(updatedProduct.getName());
-            existing.setPrice(updatedProduct.getPrice());
-            existing.setImageUrl(updatedProduct.getImageUrl());
-        }
+    public void update(Long id, Product product) {
+        jdbcClient.sql("""
+            UPDATE product
+            SET name = :name, price = :price, image_url = :imageUrl
+            WHERE id = :id
+        """)
+                .param("name", product.getName())
+                .param("price", product.getPrice())
+                .param("imageUrl", product.getImageUrl())
+                .param("id", id)
+                .update();
     }
 
     public Product findById(Long id) {
