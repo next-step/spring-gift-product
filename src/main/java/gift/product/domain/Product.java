@@ -1,35 +1,76 @@
 package gift.product.domain;
 
-import gift.product.dto.UpdateProductReqDto;
-import lombok.Getter;
+public record Product(
+    Long id,
+    String name,
+    Integer price,
+    String description,
+    String imageUrl
+) {
 
-@Getter
-public class Product {
-
-  private final Long id;
-  private String name;
-  private int price;
-  private String description;
-
-  public Product(Long id, String name, int price, String description) {
-    this.id = id;
-    this.name = name;
-    this.price = price;
-    this.description = description;
+  public Product{
+    validateName(name);
+    validatePrice(price);
+    validateDescription(description);
+    validateImageUrl(imageUrl);
   }
 
-  public void updateProduct(UpdateProductReqDto dto) {
-    this.name = dto.name();
-    this.price = dto.price();
-    this.description = dto.description();
+  public static Product withId(Long id, String name, Integer price, String description, String imageUrl){
+    validateId(id);
+    return new Product(id, name, price,description,imageUrl);
+  }
+  public static Product withId(Long id, Product product){
+    validateId(id);
+    return new Product(id, product.name, product.price, product.description, product.imageUrl);
   }
 
-  public static Product of(Long id, Product original) {
-    return new Product(
-        id,
-        original.getName(),
-        original.getPrice(),
-        original.getDescription()
-    );
+  public static Product of(String name, Integer price, String description, String imageUrl){
+    return new Product(null, name, price,description,imageUrl);
   }
+
+  private static void validateId(Long id){
+    if(id==null){
+      throw new IllegalArgumentException("Id는 null일 수 없습니다.");
+    }
+    if(id<0){
+      throw new IllegalArgumentException("Id는 음수일 수 없습니다");
+    }
+  }
+
+  private static void validateName(String name) {
+    if(name==null){
+      throw new IllegalArgumentException("상품명은 null일 수 없습니다.");
+    }
+    if(name.isEmpty()){
+      throw new IllegalArgumentException("상품명은 빈 값일 수 없습니다");
+    }
+  }
+
+  private static void validatePrice(Integer price) {
+    if(price ==null){
+      throw new IllegalArgumentException("상품 가격은 null일 수 없습니다.");
+    }
+    if(price <0){
+      throw new IllegalArgumentException("상품 가격은 음수일 수 없습니다");
+    }
+  }
+
+  private static void validateDescription(String description) {
+    if(description==null){
+      throw new IllegalArgumentException("상품 설명은 null일 수 없습니다.");
+    }
+    if(description.isEmpty()){
+      throw new IllegalArgumentException("상품 설명은 빈 값일 수 없습니다");
+    }
+  }
+
+  private static void validateImageUrl(String imageUrl) {
+    if(imageUrl==null){
+      throw new IllegalArgumentException("이미지 URL은 null일 수 없습니다.");
+    }
+    if(imageUrl.isEmpty()){
+      throw new IllegalArgumentException("이미지 URL은 빈 값일 수 없습니다");
+    }
+  }
+
 }

@@ -8,6 +8,17 @@
 </head>
 <body class="container mt-4">
 
+<!-- 성공/에러 메시지 표시 -->
+<div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+  <span th:text="${successMessage}"></span>
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+
+<div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+  <span th:text="${errorMessage}"></span>
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+
 <div class="d-flex justify-content-between align-items-center mb-3">
   <h2>상품 목록</h2>
   <a th:href="@{/admin/products/add}" class="btn btn-primary">상품 등록</a>
@@ -20,6 +31,7 @@
     <th>가격</th>
     <th>상품 설명</th>
     <th>이미지 URL</th>
+    <th>관리</th>
   </tr>
   </thead>
   <tbody>
@@ -27,6 +39,7 @@
     <td th:text="${product.name}">상품명</td>
     <td th:text="${product.price}">가격</td>
     <td th:text="${product.description}">설명</td>
+    <td th:text="${product.imageUrl}">이미지 URL</td>
     <td>
       <a th:href="@{'/admin/products/edit/' + ${product.id}}" class="btn btn-sm btn-warning">수정</a>
       <form th:action="@{'/admin/products/delete/' + ${product.id}}" method="post" class="d-inline">
@@ -37,5 +50,6 @@
   </tbody>
 </table>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

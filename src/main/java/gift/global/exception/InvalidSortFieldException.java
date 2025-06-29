@@ -1,16 +1,18 @@
-package gift.common.exception;
+package gift.global.exception;
 
 
-import lombok.Getter;
+import gift.global.exception.ErrorCode;
 
-@Getter
 public class InvalidSortFieldException extends RuntimeException {
 
   private final ErrorCode errorCode;
 
   public InvalidSortFieldException(ErrorCode errorCode) {
-    super(errorCode.getMessage());
+    super(errorCode.getErrorMessage());
     this.errorCode = errorCode;
   }
 
+  public ErrorCode getErrorCode() {
+    return errorCode;
+  }
 }
