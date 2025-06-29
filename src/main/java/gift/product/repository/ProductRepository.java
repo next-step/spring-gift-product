@@ -1,9 +1,17 @@
 package gift.product.repository;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import gift.product.entity.Product;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -58,10 +66,28 @@ public class ProductRepository {
 
     //추가
     public Product save(Product product) {
-        Long getId = id.incrementAndGet();
-        product.setId(getId);
-        products.put(product.getId(), product);
-        return products.get(product.getId());
+        String sql = "insert into product(name, price, image_url) values(?, ?, ?)";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, product.getName());
+                ps.setInt(2, product.getPrice());
+                ps.setString(3, product.getImageUrl());
+                return ps;
+            }
+        }, keyHolder);
+
+        Number key = keyHolder.getKey();
+        if(key != null) {
+            product.setId(key.longValue());
+        }else{
+            throw new IllegalStateException("id 값을 불러오지 못했습니다");
+        }
+
+        return product;
     }
 
     //수정
