@@ -6,8 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -16,8 +14,6 @@ import java.util.List;
 public class AdminProductController {
 
     private final ProductService productService;
-
-    private static final Logger log = LoggerFactory.getLogger(AdminProductController.class);
 
     public AdminProductController(ProductService productService) {
         this.productService = productService;
@@ -62,7 +58,7 @@ public class AdminProductController {
         return "redirect:/admin/products";
     }
 
-    @PostMapping("/{id}/delete")
+    @GetMapping("/{id}/delete")
     public String delete(@PathVariable Long id) {
         productService.delete(id);
         return "redirect:/admin/products";
