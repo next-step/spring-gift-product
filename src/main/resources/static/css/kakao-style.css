@@ -162,3 +162,32 @@ form input[type="number"] {
   font-size: 13px;
   margin-top: 4px;
 }
+
+/* ✅ 에러 메시지 전체 박스 */
+.error-message-box {
+  background-color: #fff0f0;
+  border: 1px solid #ffcccc;
+  border-radius: 10px;
+  padding: 16px;
+  margin-top: 16px;
+  color: #b30000;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+
+/* ✅ 에러 코드 강조 */
+.error-message-box .status {
+  display: block;
+  font-weight: bold;
+  font-size: 16px;
+  color: #b30000;
+  margin-bottom: 6px;
+}
+
+/* ✅ 메시지는 약간 작고 부드럽게 */
+.error-message-box .message {
+  font-size: 14px;
+  color: #800000;
+}
