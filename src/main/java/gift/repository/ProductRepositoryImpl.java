@@ -2,17 +2,17 @@ package gift.repository;
 
 import gift.entity.Product;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    private final Map<Long, Product> products = new HashMap<>();
+    private final Map<Long, Product> products = new ConcurrentHashMap<>();
     private final AtomicLong autoIncrementId = new AtomicLong(1);
 
     @Override
