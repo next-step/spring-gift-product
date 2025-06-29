@@ -35,6 +35,7 @@ public class ProductService {
         Product product = findProductOrThrow(id);
 
         product.update(requestDto);
+        product = productRepository.save(product);
         return new ProductResponseDto(product);
     }
 
