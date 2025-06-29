@@ -13,5 +13,5 @@ public record ProductRequest(
     String imageUrl
 
 ) {
-
+    
 }
