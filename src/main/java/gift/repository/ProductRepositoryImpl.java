@@ -48,7 +48,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product find(Long id) {
+    public Product findById(Long id) {
         String sql = "select * from product where id = ?";
 
         try {

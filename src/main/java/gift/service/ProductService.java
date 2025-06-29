@@ -13,7 +13,7 @@ public interface ProductService {
 
     ProductResponseDto create(ProductRequestDto requestDto);
 
-    ProductResponseDto find(Long id);
+    ProductResponseDto findById(Long id);
 
     ProductResponseDto update(Long id, ProductRequestDto requestDto);
 

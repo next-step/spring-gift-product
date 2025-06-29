@@ -14,7 +14,7 @@ public interface ProductRepository {
 
     Long create(ProductRequestDto requestDto);
 
-    Product find(Long productId);
+    Product findById(Long productId);
 
     int update(Long productId, ProductRequestDto requestDto);
 
