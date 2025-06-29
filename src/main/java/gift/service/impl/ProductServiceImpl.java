@@ -1,6 +1,8 @@
 package gift.service.impl;
 
 import gift.dto.ProductRequestDto;
+import gift.exception.ProductNotFoundException;
+import gift.exception.ProductValidationException;
 import gift.model.Product;
 import gift.repository.ProductRepository;
 import gift.service.ProductService;
@@ -19,6 +21,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(ProductRequestDto productDto) {
+        if (!productDto.isValid()) {
+            throw new ProductValidationException("유효하지 않은 상품 정보입니다.");
+        }
+
         Product product = productDto.toEntity();
         return productRepository.save(product);
     }
@@ -31,21 +37,26 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다. ID: " + id));
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     @Override
     public Product updateProduct(Long id, ProductRequestDto productDto) {
-        if (productRepository.findById(id).isEmpty()) {
-            throw new RuntimeException("상품을 찾을 수 없습니다. ID: " + id);
+        if (!productDto.isValid()) {
+            throw new ProductValidationException("유효하지 않은 상품 정보입니다.");
         }
+
+        if (productRepository.findById(id).isEmpty()) {
+            throw new ProductNotFoundException(id);
+        }
+
         return productRepository.update(id, productDto);
     }
 
     @Override
     public void deleteProduct(Long id) {
         if (productRepository.findById(id).isEmpty()) {
-            throw new RuntimeException("상품을 찾을 수 없습니다. ID: " + id);
+            throw new ProductNotFoundException(id);
         }
 
         productRepository.deleteById(id);

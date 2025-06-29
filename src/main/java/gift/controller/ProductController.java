@@ -21,10 +21,6 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody ProductRequestDto productDto) {
-        if (!productDto.isValid()) {
-            return ResponseEntity.badRequest().build();
-        }
-
         Product createdProduct = productService.createProduct(productDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
     }
@@ -43,10 +39,6 @@ public class ProductController {
 
     @PutMapping("/{productId}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long productId, @RequestBody ProductRequestDto productDto) {
-        if (!productDto.isValid()) {
-            return ResponseEntity.badRequest().build();
-        }
-
         Product updatedProduct = productService.updateProduct(productId, productDto);
         return ResponseEntity.ok(updatedProduct);
     }
