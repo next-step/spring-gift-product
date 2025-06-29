@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -14,8 +15,8 @@ public class InMemoryItemRepository implements ItemRepository {
     private Long nextId = 1L;
 
     @Override
-    public Item findById(Long id) {
-        return items.get(id);
+    public Optional<Item> findById(Long id) {
+        return Optional.ofNullable(items.get(id));
     }
 
     @Override

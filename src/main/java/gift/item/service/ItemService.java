@@ -20,11 +20,8 @@ public class ItemService {
     }
 
     public ItemResponseDto findItem(Long itemId) {
-        Item item = itemRepository.findById(itemId);
-
-        if (item == null) {
-            throw new ItemNotFoundException(itemId);
-        }
+        Item item = itemRepository.findById(itemId)
+            .orElseThrow(() -> new ItemNotFoundException(itemId));
 
         return new ItemResponseDto(
             item.getId(),
@@ -70,11 +67,8 @@ public class ItemService {
     }
 
     public ItemResponseDto updateItem(Long itemId, ItemUpdateDto itemUpdateDto) {
-        Item oldItem = itemRepository.findById(itemId);
-
-        if (oldItem == null) {
-            throw new ItemNotFoundException(itemId);
-        }
+        Item oldItem = itemRepository.findById(itemId)
+            .orElseThrow(() -> new ItemNotFoundException(itemId));
 
         oldItem.setName(itemUpdateDto.name());
         oldItem.setPrice(itemUpdateDto.price());
@@ -91,11 +85,8 @@ public class ItemService {
     }
 
     public void deleteItem(Long itemId) {
-        Item item = itemRepository.findById(itemId);
-
-        if (item == null) {
-            throw new ItemNotFoundException(itemId);
-        }
+        Item item = itemRepository.findById(itemId)
+            .orElseThrow(() -> new ItemNotFoundException(itemId));
 
         itemRepository.remove(item.getId());
     }

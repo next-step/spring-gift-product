@@ -4,8 +4,9 @@ import gift.item.Item;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.context.annotation.Primary;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -25,11 +26,11 @@ public class JdbcItemRepository implements ItemRepository {
     }
 
     @Override
-    public Item findById(Long id) {
+    public Optional<Item> findById(Long id) {
         String sql = "SELECT id, name, price, image_url FROM item WHERE id = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql,
+            Item item = jdbcTemplate.queryForObject(sql,
                 (rs, rowNum) -> new Item(
                     rs.getLong("id"),
                     rs.getString("name"),
@@ -37,8 +38,9 @@ public class JdbcItemRepository implements ItemRepository {
                     rs.getString("image_url")
                 ), id
             );
-        } catch (EmptyResultDataAccessException e) {
-            return null;
+            return Optional.of(item);
+        } catch (DataAccessException e) {
+            return Optional.empty();
         }
     }
 
