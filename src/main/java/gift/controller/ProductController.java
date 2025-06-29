@@ -3,6 +3,7 @@ package gift.controller;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.exception.NotFoundByIdException;
+import gift.exception.NotValidRequestException;
 import gift.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ public class ProductController {
 
     @PostMapping("/api/products")
     public ResponseEntity<Long> createProduct(@RequestBody ProductRequestDto productRequestDto) {
+        if (!productRequestDto.validate()) throw new NotValidRequestException();
         Long productId = productService.saveProduct(productRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(productId);
     }
@@ -39,6 +41,7 @@ public class ProductController {
             @PathVariable Long productId,
             @RequestBody ProductRequestDto productRequestDto
     ) {
+        if (!productRequestDto.validate()) throw new NotValidRequestException();
         productService.updateProduct(productId, productRequestDto);
         return ResponseEntity.ok().build();
     }
@@ -53,11 +56,17 @@ public class ProductController {
         return ResponseEntity.ok(productService.findProductById(productId));
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(NotFoundByIdException.class)
     public ResponseEntity<String> handleNotFoundByIdException(NotFoundByIdException e) {
         log.error(e.getMessage());
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body("Not Found by ID");
+    }
+
+    @ExceptionHandler(NotValidRequestException.class)
+    public ResponseEntity<String> handleNotValidRequest(NotValidRequestException e) {
+        log.error(e.getMessage());
+        return ResponseEntity.badRequest().body("Not Valid Request");
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
