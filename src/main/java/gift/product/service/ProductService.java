@@ -10,14 +10,16 @@ import gift.product.dto.UpdateProductReqDto;
 import gift.product.exception.ProductNotFoundException;
 import gift.product.repository.InMemoryProductRepository;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class ProductService {
 
   private final InMemoryProductRepository productRepository;
+
+  public ProductService(InMemoryProductRepository productRepository) {
+    this.productRepository = productRepository;
+  }
 
   public PagedResult<GetProductResDto> getAllByPage(PageRequest pageRequest) throws IllegalArgumentException {
     List<Product> pagedProductList = productRepository.findAll(pageRequest.offset(),

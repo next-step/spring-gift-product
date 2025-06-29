@@ -9,7 +9,6 @@ import gift.product.dto.UpdateProductReqDto;
 import gift.product.service.ProductService;
 import jakarta.validation.Valid;
 import java.net.URI;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/products")
-@RequiredArgsConstructor
 public class ProductController {
 
   private final ProductService productService;
+
+  public ProductController(ProductService productService) {
+    this.productService = productService;
+  }
+
   @GetMapping("/{productId}")
   public ResponseEntity<GetProductResDto> getProductById(@PathVariable Long productId) {
     GetProductResDto responseDto = productService.getProductById(productId);
@@ -33,7 +36,7 @@ public class ProductController {
   }
 
   @GetMapping
-  public ResponseEntity<PagedResult<GetProductResDto>> getAllProducts(
+  public ResponseEntity<PagedResult<GetProductResDto>> getProductByPageRequest(
       @PageParam PageRequest pageRequest
   ) {
     PagedResult<GetProductResDto> pagedResult = productService.getAllByPage(pageRequest);
