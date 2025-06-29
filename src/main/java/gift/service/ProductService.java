@@ -13,8 +13,7 @@ public interface ProductService {
 
     ProductGetResponseDto findProductById(Long productId);
 
-    void updateProductById(Long productId, String name, Double price,
-        String imageUrl);
+    void updateProductById(Long productId, String name, Double price, String imageUrl);
 
     void deleteProductById(Long productId);
 }

@@ -55,11 +55,13 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public void updateProductById(Long productId, String name, Double price, String imageUrl) {
+    public void updateProductById(Product product) {
 
         String sql = "UPDATE products SET name = ?, price = ?, imageUrl = ? WHERE productId = ?";
 
-        isUpdateSuccessful(jdbcTemplate.update(sql, name, price, imageUrl, productId));
+        isUpdateSuccessful(
+            jdbcTemplate.update(sql, product.getName(), product.getPrice(), product.getImageUrl(),
+                product.getProductId()));
     }
 
 
