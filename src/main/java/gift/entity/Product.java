@@ -19,17 +19,17 @@ public class Product {
     }
 
     public void changeName(String name) {
-        if(name != null)
+        if (name != null)
             this.name = name;
     }
 
     public void changePrice(Long price) {
-        if(price != null)
+        if (price != null)
             this.price = price;
     }
 
     public void changImageUrl(String imageUrl) {
-        if(imageUrl != null)
+        if (imageUrl != null)
             this.imageUrl = imageUrl;
     }
 

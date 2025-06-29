@@ -1,11 +1,9 @@
 package gift.repository;
 
-import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
@@ -22,7 +20,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product saveProduct(Product product) {
-        Long productId = products.isEmpty() ? 1 : Collections.max(products.keySet())+1;
+        Long productId = products.isEmpty() ? 1 : Collections.max(products.keySet()) + 1;
         product.setId(productId);
         products.put(productId, product);
         return product;

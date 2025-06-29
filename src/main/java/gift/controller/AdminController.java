@@ -1,6 +1,5 @@
 package gift.controller;
 
-import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.service.ProductService;
 import org.springframework.stereotype.Controller;
@@ -21,7 +20,7 @@ public class AdminController {
     }
 
     @GetMapping()
-    public String adminPage(Model model){
+    public String adminPage(Model model) {
         List<Product> allProducts = productService.findAllProducts();
         model.addAttribute("allProducts", allProducts);
         return "admin";

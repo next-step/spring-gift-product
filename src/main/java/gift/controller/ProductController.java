@@ -4,13 +4,10 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.service.ProductService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -33,7 +30,7 @@ public class ProductController {
     public ResponseEntity<List<ProductResponseDto>> findAllProducts() {
         List<Product> products = productService.findAllProducts();
         return ResponseEntity.ok(products.stream()
-                .map(product -> new ProductResponseDto(product.getId(),product.getName(),product.getPrice(),product.getImageUrl()))
+                .map(product -> new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl()))
                 .collect(Collectors.toList()));
     }
 
@@ -47,8 +44,6 @@ public class ProductController {
     public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDto requestDto) {
         return ResponseEntity.ok(productService.updateProduct(id, requestDto));
     }
-
-
 
 
 }
