@@ -4,6 +4,7 @@ import gift.dto.request.CreateProductDto;
 import gift.dto.request.UpdateProductDto;
 import gift.dto.response.ProductDto;
 import gift.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> createProduct(@RequestBody CreateProductDto body) {
+    public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody CreateProductDto body) {
         ProductDto response = productService.createProduct(body);
         URI location = URI.create("/api/products/" + response.id());
         return ResponseEntity.created(location).body(response);

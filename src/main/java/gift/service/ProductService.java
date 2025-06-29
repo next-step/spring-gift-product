@@ -6,8 +6,6 @@ import gift.dto.response.ProductDto;
 import gift.entity.Product;
 import gift.exception.EntityNotFoundException;
 import gift.repository.ProductRepository;
-import gift.validator.CreateProductValidator;
-import gift.validator.UpdateProductValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -17,21 +15,14 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final CreateProductValidator createProductValidator;
-    private final UpdateProductValidator updateProductValidator;
 
-    public ProductService(ProductRepository productRepository,
-                          CreateProductValidator createProductValidator,
-                          UpdateProductValidator updateProductValidator) {
+    public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        this.createProductValidator = createProductValidator;
-        this.updateProductValidator = updateProductValidator;
     }
 
     public ProductDto createProduct(CreateProductDto body) {
-        createProductValidator.validate(body);
-        Product instance = Product.build(body);
-        Product created = productRepository.save(instance);
+        Product instance = body.toEntity();
+        Product created = productRepository.save(instance).get();
         return ProductDto.from(created);
     }
 
@@ -49,8 +40,7 @@ public class ProductService {
 
     public ProductDto updateProduct(Long id, UpdateProductDto body) {
         findProduct(id);
-        updateProductValidator.validate(body);
-        Product instance = Product.build(body);
+        Product instance = body.toEntity(id);
         Product product = productRepository.update(id, instance).get();
         return ProductDto.from(product);
     }
