@@ -1,6 +1,5 @@
 package gift.dto;
 
-import gift.entity.Product;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Max;
