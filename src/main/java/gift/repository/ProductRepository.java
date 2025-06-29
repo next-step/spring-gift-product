@@ -65,7 +65,16 @@ public class ProductRepository {
     }
 
     public Product findById(Long id) {
-        return store.get(id);
+        return jdbcClient.sql("SELECT * FROM product WHERE id = :id")
+                .param("id", id)
+                .query((rs, rowNum) -> new Product(
+                        rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getInt("price"),
+                        rs.getString("image_url")
+                ))
+                .optional()
+                .orElse(null);
     }
 
     public void deleteById(Long id) {
