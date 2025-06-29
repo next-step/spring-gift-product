@@ -41,12 +41,23 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse updateProduct(Long productId, ProductRequest request) {
-        Product exist = productRepository.findById(productId)
+        Product product = productRepository.findById(productId)
                 .orElseThrow(()->new ProductNotFoundException(productId));
 
-        String name     = (request.name() != null && !request.name().isBlank()) ? request.name() : exist.getName();
-        int price       = (request.price() > 0) ? request.price() : exist.getPrice();
-        String imageUrl = (request.imageUrl() != null && !request.imageUrl().isBlank()) ? request.imageUrl() : exist.getImageUrl();
+        String name = product.getName();
+        if (request.name() != null && !request.name().isBlank()){
+            name = request.name();
+        }
+
+        int price = product.getPrice();
+        if (request.price()>0){
+            price = request.price();
+        }
+
+        String imageUrl = product.getImageUrl();
+        if (request.imageUrl() != null && !request.imageUrl().isBlank()){
+            imageUrl = request.imageUrl();
+        }
 
         Product updated = new Product(productId,name,price,imageUrl);
 
@@ -57,9 +68,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long productId) {
-        if (productRepository.findById(productId).isEmpty()){
-            throw new ProductNotFoundException(productId);
-        }
+        productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException(productId));
         productRepository.delete(productId);
     }
 
