@@ -3,14 +3,14 @@ package gift.dto;
 public class ProductRequestDto {
 
     private String name;
-    private int price;
+    private Integer price;
     private String imageUrl;
 
     public String getName() {
         return name;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
@@ -23,7 +23,7 @@ public class ProductRequestDto {
         this.name = name;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 

@@ -25,7 +25,7 @@ public class ProductService {
         return new ProductResponseDto(savedProduct);
     }
 
-    public ProductResponseDto findProduct(long productId) {
+    public ProductResponseDto findProduct(Long productId) {
         Product product = productRepository.findProduct(productId);
         if (product == null) {
             throw new IllegalArgumentException();
@@ -34,7 +34,7 @@ public class ProductService {
         return new ProductResponseDto(product);
     }
 
-    public ProductResponseDto updateProduct(long productId, ProductRequestDto productRequestDto) {
+    public ProductResponseDto updateProduct(Long productId, ProductRequestDto productRequestDto) {
         Product product = productRepository.findProduct(productId);
         if (product == null) {
             throw new IllegalArgumentException();
@@ -49,7 +49,7 @@ public class ProductService {
         return new ProductResponseDto(product);
     }
 
-    public void deleteProduct(long productId) {
+    public void deleteProduct(Long productId) {
 
         if (productRepository.deleteProduct(productId) == null) {
             throw new IllegalArgumentException();

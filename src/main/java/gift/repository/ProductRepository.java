@@ -7,9 +7,9 @@ public interface ProductRepository {
 
     Product saveProduct(Product product);
 
-    Product findProduct(long productId);
+    Product findProduct(Long productId);
 
-    Product deleteProduct(long productId);
+    Product deleteProduct(Long productId);
 
     List<Product> findAllProducts();
 

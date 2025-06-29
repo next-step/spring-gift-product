@@ -14,11 +14,11 @@ public class ProductRepositoryImpl implements ProductRepository {
     private final Map<Long, Product> products = new HashMap<>();
 
     // id값
-    private long nextId = 1;
+    private Long nextId = 1L;
 
     @Override
     public Product saveProduct(Product product) {
-        long productId = nextId++;
+        Long productId = nextId++;
         product.setId(productId);
         products.put(productId, product);
 
@@ -26,13 +26,13 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product findProduct(long productId) {
+    public Product findProduct(Long productId) {
 
         return products.get(productId);
     }
 
     @Override
-    public Product deleteProduct(long productId) {
+    public Product deleteProduct(Long productId) {
         return products.remove(productId);
     }
 

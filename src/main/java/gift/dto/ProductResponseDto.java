@@ -6,7 +6,7 @@ public class ProductResponseDto {
 
     private Long id;
     private String name;
-    private int price;
+    private Integer price;
     private String imageUrl;
 
     public ProductResponseDto(Product product) {
@@ -24,7 +24,7 @@ public class ProductResponseDto {
         return name;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
