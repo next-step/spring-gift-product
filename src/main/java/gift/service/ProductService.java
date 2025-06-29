@@ -44,6 +44,8 @@ public class ProductService {
     }
 
     private boolean matchesKeyword(Product p, String keyword) {
+        if (keyword == null || keyword.isBlank()) return true;
+
         return p.getName().toLowerCase().contains(keyword.toLowerCase()) ||
                 String.valueOf(p.getId()).equals(keyword);
     }
