@@ -4,7 +4,9 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,9 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
 
         Product product = productRepository.findProduct(id);
+        if (product == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "상품을 찾을 수 없습니다. id = " + id);
+        }
 
         product.changeName(requestDto.getName());
         product.changePrice(requestDto.getPrice());
