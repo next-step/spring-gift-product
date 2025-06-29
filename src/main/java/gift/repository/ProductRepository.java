@@ -2,22 +2,44 @@ package gift.repository;
 
 import gift.entity.Product;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.jdbc.core.RowMapper;
 
 @Repository
 public class ProductRepository {
+
+    private final JdbcClient jdbcClient;
+
+    public ProductRepository(JdbcClient jdbcClient) {
+        this.jdbcClient = jdbcClient;
+    }
 
 
     private final Map<Long, Product> store = new HashMap<>();
     private Long nextId = 1L;
 
+
     public List<Product> findAll() {
-        return new ArrayList<>(store.values());
+        return jdbcClient.sql("SELECT * FROM product")
+                .query(new RowMapper<Product>() {
+                    @Override
+                    public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        return new Product(
+                                rs.getLong("id"),
+                                rs.getString("name"),
+                                rs.getInt("price"),
+                                rs.getString("image_url")
+                        );
+                    }
+                })
+                .list();
     }
 
     public Product save(Product product) {
