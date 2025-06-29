@@ -34,3 +34,4 @@
     - [X] 게시글 수정
     - [X] 게시글 삭제
 - [X] validation 추가 
+- [X] db 초기화 및 목업데이터 삽입 로직 위치 변경 (service -> schema/data.sql) 
