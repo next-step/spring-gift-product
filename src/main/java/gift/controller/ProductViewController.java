@@ -23,7 +23,7 @@ public class ProductViewController {
     // 상품 등록
     @GetMapping("/new")
     public String createForm(Model model) {
-        model.addAttribute("product", new ProductRequestDto("박수화", 20, "test.jpg"));
+        model.addAttribute("product", new ProductRequestDto("하리보 콜라맛", 2000, "test.jpg"));
         return "product/create";
     }
 
