@@ -1,6 +1,7 @@
 package gift.repository;
 
 import gift.entity.Item;
+import gift.exception.ItemNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -15,7 +16,6 @@ import java.util.List;
  *     statement.close 라는 메서드가 커넥션 풀도 회수 하는 건가요?
  *
  */
-
 
 
 //@Repository
@@ -44,7 +44,7 @@ public class ItemRepositoryJdbc {
         Connection connection = createConnection();
         createTable(connection);
 
-        String sql = """
+        var sql = """
         SELECT id, name, price, imageurl
         FROM ITEM
         WHERE name = ? OR price = ?;
@@ -66,11 +66,43 @@ public class ItemRepositoryJdbc {
                 }
             }
         }
-
         return items;
     }
 
+    public Item deleteItems(String name) throws Exception {
+        Connection connection = createConnection();
+        createTable(connection);
+        Item targetItem;
 
+        var sql = """
+                    SELECT id, name, price, imageurl
+                    FROM ITEM
+                    WHERE name = ?;
+                """;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, name);
+            try (ResultSet rs = statement.executeQuery()) {
+                targetItem = new Item(
+                        rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getInt("price"),
+                        rs.getString("imageurl")
+                        );
+            } catch (Exception e) {
+                throw new ItemNotFoundException(name);
+            }
+        }
+
+        var deleteSql = """
+                DELETE FROM ITEM WHERE name =?;
+                """;
+        try (PreparedStatement deleteStatement = connection.prepareStatement(deleteSql)) {
+            deleteStatement.setString(1, name);
+            deleteStatement.executeUpdate();
+        }
+
+        return targetItem;
+    }
 
 
     public static void createTable(Connection connection) throws Exception{
