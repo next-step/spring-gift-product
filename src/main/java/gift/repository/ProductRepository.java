@@ -50,13 +50,12 @@ public class ProductRepository{
     public Optional<Product> update(Long id, String name, Integer price, String imageUrl) {
 
         Optional<Product> product = findById(id);
+        if (product.isEmpty()) return Optional.empty();
 
-        if (product.isPresent()) {
-            String sql = "UPDATE products SET name = ?, price = ?, imageUrl = ? WHERE id = ?";
-            jdbcTemplate.update(sql, name, price, imageUrl, id);
-        }
+        String sql = "UPDATE products SET name = ?, price = ?, imageUrl = ? WHERE id = ?";
+        jdbcTemplate.update(sql, name, price, imageUrl, id);
 
-        return product;
+        return Optional.of(new Product(id, name, price, imageUrl));
     }
 
     public Optional<Product> deleteById(Long id) {
