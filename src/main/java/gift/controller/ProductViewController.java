@@ -51,21 +51,21 @@ public class ProductViewController {
 
     @PostMapping("/products")
     public String createProduct(@ModelAttribute ProductRequestDto requestDto) {
-        productService.createProduct(new ProductRequestDto(requestDto.name(), requestDto.price(), requestDto.imageUrl()));
+        productService.create(new ProductRequestDto(requestDto.name(), requestDto.price(), requestDto.imageUrl()));
 
         return "redirect:/view/products";
     }
 
     @PostMapping("/products/update/{id}")
     public String updateProduct(@PathVariable Long id, @ModelAttribute ProductRequestDto requestDto) {
-        productService.updateProduct(id, new ProductRequestDto(requestDto.name(), requestDto.price(), requestDto.imageUrl()));
+        productService.update(id, new ProductRequestDto(requestDto.name(), requestDto.price(), requestDto.imageUrl()));
 
         return "redirect:/view/products";
     }
 
     @DeleteMapping("/products/{id}")
     public String deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
+        productService.delete(id);
 
         return "home";
     }

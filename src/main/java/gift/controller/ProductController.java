@@ -24,12 +24,12 @@ class ProductController {
     @PostMapping
     public ResponseEntity<ProductResponseDto> createProduct(
         @RequestBody ProductRequestDto requestDto) {
-        return new ResponseEntity<>(productService.createProduct(requestDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(productService.create(requestDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/{productId}")
     public ResponseEntity<ProductResponseDto> findProduct(@PathVariable Long productId) {
-        return new ResponseEntity<>(productService.findProduct(productId), HttpStatus.OK);
+        return new ResponseEntity<>(productService.find(productId), HttpStatus.OK);
     }
 
     @GetMapping
@@ -42,14 +42,14 @@ class ProductController {
         @PathVariable Long productId,
         @RequestBody ProductRequestDto requestDto
     ) {
-        return new ResponseEntity<>(productService.updateProduct(productId, requestDto),
+        return new ResponseEntity<>(productService.update(productId, requestDto),
             HttpStatus.OK);
     }
 
     @DeleteMapping("/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
 
-        productService.deleteProduct(productId);
+        productService.delete(productId);
 
         // 삭제에 성공한다면, 204 no content
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -38,22 +38,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponseDto createProduct(ProductRequestDto requestDto) {
-        Long id = productRepository.createProduct(requestDto);
+    public ProductResponseDto create(ProductRequestDto requestDto) {
+        Long id = productRepository.create(requestDto);
 
         return new ProductResponseDto(id, requestDto.name(), requestDto.price(), requestDto.imageUrl());
     }
 
     @Override
-    public ProductResponseDto findProduct(Long id) {
-        Product product = productRepository.findProduct(id);
+    public ProductResponseDto find(Long id) {
+        Product product = productRepository.find(id);
 
         return ProductResponseDto.from(product);
     }
 
     @Override
-    public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
-        int updateRowCount = productRepository.updateProduct(id, requestDto);
+    public ProductResponseDto update(Long id, ProductRequestDto requestDto) {
+        int updateRowCount = productRepository.update(id, requestDto);
 
         if (updateRowCount < 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -63,7 +63,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProduct(Long id) {
-        productRepository.deleteProduct(id);
+    public void delete(Long id) {
+        productRepository.delete(id);
     }
 }

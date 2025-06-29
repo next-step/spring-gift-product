@@ -12,11 +12,11 @@ public interface ProductRepository {
 
     List<Product> findAll();
 
-    Long createProduct(ProductRequestDto requestDto);
+    Long create(ProductRequestDto requestDto);
 
-    Product findProduct(Long productId);
+    Product find(Long productId);
 
-    int updateProduct(Long productId, ProductRequestDto requestDto);
+    int update(Long productId, ProductRequestDto requestDto);
 
-    void deleteProduct(Long productId);
+    void delete(Long productId);
 }

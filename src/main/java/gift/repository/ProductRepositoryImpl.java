@@ -33,7 +33,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Long createProduct(ProductRequestDto requestDto) {
+    public Long create(ProductRequestDto requestDto) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("product").usingGeneratedKeyColumns("id");
 
@@ -47,7 +47,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product findProduct(Long id) {
+    public Product find(Long id) {
         String sql = "select * from product where id = ?";
 
         Product product = jdbcTemplate.queryForObject(sql, productRowMapper, id);
@@ -55,7 +55,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public int updateProduct(Long id, ProductRequestDto requestDto) {
+    public int update(Long id, ProductRequestDto requestDto) {
         String sql = "update product set name = ?, price = ?, imageUrl = ? where id = ?";
 
         int updateRowCount = jdbcTemplate.update(
@@ -70,7 +70,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public void deleteProduct(Long id) {
+    public void delete(Long id) {
         String sql = "delete from product where id = ?";
 
         int deleteRowCount = jdbcTemplate.update(sql, id);

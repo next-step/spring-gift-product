@@ -11,11 +11,11 @@ public interface ProductService {
 
     List<ProductResponseDto> findAll();
 
-    ProductResponseDto createProduct(ProductRequestDto requestDto);
+    ProductResponseDto create(ProductRequestDto requestDto);
 
-    ProductResponseDto findProduct(Long id);
+    ProductResponseDto find(Long id);
 
-    ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto);
+    ProductResponseDto update(Long id, ProductRequestDto requestDto);
 
-    void deleteProduct(Long id);
+    void delete(Long id);
 }
