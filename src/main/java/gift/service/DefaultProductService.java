@@ -4,8 +4,13 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.exception.ProductNotFoundException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
+import java.sql.PreparedStatement;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -15,66 +20,87 @@ import java.util.stream.Collectors;
 @Service
 public class DefaultProductService implements ProductService {
 
-    // 임시 DB
-    private final Map<Long, Product> productList = new HashMap<>();
+    private final JdbcTemplate jdbcTemplate;
+
+    public DefaultProductService(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     // 상품 생성
     @Override
     public ProductResponseDto addProduct(ProductRequestDto requestDto) {
 
-        // 상품 Id 계산
-        Long ProductId = productList.isEmpty() ? 1 : Collections.max(productList.keySet()) + 1;
+        String sql = "INSERT INTO product (name, price, image_url) VALUES (?, ?, ?)";
 
-        // 상품 객체 생성
-        Product product = new Product(ProductId, requestDto.name(), requestDto.price(), requestDto.imageUrl());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        // 임시 DB에 저장
-        productList.put(ProductId, product);
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, new String[] {"id"});
+            ps.setString(1, requestDto.name());
+            ps.setInt(2, requestDto.price());
+            ps.setString(3, requestDto.imageUrl());
+            return ps;
+        }, keyHolder);
 
-        return new ProductResponseDto(product);
+        Long id = keyHolder.getKey().longValue();
+
+        return new ProductResponseDto(new Product(id, requestDto.name(), requestDto.price(), requestDto.imageUrl()));
     }
 
     @Override
     public ProductResponseDto getProductById(Long id) {
 
-        Product product = productList.get(id);
+        String sql = "SELECT * FROM product WHERE id = ?";
 
-        if (product == null) {
-            throw new ProductNotFoundException(id); // 예외 처리
+        // jdbc에는 query(), queryForObject() 두 가지 존재 (queryForObject()는 예외 처리 필요)
+        List<Product> results = jdbcTemplate.query(sql, new Object[]{id}, productRowMapper());
+
+        if (results.isEmpty()) {
+            throw new ProductNotFoundException(id);
         }
 
-        return new ProductResponseDto(product);
+        return new ProductResponseDto(results.get(0));
     }
 
     @Override
     public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
-        Product product = productList.get(id);
 
-        if (product == null) {
+        String sql = "UPDATE product SET name = ?, price = ?, image_url = ? WHERE id = ?";
+
+        int updateCount = jdbcTemplate.update(sql, requestDto.name(), requestDto.price(), requestDto.imageUrl(), id);
+
+        if (updateCount == 0) {
             throw new ProductNotFoundException(id); // 예외 처리
         }
 
-        product.update(requestDto.name(), requestDto.price(), requestDto.imageUrl());
-
-        return new ProductResponseDto(product);
+        return getProductById(id);
     }
 
     @Override
     public ProductResponseDto deleteProduct(Long id) {
 
-        Product product = productList.remove(id);
+        ProductResponseDto existProduct = getProductById(id);
 
-        if (product == null) {
-            throw new ProductNotFoundException(id);
-        }
+        String sql = "DELETE FROM product WHERE id = ?";
+        jdbcTemplate.update(sql, id);
 
-        return new ProductResponseDto(product);
+        return existProduct;
     }
 
     @Override
     public List<ProductResponseDto> getAllProducts() {
-        return productList.values().stream()
+        String sql = "SELECT * FROM product";
+        return jdbcTemplate.query(sql, productRowMapper()).stream()
                 .map(ProductResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    private RowMapper<Product> productRowMapper() {
+        return (rs, rowNum) -> new Product(
+                rs.getLong("id"),
+                rs.getString("name"),
+                rs.getInt("price"),
+                rs.getString("image_url")
+        );
     }
 }
