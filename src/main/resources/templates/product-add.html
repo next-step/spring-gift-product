@@ -61,6 +61,20 @@
     </div>
   </div>
 
+  <!-- 이미지 URL 필드 -->
+  <div class="mb-3">
+    <label for="imageUrl" class="form-label">이미지 URL</label>
+    <input type="url"
+           class="form-control"
+           th:class="${#fields.hasErrors('imageUrl')} ? 'form-control is-invalid' : 'form-control'"
+           id="imageUrl"
+           th:field="*{imageUrl}"
+           required>
+    <div th:if="${#fields.hasErrors('imageUrl')}" class="invalid-feedback">
+      <span th:errors="*{imageUrl}"></span>
+    </div>
+  </div>
+
   <!-- 전체 에러 표시 -->
   <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
     <ul class="mb-0">
@@ -68,7 +82,7 @@
     </ul>
   </div>
 
-  <button type="submit" class="btn btn-success">💾 저장</button>
+  <button type="submit" class="btn btn-success">저장</button>
   <a th:href="@{/admin/products}" class="btn btn-secondary ms-2">취소</a>
 </form>
 
