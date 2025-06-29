@@ -11,7 +11,7 @@
   <form th:action="${product?.id} == null ? @{/admin/products} : @{/admin/products/{id}(id=${product.id})}"
         th:object="${product}" method="post">
 
-<!--    <input type="hidden" name="_method" th:if="${product?.id} != null" value="put"/>-->
+    <input type="hidden" name="_method" th:if="${product?.id} != null" value="put"/>
 
     <div class="form-group">
       <label for="name">상품명</label>
