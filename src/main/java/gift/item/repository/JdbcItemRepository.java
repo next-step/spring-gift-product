@@ -4,12 +4,14 @@ import gift.item.Item;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@Primary
 public class JdbcItemRepository implements ItemRepository {
 
     private final JdbcTemplate jdbcTemplate;
