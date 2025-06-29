@@ -30,11 +30,11 @@ public class ProductRepository {
 
     private Product mapRowToProduct(ResultSet rs, int rowNum) throws SQLException {
         Product product = new Product(
+            rs.getLong("id"),
             rs.getString("name"),
             rs.getInt("price"),
             rs.getString("image_url")
         );
-        product.setId(rs.getInt("id"));
         return product;
     }
 
@@ -49,13 +49,13 @@ public class ProductRepository {
         return result.stream().findFirst();
     }
 
-    public void update(Long id, ProductUpdateRequestDto productUpdateRequestDto) {
+    public void update(Product product) {
         String sql = "UPDATE products SET name = ?, price = ?, image_url = ? WHERE id = ?";
         jdbcTemplate.update(sql,
-            productUpdateRequestDto.getName(),
-            productUpdateRequestDto.getPrice(),
-            productUpdateRequestDto.getImageUrl(),
-            id
+            product.getName(),
+            product.getPrice(),
+            product.getImageUrl(),
+            product.getId()
         );
     }
 
