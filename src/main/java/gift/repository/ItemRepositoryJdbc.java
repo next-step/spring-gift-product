@@ -3,11 +3,18 @@ package gift.repository;
 import gift.entity.Item;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
+
+
+/***
+ * Q1. 메서드마다 connection 및 테이블을 생성하는데, 제가 저번 실시간 강의 듣기론
+ *     커넥션 풀이라는게 있어서, 이게 유한한 자원이라 아껴써야한다. 라는 말을 들었는데
+ *     아래는 커넥션을 생성하기만 하지, 회수하는 것을 따로 설정하지 않습니다. 저 밑에
+ *     statement.close 라는 메서드가 커넥션 풀도 회수 하는 건가요?
+ *
+ */
 
 
 
@@ -31,11 +38,44 @@ public class ItemRepositoryJdbc {
         return item;
     }
 
+    public List<Item> getItem(String name, Integer price) throws Exception {
+        List<Item> items = new ArrayList<>();  // 읽기전용, 속도 빨라 ArrayList 채용
+
+        Connection connection = createConnection();
+        createTable(connection);
+
+        String sql = """
+        SELECT id, name, price, imageurl
+        FROM ITEM
+        WHERE name = ? OR price = ?;
+    """;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, name);
+            statement.setInt(2, price);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    Item item = new Item(
+                            rs.getLong("id"),
+                            rs.getString("name"),
+                            rs.getInt("price"),
+                            rs.getString("imageurl")
+                    );
+                    items.add(item);
+                }
+            }
+        }
+
+        return items;
+    }
+
+
 
 
     public static void createTable(Connection connection) throws Exception{
         var sql = """
-                    CREATE TABLE ITEM(
+                    CREATE TABLE IF NOT EXISTS ITEM (
                         id BIGINT,
                         name varchar(255),
                         price INT,
