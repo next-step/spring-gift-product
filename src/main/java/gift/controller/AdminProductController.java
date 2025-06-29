@@ -1,6 +1,6 @@
 package gift.controller;
 
-import gift.dto.ProductForm;
+import gift.dto.ProductRequest;
 import gift.dto.ProductResponse;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
@@ -33,32 +33,32 @@ public class AdminProductController {
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
-        model.addAttribute("product", new ProductForm());
+        model.addAttribute("product", new ProductRequest("", null, ""));
         return "admin/product-form";
     }
 
     @PostMapping
-    public String createProduct(@Valid @ModelAttribute("product") ProductForm form,
+    public String createProduct(@Valid @ModelAttribute("product") ProductRequest request,
         BindingResult result) {
         if (result.hasErrors()) {
             return "admin/product-form";
         }
 
-        productService.create(form.toRequest());
+        productService.create(request);
         return "redirect:/admin/products";
     }
 
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Long id, Model model) {
         ProductResponse product = productService.getProduct(id);
-        model.addAttribute("product", ProductForm.from(product));
+        model.addAttribute("product", ProductRequest.from(product));
         model.addAttribute("productId", id);
         return "admin/product-form";
     }
 
     @PostMapping("/{id}")
     public String updateProduct(@PathVariable Long id,
-        @Valid @ModelAttribute("product") ProductForm form,
+        @Valid @ModelAttribute("product") ProductRequest request,
         BindingResult result,
         Model model) {
         if (result.hasErrors()) {
@@ -66,7 +66,7 @@ public class AdminProductController {
             return "admin/product-form";
         }
 
-        productService.update(id, form.toRequest());
+        productService.update(id, request);
         return "redirect:/admin/products";
     }
 
