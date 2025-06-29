@@ -20,27 +20,20 @@ public class ProductAdminController {
     }
 
     /**
-     * 상품 목록 (페이징 + 검색)
+     * 상품 목록 (검색)
      */
     @GetMapping
     public String list(
-            @RequestParam(defaultValue = "0") int page, // 삭제
-            @RequestParam(defaultValue = "10") int size, // 삭제
             @RequestParam(defaultValue = "id,asc") String sort,
             @RequestParam(required = false) String keyword,
             Model model) {
 
-        List<Product> filtered = productService.getAllByPage(page, size, sort, null).stream()
-                .filter(p -> keyword == null || keyword.isBlank() || matchesKeyword(p, keyword))
-                .toList();
-
+        List<Product> filtered = productService.getAllProducts(sort, keyword);
         List<ProductResponse> products = filtered.stream()
                 .map(ProductResponse::from)
                 .toList();
 
         model.addAttribute("products", products);
-        model.addAttribute("page", page);   // 삭제
-        model.addAttribute("size", size);   // 삭제
         model.addAttribute("sort", sort);
         model.addAttribute("keyword", keyword);
 
