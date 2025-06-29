@@ -3,8 +3,11 @@ package gift.repository;
 import gift.entity.Product;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.util.*;
 
 @Repository
@@ -15,15 +18,24 @@ public class ProductRepository{
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    Long nextId = 1L;
-
     public Product save(Product product) {
 
-        Long id = nextId++;
-        product.setId(id);
+        String sql = "INSERT INTO products (name, price, imageUrl) VALUES (?, ?, ?)";
 
-        String sql = "insert into products (id, name, price, imageUrl) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+            ps.setString(1, product.getName());
+            ps.setInt(2, product.getPrice());
+            ps.setString(3, product.getImageUrl());
+            return ps;
+        }, keyHolder);
+
+        Number key = keyHolder.getKey();
+        if (key != null) {
+            product.setId(key.longValue());
+        }
 
         return product;
     }
