@@ -28,3 +28,10 @@
 |/management/products|GET|상품 목록 페이지 (목록 조회)|
 |/management/products/new|GET|상품 등록 페이지|
 |/management/products/{id}|GET|상품 수정 페이지|
+
+3. 데이터베이스 적용
+
+### 데이터베이스 연동: H2 & Spring JDBC
+
+- 상품 정보 관리를 위해 H2 데이터베이스를 사용한다.
+- `SimpleJdbcInsert` 및 `JdbcClient`를 활용하여 구현한다.
