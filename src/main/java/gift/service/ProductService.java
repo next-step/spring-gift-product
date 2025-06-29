@@ -7,6 +7,7 @@ import gift.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -38,9 +39,7 @@ public class ProductService {
     }
 
     public void deleteProduct(Long id) {
-        if (productRepository.findById(id).isEmpty()) {
-            throw new IllegalArgumentException("존재하지 않는 상품입니다.");
-        }
+        findProductOrThrow(id);
         productRepository.deleteById(id);
     }
 
@@ -53,7 +52,7 @@ public class ProductService {
 
     private Product findProductOrThrow(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 상품입니다."));
     }
 
     public int getProductCount() {
