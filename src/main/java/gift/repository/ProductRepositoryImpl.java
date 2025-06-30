@@ -18,6 +18,15 @@ import java.util.List;
 public class ProductRepositoryImpl implements ProductRepository {
 
     private final JdbcClient jdbcClient;
+    private static final RowMapper<ProductResponseDto> getProductRowMapper() {
+        return (rs, rowNum) -> {
+            var id = rs.getLong("id");
+            var name = rs.getString("name");
+            var price = rs.getInt("price");
+            var imageUrl = rs.getString("image_url");
+            return new ProductResponseDto(id, name, price, imageUrl);
+        };
+    }
 
     public ProductRepositoryImpl(JdbcClient jdbcClient) {
         this.jdbcClient = jdbcClient;
@@ -106,15 +115,5 @@ public class ProductRepositoryImpl implements ProductRepository {
                 product.getPrice(),
                 product.getImageUrl()
         );
-    }
-
-    private static RowMapper<ProductResponseDto> getProductRowMapper() {
-        return (rs, rowNum) -> {
-            var id = rs.getLong("id");
-            var name = rs.getString("name");
-            var price = rs.getInt("price");
-            var imageUrl = rs.getString("image_url");
-            return new ProductResponseDto(id, name, price, imageUrl);
-        };
     }
 }
