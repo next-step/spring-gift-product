@@ -69,9 +69,9 @@
 
 ### 3단계. 데이터베이스 적용 (진행 중)
 
-- [ ] **H2 데이터베이스 테이블 스키마 설정**: 애플리케이션 실행 시 상품 테이블(`products`)이 생성되도록 `schema.sql` 파일 작성
-- [ ] **상품 목록 및 단건 조회 DB 연동**: `findAll`, `findById` 메서드를 `JdbcTemplate`을 사용하도록 수정
-- [ ] **상품 등록 DB 연동**: `save` 메서드를 `JdbcTemplate` 또는 `SimpleJdbcInsert`를 사용하도록 수정하고, DB에서 자동 생성된 ID를
+- [X] **H2 데이터베이스 테이블 스키마 설정**: 애플리케이션 실행 시 상품 테이블(`products`)이 생성되도록 `schema.sql` 파일 작성
+- [X] **상품 목록 및 단건 조회 DB 연동**: `findAll`, `findById` 메서드를 `JdbcTemplate`을 사용하도록 수정
+- [X] **상품 등록 DB 연동**: `save` 메서드를 `JdbcTemplate` 또는 `SimpleJdbcInsert`를 사용하도록 수정하고, DB에서 자동 생성된 ID를
   반환받도록 변경
-- [ ] **상품 수정 및 삭제 DB 연동**: `update`, `delete` 메서드를 `JdbcTemplate`을 사용하도록 수정
-- [ ] **상품 ID 관리 로직 수정**: DB의 `AUTO_INCREMENT` 기능을 사용함에 따라 서비스 및 DTO에서 ID를 직접 다루던 로직 제거
+- [X] **상품 수정 및 삭제 DB 연동**: `update`, `delete` 메서드를 `JdbcTemplate`을 사용하도록 수정
+- [X] **상품 ID 관리 로직 수정**: DB의 `AUTO_INCREMENT` 기능을 사용함에 따라 서비스 및 DTO에서 ID를 직접 다루던 로직 제거
