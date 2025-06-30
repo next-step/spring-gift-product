@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class MemoryProductRepository implements ProductRepository {
@@ -20,11 +21,8 @@ public class MemoryProductRepository implements ProductRepository {
     }
 
     @Override
-    public Product findProductById(Long id) {
-        if (!products.containsKey(id)) {
-            throw new NotFoundByIdException("Product with id " + id + " does not exist.");
-        }
-        return products.get(id);
+    public Optional<Product> findProductById(Long id) {
+        return Optional.of(products.get(id));
     }
 
     @Override
@@ -34,11 +32,9 @@ public class MemoryProductRepository implements ProductRepository {
 
     @Override
     public void updateProduct(Product product) {
-        if (products.containsKey(product.id())) {
-            products.put(product.id(), product);
-        } else {
+        if (!products.containsKey(product.id()))
             throw new NotFoundByIdException("Product with id " + product.id() + " does not exist.");
-        }
+        products.put(product.id(), product);
     }
 
     @Override

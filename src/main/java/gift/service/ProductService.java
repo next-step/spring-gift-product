@@ -2,13 +2,15 @@ package gift.service;
 
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
+import gift.exception.NotFoundByIdException;
 import gift.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -36,15 +38,17 @@ public class ProductService {
         );
     }
 
+    @Transactional(readOnly = true)
     public List<ProductResponseDto> findAllProducts() {
         return productRepository.findAllProducts().stream()
                 .map(ProductResponseDto::new)
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public ProductResponseDto findProductById(Long id) {
-        return new ProductResponseDto(
-                productRepository.findProductById(id)
-        );
+        return productRepository.findProductById(id)
+                .map(ProductResponseDto::new)
+                .orElseThrow(() -> new NotFoundByIdException("Not Found by id: " + id));
     }
 }

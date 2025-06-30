@@ -1,4 +1,4 @@
- spring:
+spring:
   application:
     name: spring-gift
   thymeleaf:
@@ -6,3 +6,16 @@
       classpath:/templates/
     suffix:
       .html
+  h2:
+    console:
+      enabled: true
+  sql:
+    init:
+      schema-locations: classpath:static/sql/schema.sql
+      data-locations: classpath:static/sql/data.sql
+      mode: embedded
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:gift_database
+    username: sa
+    password:
