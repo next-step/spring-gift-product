@@ -46,8 +46,8 @@ public class AdminProductController {
     }
 
     @GetMapping("/{id}/edit")
-    public String editForm(@PathVariable Long id, Model model) {
-        Product product = productService.getById(id);
+    public String editForm(@PathVariable(name = "id") Long productId, Model model) {
+        Product product = productService.getById(productId);
         model.addAttribute("product", product);
         return "admin/product-form";
     }
@@ -59,8 +59,8 @@ public class AdminProductController {
     }
 
     @PostMapping("/{id}/delete")
-    public String delete(@PathVariable Long id) {
-        productService.delete(id);
+    public String delete(@PathVariable(name = "id") Long productId) {
+        productService.delete(productId);
         return "redirect:/admin/products";
     }
 
