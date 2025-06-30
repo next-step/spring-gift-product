@@ -4,7 +4,10 @@ import gift.entity.Product;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
@@ -20,8 +23,17 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public List<Product> findAllProducts() {
 
-        List<Product> allProducts = new ArrayList<>();
-        allProducts.addAll(products.values());
+        String sql = "select id, name, price, image_url from products";
+        List<Product> allProducts = jdbcTemplate.query(
+                sql, (resultSet, rowNum) -> {
+                    Product product = new Product(
+                            resultSet.getLong("id"),
+                            resultSet.getString("name"),
+                            resultSet.getLong("price"),
+                            resultSet.getString("image_url")
+                    );
+                    return product;
+                });
         return allProducts;
     }
 
@@ -29,7 +41,7 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Product saveProduct(Product product) {
         Long productId = products.isEmpty() ? 1 : Collections.max(products.keySet()) + 1;
         product.setId(productId);
-        String sql = "insert into product(id, name, price, image_url) values(?,?,?,?)";
+        String sql = "insert into products(id, name, price, image_url) values(?,?,?,?)";
         jdbcTemplate.update(sql, productId, product.getName(), product.getPrice(), product.getImageUrl());
 
         return product;
