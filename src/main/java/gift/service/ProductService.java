@@ -31,15 +31,15 @@ public class ProductService {
     }
 
     public ProductResponse addProduct(ProductRequest request) {
-        Product product = new Product(request.getName(), request.getPrice(),
-                request.getImageUrl());
+        Product product = new Product(request.name(), request.price(),
+                request.imageUrl());
         Product saved = productRepository.save(product);
         return new ProductResponse(saved);
     }
 
     public ProductResponse updateProduct(Long id, ProductRequest request) {
-        Product updated = productRepository.update(id, request.getName(), request.getPrice(),
-                request.getImageUrl());
+        Product updated = productRepository.update(id, request.name(), request.price(),
+                request.imageUrl());
         return updated != null ? new ProductResponse(updated) : null;
     }
 

@@ -31,7 +31,7 @@ public class AdminProductController {
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
-        model.addAttribute("product", new ProductRequest());
+        model.addAttribute("product", new ProductRequest(null, "", 0, ""));
         return "admin/product/form";
     }
 
@@ -44,11 +44,12 @@ public class AdminProductController {
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Long id, Model model) {
         ProductResponse product = productService.findProductById(id);
-        ProductRequest request = new ProductRequest();
-        request.setId(product.getId());
-        request.setName(product.getName());
-        request.setPrice(product.getPrice());
-        request.setImageUrl(product.getImageUrl());
+        ProductRequest request = new ProductRequest(
+                product.getId(),
+                product.getName(),
+                product.getPrice(),
+                product.getImageUrl()
+        );
 
         model.addAttribute("product", request);
         return "admin/product/form";
