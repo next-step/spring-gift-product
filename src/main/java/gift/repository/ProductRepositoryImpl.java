@@ -87,12 +87,19 @@ public class ProductRepositoryImpl implements ProductRepository{
         String sql = "update products set name = :name, price = :price, imageUrl = :imageUrl" +
                 " where id = :id";
 
-        jdbcClient.sql(sql)
-            .param("name", name)
-            .param("price", price)
-            .param("imageUrl", imageUrl)
-            .param("id", id)
-            .update();
+        int colNum = jdbcClient.sql(sql)
+                .param("name", name)
+                .param("price", price)
+                .param("imageUrl", imageUrl)
+                .param("id", id)
+                .update();
+
+        if (colNum == 0) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "해당 ID의 상품은 존재하지 않습니다."
+            );
+        }
 
         return new Product(id, name, price, imageUrl);
     }

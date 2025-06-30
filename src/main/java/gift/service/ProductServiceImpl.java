@@ -59,7 +59,6 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public ProductResponseDto updateProduct(Long id, ProductRequestDto dto) {
 
-        Product findedProduct = productRepository.findProductByIdElseThrow(id);
         Product updatedProduct = productRepository.updateProduct(
                 id,
                 dto.getName(),
