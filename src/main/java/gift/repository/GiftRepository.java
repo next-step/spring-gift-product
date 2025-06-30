@@ -6,13 +6,13 @@ import java.util.Optional;
 
 public interface GiftRepository {
 
-  Gift saveGift(Gift gift);            // Gift 엔티티 반환
+  Gift saveGift(Gift gift);       
 
-  List<Gift> findAllGifts();           // 전체 Gift 목록 (엔티티 리스트)
+  List<Gift> findAllGifts();         
 
-  Optional<Gift> findById(Long id);    // 단건 조회
+  Optional<Gift> findById(Long id);  
 
-  void updateGift(Gift gift);          // 수정
+  void updateGift(Gift gift);        
 
-  void deleteGiftById(Long id);        // 삭제
+  void deleteGiftById(Long id);        
 }

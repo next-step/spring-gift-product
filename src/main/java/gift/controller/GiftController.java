@@ -38,8 +38,9 @@ public class GiftController {
 
   @GetMapping("/{id}")
   public ResponseEntity<GiftResponseDto> getGiftById(@PathVariable Long id) {
-    GiftResponseDto gift = giftService.findById(id);
-    return new ResponseEntity<>(gift, HttpStatus.OK);
+    return giftService.findById(id)
+                      .map(gift -> new ResponseEntity<>(gift, HttpStatus.OK))
+                      .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
   }
 
   @PatchMapping("/{id}")

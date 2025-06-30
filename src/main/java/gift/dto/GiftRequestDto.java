@@ -27,16 +27,15 @@ public class GiftRequestDto {
     return imageUrl;
   }
 
-  public void setName(String name) {     // ✅ 추가
+  public void setName(String name) {     
     this.name = name;
   }
 
-  public void setPrice(int price) {      // ✅ 추가
+  public void setPrice(int price) {      
     this.price = price;
   }
 
-  public void setImageUrl(String imageUrl) {  // ✅ 추가
+  public void setImageUrl(String imageUrl) {  
     this.imageUrl = imageUrl;
   }
-
 }
