@@ -32,11 +32,24 @@ public class ProductRepository {
         ,id);
     }
 
-//    public Product saveProduct(String name, int price, String imageUrl) {
-//        Product product = new Product(id++, name,price,imageUrl);
-//        products.put(product.getId(),product);
-//        return product;
-//    }
+    public Product saveProduct(String name, int price, String imageUrl) {
+        String sql = "INSERT INTO products(name,price,imageUrl) VALUES(?,?,?)";
+        jdbcTemplate.update(sql, name, price, imageUrl);
+
+        String sqlForFind = "select id, name, price, imageUrl "
+            + "from products where name = ? AND price = ? AND imageUrl = ?";
+        return jdbcTemplate.queryForObject(
+            sqlForFind, (result,rowNum) -> {
+                Product product = new Product(
+                    result.getLong("id"),
+                    result.getString("name"),
+                    result.getInt("price"),
+                    result.getString("imageUrl")
+                );
+            return product;
+            }
+        ,name,price,imageUrl);
+    }
 //
 //    public void deleteById(Long id) {
 //        products.remove(id);
