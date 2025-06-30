@@ -31,5 +31,4 @@
 * [X] H2 데이터베이스 연결 설정
 * [X] `schema.sql`에 테이블 스키마 정의 (AUTO_INCREMENT 포함)
 * [X] `data.sql`에 초기 데이터 삽입
-* [ ] `JdbcTemplate` 기반 `ProductRepository` 구현
-* [ ] 통합 테스트 작성
+* [X] `JdbcTemplate` 기반 `ProductRepository` 구현
