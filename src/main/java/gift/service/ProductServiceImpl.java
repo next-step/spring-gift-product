@@ -46,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResponseDto findById(Long id) {
         Product product = productRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 id = " + id));
+                () -> new ResponseStatusException(HttpStatus.NO_CONTENT));
 
         return new ResponseDto(product);
     }
@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResponseDto update(Long id, RequestDto dto) {
         Product product = productRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 id = " + id));
+                () -> new ResponseStatusException(HttpStatus.NO_CONTENT));
 
         product.update(dto);
         productRepository.update(product);
@@ -66,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void delete(Long id) {
         Product product = productRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 id = " + id));
+                () -> new ResponseStatusException(HttpStatus.NO_CONTENT));
 
         productRepository.deleteById(id);
     }
