@@ -62,7 +62,7 @@ public class ProductRepository {
                 .update();
 
         if (affectedRows == 0) {
-            throw new IllegalArgumentException("Product not found with id: " + product.getId());
+            throw new IllegalArgumentException("해당 id가 존재하지 않습니다.: " + product.getId());
         }
 
         return product;
