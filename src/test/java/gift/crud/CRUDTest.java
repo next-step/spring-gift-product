@@ -9,8 +9,26 @@ import gift.service.ItemServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.web.client.RestClient;
 
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CRUDTest {
+
+
+    @LocalServerPort
+    private int port;
+
+    @Autowired
+    private RestClient.Builder builder;
+
+    private RestClient client;
+
+
+
 
     private ItemService itemService;
 

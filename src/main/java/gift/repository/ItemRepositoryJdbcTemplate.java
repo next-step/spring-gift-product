@@ -33,7 +33,7 @@ import java.util.List;
  * 이번 ItemRepositoryJdbcTemplate 클래스의 saveItem 함수는 피드백에서 제외해주시길 바랍니다. :)
  */
 
-@Repository
+//@Repository
 public class ItemRepositoryJdbcTemplate implements ItemRepository{
 
     private final JdbcTemplate jdbcTemplate;
