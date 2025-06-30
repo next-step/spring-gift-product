@@ -7,7 +7,14 @@ public class Product {
     private int price;
     private String imageUrl;
 
-    public Product() { }
+    // 기본 생성자 추가 !
+    public Product() {
+        this.id = null;
+        this.name = "";
+        this.price = 0;
+        this.imageUrl = "";
+    }
+
     public Product(Long id, String name, int price, String imageUrl) {
         this.id = id;
         this.name = name;

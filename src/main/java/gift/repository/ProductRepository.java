@@ -60,7 +60,18 @@ public class ProductRepository {
         return kh.getKey().longValue();
     }
 
+
+    // 존재여부부터 확인하게 exists 함수 추가함!
+    private boolean exists(long id) {
+        Integer cnt = jdbc.queryForObject(
+                "select count(*) from products where id = ?",
+                Integer.class, id
+        );
+        return cnt != null && cnt > 0;
+    }
+
     public boolean update(long id, Product p) {
+        if (!exists(id)) return false;
         int rows = jdbc.update(
                 "update products set name=?, price=?, image_url=? where id=?",
                 p.getName(), p.getPrice(), p.getImageUrl(), id
@@ -69,9 +80,9 @@ public class ProductRepository {
     }
 
     public boolean delete(long id) {
+        if (!exists(id)) return false;
         return jdbc.update(
-                "delete from products where id=?",
-                id
+                "delete from products where id=?", id
         ) > 0;
     }
 }

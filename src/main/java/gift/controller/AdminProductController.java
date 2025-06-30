@@ -26,10 +26,9 @@ public class AdminProductController {
         return "product/list";        // templates/product/list.html
     }
 
-
     @GetMapping("/new")
     public String newForm(Model model) {
-        model.addAttribute("product", new Product(null, "", 0, ""));
+        model.addAttribute("product", new Product());   // ← 변경
         return "product/form";
     }
 
