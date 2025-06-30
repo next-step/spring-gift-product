@@ -23,7 +23,7 @@
 - [x] H2 데이터베이스 연동 설정 및 콘솔 활성화
 - [x] `schema.sql`을 이용한 상품 테이블 자동 생성
 - [ ] `ProductRepository`를 JDBC 기반으로 전환
-    - [ ] 상품 전체 조회 (findAll) 기능 DB 연동
+    - [x] 상품 전체 조회 (findAll) 기능 DB 연동
     - [ ] 상품 단건 조회 (findById) 기능 DB 연동
     - [ ] 상품 저장 (save) 기능 DB 연동
     - [ ] 상품 수정 (update) 기능 DB 연동

@@ -1,26 +1,33 @@
 package gift.repository;
 
 import gift.entity.Product;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
 
 @Repository
 public class ProductRepository {
 
+    private final JdbcTemplate jdbcTemplate;
     private final Map<Long, Product> products = new HashMap<>();
     private Long sequence = 1L;
 
-    public ProductRepository() {
+    public ProductRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<Product> findAll() {
-        return new ArrayList<>(products.values());
+        String sql = "SELECT id, name, price, image_url FROM products";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new Product(
+                rs.getLong("id"),
+                rs.getString("name"),
+                rs.getInt("price"),
+                rs.getString("image_url")
+        ));
     }
 
     public Optional<Product> findById(Long id) {
