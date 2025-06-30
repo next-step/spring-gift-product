@@ -30,15 +30,15 @@ public class Product {
 
     public void updateProduct(ProductDTO newProductdto) {
         if(newProductdto.getName() != null) {
-            this.setName(newProductdto.getName());
+            this.name = newProductdto.getName();
         }
 
         if(newProductdto.getPrice() != 0) {
-            this.setPrice(newProductdto.getPrice());
+            this.price = newProductdto.getPrice();
         }
 
         if(newProductdto.getImageUrl() != null) {
-            this.setImageUrl(newProductdto.getImageUrl());
+            this.imageUrl = newProductdto.getImageUrl();
         }
     }
 
@@ -57,21 +57,4 @@ public class Product {
     public String getImageUrl() {
         return imageUrl;
     }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
 }
