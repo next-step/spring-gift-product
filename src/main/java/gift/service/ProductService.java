@@ -45,9 +45,9 @@ public class ProductService {
     public ProductResponseDTO create(ProductRequestDTO productRequestDTO) {
         Product product = new Product(
                 null,
-                productRequestDTO.getName(),
-                productRequestDTO.getPrice(),
-                productRequestDTO.getImageUrl()
+                productRequestDTO.name(),
+                productRequestDTO.price(),
+                productRequestDTO.imageUrl()
         );
 
         Product saved = productRepository.save(product);
@@ -65,7 +65,11 @@ public class ProductService {
         if (product == null) {
             throw new IllegalArgumentException("Product not found");
         }
-        product.update(productRequestDTO.getName(), productRequestDTO.getPrice(), productRequestDTO.getImageUrl());
+        product.update(
+                productRequestDTO.name(),
+                productRequestDTO.price(),
+                productRequestDTO.imageUrl()
+        );
 
         return new ProductResponseDTO(
                 product.getId(),
