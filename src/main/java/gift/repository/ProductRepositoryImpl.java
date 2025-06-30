@@ -87,14 +87,14 @@ public class ProductRepositoryImpl implements ProductRepository{
         String sql = "update products set name = :name, price = :price, imageUrl = :imageUrl" +
                 " where id = :id";
 
-        int colNum = jdbcClient.sql(sql)
+        int rowNum = jdbcClient.sql(sql)
                 .param("name", name)
                 .param("price", price)
                 .param("imageUrl", imageUrl)
                 .param("id", id)
                 .update();
 
-        if (colNum == 0) {
+        if (rowNum == 0) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     "해당 ID의 상품은 존재하지 않습니다."
@@ -108,8 +108,15 @@ public class ProductRepositoryImpl implements ProductRepository{
     public void deleteProduct(Long id) {
         String sql = "delete from products where id = ?";
 
-        jdbcClient.sql(sql)
-                .param(id)
-                .update();
+        int rowNum = jdbcClient.sql(sql)
+                    .param(id)
+                    .update();
+
+        if (rowNum == 0) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "해당 ID의 상품은 존재하지 않습니다."
+            );
+        }
     }
 }

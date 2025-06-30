@@ -76,7 +76,6 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public void deleteProduct(Long id) {
-        Product findedProduct = productRepository.findProductByIdElseThrow(id);
 
         productRepository.deleteProduct(id);
     }
