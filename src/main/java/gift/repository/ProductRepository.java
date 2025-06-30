@@ -15,13 +15,9 @@ import java.util.*;
 public class ProductRepository {
     private final JdbcClient jdbcClient;
 
-    private final Map<Long, Product> products = new HashMap<>();
-    private long sequence = 0L;
-
     public ProductRepository(JdbcClient jdbcClient) {
         this.jdbcClient = jdbcClient;
     }
-
 
     public Product save(Product product){
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -64,5 +60,4 @@ public class ProductRepository {
                 rs.getString("image_url")
         );
     }
-
 }
