@@ -36,4 +36,8 @@ public class Product {
         return new Product(null, dto.getName(), dto.getPrice(), dto.getImageUrl());
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 }
