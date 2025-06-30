@@ -48,6 +48,12 @@ public class JdbcProductRepository implements ProductRepositoryInterface{
     }
 
     @Override
+    public List<Product> findProductsByPage(int offset, int limit) {
+        String sql = "SELECT * FROM product ORDER BY id LIMIT ? OFFSET ?";
+        return jdbcTemplate.query(sql, this::RowMapperProduct, limit, offset);
+    }
+
+    @Override
     public Optional<Product> findProductById(Long id) {
         String sql = "SELECT * FROM product WHERE id = ?";
 
@@ -80,4 +86,12 @@ public class JdbcProductRepository implements ProductRepositoryInterface{
         int deleted = jdbcTemplate.update(sql, id);
         return deleted > 0;
     }
+
+    @Override
+    public int countAllProducts() {
+        String sql = "SELECT COUNT(*) FROM product";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+
 }

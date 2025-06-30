@@ -28,6 +28,11 @@ public class ProductViewController {
     public String showProductsForm(Model model, @RequestParam(defaultValue = "1") int page,
                                    @RequestParam(defaultValue = "5") int pageSize) {
 
+        int totalProducts = productService.countAllProducts();
+        int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
+        if (page < 1) page = 1;
+        if (page > totalPages) page = totalPages;
+
         PageResponseDto pageResponseDto = productService.getPageProducts(page, pageSize);
 
         model.addAttribute("products", pageResponseDto.getPageProducts());

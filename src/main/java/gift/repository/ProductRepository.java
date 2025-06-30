@@ -1,5 +1,6 @@
 package gift.repository;
 
+import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ public class ProductRepository implements ProductRepositoryInterface {
     @Override
     public Product addProduct(Product product) {
 
+        product.setId(productId);
         products.put(productId, product);
         productId++;
         Product addedProduct = new Product(
@@ -35,6 +37,22 @@ public class ProductRepository implements ProductRepositoryInterface {
     @Override
     public List<Product> findAllProducts() {
         return new ArrayList<>(products.values());
+    }
+
+
+    @Override
+    public List<Product> findProductsByPage(int offset, int limit) {
+        List<Product> productList = new ArrayList<>(products.values());
+        if (offset < 0) offset = 0;
+        int toIndex = Math.min(offset + limit, productList.size());
+        if (offset > toIndex) {
+            return new ArrayList<>();
+        }
+
+
+        List<Product> pageProducts = productList.subList(offset, toIndex);
+
+        return pageProducts;
     }
 
     @Override
@@ -79,6 +97,11 @@ public class ProductRepository implements ProductRepositoryInterface {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public int countAllProducts() {
+        return products.size();
     }
 
 }

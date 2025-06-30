@@ -39,18 +39,16 @@
 </table>
 
 <div th:if="${not #lists.isEmpty(products)}">
-    <span th:if="${currentPage > 1}">
-        <a th:href="@{/products/view(page=${currentPage - 1}, pageSize=${pageSize})}">이전</a>
-    </span>
-    <span th:each="i : ${#numbers.sequence(1, totalPages)}">
-        <a th:href="@{/products/view(page=${i}, pageSize=${pageSize})}"
-           th:text="${i}"
-           th:classappend="${i == currentPage} ? 'active' : ''"></a>
-    </span>
-    <span th:if="${currentPage < totalPages}">
-        <a th:href="@{/products/view(page=${currentPage + 1}, pageSize=${pageSize})}">다음</a>
-    </span>
+    <form id="pageForm" th:action="@{/products/view}" method="get" style="display:inline;">
+        <label for="pageInput">페이지:</label>
+        <input type="number" id="pageInput" name="page"
+               th:value="${currentPage}" min="1" th:max="${totalPages}" required style="width:50px;"/>
+        <input type="hidden" name="pageSize" th:value="${pageSize}" />
+        <button type="submit">이동</button>
+        <span th:text="'/ ' + ${totalPages} + ' 페이지'"></span>
+    </form>
 </div>
+
 
 <button onclick="location.href='/products/add'">상품 등록</button>
 </body>

@@ -39,7 +39,16 @@ public class ProductService implements ProductServiceInterface {
 
     @Override
     public PageResponseDto getPageProducts(int page, int pageSize) {
-        List<Product> productList = productRepository.findAllProducts();
+
+        int totalProducts = productRepository.countAllProducts();
+        int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
+        if (totalPages == 0){
+            totalPages = 1;
+        }
+
+        int fromIndex = Math.max(0, (page - 1) * pageSize);
+
+        List<Product> productList = productRepository.findProductsByPage(fromIndex, pageSize);
         List<ProductResponseDto> products = new ArrayList<>();
         for (Product product : productList) {
             products.add(new ProductResponseDto(
@@ -50,21 +59,7 @@ public class ProductService implements ProductServiceInterface {
             ));
         }
 
-        int totalProducts = products.size();
-        int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
-        if (totalPages == 0){
-            totalPages = 1;
-        }
-
-        int fromIndex = (page - 1) * pageSize;
-        int toIndex = Math.min(fromIndex + pageSize, totalProducts);
-
-        List<ProductResponseDto> pageProducts = new ArrayList<>();
-        if (fromIndex < totalProducts) {
-            pageProducts = products.subList(fromIndex, toIndex);
-        }
-
-        return new PageResponseDto(page, totalPages, pageProducts);
+        return new PageResponseDto(page, totalPages, products);
     }
 
     @Override
@@ -118,6 +113,11 @@ public class ProductService implements ProductServiceInterface {
         if (!deleted) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @Override
+    public int countAllProducts() {
+        return productRepository.countAllProducts();
     }
 
 }
