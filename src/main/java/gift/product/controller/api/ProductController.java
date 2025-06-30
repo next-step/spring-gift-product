@@ -17,7 +17,7 @@ public class ProductController {
     }
 
     @GetMapping("/product/list")
-    public List<Product> findAll() {
+    public List<ProductDto> findAll() {
         return productService.findAll();
     }
 
@@ -28,7 +28,7 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id}")
-    public Product findById(@PathVariable String id) {
+    public ProductDto findById(@PathVariable String id) {
         return productService.findById(id);
     }
 
@@ -39,7 +39,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/product/{id}/delete")
-    public Product deleteById(@PathVariable String id) {
+    public ProductDto deleteById(@PathVariable String id) {
         return productService.deleteProduct(id);
     }
 }

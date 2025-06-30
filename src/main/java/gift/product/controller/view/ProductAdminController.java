@@ -20,7 +20,7 @@ public class ProductAdminController {
 
     @GetMapping("/product/list")
     public String findAll(Model model) {
-        List<Product> products = productService.findAll();
+        List<Product> products = productService.adminFindAll();
         model.addAttribute("products", products);
         return "products";
     }
@@ -40,12 +40,12 @@ public class ProductAdminController {
     @ResponseBody
     @GetMapping("/product/{id}")
     public Product findById(@PathVariable String id) {
-        return productService.findById(id);
+        return productService.adminFindById(id);
     }
 
     @GetMapping("/product/{id}/update")
     public String updateForm(@PathVariable String id, Model model) {
-        Product product = productService.findById(id);
+        Product product = productService.adminFindById(id);
         model.addAttribute("product", product);
         return "updateForm";
     }
@@ -58,7 +58,7 @@ public class ProductAdminController {
 
     @DeleteMapping("/product/{id}/delete")
     public String deleteById(@PathVariable String id) {
-        Product product = productService.deleteProduct(id);
+        productService.deleteProduct(id);
         return "redirect:/api/admin/product/list";
     }
 }
