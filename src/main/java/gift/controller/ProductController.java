@@ -27,13 +27,13 @@ public class ProductController {
     // 상품 id 기반 조회
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Product product = productService.getProductById(id);
+        Optional<Product> product = productService.getProductById(id);
 
-        if (product == null) {
+        if (product.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        return new ResponseEntity<>(product.get(), HttpStatus.OK);
     }
 
     // 상품 등록
@@ -45,8 +45,8 @@ public class ProductController {
     // 상품 수정
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updateRequest) {
-        Product updated = productService.updateProduct(id, updateRequest);
-        return updated != null ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
+        Optional<Product> updated = productService.updateProduct(id, updateRequest);
+        return updated.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(updated.get());
     }
 
     // 상품 삭제

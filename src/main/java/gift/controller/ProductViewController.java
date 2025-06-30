@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/admin/products")
 public class ProductViewController {
@@ -35,7 +37,13 @@ public class ProductViewController {
 
     @GetMapping("/update/{id}")
     public String updateProductForm(@PathVariable Long id, Model model) {
-        model.addAttribute("product", productService.getProductById(id));
+        Optional<Product> product = productService.getProductById(id);
+
+        if (product.isEmpty()) {
+            return "redirect:/admin/products";
+        }
+
+        model.addAttribute("product", product.get());
         return "admin/product_update";
     }
 
