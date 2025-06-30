@@ -41,8 +41,13 @@ public class ItemService {
     }
 
     public ItemDto updateItem(Long id, UpdateItemDto dto) {
-        Item item = itemRepository.updateItem(id, dto);
-        return new ItemDto(item);
+        Item existingitem = itemRepository.findItem(id);
+        if (existingitem == null) {
+            throw new ItemNotFoundException("상품을 찾을 수 없습니다"+id);
+        }
+
+        Item updateditem = itemRepository.updateItem(id, dto);
+        return new ItemDto(updateditem);
     }
 
 }
