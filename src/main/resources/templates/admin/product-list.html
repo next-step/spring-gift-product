@@ -32,15 +32,14 @@
         </td>
         <td th:text="${product.price} + '원'">가격</td>
         <td>
-            <img th:src="${product.imageUrl}" alt="상품 이미지"/>
+            <img th:if="${product.imageUrl != null}" th:src="${product.imageUrl}" alt="상품 이미지"/>
         </td>
         <td class="action-buttons">
             <a th:href="@{/admin/products/{id}/edit(id=${product.id})}">
                 <button>✏️ 수정</button>
             </a>
-            <form th:action="@{/admin/products/{id}/delete(id=${product.id})}" method="post"
-                  onsubmit="return confirm('정말 삭제할까요?');">
-                <button class="btn-delete" type="submit">🗑️ 삭제</button>
+            <form th:action="@{/admin/products/{id}/delete(id=${product.id})}" method="post">
+                <button type="submit">🗑️ 삭제</button>
             </form>
         </td>
     </tr>

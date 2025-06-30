@@ -41,7 +41,8 @@ public class AdminProductController {
 
     @PostMapping
     public String create(@ModelAttribute Product product) {
-        productService.create(product);
+        Product saved = productService.create(product);
+        System.out.println("등록된 상품 ID: " + saved.getId());
         return "redirect:/admin/products";
     }
 
@@ -52,11 +53,12 @@ public class AdminProductController {
         return "admin/product-form";
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/{id}/update")
     public String update(@PathVariable Long id, @ModelAttribute Product product) {
         productService.update(id, product);
         return "redirect:/admin/products";
     }
+
 
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable(name = "id") Long productId) {
