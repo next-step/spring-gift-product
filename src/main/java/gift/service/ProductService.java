@@ -9,7 +9,7 @@ public interface ProductService {
 
     ProductResponseDto saveProduct(ProductRequestDto requestDto);
 
-    List<Product> findAllProducts();
+    List<ProductResponseDto> findAllProducts();
 
     ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto);
 
