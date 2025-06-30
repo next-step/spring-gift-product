@@ -83,6 +83,6 @@ public class AdminController {
     public String deleteProduct(@PathVariable Long id) {
 
         productService.deleteProduct(id);
-        return "admin/products";
+        return "redirect:/admin/products";
     }
 }
