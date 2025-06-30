@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class ProductViewController {
 
-    ProductService productService;
+    private final ProductService productService;
 
     @Autowired
     public ProductViewController(ProductService productService) {

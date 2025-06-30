@@ -45,16 +45,9 @@ public class ProductService {
 
     public ProductResDTO update(Long id, ProductReqDTO productReqDTO) {
         Product product = productRepository.findById(id);
+        product.update(productReqDTO.name(), productReqDTO.price(), productReqDTO.imageURL());
 
-        return convertToDTO(
-            productRepository.save(
-                product.update(
-                    productReqDTO.name(),
-                    productReqDTO.price(),
-                    productReqDTO.imageURL()
-                )
-            )
-        );
+        return convertToDTO(product); // map에 저장되어 있으므로 수정만 하여도 반영
     }
 
     public void delete(Long id) {
