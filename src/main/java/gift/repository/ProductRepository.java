@@ -16,13 +16,12 @@ public class ProductRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Optional<Product> findProductById(long id) {
-        List<Product> result = jdbcTemplate.query("select * from products where id = ?", productRowMapper(), id);
-        return result.stream().findFirst();
+    public Product findProductById(long id) {
+        return jdbcTemplate.queryForObject("SELECT id, name, price, imageUrl FROM products WHERE id = ?", productRowMapper(), id);
     }
 
     public List<Product> findAllProducts() {
-        return jdbcTemplate.query("SELECT * FROM products", productRowMapper());
+        return jdbcTemplate.query("SELECT id, name, price, imageUrl FROM products", productRowMapper());
     }
 
     public Product saveProduct(Product product) {
