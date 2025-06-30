@@ -11,7 +11,7 @@
         <div class="py-5 text-center">
             <h2>상품 수정 폼</h2>
         </div>
-        <form action="singleGift.html" th:action="@{/{id}/edit(id=${gift.id})}" method="post">
+        <form action="singleGift.html" th:action="@{/gift/{id}/edit(id=${gift.id})}" method="post">
             <div>
                 <label for="giftId">상품 ID</label>
                 <input type="text" id="giftId" name="giftId" class="form-control" value="1" th:value="${gift.giftId}">
