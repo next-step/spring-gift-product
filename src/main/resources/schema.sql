@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS product CASCADE;
+
+CREATE TABLE product (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    price INT NOT NULL,
+    image_url TEXT NOT NULL
+);
