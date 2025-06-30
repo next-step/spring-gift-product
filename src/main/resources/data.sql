@@ -1,6 +1,1 @@
-CREATE TABLE product (
-                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                         name VARCHAR(255),
-                         price INT,
-                         image_url VARCHAR(500)
-);
+INSERT INTO product (name, price, image_url) VALUES ('상품1', 1000, 'https://media.istockphoto.com/id/1667499762/ko/%EB%B2%A1%ED%84%B0/%EC%98%81%EC%97%85%EC%A4%91-%ED%8C%90%EC%A7%80-%EC%83%81%EC%9E%90.jpg?s=612x612&w=0&k=20&c=94uRFQLclgFtnDhE4OfO1tCJdETL3uuBM9ZHD_N4P4Y=');

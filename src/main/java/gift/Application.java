@@ -19,8 +19,8 @@ public class Application implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
 
-        jdbcTemplate.execute("DROP TABLE IF EXISTS products");
-        jdbcTemplate.execute("CREATE TABLE products" +
+        jdbcTemplate.execute("DROP TABLE IF EXISTS product");
+        jdbcTemplate.execute("CREATE TABLE product" +
                 "(id BIGINT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), price INT, " +
                 "image_url VARCHAR(500))");
     }
