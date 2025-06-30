@@ -25,9 +25,7 @@ public class ProductService {
 
     public Product getProductById(Long id) {
         Optional<Product> optionalProduct = productRepository.getProductById(id);
-        if (optionalProduct.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
-        }
+        throwNotFoundIfTrue(optionalProduct.isEmpty());
         return optionalProduct.get();
     }
 
@@ -35,11 +33,9 @@ public class ProductService {
         return productRepository.getProductList();
     }
 
-    public Product updateProductById(Long id, String name, Integer price, String imageUrl) {
+    public Product updateSelectivelyProductById(Long id, String name, Integer price, String imageUrl) {
         Optional<Product> optionalProduct = productRepository.getProductById(id);
-        if (optionalProduct.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
-        }
+        throwNotFoundIfTrue(optionalProduct.isEmpty());
         if (name == null && price == null && imageUrl == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정할 요소가 한개 이상은 작성되어야 합니다");
         }
@@ -53,22 +49,25 @@ public class ProductService {
         if (imageUrl != null) {
             product.setImageUrl(imageUrl);
         }
-        return productRepository.updateProduct(product);
+        optionalProduct = productRepository.updateProduct(product);
+        throwNotFoundIfTrue(optionalProduct.isEmpty());
+        return optionalProduct.get();
     }
 
-    public Product putProductById(Long id, String name, Integer price, String imageUrl) {
-        Optional<Product> optionalPuttedProduct = productRepository.putProductById(id, name, price, imageUrl);
-        if (optionalPuttedProduct.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
-        }
-        return optionalPuttedProduct.get();
+    public Product updateProductById(Long id, String name, Integer price, String imageUrl) {
+        Optional<Product> optionalProduct = productRepository.updateProduct(new Product(id, name, price, imageUrl));
+        throwNotFoundIfTrue(optionalProduct.isEmpty());
+        return optionalProduct.get();
     }
 
     public void deleteProductById(Long id) {
-        Optional<Product> optionalProduct = productRepository.getProductById(id);
-        if (optionalProduct.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        Optional<Product> optionalProduct = productRepository.deleteProductById(id);
+        throwNotFoundIfTrue(optionalProduct.isEmpty());
+    }
+
+    private void throwNotFoundIfTrue(boolean condition) {
+        if (condition) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        productRepository.deleteProductById(id);
     }
 }

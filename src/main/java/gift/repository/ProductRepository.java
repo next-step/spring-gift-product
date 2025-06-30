@@ -27,24 +27,16 @@ public class ProductRepository {
         return new ArrayList<>(products.values());
     }
 
-    public Product updateProduct(Product product) {
-        products.put(product.getId(), product);
-        return product;
-    }
-
-    public Optional<Product> putProductById(Long id, String name, Integer price, String imageUrl) {
+    public Optional<Product> updateProduct(Product product) {
         return Optional.ofNullable(
                 products.computeIfPresent(
-                        id, (key, product) -> {
-                            product.setName(name);
-                            product.setPrice(price);
-                            product.setImageUrl(imageUrl);
-                            return product;
-                        })
+                        product.getId(),
+                        (key, existing) -> product
+                )
         );
     }
 
-    public void deleteProductById(Long id) {
-        products.remove(id);
+    public Optional<Product> deleteProductById(Long id) {
+        return Optional.ofNullable(products.remove(id));
     }
 }
