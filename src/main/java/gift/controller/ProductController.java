@@ -2,13 +2,11 @@ package gift.controller;
 
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
-import gift.entity.Product;
 import gift.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/products")
@@ -28,10 +26,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductResponseDto>> findAllProducts() {
-        List<Product> products = productService.findAllProducts();
-        return ResponseEntity.ok(products.stream()
-                .map(product -> new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl()))
-                .collect(Collectors.toList()));
+        return ResponseEntity.ok(productService.findAllProducts());
     }
 
     @DeleteMapping("/{id}")

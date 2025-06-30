@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -28,9 +29,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findAllProducts() {
+    public List<ProductResponseDto> findAllProducts() {
         List<Product> allProducts = productRepository.findAllProducts();
-        return allProducts;
+        List<ProductResponseDto> productResponseDtoList = allProducts.stream()
+                .map(product -> new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl()))
+                .collect(Collectors.toList());
+        return productResponseDtoList;
     }
 
 
