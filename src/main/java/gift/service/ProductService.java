@@ -7,7 +7,7 @@ import java.util.List;
 public interface ProductService {
     ProductResponse getProductById(Long productId);
 
-    void save(ProductRequest request);
+    Long save(ProductRequest request);
 
     void update(ProductRequest request);
 

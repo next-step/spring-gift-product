@@ -28,10 +28,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void save(ProductRequest request) {
+    public Long save(ProductRequest request) {
         validateRequest(request);
 
-        productRepository.save(ProductMapper.toEntity(request));
+        Long id = productRepository.save(ProductMapper.toEntity(request));
+        return id;
     }
 
     @Override
@@ -58,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void validateRequest(ProductRequest request) {
-        if (request == null || request.id() == null) {
+        if (request == null) {
             throw new InvalidProductException(ErrorCode.NOT_EXISTS_PRODUCT);
         }
 

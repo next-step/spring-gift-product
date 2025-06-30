@@ -45,10 +45,10 @@ public class ProductApiController {
     // 상품 생성
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createProduct(
+    public Long createProduct(
         @RequestBody ProductRequest request
     ) {
-        productService.save(request);
+        return productService.save(request);
     }
 
     // 상품 수정

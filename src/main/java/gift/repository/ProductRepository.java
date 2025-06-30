@@ -9,7 +9,7 @@ public interface ProductRepository {
 
     Optional<Product> findById(Long productId);
 
-    void save(Product product);
+    Long save(Product product);
 
     void update(ProductRequest request);
 
