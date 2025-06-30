@@ -49,7 +49,8 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public void deleteProduct(Long id) {
-        products.remove(id);
+        String sql = "delete from products where id = ?";
+        jdbcTemplate.update(sql, id);
     }
 
     @Override
