@@ -36,3 +36,10 @@
 ## Step3 [ 06/29 ]
 
 - [x] HashMap 대신 H2 DB 연동
+
+## Step3 Refactoring [ 06/30 ]
+
+- [x] update함수 id 인자 전송 제거
+- [x] Data.sql문 작성(기초 데이터 삽입)
+- [x] Product 삽입 TestCode 추가
+- [X] DisplayName을 통해 테스트하는 로직 표기

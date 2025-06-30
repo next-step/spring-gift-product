@@ -30,7 +30,7 @@ public class ProductService {
   public Optional<Product> update(Long id, Product product) {
     Optional<Product> existing = productRepository.findById(id);
     if (existing.isPresent()) {
-      productRepository.update(existing.get(), product);
+      productRepository.update(product);
       return Optional.of(product);
     }
     return Optional.empty();
