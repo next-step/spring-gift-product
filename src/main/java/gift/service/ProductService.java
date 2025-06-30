@@ -61,8 +61,7 @@ public class ProductService {
     }
 
     public void deleteProductById(Long id) {
-        Optional<Product> optionalProduct = productRepository.deleteProductById(id);
-        throwNotFoundIfTrue(optionalProduct.isEmpty());
+        throwNotFoundIfTrue(!productRepository.deleteProductById(id));
     }
 
     private void throwNotFoundIfTrue(boolean condition) {

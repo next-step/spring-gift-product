@@ -1,42 +1,71 @@
 package gift.repository;
 
 import gift.entity.Product;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class ProductRepository {
 
-    private final Map<Long, Product> products = new ConcurrentHashMap<>();
-    private final AtomicLong counter = new AtomicLong();
+    private final JdbcClient jdbcClient;
+
+    public ProductRepository(JdbcClient jdbcClient) {
+        this.jdbcClient = jdbcClient;
+    }
 
     public Product saveNewProduct(Product product) {
-        product.setId(counter.incrementAndGet());
-        products.put(product.getId(), product);
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcClient.sql("insert into product (name, price, image_url) values (:name, :price, :imageUrl)")
+            .param("name", product.getName())
+            .param("price", product.getPrice())
+            .param("imageUrl", product.getImageUrl())
+            .update(keyHolder);
+        product.setId(keyHolder.getKey().longValue());
         return product;
     }
 
     public Optional<Product> getProductById(Long id) {
-        return Optional.ofNullable(products.get(id));
+        return jdbcClient.sql("select * from product where id = :id")
+            .param("id", id)
+            .query(getProductRowMapper())
+            .optional();
     }
 
     public List<Product> getProductList() {
-        return new ArrayList<>(products.values());
+        return jdbcClient.sql("select * from product")
+                .query(getProductRowMapper())
+                .list();
     }
 
     public Optional<Product> updateProduct(Product product) {
-        return Optional.ofNullable(
-                products.computeIfPresent(
-                        product.getId(),
-                        (key, existing) -> product
-                )
-        );
+        int updated = jdbcClient.sql("update product set name = :name, price = :price, image_url = :imageUrl where id = :id")
+                .param("id", product.getId())
+                .param("name", product.getName())
+                .param("price", product.getPrice())
+                .param("imageUrl", product.getImageUrl())
+                .update();
+        return updated == 1 ? Optional.of(product) : Optional.empty();
     }
 
-    public Optional<Product> deleteProductById(Long id) {
-        return Optional.ofNullable(products.remove(id));
+    // return true when successfully deleted, false when id not exists.
+    public boolean deleteProductById(Long id) {
+        int updated = jdbcClient.sql("delete from product where id = :id")
+                .param("id", id)
+                .update();
+        return updated == 1;
+    }
+
+    private static RowMapper<Product> getProductRowMapper() {
+        return (rs, rowNum) -> {
+            Long id = rs.getLong("id");
+            String name = rs.getString("name");
+            Integer price = rs.getInt("price");
+            String imageUrl = rs.getString("image_url");
+            return new Product(id, name, price, imageUrl);
+        };
     }
 }
