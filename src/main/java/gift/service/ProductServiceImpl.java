@@ -6,16 +6,16 @@ import gift.dto.ProductRequest;
 import gift.dto.ProductResponse;
 import gift.exception.ErrorCode;
 import gift.exception.InvalidProductException;
-import gift.repository.ProductRepositoryImpl;
+import gift.repository.ProductRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepositoryImpl productRepository;
+    private final ProductRepository productRepository;
 
-    public ProductServiceImpl(ProductRepositoryImpl productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
