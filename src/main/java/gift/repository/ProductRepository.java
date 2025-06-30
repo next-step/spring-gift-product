@@ -71,10 +71,11 @@ public class ProductRepository {
         }
         return findById(id);
     }
-//
-//    public void deleteById(Long id) {
-//        products.remove(id);
-//    }
+
+    public void deleteById(Long id) {
+        String sql = "DELETE FROM products WHERE id = ?";
+        int deletedRows = jdbcTemplate.update(sql, id);
+    }
 
     public List<Product> findAllProducts() {
         String sql = "select id, name, price, imageUrl from products";
