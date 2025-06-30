@@ -2,10 +2,10 @@ package gift.dto;
 
 import gift.domain.Product;
 
-public record ReadProductResponse(Long id, String name, Integer price, String imageUrl) {
+public record ProductResponse(Long id, String name, Integer price, String imageUrl) {
 
-    public static ReadProductResponse of(Product product) {
-        return new ReadProductResponse(
+    public static ProductResponse from(Product product) {
+        return new ProductResponse(
             product.getId(),
             product.getName(),
             product.getPrice(),

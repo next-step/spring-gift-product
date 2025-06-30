@@ -7,8 +7,6 @@ public class Product {
     private final Integer price;
     private final String imageUrl;
 
-    private static Long currentId = 1L;
-
     private Product(Long id, String name, Integer price, String imageUrl) {
         this.id = id;
         this.name = name;
@@ -16,8 +14,8 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public static Product of(String name, Integer price, String imageUrl) {
-        return new Product(currentId++, name, price, imageUrl);
+    public static Product of(Long id, String name, Integer price, String imageUrl) {
+        return new Product(id, name, price, imageUrl);
     }
 
     public Product createUpdatedProduct(String name, Integer price, String imageUrl) {

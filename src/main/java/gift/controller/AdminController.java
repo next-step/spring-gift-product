@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import gift.dto.CreateProductRequest;
-import gift.dto.ReadProductResponse;
+import gift.dto.ProductResponse;
 import gift.dto.UpdateProductRequest;
 import gift.service.ProductService;
 
@@ -27,7 +27,7 @@ public class AdminController {
 
     @GetMapping
     public String adminPage(Model model) {
-        List<ReadProductResponse> products = productService.getAllProducts();
+        List<ProductResponse> products = productService.getAllProducts();
         model.addAttribute("products", products);
         return "admin";
     }
@@ -50,7 +50,7 @@ public class AdminController {
         @PathVariable Long id,
         Model model
     ) {
-        ReadProductResponse product = productService.getProductById(id);
+        ProductResponse product = productService.getProductById(id);
         model.addAttribute("product", product);
         return "editProduct";
     }

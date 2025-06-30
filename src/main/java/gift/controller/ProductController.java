@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gift.dto.CreateProductRequest;
 import gift.dto.CreateProductResponse;
-import gift.dto.ReadProductResponse;
+import gift.dto.ProductResponse;
 import gift.dto.UpdateProductRequest;
 import gift.dto.UpdateProductResponse;
 import gift.service.ProductService;
@@ -31,14 +31,14 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ReadProductResponse>> getAllProducts() {
-        List<ReadProductResponse> products = productService.getAllProducts();
+    public ResponseEntity<List<ProductResponse>> getAllProducts() {
+        List<ProductResponse> products = productService.getAllProducts();
         return ResponseEntity.status(HttpStatus.OK).body(products);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReadProductResponse> getProductById(@PathVariable Long id) {
-        ReadProductResponse product = productService.getProductById(id);
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id) {
+        ProductResponse product = productService.getProductById(id);
         return ResponseEntity.status(HttpStatus.OK).body(product);
     }
 
