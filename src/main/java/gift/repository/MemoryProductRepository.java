@@ -22,9 +22,6 @@ public class MemoryProductRepository implements ProductRepository {
 
     @Override
     public Optional<Product> findProductById(Long id) {
-        if (!products.containsKey(id)) {
-            throw new NotFoundByIdException("Product with id " + id + " does not exist.");
-        }
         return Optional.of(products.get(id));
     }
 
