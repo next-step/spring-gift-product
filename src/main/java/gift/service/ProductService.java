@@ -53,7 +53,7 @@ public class ProductService {
         Product saved = productRepository.save(product);
 
         return new ProductResponseDTO(
-                saved.getId(),
+                null,
                 saved.getName(),
                 saved.getPrice(),
                 saved.getImageUrl()
@@ -65,17 +65,21 @@ public class ProductService {
         if (product == null) {
             throw new IllegalArgumentException("Product not found");
         }
-        product.update(
+
+        Product updated = new Product(
+                id,
                 productRequestDTO.name(),
                 productRequestDTO.price(),
                 productRequestDTO.imageUrl()
         );
 
+        productRepository.update(id, updated);
+
         return new ProductResponseDTO(
-                product.getId(),
-                product.getName(),
-                product.getPrice(),
-                product.getImageUrl()
+                updated.getId(),
+                updated.getName(),
+                updated.getPrice(),
+                updated.getImageUrl()
         );
     }
 
