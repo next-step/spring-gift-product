@@ -51,3 +51,12 @@
   - 
 - [x] 상품 삭제 기능
   - `feat`: 상품 삭제 처리 컨트롤러 로직 구현 (`POST /admin/products/delete/{id}`)
+
+# 3단계: 데이터베이스 적용
+
+## 기능 목록
+
+- [x] H2 데이터베이스 연동 설정
+  - `feat`: `application.properties`에 연결 정보 설정
+- [x] 상품 테이블 스키마
+  - `feat`: `schema.sql` 추가
