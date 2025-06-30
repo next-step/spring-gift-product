@@ -54,7 +54,6 @@ public class ProductRepositoryImpl implements ProductRepository {
                 .query(Integer.class)
                 .single();
 
-
         int totalPages = (int) Math.ceil((double) total / size);
 
         return new PageResult<>(content, page, totalPages, size, total);
@@ -114,7 +113,7 @@ public class ProductRepositoryImpl implements ProductRepository {
             var id = rs.getLong("id");
             var name = rs.getString("name");
             var price = rs.getInt("price");
-            var imageUrl = rs.getString("imageUrl");
+            var imageUrl = rs.getString("image_url");
             return new ProductResponseDto(id, name, price, imageUrl);
         };
     }
