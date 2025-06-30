@@ -2,6 +2,7 @@ package gift.repository;
 
 import gift.entity.Product;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -38,6 +39,15 @@ public class ProductRepository {
 
     public void deleteById(Long id){
         products.remove(id);
+    }
+
+    private static RowMapper<Product> getProductRowMapper(){
+        return (rs, rowNum) -> new Product(
+                rs.getLong("id"),
+                rs.getString("name"),
+                rs.getLong("price"),
+                rs.getString("image_url")
+        );
     }
 
 }
