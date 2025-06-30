@@ -17,3 +17,8 @@
 | `/admin/edit/{id}`   | GET    | (상품 수정 페이지) 특정 상품 수정 폼을 조회한다.  |
 | `/admin/edit/{id}`   | POST   | (상품 수정 처리) 특정 상품의 정보를 수정한다.    |
 | `/admin/delete/{id}` | POST   | (상품 삭제 처리) 특정 상품을 삭제한다.        |
+
+# DB Apply
+[O] h2 DB 설정하기
+[O] 스키마 스크립트, 데이터 스크립트를 각각 schema.sql, data.sql에 작성하기
+[O] 상품 정보를 Map 대신 DB에 저장하도록 Repository 클래스 수정하기
