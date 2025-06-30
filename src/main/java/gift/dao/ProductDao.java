@@ -1,10 +1,11 @@
-package gift.Controller;
+package gift.dao;
 
 import gift.Entity.Product;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
-import study.Member;
+
+import java.util.List;
 
 @Repository
 public class ProductDao {
@@ -34,6 +35,35 @@ public class ProductDao {
                 .query(getProductRowMapper())
                 .single();
     }
+
+    public List<Product> showProducts() {
+        var sql = "SELECT id, name, price, imageUrl FROM products";
+        client.sql(sql)
+                .query(getProductRowMapper())
+                .list();
+    }
+
+    public void updateProduct(Long id,Product product) {
+        var sql = """
+                UPDATE products SET name = :name, price = :price, imageUrl = :imageUrl WHERE id = :id
+                """;
+        client.sql(sql)
+                .param("id", id)
+                .param("name", product.getName())
+                .param("price", product.getPrice())
+                .param("imageUrl", product.getImageUrl())
+                .update();
+    }
+
+    public void deleteProduct(Long id) {
+        var sql = """
+                DELETE FROM products WHERE id = :id
+        """;
+        client.sql(sql)
+                .param("id", id)
+                .update();
+    }
+
     private RowMapper<Product> getProductRowMapper() {
         return (rs, rowNum) -> {
             var id = rs.getLong("id");

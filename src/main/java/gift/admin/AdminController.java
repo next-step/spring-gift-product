@@ -22,7 +22,7 @@ public class AdminController {
                 "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"));
     }
 
-    // 상품 목록 페이지git
+    // 상품 목록 페이지
     @GetMapping
     public String list(Model model) {
         model.addAttribute("products", products.values());
