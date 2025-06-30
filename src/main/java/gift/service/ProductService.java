@@ -79,7 +79,7 @@ public class ProductService {
             updatedPrice,
             updatedImageUrl
         );
-        updatedProduct = productRepository.save(updatedProduct);
+        updatedProduct = productRepository.update(updatedProduct);
         return new ProductResponse(
             updatedProduct.getId(),
             updatedProduct.getName(),
