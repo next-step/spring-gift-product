@@ -60,10 +60,9 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product updateProduct(Long id, String name, Long price, String imageUrl) {
+    public void updateProduct(Long id, String name, Long price, String imageUrl) {
         String sql = "UPDATE product SET name = ?, price = ?, image_url = ? WHERE id = ?";
         jdbcTemplate.update(sql, name, price, imageUrl, id);
-        return findProductById(id);
     }
 
     @Override
