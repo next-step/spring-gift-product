@@ -47,18 +47,11 @@ public class ProductService {
         return productWithoutId;
     }
 
-    public Product updateProduct(Long id, Product updateRequest) {
-        Product product = products.get(id);
+    public Optional<Product> updateProduct(Long id, Product updateRequest) {
+        String sql = "update products set name = ?, price = ?, imageUrl = ? where id = ?";
+        jdbcTemplate.update(sql, updateRequest.getName(), updateRequest.getPrice(), updateRequest.getImageUrl(), id);
 
-        if (product == null) {
-            return null;
-        }
-
-        product.setName(updateRequest.getName() != null ? updateRequest.getName() : product.getName());
-        product.setPrice(updateRequest.getPrice() != 0 ? updateRequest.getPrice() : product.getPrice());
-        product.setImageUrl(updateRequest.getImageUrl() != null ? updateRequest.getImageUrl() : product.getImageUrl());
-
-        return product;
+        return getProductById(id);
     }
 
     public boolean deleteProduct(Long id) {

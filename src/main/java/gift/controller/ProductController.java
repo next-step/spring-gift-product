@@ -45,8 +45,8 @@ public class ProductController {
     // 상품 수정
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updateRequest) {
-        Product updated = productService.updateProduct(id, updateRequest);
-        return updated != null ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
+        Optional<Product> updated = productService.updateProduct(id, updateRequest);
+        return updated.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(updated.get());
     }
 
     // 상품 삭제
