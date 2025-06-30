@@ -17,15 +17,14 @@ public class ProductRepository {
         this.jdbcClient = jdbcClient;
     }
 
-    public Product saveNewProduct(Product product) {
+    public Optional<Long> saveNewProduct(Product product) {
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcClient.sql("insert into product (name, price, image_url) values (:name, :price, :imageUrl)")
             .param("name", product.getName())
             .param("price", product.getPrice())
             .param("imageUrl", product.getImageUrl())
             .update(keyHolder);
-        product.setId(keyHolder.getKey().longValue());
-        return product;
+        return Optional.ofNullable(keyHolder.getKeyAs(Long.class));
     }
 
     public Optional<Product> getProductById(Long id) {

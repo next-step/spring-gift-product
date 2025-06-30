@@ -20,7 +20,12 @@ public class ProductService {
 
     public Product createProduct(String name, Integer price, String imageUrl) {
         Product product = new Product(name, price, imageUrl);
-        return productRepository.saveNewProduct(product);
+        Optional<Long> optionalId = productRepository.saveNewProduct(product);
+        if (optionalId.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Product creation failed");
+        }
+        product.setId(optionalId.get());
+        return product;
     }
 
     public Product getProductById(Long id) {
