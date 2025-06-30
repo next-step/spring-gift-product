@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:URL="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 관리</title>
+    <link rel="stylesheet" href="../css/admin-style.css">
+
+</head>
+<body>
+
+<div class="container">
+
+    <div class="panel product-list">
+        <h1>전체 상품</h1>
+        <table border="1">
+            <thead>
+            <tr>
+                <th>상품 ID</th>
+                <th>상품명</th>
+                <th>가격</th>
+                <th>이미지 URL</th>
+                <th>설정</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${allProducts}">
+                <td th:text="${product.id}">ID</td>
+                <td th:text="${product.name}">이름</td>
+                <td th:text="${product.price}">가격</td>
+                <td th:text="${product.imageUrl}">이미지 URL</td>
+                <td>
+                    <button id="delete-btn" class="delete-btn" th:data-product-id="${product.id}">삭제</button>
+                    <button id="patch-btn" class="patch-btn"
+                            th:data-product-id="${product.id}"
+                            th:data-product-name="${product.name}"
+                            th:data-product-price="${product.price}"
+                            th:data-product-image-url="${product.imageUrl}">수정</button>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="display: flex ; flex-direction: column; gap: 20px; flex: 1">
+        <div class="panel product-form">
+            <h2>새 상품 등록</h2>
+            <form id="create-product-form">
+                <div>
+                    <label>상품명:</label>
+                    <input type="text" id="create-name" name="name" required>
+                </div>
+                <div>
+                    <label>가격:</label>
+                    <input type="number" id="create-price" name="price" required>
+                </div>
+                <div>
+                    <label>이미지 URL:</label>
+                    <input type="text" id="create-imageUrl" name="imageUrl" required>
+                </div>
+                <button type="submit">상품 등록</button>
+            </form>
+        </div>
+
+        <div class="panel product-form">
+            <h2>상품 수정</h2>
+            <form id="patch-product-form">
+                <div>
+                    <label>상품ID:</label>
+                    <input type="text" id="patch-id" name="name" disabled>
+                </div>
+                <div>
+                    <label>상품명:</label>
+                    <input type="text" id="patch-name" name="name" required>
+                </div>
+                <div>
+                    <label>가격:</label>
+                    <input type="number" id="patch-price" name="price" required>
+                </div>
+                <div>
+                    <label>이미지 URL:</label>
+                    <input type="text" id="patch-imageUrl" name="imageUrl" required>
+                </div>
+                <button type="submit">상품 수정</button>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
+<script src="../js/admin.js"></script>
+</body>
+</html>

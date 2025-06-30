@@ -1,0 +1,110 @@
+body {
+    font-family: 'Malgun Gothic', sans-serif;
+    background-color: #f4f7f6;
+    margin: 20px;
+}
+
+.container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.panel {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+}
+
+.product-list {
+    flex: 2;
+}
+
+.product-form {
+    flex: 1;
+}
+
+h1, h2 {
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 12px;
+}
+
+thead {
+    background-color: #f2f2f2;
+}
+
+.product-form div {
+    margin-bottom: 15px;
+}
+
+.product-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.product-form input[type="text"],
+.product-form input[type="number"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.product-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.product-form button:hover {
+    background-color: #0056b3;
+}
+.delete-btn {
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+.patch-btn {
+    padding: 5px 10px;
+    background-color: #555555;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.patch-btn-btn:hover {
+    background-color: #555555;
+}

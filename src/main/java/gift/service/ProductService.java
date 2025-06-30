@@ -10,12 +10,11 @@ public interface ProductService {
 
     ProductResponseDto saveProduct(ProductRequestDto requestDto);
 
-    List<ProductResponseDto> findAllProducts();
+    List<Product> findAllProducts();
 
-    ProductResponseDto updateProduct(Long id,ProductRequestDto requestDto);
+    ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto);
 
     void deleteProduct(Long id);
-
 
 
 }

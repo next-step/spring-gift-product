@@ -4,9 +4,10 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,12 +24,12 @@ public class ProductServiceImpl implements ProductService {
         Product product = new Product(requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
         Product saveProduct = productRepository.saveProduct(product);
 
-        return new ProductResponseDto(saveProduct);
+        return new ProductResponseDto(saveProduct.getId(), saveProduct.getName(), saveProduct.getPrice(), saveProduct.getImageUrl());
     }
 
     @Override
-    public List<ProductResponseDto> findAllProducts() {
-        List<ProductResponseDto> allProducts = productRepository.findAllProducts();
+    public List<Product> findAllProducts() {
+        List<Product> allProducts = productRepository.findAllProducts();
         return allProducts;
     }
 
@@ -37,19 +38,15 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
 
         Product product = productRepository.findProduct(id);
-
-        if(requestDto.getName() != null) {
-            product.setName(requestDto.getName());
+        if (product == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "상품을 찾을 수 없습니다. id = " + id);
         }
 
-        if(requestDto.getPrice() != null) {
-            product.setPrice(requestDto.getPrice());
-        }
-        if(requestDto.getImageUrl() != null) {
-            product.setImageUrl(requestDto.getImageUrl());
-        }
+        product.changeName(requestDto.getName());
+        product.changePrice(requestDto.getPrice());
+        product.changImageUrl(requestDto.getImageUrl());
 
-        return new ProductResponseDto(product);
+        return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
     }
 
     @Override
