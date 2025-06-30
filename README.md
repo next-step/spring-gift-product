@@ -1,83 +1,36 @@
-# Step 2 - 관리자 화면
+# Step 3 - 데이터베이스 적용
 
-# Thymeleaf 기반 상품 관리자 화면 HTTP API
+자바 컬렉션 프레임워크 HashMap 을 사용하여 
 
-## - 상품 조회
-
-### [GET] /admin/products?page=0&size=10&sort=name,asc&categoryId=1 
-
-상품 조회 폼 렌더링 
-
-return "admin/product/list";
-
-전체 상품을 페이지 단위로 조회한다.
-
-상품 ID 또는 이름으로 특정 상품 검색이 가능하다. 
-
-stream().filter() 와 matchesKeyword() 메소드 이용
+메모리에 저장하던 상품 정보를 데이터베이스에 저장한다.
 
 ---
 
-## - 상품 생성
+### H2 데이터베이스를 이용한다.
+    인메모리 DB 로, 어플리케이션에 내장되어 빠르다.
+    별도 설치 필요 X 
 
-### [GET] /admin/products/new 
+    의존성 추가 필요 (build.gradle 파일)
+    runtimeOnly 'com.h2database:h2'
 
-상품 등록 폼 렌더링 
+    DB 설정 추가
+    # h2-console 활성화 여부
+    spring.h2.console.enabled=true
+    # db url
+    spring.datasource.url=jdbc:h2:mem:test
+---
 
-return "admin/product/form";
-
-빈 ProductRequest() 객체를 생성하여 모델에 담는다.
-
-isNew 를 이용하여 등록, 수정 폼을 구분한다. (isNew = true)
-
-
-### [POST] /admin/products 
-
-상품 등록 처리
-
-ProductService.create() 메소드를 이용하여 상품을 등록한다.
-
-상품 등록 후 /admin/products 로 redirect
-
-return "redirect:/admin/products";
+### JDBC Template 을 이용한다.
+    Spring 이 제공하는 JDBC 접근을 단순화한 도구
+    
+    의존성 추가 필요 (bulid.gradle 파일)
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    
 
 ---
 
-## - 상품 수정
-
-### [GET] /admin/products/{productId}/edit 
-
-상품 수정 폼 렌더링
-
-return "admin/product/form";
-
-상품 ID 를 기반으로 상품의 정보를 불러와서 수정 폼에 렌더링한다.
-
-isNew 를 이용하여 등록, 수정 폼을 구분한다. (isNew = false)
-
-### [POST] /admin/products/{productId}/edit
-
-상품 수정 처리
-
-ProductService.update() 메소드를 이용하여 상품을 수정한다.
-
-상품 수정 후 /admin/products/ 로 redirect
-
-return "redirect:/admin/products";
-
----
-
-## - 상품 삭제
-
-### [DELETE] /admin/products/{productId}/delete 
-
-상품 삭제 처리
-
-ProductService.delete() 메소드를 이용하여 상품을 삭제한다.
-
-상품 삭제 후 /admin/products/ 로 redirect
-
-return "redirect:/admin/products";
-
-
+### HashMap -> JdbcTemplate 리팩토링 진행
+    기존 메모리 저장 방식에서 
+    데이터베이스 저장 방식으로 리팩토링
+    ProductRepository 수정
 
