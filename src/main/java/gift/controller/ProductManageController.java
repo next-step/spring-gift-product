@@ -3,7 +3,7 @@ package gift.controller;
 import gift.dto.product.CreateProductRequest;
 import gift.dto.product.ProductManageResponse;
 import gift.dto.product.UpdateProductRequest;
-import gift.service.ProductService;
+import gift.service.ProductManageService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,15 +16,15 @@ import java.util.List;
 @RequestMapping("/admin/products")
 public class ProductManageController {
 
-    private final ProductService productService;
+    private final ProductManageService productManageService;
 
-    public ProductManageController(ProductService productService) {
-        this.productService = productService;
+    public ProductManageController(ProductManageService productManageService) {
+        this.productManageService = productManageService;
     }
 
     @GetMapping
     public String getProductsForm(Model model) {
-        List<ProductManageResponse> products = productService.getAllProducts().stream().map(ProductManageResponse::from).toList();
+        List<ProductManageResponse> products = productManageService.getAllProducts();
         model.addAttribute("products", products);
         return "/admin/productList";
     }
@@ -41,13 +41,13 @@ public class ProductManageController {
         if (bindingResult.hasErrors()) {
             return "/admin/productCreate";
         }
-        productService.saveProduct(request);
+        productManageService.saveProduct(request);
         return "redirect:/admin/products";
     }
 
     @GetMapping("/{id}/edit")
     public String updateProductForm(@PathVariable Long id, Model model) {
-        ProductManageResponse response = ProductManageResponse.from(productService.getProduct(id));
+        ProductManageResponse response = productManageService.getProduct(id);
         model.addAttribute("id", id);
         model.addAttribute("request", UpdateProductRequest.from(response));
         return "/admin/productUpdate";
@@ -58,13 +58,13 @@ public class ProductManageController {
         if (bindingResult.hasErrors()) {
             return "/admin/productUpdate";
         }
-        productService.updateProduct(id, request);
+        productManageService.updateProduct(id, request);
         return "redirect:/admin/products";
     }
 
     @PostMapping("/{id}/delete")
     public String deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
+        productManageService.deleteProduct(id);
         return "redirect:/admin/products";
     }
 }
