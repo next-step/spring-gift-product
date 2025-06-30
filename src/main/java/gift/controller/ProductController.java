@@ -36,7 +36,10 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDto requestDto) {
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDto requestDto) {
+        if (requestDto.getName() == null || requestDto.getPrice() == null || requestDto.getImageUrl() == null) {
+            return ResponseEntity.badRequest().body("필수값이 누락되었습니다.");
+        }
         return ResponseEntity.ok(productService.updateProduct(id, requestDto));
     }
 

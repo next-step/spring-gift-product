@@ -25,7 +25,7 @@ public class Product {
         this.id = id;
     }
 
-    public void changeName(String name) {
+    /*public void changeName(String name) {
         if (name != null)
             this.name = name;
     }
@@ -38,7 +38,7 @@ public class Product {
     public void changImageUrl(String imageUrl) {
         if (imageUrl != null)
             this.imageUrl = imageUrl;
-    }
+    }*/
 
     public Long getId() {
         return id;
