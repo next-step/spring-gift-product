@@ -75,10 +75,12 @@ public class ProductRepository {
 
     //수정
     public Product update(Product product) {
-        if(products.containsKey(product.getId())) {
-            return products.put(product.getId(), product);
-        }
-        return null;
+
+        String sql = "update product set name = ?, price = ?, image_url = ? where id = ?";
+
+        jdbcTemplate.update(sql, product.getName(), product.getPrice(), product.getImageUrl(), product.getId());
+
+        return product;
     }
 
     //삭제
