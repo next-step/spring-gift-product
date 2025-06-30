@@ -12,9 +12,6 @@ import java.util.concurrent.atomic.AtomicLong;
 @Repository
 public class ProductRepository {
 
-    //private final Map<Long, Product> storage = new LinkedHashMap<>();
-    //private final AtomicLong nextId = new AtomicLong(1);
-
     private final JdbcTemplate jdbcTemplate;
     public ProductRepository(JdbcTemplate jdbcTemplate) { this.jdbcTemplate = jdbcTemplate; }
 
@@ -27,15 +24,6 @@ public class ProductRepository {
         return p;
     };
 
-    /*
-    public Product save(Product product) {
-        if (product.getId() == null) {
-            product.setId(nextId.getAndIncrement());
-        }
-        storage.put(product.getId(), product);
-        return product;
-    }
-    */
     public Product save(Product product) {
         if(product.getId() == null){
             jdbcTemplate.update("Insert into products (name, price, imgUrl) values (?, ?, ?)", product.getName(), product.getPrice(), product.getImgUrl());
