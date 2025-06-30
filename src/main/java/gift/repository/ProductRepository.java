@@ -6,6 +6,7 @@ import gift.exception.InvalidNameException;
 import gift.exception.InvalidPriceException;
 import gift.exception.ProductNotFoundException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -16,15 +17,18 @@ import java.util.Map;
 @Repository
 public class ProductRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final JdbcClient jdbcClient;
 
-    public ProductRepository(JdbcTemplate jdbcTemplate) {
+    public ProductRepository(JdbcTemplate jdbcTemplate, JdbcClient jdbcClient) {
         this.jdbcTemplate = jdbcTemplate;
+        this.jdbcClient = jdbcClient;
     }
 
+
     public Product findById(Long id) {
-       String sql = "select id, name, price,imageUrl from products where id = ?";
-        return jdbcTemplate.queryForObject(
-            sql, (result,rowNum) -> {
+        return jdbcClient.sql("select id, name, price,imageUrl from products where id = ?")
+            .param(id)
+            .query((result,rowNum) ->{
                 Product product = new Product(
                     result.getLong("id"),
                     result.getString("name"),
@@ -32,8 +36,8 @@ public class ProductRepository {
                     result.getString("imageUrl")
                 );
                 return product;
-            }
-        ,id);
+            })
+            .single();
     }
 
     public Product saveProduct(String name, int price, String imageUrl) {
@@ -78,9 +82,8 @@ public class ProductRepository {
     }
 
     public List<Product> findAllProducts() {
-        String sql = "select id, name, price, imageUrl from products";
-        List<Product> productList = jdbcTemplate.query(
-            sql, (resultSet,rowNum) -> {
+        return jdbcClient.sql("select id, name, price, imageUrl from products")
+            .query((resultSet, rowNum) -> {
                 Product product = new Product(
                     resultSet.getLong("id"),
                     resultSet.getString("name"),
@@ -88,7 +91,7 @@ public class ProductRepository {
                     resultSet.getString("imageUrl")
                 );
                 return product;
-            });
-        return productList;
+            })
+            .list();
     }
 }
