@@ -54,32 +54,4 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         return productService.deleteProduct(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
-
-    // 상품 수정
-    @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updateProduct) {
-        Product product = products.get(id);
-
-        if (product == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        product.setName(updateProduct.getName());
-        product.setPrice(updateProduct.getPrice());
-        product.setImageUrl(updateProduct.getImageUrl());
-
-        return new ResponseEntity<>(product, HttpStatus.OK);
-    }
-
-    // 상품 삭제
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        if (products.containsKey(id)) {
-            products.remove(id);
-
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
 }
