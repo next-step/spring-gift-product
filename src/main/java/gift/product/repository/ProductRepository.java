@@ -1,5 +1,6 @@
 package gift.product.repository;
 
+import gift.product.dto.ProductResponseDto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
@@ -65,29 +66,11 @@ public class ProductRepository {
     }
 
     //추가
-    public Product save(Product product) {
+    public ProductResponseDto save(Product product) {
         String sql = "insert into product(name, price, image_url) values(?, ?, ?)";
+        jdbcTemplate.update(sql, product.getName(), product.getPrice(), product.getImageUrl());
 
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1, product.getName());
-                ps.setInt(2, product.getPrice());
-                ps.setString(3, product.getImageUrl());
-                return ps;
-            }
-        }, keyHolder);
-
-        Number key = keyHolder.getKey();
-        if(key != null) {
-            product.setId(key.longValue());
-        }else{
-            throw new IllegalStateException("id 값을 불러오지 못했습니다");
-        }
-
-        return product;
+        return ProductResponseDto.fromEntity(product);
     }
 
     //수정
