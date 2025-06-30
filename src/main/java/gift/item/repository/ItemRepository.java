@@ -15,7 +15,7 @@ public interface ItemRepository {
 
     Item findItem(Long id);
 
-    Item updateItem(Long id, UpdateItemDto dto);
+    void updateItem(Long id, UpdateItemDto dto);
 
     void deleteItem(Long id);
 }

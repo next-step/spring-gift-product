@@ -50,8 +50,9 @@ public class ItemService {
             throw new ItemNotFoundException("상품을 찾을 수 없습니다"+id);
         }
 
-        Item updateditem = itemRepository.updateItem(id, dto);
-        return new ItemDto(updateditem);
+        itemRepository.updateItem(id, dto);
+        Item updatedItem = itemRepository.findItem(id);
+        return new ItemDto(updatedItem);
     }
 
 }

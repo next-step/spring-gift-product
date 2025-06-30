@@ -71,10 +71,9 @@ public class itemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public Item updateItem(Long id, UpdateItemDto dto) {
+    public void updateItem(Long id, UpdateItemDto dto) {
         String sql = "UPDATE item SET name = ?, price = ?, image_url = ? WHERE id = ?";
         jdbcTemplate.update(sql, dto.getName(), dto.getPrice(), dto.getImageUrl(), id);
-        return findItem(id);
     }
 
     @Override
