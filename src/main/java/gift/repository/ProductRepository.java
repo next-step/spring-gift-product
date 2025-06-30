@@ -72,10 +72,8 @@ public class ProductRepository {
     }
 
     public boolean delete(Long id) {
-        if (!products.containsKey(id)) {
-            return false;
-        }
-        products.remove(id);
-        return true;
+        String sql = "DELETE FROM products WHERE id = ?";
+        int affectedRows = jdbcTemplate.update(sql, id);
+        return affectedRows > 0;
     }
 }
