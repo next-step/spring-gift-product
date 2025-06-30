@@ -26,12 +26,12 @@ public class ProductStorage {
     }
 
     public Product save(Product product) {
-        products.sql("INSERT INTO product (name, price, image_url) VALUES (:name, :price, :imageURL")
+        products.sql("INSERT INTO product (name, price, image_url) VALUES (:name, :price, :image_url)")
                 .param("name", product.getName())
-                .param(":price", product.getPrice())
-                .param(":imageUrl", product.getImageUrl()).update();
+                .param("price", product.getPrice())
+                .param("image_url", product.getImageUrl()).update();
 
-        Long id = products.sql("SELECT IDENTITY()").query(Long.class).single();
+        Long id = products.sql("SELECT SCOPE_IDENTITY()").query(Long.class).single();
 
         product.setId(id);
         return product;
@@ -40,12 +40,12 @@ public class ProductStorage {
     public void update(Long id, Product updated) {
         products.sql("UPDATE product SET name=:name, price=:price, imageURL=:imageUrl WHERE id=:id")
                 .param("name", updated.getName())
-                .param(":price", updated.getPrice())
-                .param(":imageUrl", updated.getImageUrl())
-                .param(":id", id).update();
+                .param("price", updated.getPrice())
+                .param("imageUrl", updated.getImageUrl())
+                .param("id", id).update();
     }
     public void delete(Long id) {
         products.sql("DELETE FROM product WHERE id = :id")
-                .param(":id", id).update();
+                .param("id", id).update();
     }
 }

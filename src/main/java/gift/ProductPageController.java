@@ -38,7 +38,9 @@ public class ProductPageController {
 
     @GetMapping("/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
-        model.addAttribute("product", products.findById(id));
+        Product product = products.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다. id=" + id));
+        model.addAttribute("product", product);
         return "Productform";
     }
 
@@ -50,7 +52,10 @@ public class ProductPageController {
 
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable Long id) {
+        products.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다. id=" + id));
         products.delete(id);
+
         return "redirect:/products";
     }
 
