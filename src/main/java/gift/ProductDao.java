@@ -1,179 +1,92 @@
 package gift;
 
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Repository
 public class ProductDao {
-    private final DataSource dataSource;
+    private final JdbcTemplate jdbcTemplate;
 
-    public ProductDao(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public ProductDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void save(ProductDTO productDto) throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
+    public void save(ProductDTO productDto) {
+        String sql = "INSERT INTO PRODUCTS (name, price, imageUrl) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, productDto.getName(), productDto.getPrice(), productDto.getImageUrl());
+    }
 
-        try {
-            con = dataSource.getConnection();
-            String sql = "INSERT INTO PRODUCTS (name, price, imageUrl) VALUES (?, ?, ?)";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, productDto.getName());
-            pstmt.setInt(2, productDto.getPrice());
-            pstmt.setString(3, productDto.getImageUrl());
 
-            pstmt.executeUpdate();
-        } finally {
-            if(pstmt != null) {
-                pstmt.close();
-            }
-            if(con != null) {
-                con.close();
-            }
+    public List<Product> getAll() {
+        String sql = "SELECT * FROM PRODUCTS";
+        return jdbcTemplate.query(sql, productRowMapper());
+
+    }
+
+    public Product findById(Long id) {
+        String sql = "SELECT * FROM PRODUCTS WHERE id = ?";
+        List<Product> result = jdbcTemplate.query(sql, productRowMapper(), id);
+        if(result.isEmpty()) {
+            throw new NoSuchElementException("해당 데이터가 없습니다.");
         }
+        return result.getFirst();
     }
 
-    public List<Product> getAll() throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+    public void update(Long id, ProductDTO productDto) {
+        String sql = "UPDATE PRODUCTS SET ";
+        List<Object> params = new ArrayList<>();
+        boolean bool = false;
 
-        try {
-            con = dataSource.getConnection();
-            String sql = "SELECT * FROM PRODUCTS";
-            pstmt = con.prepareStatement(sql);
-            rs = pstmt.executeQuery();
+        if(productDto.getName() != null) {
+            sql += "name = ?";
+            params.add(productDto.getName());
+            bool = true;
+        }
+        if(productDto.getPrice() != 0) {
+            if(bool) {
+                sql += ", ";
+            }
+            sql += "price = ?";
+            params.add(productDto.getPrice());
+            bool = true;
+        }
+        if(productDto.getImageUrl() != null) {
+            if(bool) {
+                sql += ", ";
+            }
+            sql += "imageUrl = ?";
+            params.add(productDto.getImageUrl());
+        }
+        if(params.isEmpty()) {
+            throw new NoSuchElementException("업데이트 필요 없음");
+        }
+        sql += " WHERE id = ?";
+        params.add(id);
 
-            List<Product> products = new ArrayList<>();
+        jdbcTemplate.update(sql, params.toArray());
+    }
 
-            while (rs.next()) {
+    public void delete(Long id) {
+        String sql = "DELETE FROM PRODUCTS WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
+    private RowMapper<Product> productRowMapper() {
+        return new RowMapper<Product>() {
+            public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Long id = rs.getLong("id");
                 String name = rs.getString("name");
                 int price = rs.getInt("price");
                 String imageUrl = rs.getString("imageUrl");
-
-                products.add(new Product(id, name, price, imageUrl));
+                return new Product(id,name,price,imageUrl);
             }
-
-            return products;
-        } finally {
-            if(rs != null) {
-                rs.close();
-            }
-
-            if(pstmt != null) {
-                pstmt.close();
-            }
-
-            if(con != null) {
-                con.close();
-            }
-        }
-    }
-
-    public Product findById(Long id) throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        Product product = null;
-        try {
-            con = dataSource.getConnection();
-            String sql = "SELECT * FROM PRODUCTS WHERE id = ?";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setLong(1, id);
-
-            rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                product = new Product(rs.getLong("id"),
-                        rs.getString("name"),
-                        rs.getInt("price"),
-                        rs.getString("imageUrl"));
-                return product;
-            }
-
-            else{
-                return null;
-            }
-
-        } finally {
-            if(rs != null) {
-                rs.close();
-            }
-
-            if(pstmt != null) {
-                pstmt.close();
-            }
-
-            if(con != null) {
-                con.close();
-            }
-        }
-    }
-
-    public void update(Long id, ProductDTO productDto) throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            con = dataSource.getConnection();
-            if(productDto.getName() != null) {
-                String sql = "UPDATE PRODUCTS SET name = ? WHERE id = ?";
-                pstmt = con.prepareStatement(sql);
-                pstmt.setString(1, productDto.getName());
-                pstmt.setLong(2, id);
-                pstmt.executeUpdate();
-            }
-            if(productDto.getPrice() != 0) {
-                String sql = "UPDATE PRODUCTS SET price = ? WHERE id = ?";
-                pstmt = con.prepareStatement(sql);
-                pstmt.setInt(1, productDto.getPrice());
-                pstmt.setLong(2, id);
-                pstmt.executeUpdate();
-            }
-            if(productDto.getImageUrl() != null) {
-                String sql = "UPDATE PRODUCTS SET imageUrl = ? WHERE id = ?";
-                pstmt = con.prepareStatement(sql);
-                pstmt.setString(1, productDto.getImageUrl());
-                pstmt.setLong(2, id);
-                pstmt.executeUpdate();
-            }
-        } finally {
-            if(pstmt != null) {
-                pstmt.close();
-            }
-            if(con != null) {
-                con.close();
-            }
-        }
-    }
-
-    public void delete(Long id) throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            con = dataSource.getConnection();
-            String sql = "DELETE FROM PRODUCTS WHERE id = ?";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setLong(1, id);
-
-            pstmt.executeUpdate();
-        } finally {
-            if(pstmt != null) {
-                pstmt.close();
-            }
-            if(con != null) {
-                con.close();
-            }
-        }
+        };
     }
 }

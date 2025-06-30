@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.*;
 
 @Controller
@@ -20,13 +19,7 @@ public class ProductController {
 
     @GetMapping("/products")
     public String listProducts(Model model) {
-        List<Product> products = new ArrayList<>();
-        try {
-            products = productDao.getAll();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+        List<Product> products = productDao.getAll();
         model.addAttribute("products", products);
         return "products";
     }
@@ -41,12 +34,7 @@ public class ProductController {
     public String createProduct(@ModelAttribute ProductDTO productdto) {
         ProductDTO productdto1;
         productdto1 = new ProductDTO(productdto.getName(), productdto.getPrice(), productdto.getImageUrl());
-        try {
-            productDao.save(productdto1);
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+        productDao.save(productdto1);
         return "redirect:/api/products";
     }
 
@@ -54,24 +42,13 @@ public class ProductController {
     @GetMapping("/product/{id}")
     public Product getProduct(@PathVariable Long id) {
         Product product = new Product();
-        try {
-            product = productDao.findById(id);
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+        product = productDao.findById(id);
         return product;
     }
 
     @GetMapping("/product/{id}/update")
     public String updateForm(@PathVariable Long id, Model model) {
-        Product product = new Product();
-        try {
-            product = productDao.findById(id);
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Product product = productDao.findById(id);
         model.addAttribute("product", product);
         return "updateForm";
     }
@@ -80,40 +57,18 @@ public class ProductController {
     public String updateProduct(@PathVariable Long id, @ModelAttribute ProductDTO updateProductdto) {
         ProductDTO productdto1;
         productdto1 = new ProductDTO(updateProductdto.getName(), updateProductdto.getPrice(), updateProductdto.getImageUrl());
-        Product product = new Product();
-        try {
-            product = productDao.findById(id);
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Product product = productDao.findById(id);
         if( product != null) {
-            try {
-                productDao.update(id, productdto1);
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
+            productDao.update(id, productdto1);
         }
         return "redirect:/api/products";
     }
 
     @DeleteMapping("/product/{id}/delete")
     public String deleteProduct(@PathVariable Long id) {
-        Product product = new Product();
-        try {
-            product = productDao.findById(id);
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Product product = productDao.findById(id);
         if( product != null) {
-            try {
-                productDao.delete(id);
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
+            productDao.delete(id);
         }
         return "redirect:/api/products";
     }
