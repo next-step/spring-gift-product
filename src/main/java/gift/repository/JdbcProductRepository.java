@@ -25,7 +25,10 @@ public class JdbcProductRepository implements ProductRepositoryInterface{
 
     @Override
     public Product addProduct(Product product) {
-        return null;
+        String sql = "INSERT INTO products (name, price, imageUrl) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, product.getName(), product.getPrice(), product.getImageUrl());
+
+        return product;
     }
 
     private Product RowMapperProduct(ResultSet rs, int rowNum) throws SQLException {
