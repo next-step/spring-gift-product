@@ -85,7 +85,8 @@ public class ProductRepository {
 
     //삭제
     public void delete(Long id) {
-        products.remove(id);
+        String sql = "delete from product where id = ?";
+        jdbcTemplate.update(sql,id);
     }
 
 
