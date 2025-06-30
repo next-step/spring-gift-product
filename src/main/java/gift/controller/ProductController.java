@@ -3,13 +3,13 @@ package gift.controller;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.exception.NotFoundByIdException;
-import gift.exception.NotValidRequestException;
 import gift.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,8 +30,7 @@ public class ProductController {
     }
 
     @PostMapping("/api/products")
-    public ResponseEntity<Long> createProduct(@RequestBody ProductRequestDto productRequestDto) {
-        if (!productRequestDto.validate()) throw new NotValidRequestException();
+    public ResponseEntity<Long> createProduct(@Validated @RequestBody ProductRequestDto productRequestDto) {
         Long productId = productService.saveProduct(productRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(productId);
     }
@@ -39,9 +38,8 @@ public class ProductController {
     @PutMapping("/api/products/{productId}")
     public ResponseEntity<Void> updateProduct(
             @PathVariable Long productId,
-            @RequestBody ProductRequestDto productRequestDto
+            @Validated @RequestBody ProductRequestDto productRequestDto
     ) {
-        if (!productRequestDto.validate()) throw new NotValidRequestException();
         productService.updateProduct(productId, productRequestDto);
         return ResponseEntity.ok().build();
     }
@@ -61,12 +59,6 @@ public class ProductController {
         log.trace(e.getMessage());
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body("Not Found by ID");
-    }
-
-    @ExceptionHandler(NotValidRequestException.class)
-    public ResponseEntity<String> handleNotValidRequest(NotValidRequestException e) {
-        log.trace(e.getMessage());
-        return ResponseEntity.badRequest().body("Not Valid Request");
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
