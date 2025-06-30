@@ -55,6 +55,23 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product findProduct(Long id) {
-        return products.get(id);
+        String sql = "select id, name, price, image_url from products where id = ?";
+        Product product = jdbcTemplate.queryForObject(
+                sql,
+                new Object[]{id},  // ← 파라미터 추가
+                (resultSet, rowNum) -> new Product(
+                        resultSet.getLong("id"),
+                        resultSet.getString("name"),
+                        resultSet.getLong("price"),
+                        resultSet.getString("image_url")
+                ));
+        return product;
+    }
+
+    @Override
+    public int updateProduct(Long id, String name, Long price, String imageUrl) {
+        String sql = "update products SET name = ?, price = ?, image_url = ? WHERE id = ?";
+        int rows = jdbcTemplate.update(sql, name, price, imageUrl, id);
+        return rows;
     }
 }

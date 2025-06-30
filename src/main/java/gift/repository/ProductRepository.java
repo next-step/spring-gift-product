@@ -13,4 +13,6 @@ public interface ProductRepository {
     void deleteProduct(Long id);
 
     Product findProduct(Long id);
+
+    int updateProduct(Long id, String name, Long price, String imageUrl);
 }
