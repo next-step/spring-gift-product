@@ -1,12 +1,14 @@
+// src/main/java/gift/controller/ProductController.java
 package gift.controller;
 
-import gift.model.Product;
-import jakarta.annotation.PostConstruct;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import org.springframework.http.HttpStatus;
+import gift.dto.ProductRequest;
+import gift.dto.ProductResponse;
+import gift.entity.Product;
+import gift.exception.ResourceNotFoundException;
+import gift.service.ProductService;
+import jakarta.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,92 +20,58 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/products")
 public class ProductController {
 
-    private final Map<Long, Product> products = new HashMap<>();
+    private final ProductService productService;
 
-    @PostConstruct
-    public void init() {
-        products.put(8146027L, new Product(8146027L, "아이스 카페 아메리카노 T", 4500,
-            "https://st.kakaocdn.net/product/gift/product/20231010111814_9a667f9eccc943648797925498bdd8a3.jpg"));
-        System.out.println("initialized: total " + products.size() + " products");
+    public ProductController(ProductService svc) {
+        this.productService = svc;
     }
 
-    @GetMapping("/products")
-    public Collection<Product> getAllProducts() {
-        return products.values();
+    @GetMapping
+    public ResponseEntity<List<ProductResponse>> getAll() {
+        List<ProductResponse> list = productService.getAllProducts().stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(list);
     }
 
-    @GetMapping("/products/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Product product = products.get(id);
-
-        if (product == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(product, HttpStatus.OK);
-
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponse> getById(@PathVariable Long id) {
+        Product p = productService.getProductById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("상품을 찾을 수 없습니다: " + id));
+        return ResponseEntity.ok(toResponse(p));
     }
 
-    // ID 충돌 시 409 conflict 예외처리 -> ID를 서버에서 생성한다면?
-    @PostMapping("/products")
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        if (products.containsKey(product.getId())) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
-        if (!validateProduct(product)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        products.put(product.getId(), product);
-        return new ResponseEntity<>(product, HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<ProductResponse> create(
+            @Valid @RequestBody ProductRequest req) {
+        Product saved = productService.createProduct(toEntity(req));
+        return ResponseEntity.status(201).body(toResponse(saved));
     }
 
-    @PutMapping("/products/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id,
-        @RequestBody Product product) {
-        Product existingProduct = products.get(id);
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponse> update(
+            @PathVariable Long id,
+            @Valid @RequestBody ProductRequest req) {
+        Product updated = productService.updateProduct(id, toEntity(req));
+        return ResponseEntity.ok(toResponse(updated));
+    }
 
-        if (existingProduct == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        if (!Objects.equals(existingProduct.getId(), product.getId())) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        if (!validateProduct(product)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        Product updatedProduct = new Product(
-            id, // 경로 변수로 받은 ID를 사용 (ID는 고유 식별자이므로 변경되지 않음)
-            product.getName(),
-            product.getPrice(),
-            product.getImageUrl()
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    private Product toEntity(ProductRequest r) {
+        return new Product(null, r.getName(), r.getPrice(), r.getImageUrl());
+    }
+
+    private ProductResponse toResponse(Product e) {
+        return new ProductResponse(
+                e.getId(), e.getName(), e.getPrice(), e.getImageUrl()
         );
-        products.put(id, updatedProduct);
-
-        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
-    }
-
-    @DeleteMapping("/products/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        if (products.remove(id) == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    private boolean validateProduct(Product product) {
-        if (product.getName() == null || product.getName().trim().isEmpty()) {
-            return false;
-        }
-        if (product.getPrice() <= 0) {
-            return false;
-        }
-        String imageUrl = product.getImageUrl();
-        if (imageUrl == null || imageUrl.trim().isEmpty()) {
-            return false;
-        }
-        String urlRegex = "^(https?|ftp)://[^\\s/$.?#].\\S*$";
-        return imageUrl.matches(urlRegex);
     }
 }
