@@ -31,9 +31,7 @@ public class ProductService {
 
     public ProductResponseDTO getById(Integer id) {
         Product product = productRepository.findById(id);
-        if (product == null) {
-            throw new IllegalArgumentException("Product not found");
-        }
+
         return new ProductResponseDTO(
                 product.getId(),
                 product.getName(),
@@ -61,11 +59,6 @@ public class ProductService {
     }
 
     public ProductResponseDTO update(Integer id, ProductRequestDTO productRequestDTO) {
-        Product product = productRepository.findById(id);
-        if (product == null) {
-            throw new IllegalArgumentException("Product not found");
-        }
-
         Product updated = new Product(
                 id,
                 productRequestDTO.name(),
@@ -73,7 +66,9 @@ public class ProductService {
                 productRequestDTO.imageUrl()
         );
 
-        productRepository.update(id, updated);
+        if (productRepository.update(id, updated) == 0) {
+            throw new IllegalArgumentException("Product not found");
+        }
 
         return new ProductResponseDTO(
                 updated.getId(),
@@ -84,10 +79,8 @@ public class ProductService {
     }
 
     public void delete(Integer id) {
-        Product product = productRepository.findById(id);
-        if (product == null) {
+        if (productRepository.delete(id) == 0) {
             throw new IllegalArgumentException("Product not found");
         }
-        productRepository.delete(id);
     }
 }

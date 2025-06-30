@@ -1,5 +1,6 @@
 package gift.exception;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -12,6 +13,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> illegalArgumentException(IllegalArgumentException e) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
+                .body(e.getMessage());
+    }
+
+    @ExceptionHandler(EmptyResultDataAccessException.class)
+    public ResponseEntity<String> emptyResultDataAccessException(EmptyResultDataAccessException e) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
                 .body(e.getMessage());
     }
 
