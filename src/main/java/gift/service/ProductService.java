@@ -43,10 +43,9 @@ public class ProductService {
     }
 
     public void deleteProduct(Long productId) {
+        findProductOrThrow(productId);
 
-        if (productRepository.deleteProduct(productId) == null) {
-            throw new IllegalArgumentException();
-        }
+        productRepository.deleteProduct(productId);
     }
 
     public List<ProductResponseDto> findAllProducts() {
