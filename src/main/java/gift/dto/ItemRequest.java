@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record ItemRequest(
-    @NotNull(message = "상품 ID는 필수입니다.")
-    Long id,
 
     @NotBlank(message = "상품 이름은 비어 있을 수 없습니다.")
     String name,
