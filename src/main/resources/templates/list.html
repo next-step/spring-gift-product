@@ -11,7 +11,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4><strong>Product Management</strong></h4>
-            <a th:href="@{/api/admin/products/create}" class="btn btn-success">
+            <a th:href="@{/admin/products/create}" class="btn btn-success">
                 상품 등록
             </a>
         </div>
@@ -33,15 +33,15 @@
                     <td th:text="${product.getPrice()} + '원'"></td>
                     <td th:text="${product.getImageUrl()}"></td>
                     <td>
-                        <a th:href="@{'/api/admin/products/' + ${product.getId()}}" class="btn btn-sm btn-primary">
+                        <a th:href="@{'/admin/products/' + ${product.getId()}}" class="btn btn-sm btn-primary">
                             상세정보
                         </a>
 
-                        <a th:href="@{'/api/admin/products/edit/' + ${product.getId()}}" class="btn btn-sm btn-warning">
+                        <a th:href="@{'/admin/products/edit/' + ${product.getId()}}" class="btn btn-sm btn-warning">
                             수정
                         </a>
 
-                        <form th:action="@{'/api/admin/products/' + ${product.getId()}}" th:method="delete" style="display:inline;">
+                        <form th:action="@{'/admin/products/' + ${product.getId()}}" th:method="delete" style="display:inline;">
                             <button type="submit" class="btn btn-sm btn-danger"
                                     onclick="return confirm('정말 삭제하시겠습니까?');">
                                 삭제

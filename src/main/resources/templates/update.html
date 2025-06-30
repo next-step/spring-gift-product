@@ -10,7 +10,7 @@
 <div class="container mt-4">
     <h2>상품 수정</h2>
 
-    <form th:action="@{/api/admin/products/edit/{id}(id=${product.getId()})}" method="post" th:object="${product}">
+    <form th:action="@{/admin/products/edit/{id}(id=${product.getId()})}" method="post" th:object="${product}">
         <input type="hidden" name="_method" value="put"/>
 
         <div class="mb-3">
@@ -29,7 +29,7 @@
             <div class="text-danger" th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}"></div>
         </div>
         <button type="submit" class="btn btn-primary">수정</button>
-        <a th:href="@{/api/admin/products}" class="btn btn-secondary">취소</a>
+        <a th:href="@{/admin/products}" class="btn btn-secondary">취소</a>
     </form>
 </div>
 </body>

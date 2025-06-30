@@ -7,6 +7,7 @@ import gift.item.entity.Item;
 import gift.item.exception.ItemNotFoundException;
 import gift.item.repository.ItemRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,9 +20,11 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
+    @Transactional
     public ItemDto saveItem(CreateItemDto dto) {
-        Item item = itemRepository.saveItem(dto);
-        return new ItemDto(item);
+        Item item = new Item(null, dto.getName(), dto.getPrice(), dto.getImageUrl());
+        Item savedItem = itemRepository.saveItem(item);
+        return new ItemDto(savedItem);
     }
 
     public ItemDto findItem(Long id) {
@@ -33,16 +36,24 @@ public class ItemService {
     }
 
     public List<ItemDto> findAllItems() {
-        return itemRepository.findAllItems();
+        List<Item> item = itemRepository.findAllItems();
+        return item.stream()
+                .map(ItemDto::new)
+                .toList();
     }
 
+    @Transactional
     public void deleteItem(Long id) {
         itemRepository.deleteItem(id);
     }
 
-    public ItemDto updateItem(Long id, UpdateItemDto dto) {
-        Item item = itemRepository.updateItem(id, dto);
-        return new ItemDto(item);
+    @Transactional
+    public void updateItem(Long id, UpdateItemDto dto) {
+        Item existingitem = itemRepository.findItem(id);
+        if (existingitem == null) {
+            throw new ItemNotFoundException("상품을 찾을 수 없습니다"+id);
+        }
+        itemRepository.updateItem(id, dto);
     }
 
 }

@@ -59,8 +59,8 @@ public class ItemController {
             @PathVariable Long id,
             @RequestBody UpdateItemDto dto
     ) {
-        ItemDto updateItem = itemService.updateItem(id, dto);
-        return ResponseEntity.ok(updateItem);
+        itemService.updateItem(id, dto);
+        return ResponseEntity.noContent().build();
     }
 
 
