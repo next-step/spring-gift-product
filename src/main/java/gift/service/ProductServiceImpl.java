@@ -30,16 +30,17 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public ProductResponseDto findProductById(Long id) {
 
-        Product product = productRepository.findProductById(id);
+        Optional<Product> product = productRepository.findProductById(id);
 
-        if (product == null)
+        if (product.isEmpty())
             return null;
-        
+
+        Product findProduct = product.get();
         return new ProductResponseDto(
-                product.getId(),
-                product.getName(),
-                product.getPrice(),
-                product.getImageUrl());
+                findProduct.getId(),
+                findProduct.getName(),
+                findProduct.getPrice(),
+                findProduct.getImageUrl());
     }
 
     @Override
