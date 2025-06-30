@@ -1,7 +1,7 @@
-package gift.Controller;
+package gift.controller;
 
-import gift.Entity.Product;
-import gift.Repository.ProductRepository;
+import gift.entity.Product;
+import gift.repository.ProductRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 public class AdminProductController {
 
     private final ProductRepository repository;
+
     public AdminProductController(ProductRepository repository) {
+
         this.repository = repository;
     }
 
