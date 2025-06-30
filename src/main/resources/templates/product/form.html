@@ -7,8 +7,10 @@
 <body>
 <h1 th:text="${product.id == null} ? '상품 추가' : '상품 수정'"></h1>
 
-<!-- 상품 추가 form -->
 <form th:if="${product.id == null}" th:action="@{/admin/products/add}" method="post">
+    <div>
+        <label>ID:</label> <input type="number" name="id" th:value="${product.id}" required />
+    </div>
     <div>
         <label>이름:</label>
         <input type="text" name="name" th:value="${product.name}" required />
@@ -29,6 +31,9 @@
 
 <form th:if="${product.id != null}" th:action="@{/admin/products/edit}" method="post">
     <input type="hidden" name="id" th:value="${product.id}" />
+    <div>
+        <label>ID:</label> <input type="number" name="id" th:value="${product.id}" required />
+    </div>
     <div>
         <label>이름:</label>
         <input type="text" name="name" th:value="${product.name}" required />
