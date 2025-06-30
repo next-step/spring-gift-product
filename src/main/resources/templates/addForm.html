@@ -6,12 +6,12 @@
 </head>
 <body>
 <h1>상품 추가</h1>
-<form th:action="@{/api/product/add}" th:object="${productdto}" method="POST">
+<form th:action="@{/api/admin/product/add}" th:object="${productdto}" method="POST">
     <label>상품명: <input type="text" th:field="*{name}" /></label>
     <label>가격: <input type="number" th:field="*{price}" /></label>
     <label>이미지 주소: <input type="text" th:field="*{imageUrl}" /></label>
     <button type="submit">추가</button>
 </form>
-<a th:href="@{/api/products}">뒤로가기</a>
+<a th:href="@{/api/admin/product/list}">뒤로가기</a>
 </body>
 </html>
