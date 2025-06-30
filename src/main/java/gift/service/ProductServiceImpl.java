@@ -5,6 +5,8 @@ import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ProductResponseDto updateProduct(Long id, ProductRequestDto dto) {
         Product updatedProduct = productRepository.updateProduct(id, dto.name(), dto.price(), dto.imageUrl());
         return new ProductResponseDto(updatedProduct);
