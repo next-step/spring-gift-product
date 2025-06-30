@@ -1,77 +1,88 @@
 package gift.repository;
 
 import gift.dto.ProductRequestDto;
-import gift.dto.ProductResponseDto;
 import gift.entity.Product;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    // DB connection 하지 않음에 따라 Collection인 HashMap을 사용 (DB 연결 시 없어질 예정)
-    private final Map<Long, Product> products = new HashMap<>();
-    private long productId = 1L;
+    private final JdbcTemplate jdbcTemplate;
+
+    private static final RowMapper<Product> productRowMapper = (rs, rowNum) -> new Product(
+        rs.getLong("id"), rs.getString("name"), rs.getInt("price"), rs.getString("imageUrl"));
+
+    public ProductRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
-    public List<ProductResponseDto> findAll() {
-        List<ProductResponseDto> productList = new ArrayList<>();
+    public List<Product> findAll() {
+        String sql = "select * from product";
 
-        for (Map.Entry<Long, Product> entry : products.entrySet()) {
-            productList.add(
-                ProductResponseDto.from(entry.getValue())
-            ); // Product -> ProductResponseDto
-        }
+        List<Product> productList = jdbcTemplate.query(sql, productRowMapper);
         return productList;
     }
 
     @Override
-    public ProductResponseDto createProduct(ProductRequestDto requestDto) {
-        products.put(productId,
-            new Product(requestDto.id(), requestDto.name(), requestDto.price(),
-                requestDto.imageUrl()));
-        productId++; // id 값 1 증가
+    public Long create(ProductRequestDto requestDto) {
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("product").usingGeneratedKeyColumns("id");
 
-        return new ProductResponseDto(requestDto.id(), requestDto.name(),
-            requestDto.price(),
-            requestDto.imageUrl());
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", requestDto.name());
+        params.put("price", requestDto.price());
+        params.put("imageUrl", requestDto.imageUrl());
+
+        Long id = (Long) jdbcInsert.executeAndReturnKey(params);
+        return id;
     }
 
     @Override
-    public ProductResponseDto findProduct(Long productId) {
-        Product product = products.get(productId);
-        return ProductResponseDto.from(product);
-    }
+    public Optional<Product> findById(Long id) {
+        String sql = "select * from product where id = ?";
 
-    @Override
-    public ProductResponseDto updateProduct(Long productId, ProductRequestDto requestDto) {
-        Product product = products.get(productId);
-
-        // product 내용 update
-        product.setId(requestDto.id());
-        product.setName(requestDto.name());
-        product.setPrice(requestDto.price());
-        product.setImageUrl(requestDto.imageUrl());
-
-        products.put(productId, product);
-
-        return ProductResponseDto.from(product);
-    }
-
-    @Override
-    public void deleteProduct(Long productId) {
-        if (products.remove(productId) == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        try {
+            Product product = jdbcTemplate.queryForObject(sql, productRowMapper, id);
+            return Optional.of(product);
+        } catch (DataAccessException e) {
+            return Optional.empty();
         }
     }
 
     @Override
-    public Map<Long, Product> findAllMap() {
-        return products;
+    public int update(Long id, ProductRequestDto requestDto) {
+        String sql = "update product set name = ?, price = ?, imageUrl = ? where id = ?";
+
+        int updateRowCount = jdbcTemplate.update(
+            sql,
+            requestDto.name(),
+            requestDto.price(),
+            requestDto.imageUrl(),
+            id
+        );
+
+        return updateRowCount;
+    }
+
+    @Override
+    public void delete(Long id) {
+        String sql = "delete from product where id = ?";
+
+        int deleteRowCount = jdbcTemplate.update(sql, id);
+
+        if (deleteRowCount <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 }

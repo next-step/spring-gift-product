@@ -37,7 +37,6 @@
   <thead>
   <tr>
     <th th:text="선택"></th>
-    <th th:text="번호"></th>
     <th th:text="아이디"></th>
     <th th:text="상품명"></th>
     <th th:text="가격"></th>
@@ -47,20 +46,19 @@
   </tr>
   </thead>
 
-  <tbody class="product-table-body" th:if="${productMap == null or productMap.isEmpty()}">
+  <tbody class="product-table-body" th:if="${productList == null or productList.isEmpty()}">
   <tr>
-    <td colspan="8">등록된 상품이 없습니다.</td>
+    <td colspan="7">등록된 상품이 없습니다.</td>
   </tr>
   </tbody>
 
-  <tbody class="product-table-body" th:if="${productMap != null and !productMap.isEmpty()}">
-  <tr th:each="entry : ${productEntries}">
-    <td><input type="checkbox" name="selectedKey" th:value="${entry.key}"></td>
-    <td th:text="${entry.key}"></td>
-    <td th:text="${entry.value.id}"></td>
-    <td th:text="${entry.value.name}"></td>
-    <td th:text="${entry.value.price}"></td>
-    <td th:text="${entry.value.imageUrl}"></td>
+  <tbody class="product-table-body" th:if="${productList != null and !productList.isEmpty()}">
+  <tr th:each="product : ${productList}">
+    <td><input type="checkbox" name="selectedId" th:value="${product.id}"></td>
+    <td th:text="${product.id}"></td>
+    <td th:text="${product.name}"></td>
+    <td th:text="${product.price}"></td>
+    <td th:text="${product.imageUrl}"></td>
     <td>
       <button class="update-button">수정</button>
     </td>

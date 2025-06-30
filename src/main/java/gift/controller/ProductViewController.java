@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,11 +33,9 @@ public class ProductViewController {
 
     @GetMapping("/products")
     public String showProducts(Model model) {
-        Map<Long, Product> productMap = productService.findAllMap();
+        List<ProductResponseDto> productList = productService.findAll();
 
-        model.addAttribute("productMap",
-            productMap); // productMap은 Collections.unmodifiableMap이므로, th:each가 X.
-        model.addAttribute("productEntries", productMap.entrySet()); // 이에 따른 entrySet 추가
+        model.addAttribute("productList", productList);
         return "home";
     }
 
@@ -51,33 +50,22 @@ public class ProductViewController {
     }
 
     @PostMapping("/products")
-    public String createProduct(
-        @RequestParam Long id,
-        @RequestParam String name,
-        @RequestParam int price,
-        @RequestParam String imageUrl
-    ) {
-        productService.createProduct(new ProductRequestDto(id, name, price, imageUrl));
+    public String createProduct(@ModelAttribute ProductRequestDto requestDto) {
+        productService.create(new ProductRequestDto(requestDto.name(), requestDto.price(), requestDto.imageUrl()));
 
         return "redirect:/view/products";
     }
 
-    @PostMapping("/products/update")
-    public String updateProduct(
-        @RequestParam Long productId,
-        @RequestParam Long id,
-        @RequestParam String name,
-        @RequestParam int price,
-        @RequestParam String imageUrl
-    ) {
-        productService.updateProduct(productId, new ProductRequestDto(id, name, price, imageUrl));
+    @PostMapping("/products/update/{id}")
+    public String updateProduct(@PathVariable Long id, @ModelAttribute ProductRequestDto requestDto) {
+        productService.update(id, new ProductRequestDto(requestDto.name(), requestDto.price(), requestDto.imageUrl()));
 
         return "redirect:/view/products";
     }
 
-    @DeleteMapping("/products/{productId}")
-    public String deleteProduct(@PathVariable Long productId) {
-        productService.deleteProduct(productId);
+    @DeleteMapping("/products/{id}")
+    public String deleteProduct(@PathVariable Long id) {
+        productService.delete(id);
 
         return "home";
     }
