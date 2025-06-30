@@ -2,9 +2,7 @@ package gift.controller;
 
 import gift.model.Product;
 import gift.service.ProductService;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,14 +27,9 @@ public class ProductController {
 
     // 상품 저장
     @PostMapping
-    public ResponseEntity<Map<String, Object>> addProduct(@RequestBody Product product) {
-
-        Map<String, Object> responseBody = new HashMap<>();
+    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
         Product savedProduct = productService.addProduct(product);
-
-        responseBody.put("message", "New product created");
-        responseBody.put("product", savedProduct);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
     }
 
     // 상품 목록 조회
