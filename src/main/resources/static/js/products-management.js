@@ -31,8 +31,8 @@ function addProduct() {
     sendProductData('http://localhost:8080/api/products', 'POST');
 }
 
-function updateProduct(id) {
-    sendProductData(`http://localhost:8080/api/products/${id}`, 'PUT');
+function updateProduct(productId) {
+    sendProductData(`http://localhost:8080/api/products/${productId}`, 'PUT');
 }
 
 function deleteProduct(productId) {

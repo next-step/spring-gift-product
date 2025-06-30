@@ -15,8 +15,8 @@ public class AdminController {
     }
 
     @GetMapping("/admin/products")
-    public String adminDashboard(Model model) {
+    public String adminProducts(Model model) {
         model.addAttribute("products", productService.findAllProducts());
-        return "products-management";
+        return "products";
     }
 }
