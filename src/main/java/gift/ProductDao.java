@@ -29,16 +29,11 @@ public class ProductDao {
                 .list();
     }
 
-    public Product findById(Long id) {
-        try {
-            return jdbcClient.sql("SELECT * FROM PRODUCTS WHERE id = :id")
-                    .param("id", id)
-                    .query(Product.class)
-                    .single();
-        }
-        catch (EmptyResultDataAccessException e) {
-            throw new EmptyResultDataAccessException(1);
-        }
+    public Product findById(Long id) throws EmptyResultDataAccessException {
+        return jdbcClient.sql("SELECT * FROM PRODUCTS WHERE id = :id")
+                .param("id", id)
+                .query(Product.class)
+                .single();
     }
 
     public void update(Long id, ProductDto productDto) {
