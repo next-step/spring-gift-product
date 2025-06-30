@@ -39,8 +39,10 @@ public class ProductService {
     }
 
     public void delete(Long productId) {
-        productRepository.deleteById(productId)
-                .orElseThrow(() -> new ProductNotExistException(productId));
+        boolean deleted = productRepository.deleteById(productId);
+        if (!deleted) {
+            throw new ProductNotExistException(productId);
+        }
     }
 
     public List<ProductResponseDto> findAll(int page, int size, String sort) {
