@@ -76,6 +76,8 @@ public class JdbcProductRepository implements ProductRepositoryInterface{
 
     @Override
     public boolean deleteProduct(Long id) {
-        return false;
+        String sql = "DELETE FROM product WHERE id = ?";
+        int deleted = jdbcTemplate.update(sql, id);
+        return deleted > 0;
     }
 }
