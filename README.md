@@ -63,4 +63,5 @@
 - [ ] ProductRepository 데이터베이스 적용
   - `refactor`: 데이터저장소를 HashMap 기반에서 JdbcClient 기반으로 전환
   - `feat`: `RowMapper<Product>`를 반환하는 `getProductRowMapper()` 추가
-  - `refactor`: id 값에 따라 `Optional<Product>`를 반환하는 `findById` 리펙토링
+  - `refactor`: id 값에 따라 `Optional<Product>`를 반환하는 `findById(Long id)` 리펙토링
+  - `refactor`: 상품 전체 리스트를 반환하는 `findAll()` 리펙토링

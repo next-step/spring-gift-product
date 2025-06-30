@@ -37,7 +37,9 @@ public class ProductRepository {
     }
 
     public List<Product> findAll(){
-        return new ArrayList<>(products.values());
+        return jdbcClient.sql("SELECT id, name, price, image_url FROM product")
+                .query(getProductRowMapper())
+                .list();
     }
 
     public void deleteById(Long id){
