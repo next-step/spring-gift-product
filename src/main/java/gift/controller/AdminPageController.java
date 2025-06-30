@@ -90,7 +90,7 @@ public class AdminPageController {
             model.addAttribute("message", "Invalid input. Check again.");
             return "admin/product-form";
         }
-        Product updated = productService.putProductById(
+        Product updated = productService.updateProductById(
                 id,
                 request.name(),
                 request.price(),

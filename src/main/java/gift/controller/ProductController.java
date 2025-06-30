@@ -7,7 +7,6 @@ import gift.entity.Product;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -63,7 +62,12 @@ public class ProductController {
             @PathVariable Long id,
             @Valid @RequestBody ProductPatchDto patch
     ) {
-        Product product = productService.updateProductById(id, patch.getName(), patch.getPrice(), patch.getImageUrl());
+        Product product = productService.updateSelectivelyProductById(
+                id,
+                patch.getName(),
+                patch.getPrice(),
+                patch.getImageUrl()
+        );
 
         return ResponseEntity
                 .status(HttpStatus.OK)
