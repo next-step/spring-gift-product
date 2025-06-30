@@ -1,6 +1,8 @@
 package gift.repository;
 
 import gift.entity.Product;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -8,8 +10,15 @@ import java.util.*;
 
 @Repository
 public class ProductRepository {
+    private final JdbcClient jdbcClient;
+
     private final Map<Long, Product> products = new HashMap<>();
     private long sequence = 0L;
+
+    public ProductRepository(JdbcClient jdbcClient) {
+        this.jdbcClient = jdbcClient;
+    }
+
 
     public Product save(Product product){
         long newId = ++sequence;
