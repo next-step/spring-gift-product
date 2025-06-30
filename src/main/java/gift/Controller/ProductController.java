@@ -48,7 +48,7 @@ public class ProductController {
                 request.getPrice(),
                 request.getImgUrl()
         );
-        Product saved = repository.save(product);
+        Product saved = repository.create(product);
 
         URI location = URI.create("/api/products/" + saved.getId());
         return ResponseEntity.created(location).body(saved);
@@ -72,7 +72,7 @@ public class ProductController {
                 request.getPrice(),
                 request.getImgUrl()
         );
-        repository.save(updated);
+        repository.update(updated);
         return ResponseEntity.ok(updated);
     }
 

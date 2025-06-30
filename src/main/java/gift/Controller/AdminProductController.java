@@ -31,7 +31,7 @@ public class AdminProductController {
 
     @PostMapping("/new")
     public String create(@ModelAttribute Product product) {
-        repository.save(product);
+        repository.create(product);
         return "redirect:/admin/products";
     }
 
@@ -48,7 +48,7 @@ public class AdminProductController {
     @PostMapping("/edit/{id}")
     public String update(@PathVariable Long id, @ModelAttribute Product product) {
         product.setId(id);
-        repository.save(product);
+        repository.update(product);
         return "redirect:/admin/products";
     }
 
