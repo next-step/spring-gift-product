@@ -3,59 +3,51 @@ package gift.service;
 import gift.domain.Product;
 import gift.dto.ProductRequest;
 import gift.dto.ProductResponse;
+import gift.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
-    private final Map<Long, Product> products = new HashMap<>();
-    private final AtomicLong idGenerator = new AtomicLong(1);
+
+    private final ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     public List<ProductResponse> findAll() {
-        List<ProductResponse> responseList = new ArrayList<>();
-        for (Product product : products.values()) {
-            ProductResponse response = new ProductResponse(
-                    product.getId(),
-                    product.getName(),
-                    product.getPrice(),
-                    product.getImageUrl()
-            );
-            responseList.add(response);
-        }
-        return responseList;
+        return productRepository.findAll().stream()
+                .map(p -> new ProductResponse(p.getId(), p.getName(), p.getPrice(), p.getImageUrl()))
+                .collect(Collectors.toList());
     }
 
     public ProductResponse save(ProductRequest request) {
-        Long id = idGenerator.getAndIncrement();
-        Product product = new Product(id, request.getName(), request.getPrice(), request.getImageUrl());
-        products.put(id, product);
-        return new ProductResponse(id, product.getName(), product.getPrice(), product.getImageUrl());
+        Product product = new Product(null, request.getName(), request.getPrice(), request.getImageUrl());
+        Product saved = productRepository.save(product);
+        return new ProductResponse(saved.getId(), saved.getName(), saved.getPrice(), saved.getImageUrl());
     }
 
     public ProductResponse update(Long id, ProductRequest request) {
-        Product product = products.get(id);
-        if (product != null) {
-            product.setName(request.getName());
-            product.setPrice(request.getPrice());
-            product.setImageUrl(request.getImageUrl());
-            return new ProductResponse(id, product.getName(), product.getPrice(), product.getImageUrl());
-        }
-        throw new NoSuchElementException("상품이 존재하지 않습니다.");
-    }
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("상품이 존재하지 않습니다."));
 
-    public void delete(Long id) {
-        products.remove(id);
-    }
-  
-    public ProductResponse findById(Long id) {
-        Product product = products.get(id);
-        if (product == null) {
-            throw new NoSuchElementException("Product not found");
-        }
+        product.update(request.getName(), request.getPrice(), request.getImageUrl());
+        productRepository.update(product);
+
         return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
     }
 
+    public void delete(Long id) {
+        productRepository.deleteById(id);
+    }
+
+    public ProductResponse findById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("상품이 존재하지 않습니다."));
+        return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
+    }
 }

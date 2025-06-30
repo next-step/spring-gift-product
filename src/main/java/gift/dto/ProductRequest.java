@@ -6,29 +6,47 @@ public class ProductRequest {
     private int price;
     private String imageUrl;
 
+
+    public ProductRequest(Long id, String name, int price, String imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
+    }
+    public ProductRequest() {
+        // 기본 생성자: HTML form 바인딩용
+    }
+
     public String getName() {
         return name;
     }
-    public void setName(String name) {
-        this.name = name;
-    }
+
     public int getPrice() {
         return price;
     }
-    public void setPrice(int price) {
-        this.price = price;
-    }
+
     public String getImageUrl() {
         return imageUrl;
-    }
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
 }
