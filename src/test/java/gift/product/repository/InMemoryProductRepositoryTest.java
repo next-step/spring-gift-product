@@ -194,6 +194,7 @@ class InMemoryProductRepositoryTest {
         () -> assertThat(product2).isPresent(),
         () -> assertThat(product1.get().id()).isNotEqualTo(product2.get().id())
     );
+
   }
 
   @Test
