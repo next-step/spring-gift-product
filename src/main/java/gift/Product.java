@@ -6,6 +6,8 @@ public class Product {
     private int price;
     private String imageUrl;
 
+    public Product() {}
+
     public Product(Long id, String name, int price, String imageUrl) {
         if(price < 0) {
             throw new IllegalArgumentException("Price should be positive");
