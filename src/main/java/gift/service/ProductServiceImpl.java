@@ -33,9 +33,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(Product product) {
-        // id는 null이어야 함
-        product.setId(null);
-        return repo.save(product);
+        Product created = product.withId(null);
+        return repo.save(created);
     }
 
     @Override
@@ -43,11 +42,10 @@ public class ProductServiceImpl implements ProductService {
         Product existing = repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("상품을 찾을 수 없습니다: " + id));
 
-        existing.setName(product.getName());
-        existing.setPrice(product.getPrice());
-        existing.setImageUrl(product.getImageUrl());
-
-        return repo.save(existing);
+        Product updated = existing.withName(product.name())
+                .withPrice(product.price())
+                .withImageUrl(product.imageUrl());
+        return repo.save(updated);
     }
 
     @Override

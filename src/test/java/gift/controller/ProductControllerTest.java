@@ -37,7 +37,7 @@ public class ProductControllerTest {
     void setUp() {
         // 인메모리 리포지토리 초기화
         List<Product> all = productRepository.findAll();
-        all.forEach(p -> productRepository.deleteById(p.getId()));
+        all.forEach(p -> productRepository.deleteById(p.id()));
 
         baseUrl = "http://localhost:" + port + "/api/products";
     }
@@ -49,7 +49,7 @@ public class ProductControllerTest {
         ResponseEntity<Product> success = restTemplate.postForEntity(baseUrl, valid, Product.class);
         assertThat(success.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(success.getBody()).isNotNull();
-        assertThat(success.getBody().getId()).isNotNull();
+        assertThat(success.getBody().id()).isNotNull();
 
         // 실패 케이스: 필수 필드 누락 (name)
         Product invalid = new Product(null, "", 0, "");
@@ -78,7 +78,7 @@ public class ProductControllerTest {
     void updateProduct_Success_and_NotFound() {
         // 사전 데이터 생성
         Product orig = productRepository.save(new Product(null, "Orig", 50, "u0"));
-        Long id = orig.getId();
+        Long id = orig.id();
 
         // 성공 업데이트
         Product update = new Product(id, "Updated", 75, "u1");
@@ -86,7 +86,7 @@ public class ProductControllerTest {
         ResponseEntity<Product> updated = restTemplate.exchange(
                 baseUrl + "/" + id, HttpMethod.PUT, entity, Product.class);
         assertThat(updated.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(updated.getBody().getName()).isEqualTo("Updated");
+        assertThat(updated.getBody().name()).isEqualTo("Updated");
 
         // 실패 업데이트 (존재하지 않는 id)
         Product dummy = new Product(999L, "X", 1, "u");
@@ -100,7 +100,7 @@ public class ProductControllerTest {
     void deleteProduct_Success_and_NotFound() {
         // 사전 데이터 생성
         Product dp = productRepository.save(new Product(null, "Del", 30, "uD"));
-        Long id = dp.getId();
+        Long id = dp.id();
 
         // 성공 삭제
         ResponseEntity<Void> removed = restTemplate.exchange(

@@ -25,7 +25,7 @@
 
 ## Step 3: 구현할 기능 목록
 
-* [ ] step 2 리뷰 반영
+* [X] step 2 리뷰 반영
     * record class로 변경
     * Product.java의 setter 함수명 명시적으로 변경
 * [ ] H2 데이터베이스 연결 설정

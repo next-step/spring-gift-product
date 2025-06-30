@@ -37,14 +37,12 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public Product save(Product product) {
-        if (product.getId() == null) {
-            // 신규 생성
-            product.setId(seq.getAndIncrement());
-        } else if (!existsById(product.getId())) {
-            // 업데이트 대상이 없으면 예외
-            throw new NoSuchElementException("업데이트할 상품이 없습니다: " + product.getId());
+        if (product.id() == null) {
+            product = product.withId(seq.getAndIncrement());
+        } else if (!existsById(product.id())) {
+            throw new NoSuchElementException("업데이트할 상품이 없습니다: " + product.id());
         }
-        store.put(product.getId(), product);
+        store.put(product.id(), product);
         return product;
     }
 

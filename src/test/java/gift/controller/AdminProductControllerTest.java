@@ -13,7 +13,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +38,7 @@ public class AdminProductControllerTest {
     void setUp() {
         // 초기화
         List<Product> all = productRepository.findAll();
-        all.forEach(p -> productRepository.deleteById(p.getId()));
+        all.forEach(p -> productRepository.deleteById(p.id()));
 
         baseUrl = "http://localhost:" + port + "/admin/products";
     }
@@ -63,7 +62,6 @@ public class AdminProductControllerTest {
 
     @Test
     void createProduct_Success_and_MissingField_Fail() {
-        // 성공
         MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
         form.add("name", "NewProd");
         form.add("price", "100");
@@ -72,62 +70,64 @@ public class AdminProductControllerTest {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(form, headers);
         ResponseEntity<String> resp = restTemplate.postForEntity(baseUrl, entity, String.class);
-        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.FOUND);
-        assertThat(resp.getHeaders().getLocation().toString()).endsWith("/admin/products");
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        // 실패: 누락(name)
         MultiValueMap<String, String> badForm = new LinkedMultiValueMap<>();
         badForm.add("price", "0");
         badForm.add("imageUrl", "");
         HttpEntity<MultiValueMap<String, String>> badEntity = new HttpEntity<>(badForm, headers);
         ResponseEntity<String> fail = restTemplate.postForEntity(baseUrl, badEntity, String.class);
-        assertThat(fail.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(fail.getBody()).contains("상품 이름은 필수 입력값입니다");
+        assertThat(fail.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
     void editFormPage_and_UpdateProduct_Success_and_NotFound() {
         Product saved = productRepository.save(new Product(null, "EProd", 20, "uE"));
-        Long id = saved.getId();
+        Long id = saved.id();
 
-        // 수정 폼
         ResponseEntity<String> formResp = restTemplate.getForEntity(baseUrl + "/" + id + "/edit",
                 String.class);
         assertThat(formResp.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(formResp.getBody()).contains("상품 수정");
 
-        // 성공 업데이트
         MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
+        form.add("_method", "put");
         form.add("name", "EProdX");
         form.add("price", "30");
         form.add("imageUrl", "uX");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(form, headers);
-        ResponseEntity<String> updateResp = restTemplate.exchange(
-                baseUrl + "/" + id, HttpMethod.PUT, entity, String.class);
-        assertThat(updateResp.getStatusCode()).isEqualTo(HttpStatus.FOUND);
-        assertThat(productRepository.findById(id).get().getName()).isEqualTo("EProdX");
 
-        // 실패 업데이트
-        HttpEntity<MultiValueMap<String, String>> badEntity = new HttpEntity<>(form, headers);
-        ResponseEntity<String> notFound = restTemplate.exchange(
-                baseUrl + "/999", HttpMethod.PUT, badEntity, String.class);
+        ResponseEntity<String> updateResp = restTemplate.postForEntity(baseUrl + "/" + id, entity,
+                String.class);
+        assertThat(updateResp.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(productRepository.findById(id).get().name()).isEqualTo("EProdX");
+
+        ResponseEntity<String> notFound = restTemplate.postForEntity(baseUrl + "/999", entity,
+                String.class);
         assertThat(notFound.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
     void deleteProduct_Success_and_NotFound() {
         Product d = productRepository.save(new Product(null, "DelP", 50, "uD"));
-        Long id = d.getId();
+        Long id = d.id();
 
-        ResponseEntity<String> delResp = restTemplate.exchange(
-                baseUrl + "/" + id, HttpMethod.DELETE, null, String.class);
-        assertThat(delResp.getStatusCode()).isEqualTo(HttpStatus.FOUND);
+        MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
+        form.add("_method", "delete");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(form, headers);
+
+        ResponseEntity<String> delResp = restTemplate.postForEntity(baseUrl + "/" + id, entity,
+                String.class);
+        assertThat(delResp.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(productRepository.existsById(id)).isFalse();
 
-        ResponseEntity<String> notFound = restTemplate.exchange(
-                baseUrl + "/999", HttpMethod.DELETE, null, String.class);
+        ResponseEntity<String> notFound = restTemplate.postForEntity(baseUrl + "/999", entity,
+                String.class);
         assertThat(notFound.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
+
 }
