@@ -6,13 +6,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ProductRepository {
 
     private final JdbcTemplate jdbcTemplate;
+
+    private final RowMapper<Product> productRowMapper = (rs, rowNum) -> new Product(
+            rs.getLong("id"),
+            rs.getString("name"),
+            rs.getInt("price"),
+            rs.getString("image_url")
+    );
+
     private final Map<Long, Product> products = new HashMap<>();
     private Long sequence = 1L;
 
@@ -22,18 +32,18 @@ public class ProductRepository {
 
     public List<Product> findAll() {
         String sql = "SELECT id, name, price, image_url FROM products";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new Product(
-                rs.getLong("id"),
-                rs.getString("name"),
-                rs.getInt("price"),
-                rs.getString("image_url")
-        ));
+        return jdbcTemplate.query(sql, productRowMapper);
     }
 
     public Optional<Product> findById(Long id) {
-        return Optional.ofNullable(products.get(id));
+        String sql = "SELECT id, name, price, image_url FROM products WHERE id = ?";
+        try {
+            Product product = jdbcTemplate.queryForObject(sql, productRowMapper, id);
+            return Optional.ofNullable(product);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
-
 
     public Product save(Product product) {
         Long id = sequence++;
