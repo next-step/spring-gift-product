@@ -18,7 +18,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleProductNotFound(
             EntityNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ErrorResponseDto(2, exception.getMessage()));
+                .body(new ErrorResponseDto(ErrorStatus.NOT_FOUND.getCode(),
+                        exception.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -26,28 +27,31 @@ public class GlobalExceptionHandler {
             MethodArgumentNotValidException exception) {
         String message = Optional.ofNullable(exception.getBindingResult().getFieldError())
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .orElse("Validation error");
+                .orElse(ErrorStatus.VALIDATION_ERROR.getDefaultMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponseDto(-2, message));
+                .body(new ErrorResponseDto(ErrorStatus.VALIDATION_ERROR.getCode(), message));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponseDto> handleBodyMissing() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponseDto(-3, "Request body error"));
+                .body(new ErrorResponseDto(ErrorStatus.REQUEST_BODY_ERROR.getCode(),
+                        ErrorStatus.REQUEST_BODY_ERROR.getDefaultMessage()));
     }
 
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ErrorResponseDto> handleHttpRequestMethodNotSupported() {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
-                .body(new ErrorResponseDto(-4, "Method Not Allowed"));
+                .body(new ErrorResponseDto(ErrorStatus.METHOD_NOT_ALLOWED.getCode(),
+                        ErrorStatus.METHOD_NOT_ALLOWED.getDefaultMessage()));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleAll() {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponseDto(-1, "Internal Server Error"));
+                .body(new ErrorResponseDto(ErrorStatus.INTERNAL_SERVER_ERROR.getCode(),
+                        ErrorStatus.INTERNAL_SERVER_ERROR.getDefaultMessage()));
     }
 }
