@@ -39,11 +39,10 @@ public class ProductServiceImpl implements ProductService {
         if(request==null || request.id()==null)
             throw new InvalidProductException(ErrorCode.INVALID_PRODUCT_UPDATE_REQUEST);
 
-        Product product = productRepository.findById(request.id())
+        productRepository.findById(request.id())
             .orElseThrow(() -> new InvalidProductException(ErrorCode.NOT_EXISTS_PRODUCT));
 
-        product.update(request.name(), request.price(), request.imageUrl());
-        productRepository.save(product);
+        productRepository.update(request);
     }
 
     @Override

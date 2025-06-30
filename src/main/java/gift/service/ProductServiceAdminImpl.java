@@ -39,30 +39,18 @@ public class ProductServiceAdminImpl implements ProductServiceAdmin {
             throw new InvalidProductException(ErrorCode.INVALID_PRODUCT_UPDATE_REQUEST);
         }
 
-        Product product = productRepository.findById(request.id())
+        productRepository.findById(request.id())
             .orElseThrow(() -> new InvalidProductException(ErrorCode.NOT_EXISTS_PRODUCT));
 
-        product.update(request.name(), request.price(), request.imageUrl());
-        productRepository.save(product);
+        productRepository.update(request);
     }
 
     @Override
     public void deleteByIdAdmin(Long productId) {
+        productRepository.findById(productId)
+            .orElseThrow(() -> new InvalidProductException(ErrorCode.NOT_EXISTS_PRODUCT));
+
         productRepository.deleteById(productId);
     }
 
-    // 검증용 메서드
-    private void validateRequest(ProductRequest request) {
-        if (request == null || request.id() == null) {
-            throw new InvalidProductException(ErrorCode.NOT_EXISTS_PRODUCT);
-        }
-
-        if (request.name() == null || request.imageUrl() == null) {
-            throw new InvalidProductException(ErrorCode.INVALID_PRODUCT_REQUEST);
-        }
-
-        if (request.price() < 0) {
-            throw new InvalidProductException(ErrorCode.INVALID_PRODUCT_PRICE);
-        }
-    }
 }
