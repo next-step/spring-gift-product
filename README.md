@@ -67,3 +67,4 @@
   - `refactor`: 상품 전체 리스트를 반환하는 `findAll()` 리펙토링
   - `refactor`: id 값에 해당하는 상품을 삭제하는 `deleteById(Long id)` 리펙토링
   - `refactor`: 상품 객체를 데이터 저장소에 저장하는 `save(Product product)` 리펙토링
+  - `refactor`: 상품을 수정하는 `update(Product product)` 리펙토링(추가) && 기존 관련 메서드 삭제

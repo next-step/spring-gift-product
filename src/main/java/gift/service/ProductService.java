@@ -35,15 +35,23 @@ public class ProductService {
     }
 
     public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
-        Product product = productRepository.findById(id)
+
+        productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다. id=" + id));
 
-        product.update(
+
+        Product productToUpdate = new Product(
+                id,
                 requestDto.name(),
                 requestDto.price(),
                 requestDto.imageUrl()
         );
-        return ProductResponseDto.from(product);
+
+
+        Product updatedProduct = productRepository.update(productToUpdate);
+
+
+        return ProductResponseDto.from(updatedProduct);
     }
 
     public void deleteProduct(Long id) {

@@ -22,10 +22,10 @@ public class ProductRepository {
     public Product save(Product product){
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        jdbcClient.sql("INSERT INTO product VALUES (:name, :price, :image_url)")
+        jdbcClient.sql("INSERT INTO product (name, price, image_url) VALUES (:name, :price, :imageUrl)")
                 .param("name", product.getName())
                 .param("price", product.getPrice())
-                .param("image_url", product.getImageUrl())
+                .param("imageUrl", product.getImageUrl())
                 .update(keyHolder, "id");
 
         Long newId = keyHolder.getKey().longValue();
@@ -50,6 +50,22 @@ public class ProductRepository {
         jdbcClient.sql("DELETE FROM product WHERE id = :id")
                 .param("id", id)
                 .update();
+    }
+
+
+    public Product update(Product product) {
+        int affectedRows = jdbcClient.sql("UPDATE product SET name = :name, price = :price, image_url = :imageUrl WHERE id = :id")
+                .param("name", product.getName())
+                .param("price", product.getPrice())
+                .param("imageUrl", product.getImageUrl())
+                .param("id", product.getId())
+                .update();
+
+        if (affectedRows == 0) {
+            throw new IllegalArgumentException("Product not found with id: " + product.getId());
+        }
+
+        return product;
     }
 
     private static RowMapper<Product> getProductRowMapper(){
