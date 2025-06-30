@@ -2,18 +2,19 @@ package gift.domain;
 
 public class Product {
 
-    static Long autoIncrement; // auto Increment를 구현하기 위한 static 필드
     Long id;
     String name;
-    int price;
+    Integer price;
     String imageURL;
 
-    static {
-        autoIncrement = 0L;
+    public Product(String name, Integer price, String imageURL) {
+        this.name = name;
+        this.price = price;
+        this.imageURL = imageURL;
     }
 
-    public Product(String name, int price, String imageURL) {
-        this.id = ++autoIncrement;
+    public Product(Long id, String name, Integer price, String imageURL) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.imageURL = imageURL;
@@ -27,7 +28,7 @@ public class Product {
         return name;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
@@ -35,17 +36,7 @@ public class Product {
         return imageURL;
     }
 
-    public Product update(String name, Integer price, String imageURL) {
-        if (name != null) {
-            this.name = name;
-        }
-        if (price != null) {
-            this.price = price;
-        }
-        if (imageURL != null) {
-            this.imageURL = imageURL;
-        }
-
-        return this;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

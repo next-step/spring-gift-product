@@ -44,17 +44,20 @@ public class ProductService {
     }
 
     public ProductResDTO update(Long id, ProductReqDTO productReqDTO) {
-        Product product = productRepository.findById(id);
-
-        return convertToDTO(
-            productRepository.save(
-                product.update(
-                    productReqDTO.name(),
-                    productReqDTO.price(),
-                    productReqDTO.imageURL()
-                )
-            )
+        Product product = new Product(
+            productReqDTO.name(),
+            productReqDTO.price(),
+            productReqDTO.imageURL()
         );
+        int result = productRepository.update(id, product);
+
+        if (result == 1) {
+            return convertToDTO(
+                productRepository.findById(id)
+            );
+        }
+
+        throw new RuntimeException("상품 수정에 실패하였습니다.");
     }
 
     public void delete(Long id) {
