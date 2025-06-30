@@ -4,6 +4,7 @@ import gift.dto.ProductRequest;
 import gift.dto.ProductResponse;
 import gift.service.ProductService;
 import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,47 +19,46 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/products")
 public class ProductController {
 
-  private final ProductService productService;
+    private final ProductService productService;
 
-  public ProductController(ProductService productService) {
-    this.productService = productService;
-  }
-
-  @GetMapping
-  public ResponseEntity<List<ProductResponse>> getProducts() {
-    return ResponseEntity.ok(productService.getAllProducts());
-  }
-
-  @GetMapping("/{productId}")
-  public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId) {
-    return ResponseEntity.ok(productService.getProductById(productId));
-  }
-
-  @PostMapping
-  public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest request) {
-    ProductResponse response = productService.addProduct(request);
-    return ResponseEntity.status(201).body(response);
-  }
-
-  @PutMapping("/{productId}")
-  public ResponseEntity<ProductResponse> updateProduct(
-      @PathVariable Long productId,
-      @RequestBody ProductRequest request
-  ) {
-    ProductResponse response = productService.updateProduct(productId, request);
-    if (response == null) {
-      return ResponseEntity.notFound().build(); // 404 응답
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
-    return ResponseEntity.ok(response);
-  }
 
-  @DeleteMapping("/{productId}")
-  public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
-    boolean deleted = productService.deleteProduct(productId);
-    if (!deleted) {
-      return ResponseEntity.notFound().build();
+    @GetMapping
+    public ResponseEntity<List<ProductResponse>> getProducts() {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts());
     }
-    return ResponseEntity.noContent().build(); // 204 No Content
-  }
 
+    @GetMapping("/{productId}")
+    public ResponseEntity<ProductResponse> getProduct(@PathVariable Long productId) {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.findProductById(productId));
+    }
+
+    @PostMapping
+    public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest request) {
+        ProductResponse response = productService.addProduct(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping("/{productId}")
+    public ResponseEntity<ProductResponse> updateProduct(
+            @PathVariable Long productId,
+            @RequestBody ProductRequest request
+    ) {
+        ProductResponse response = productService.updateProduct(productId, request);
+        if (response == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+        boolean deleted = productService.deleteProduct(productId);
+        if (!deleted) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }

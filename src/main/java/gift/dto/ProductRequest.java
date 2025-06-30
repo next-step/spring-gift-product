@@ -1,23 +1,5 @@
 package gift.dto;
 
-public class ProductRequest {
+public record ProductRequest(Long id, String name, int price, String imageUrl) {
 
-  private String name;
-  private int price;
-  private String imageUrl;
-
-  public ProductRequest() {
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public int getPrice() {
-    return price;
-  }
-
-  public String getImageUrl() {
-    return imageUrl;
-  }
 }
