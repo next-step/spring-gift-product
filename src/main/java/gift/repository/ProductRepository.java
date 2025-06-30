@@ -47,10 +47,10 @@ public class ProductRepository {
     return product;
   }
 
-  public void update(Long id, Product updateProduct) {
+  public void update(Product oldProduct, Product updateProduct) {
     String sql = "update product set name = ?, price = ?, imageurl = ? where id = ?";
     jdbcTemplate.update(sql, updateProduct.getName(), updateProduct.getPrice(),
-        updateProduct.getImageUrl(), id);
+        updateProduct.getImageUrl(), oldProduct.getId());
   }
 
   public void delete(Long id) {
