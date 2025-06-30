@@ -2,46 +2,58 @@ package gift.entity;
 
 public class Gift {
     private Long id;
-    private String name;
-    private Integer price;
-    private String imageUrl;
+    private Long giftId;
+    private String giftName;
+    private Integer giftPrice;
+    private String giftPhotoUrl;
 
-    public Gift(Long id, String name, Integer price, String imageUrl) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.imageUrl = imageUrl;
+    public Gift(Long giftId, String giftName, Integer giftPrice, String giftPhotoUrl) {
+        this.giftId = giftId;
+        this.giftName = giftName;
+        this.giftPrice = giftPrice;
+        this.giftPhotoUrl = giftPhotoUrl;
+    }
+
+    public Gift() {
     }
 
     public Long getId() {
         return id;
     }
 
+    public Long getGiftId() {
+        return giftId;
+    }
+
+    public String getGiftName() {
+        return giftName;
+    }
+
+    public Integer getGiftPrice() {
+        return giftPrice;
+    }
+
+    public String getGiftPhotoUrl() {
+        return giftPhotoUrl;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public void setGiftId(Long giftId) {
+        this.giftId = giftId;
     }
 
-    public Integer getPrice() {
-        return price;
+    public void setGiftName(String giftName) {
+        this.giftName = giftName;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public void setGiftPrice(Integer giftPrice) {
+        this.giftPrice = giftPrice;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setGiftPhotoUrl(String giftPhotoUrl) {
+        this.giftPhotoUrl = giftPhotoUrl;
     }
 }
