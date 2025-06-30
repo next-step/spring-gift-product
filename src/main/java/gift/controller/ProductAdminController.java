@@ -47,9 +47,6 @@ public class ProductAdminController {
         model.addAttribute("product", form);
         return "products/form";
     }
-
-
-
     @PostMapping("/{id}")
     public String update(@PathVariable Long id, @ModelAttribute ProductRequest request) {
         productService.update(id, request);

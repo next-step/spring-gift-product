@@ -50,4 +50,13 @@ public class ProductService {
                 .orElseThrow(() -> new NoSuchElementException("상품이 존재하지 않습니다."));
         return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
     }
+  
+    public ProductResponse findById(Long id) {
+        Product product = products.get(id);
+        if (product == null) {
+            throw new NoSuchElementException("Product not found");
+        }
+        return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
+    }
+
 }

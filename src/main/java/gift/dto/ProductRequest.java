@@ -14,7 +14,6 @@ public class ProductRequest {
         this.imageUrl = imageUrl;
     }
     public ProductRequest() {
-        // 기본 생성자: HTML form 바인딩용
     }
 
     public String getName() {
@@ -49,4 +48,10 @@ public class ProductRequest {
         this.imageUrl = imageUrl;
     }
 
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
