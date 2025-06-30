@@ -3,20 +3,18 @@ package gift.product.service;
 import gift.product.domain.Product;
 import gift.product.dto.ProductRequestDto;
 import gift.product.exception.ProductNotFoundException;
-import gift.product.repository.MemoryProductRepository;
 import gift.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 public class ProductService {
     private final ProductRepository repository;
 
-    public ProductService(MemoryProductRepository repository){
+    public ProductService(ProductRepository repository){
         this.repository = repository;
     }
 

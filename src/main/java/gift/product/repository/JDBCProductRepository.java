@@ -1,7 +1,6 @@
 package gift.product.repository;
 
 import gift.product.domain.Product;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -11,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Primary
 public class JDBCProductRepository implements ProductRepository{
 
     private final JdbcClient client;
