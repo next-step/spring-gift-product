@@ -1,8 +1,9 @@
+<!-- src/main/resources/templates/product_form.html -->
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title th:text="${pageTitle}"></title>
+  <meta charset="UTF-8"/>
+  <title th:text="${product.id} != null ? '상품 수정' : '신규 상품 등록'">상품 폼</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -61,38 +62,53 @@
   </style>
 </head>
 <body>
-<h1 th:text="${pageTitle}">상품 정보</h1>
+<h1 th:text="${product.id} != null ? '상품 수정' : '신규 상품 등록'"></h1>
 
-<p class="error" th:if="${errorMessage}" th:text="${errorMessage}"></p>
-
-<form method="post" th:action="${formAction}" th:object="${product}">
-  <input name="_method" th:if="${_method}" th:value="${_method}" type="hidden"/>
-
+<!-- 등록 폼 -->
+<form method="post"
+      th:action="@{/admin/products}"
+      th:if="${product.id} == null"
+      th:object="${product}">
   <div>
-    <label for="id">ID:</label>
-    <input id="id" min="1" required th:field="*{id}" th:readonly="${product.id != null}"
-           type="number"/>
+    <label>이름</label>
+    <input placeholder="상품 이름" required th:field="*{name}" type="text"/>
   </div>
-
   <div>
-    <label for="name">이름:</label>
-    <input id="name" required th:field="*{name}" type="text"/>
+    <label>가격</label>
+    <input min="1" placeholder="가격 입력" required th:field="*{price}" type="number"/>
   </div>
-
   <div>
-    <label for="price">가격:</label>
-    <input id="price" min="1" required th:field="*{price}" type="number"/>
+    <label>이미지 URL</label>
+    <input placeholder="http://..." required th:field="*{imageUrl}" type="url"/>
   </div>
-
-  <div>
-    <label for="imageUrl">이미지 URL:</label>
-    <input id="imageUrl" required th:field="*{imageUrl}" type="url"/>
-  </div>
-
-  <div>
-    <button type="submit">저장</button>
+  <div class="form-actions">
+    <button type="submit">등록</button>
+    <a class="button cancel" th:href="@{/admin/products}">취소</a>
   </div>
 </form>
-<a href="/admin/products">목록으로 돌아가기</a>
+
+<!-- 수정 폼 -->
+<form method="post"
+      th:action="@{|/admin/products/${product.id}|}"
+      th:if="${product.id} != null"
+      th:object="${product}">
+  <input name="_method" type="hidden" value="put"/>
+  <div>
+    <label>이름</label>
+    <input required th:field="*{name}" type="text"/>
+  </div>
+  <div>
+    <label>가격</label>
+    <input min="1" required th:field="*{price}" type="number"/>
+  </div>
+  <div>
+    <label>이미지 URL</label>
+    <input required th:field="*{imageUrl}" type="url"/>
+  </div>
+  <div class="form-actions">
+    <button type="submit">수정</button>
+    <a class="button cancel" th:href="@{/admin/products}">취소</a>
+  </div>
+</form>
 </body>
 </html>

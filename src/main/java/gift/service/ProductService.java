@@ -1,10 +1,10 @@
+// src/main/java/gift/service/ProductService.java
 package gift.service;
 
-import gift.model.Product;
+import gift.entity.Product;
 import java.util.List;
 import java.util.Optional;
 
-// Product 관련 비즈니스 로직을 정의하는 인터페이스
 public interface ProductService {
 
     List<Product> getAllProducts();

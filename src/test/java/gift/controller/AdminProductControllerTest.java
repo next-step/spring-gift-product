@@ -1,491 +1,133 @@
 package gift.controller;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import gift.model.Product;
-import gift.service.ApiErrorMappingService;
-import java.util.Arrays;
-import java.util.Collections;
+import gift.entity.Product;
+import gift.repository.ProductRepository;
 import java.util.List;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
-@WebMvcTest(AdminProductController.class)
-class AdminProductControllerTest {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("dev")
+public class AdminProductControllerTest {
+
+    @LocalServerPort
+    private int port;
+    private String baseUrl;
 
     @Autowired
-    private MockMvc mockMvc;
+    private TestRestTemplate restTemplate;
 
-    @MockBean
-    private RestTemplate restTemplate;
+    @Autowired
+    private ProductRepository productRepository;
 
-    @MockBean // ApiErrorMappingService도 MockBean으로 등록
-    private ApiErrorMappingService apiErrorMappingService;
+    @BeforeEach
+    void setUp() {
+        // 초기화
+        List<Product> all = productRepository.findAll();
+        all.forEach(p -> productRepository.deleteById(p.getId()));
 
-    // GET /admin/products 테스트
-    @Test
-    @DisplayName("GET /admin/products - 상품 목록 조회 성공: 상품이 존재하면 목록 페이지를 올바르게 렌더링한다")
-    void getAllProducts_shouldRenderWithProducts() throws Exception {
-        List<Product> mockProducts = Arrays.asList(
-                new Product(1L, "상품1", 1000, "http://test.com/img1.jpg"),
-                new Product(2L, "상품2", 2000, "http://test.com/img2.jpg")
-        );
-        ResponseEntity<List<Product>> successResponse = new ResponseEntity<>(mockProducts,
-                HttpStatus.OK);
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products"),
-                eq(HttpMethod.GET),
-                any(),
-                any(ParameterizedTypeReference.class)
-        )).thenReturn(successResponse);
-
-        mockMvc.perform(get("/admin/products"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("admin/product_list"))
-                .andExpect(model().attributeExists("products"))
-                .andExpect(model().attribute("products", mockProducts))
-                .andExpect(content().string(containsString("<td>1</td>")))
-                .andExpect(content().string(containsString("<td>상품1</td>")))
-                .andExpect(content().string(
-                        containsString("<a href=\"/admin/products/1/edit\">수정</a>")))
-                .andExpect(content().string(allOf(
-                        containsString("<button"),
-                        containsString("data-id=\"1\""),
-                        containsString("onclick=\"deleteProduct(this.dataset.id)\""),
-                        containsString(">삭제</button>")
-                )));
+        baseUrl = "http://localhost:" + port + "/admin/products";
     }
 
     @Test
-    @DisplayName("GET /admin/products - 상품 목록 조회 성공: 상품이 없으면 200 OK와 빈 배열을 반환한다")
-    void getAllProducts_shouldReturnOkWithEmptyArrayWhenNoProducts() throws Exception {
-        ResponseEntity<List<Product>> emptyResponse = new ResponseEntity<>(Collections.emptyList(),
-                HttpStatus.OK);
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products"),
-                eq(HttpMethod.GET),
-                any(),
-                any(ParameterizedTypeReference.class)
-        )).thenReturn(emptyResponse);
-
-        mockMvc.perform(get("/admin/products"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("admin/product_list"))
-                .andExpect(model().attributeExists("products"))
-                .andExpect(model().attribute("products", Collections.emptyList()));
+    void listPage_ShouldReturnProductsInModel() {
+        productRepository.save(new Product(null, "A", 10, "uA"));
+        ResponseEntity<String> response = restTemplate.getForEntity(baseUrl, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).contains("상품 목록");
+        assertThat(response.getBody()).contains("A");
     }
 
     @Test
-    @DisplayName("GET /admin/products - 상품 목록 조회 실패: API 호출 중 ResourceAccessException 발생 시 목록으로 리다이렉트하며 에러 메시지 전달")
-    void getAllProducts_shouldHandleResourceAccessException() throws Exception {
-        String errorMessage = "API 서버에 연결할 수 없습니다. 서버가 실행 중인지 확인하세요.";
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products"),
-                eq(HttpMethod.GET),
-                any(),
-                any(ParameterizedTypeReference.class)
-        )).thenThrow(new ResourceAccessException("Connection refused"));
-        when(apiErrorMappingService.getErrorMessageForResourceAccess()).thenReturn(errorMessage);
-
-        mockMvc.perform(get("/admin/products"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("/admin/products?error=" + errorMessage));
+    void createFormPage_ShouldReturnFormHtml() {
+        ResponseEntity<String> response = restTemplate.getForEntity(baseUrl + "/new", String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).contains("신규 상품 등록");
+        assertThat(response.getBody()).contains("name=\"name\"");
     }
 
     @Test
-    @DisplayName("GET /admin/products - 상품 목록 조회 실패: API 호출 중 기타 예외 발생 시 목록으로 리다이렉트하며 에러 메시지 전달")
-    void getAllProducts_shouldHandleGenericException() throws Exception {
-        String errorMessage = "상품 데이터를 가져오는 중 알 수 없는 오류가 발생했습니다.";
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products"),
-                eq(HttpMethod.GET),
-                any(),
-                any(ParameterizedTypeReference.class)
-        )).thenThrow(new RuntimeException("예상치 못한 오류 발생"));
-        when(apiErrorMappingService.getGenericErrorMessage()).thenReturn(errorMessage);
+    void createProduct_Success_and_MissingField_Fail() {
+        // 성공
+        MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
+        form.add("name", "NewProd");
+        form.add("price", "100");
+        form.add("imageUrl", "http://img");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(form, headers);
+        ResponseEntity<String> resp = restTemplate.postForEntity(baseUrl, entity, String.class);
+        assertThat(resp.getStatusCode()).isEqualTo(HttpStatus.FOUND);
+        assertThat(resp.getHeaders().getLocation().toString()).endsWith("/admin/products");
 
-        mockMvc.perform(get("/admin/products"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("/admin/products?error=" + errorMessage));
-    }
-
-    // POST /admin/products 테스트 (상품 추가)
-    @Test
-    @DisplayName("POST /admin/products - 상품 추가 성공: 유효한 요청이면 /admin/products로 리다이렉트한다")
-    void addProduct_shouldRedirectOnSuccess() throws Exception {
-        Product newProduct = new Product(3L, "새로운 상품", 1000, "http://new.img/new.jpg");
-        ResponseEntity<Product> successResponse = new ResponseEntity<>(newProduct,
-                HttpStatus.CREATED);
-
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products"),
-                eq(HttpMethod.POST),
-                any(HttpEntity.class),
-                eq(Product.class)
-        )).thenReturn(successResponse);
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/products")
-                        .param("id", "3")
-                        .param("name", "새로운 상품")
-                        .param("price", "1000")
-                        .param("imageUrl", "http://new.img/new.jpg"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/products"));
+        // 실패: 누락(name)
+        MultiValueMap<String, String> badForm = new LinkedMultiValueMap<>();
+        badForm.add("price", "0");
+        badForm.add("imageUrl", "");
+        HttpEntity<MultiValueMap<String, String>> badEntity = new HttpEntity<>(badForm, headers);
+        ResponseEntity<String> fail = restTemplate.postForEntity(baseUrl, badEntity, String.class);
+        assertThat(fail.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(fail.getBody()).contains("상품 이름은 필수 입력값입니다");
     }
 
     @Test
-    @DisplayName("POST /admin/products - 상품 추가 실패: API에서 400 Bad Request 반환 시 폼 페이지로 돌아가며 에러 메시지 표시")
-    void addProduct_shouldReturnFormAndErrorMessageOnBadRequest() throws Exception {
-        String errorMessage = "입력 데이터가 유효하지 않습니다. 이름을 채우고, 가격은 양수, URL 형식을 확인하세요.";
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products"),
-                eq(HttpMethod.POST),
-                any(HttpEntity.class),
-                eq(Product.class)
-        )).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Invalid input"));
-        when(apiErrorMappingService.mapApiErrorToUserMessage(HttpStatus.BAD_REQUEST)).thenReturn(
-                errorMessage);
+    void editFormPage_and_UpdateProduct_Success_and_NotFound() {
+        Product saved = productRepository.save(new Product(null, "EProd", 20, "uE"));
+        Long id = saved.getId();
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/products")
-                        .param("id", "3")
-                        .param("name", "")
-                        .param("price", "1000")
-                        .param("imageUrl", "http://valid.img/valid.jpg"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("admin/product_form"))
-                .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", errorMessage));
+        // 수정 폼
+        ResponseEntity<String> formResp = restTemplate.getForEntity(baseUrl + "/" + id + "/edit",
+                String.class);
+        assertThat(formResp.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(formResp.getBody()).contains("상품 수정");
+
+        // 성공 업데이트
+        MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
+        form.add("name", "EProdX");
+        form.add("price", "30");
+        form.add("imageUrl", "uX");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(form, headers);
+        ResponseEntity<String> updateResp = restTemplate.exchange(
+                baseUrl + "/" + id, HttpMethod.PUT, entity, String.class);
+        assertThat(updateResp.getStatusCode()).isEqualTo(HttpStatus.FOUND);
+        assertThat(productRepository.findById(id).get().getName()).isEqualTo("EProdX");
+
+        // 실패 업데이트
+        HttpEntity<MultiValueMap<String, String>> badEntity = new HttpEntity<>(form, headers);
+        ResponseEntity<String> notFound = restTemplate.exchange(
+                baseUrl + "/999", HttpMethod.PUT, badEntity, String.class);
+        assertThat(notFound.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
-    @DisplayName("POST /admin/products - 상품 추가 실패: API에서 409 Conflict 반환 시 폼 페이지로 돌아가며 에러 메시지 표시")
-    void addProduct_shouldReturnFormAndErrorMessageOnConflict() throws Exception {
-        String errorMessage = "이미 존재하는 ID입니다. 다른 ID를 사용해 주세요.";
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products"),
-                eq(HttpMethod.POST),
-                any(HttpEntity.class),
-                eq(Product.class)
-        )).thenThrow(new HttpClientErrorException(HttpStatus.CONFLICT, "ID already exists"));
-        when(apiErrorMappingService.mapApiErrorToUserMessage(HttpStatus.CONFLICT)).thenReturn(
-                errorMessage);
+    void deleteProduct_Success_and_NotFound() {
+        Product d = productRepository.save(new Product(null, "DelP", 50, "uD"));
+        Long id = d.getId();
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/products")
-                        .param("id", "1")
-                        .param("name", "충돌 상품")
-                        .param("price", "100")
-                        .param("imageUrl", "http://conflict.img/conflict.jpg"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("admin/product_form"))
-                .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", errorMessage));
-    }
+        ResponseEntity<String> delResp = restTemplate.exchange(
+                baseUrl + "/" + id, HttpMethod.DELETE, null, String.class);
+        assertThat(delResp.getStatusCode()).isEqualTo(HttpStatus.FOUND);
+        assertThat(productRepository.existsById(id)).isFalse();
 
-    @Test
-    @DisplayName("POST /admin/products - 상품 추가 실패: API 호출 중 ResourceAccessException 발생 시 폼 페이지로 돌아가며 에러 메시지 표시")
-    void addProduct_shouldHandleResourceAccessException() throws Exception {
-        String errorMessage = "API 서버에 연결할 수 없습니다. 서버가 실행 중인지 확인하세요.";
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products"),
-                eq(HttpMethod.POST),
-                any(HttpEntity.class),
-                eq(Product.class)
-        )).thenThrow(new ResourceAccessException("Connection refused"));
-        when(apiErrorMappingService.getErrorMessageForResourceAccess()).thenReturn(errorMessage);
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/products")
-                        .param("id", "3")
-                        .param("name", "오류 상품")
-                        .param("price", "100")
-                        .param("imageUrl", "http://error.img/error.jpg"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("admin/product_form"))
-                .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", errorMessage));
-    }
-
-    @Test
-    @DisplayName("POST /admin/products - 상품 추가 실패: API 호출 중 기타 예외 발생 시 폼 페이지로 돌아가며 일반 에러 메시지 표시")
-    void addProduct_shouldHandleGenericError() throws Exception {
-        String genericErrorMessage = "알 수 없는 오류가 발생했습니다. 다시 시도해주세요.";
-        String exceptionMessage = "알 수 없는 오류";
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products"),
-                eq(HttpMethod.POST),
-                any(HttpEntity.class),
-                eq(Product.class)
-        )).thenThrow(new RuntimeException(exceptionMessage));
-        when(apiErrorMappingService.getGenericErrorMessage()).thenReturn(genericErrorMessage);
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/products")
-                        .param("id", "3")
-                        .param("name", "오류 상품")
-                        .param("price", "100")
-                        .param("imageUrl", "http://error.img/error.jpg"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("admin/product_form"))
-                .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage",
-                        genericErrorMessage + ": " + exceptionMessage));
-    }
-
-    // GET /admin/products/new 테스트 (기존)
-    @Test
-    @DisplayName("GET /admin/products/new - 상품 추가 폼 페이지를 올바르게 렌더링한다")
-    void showAddProductForm_shouldRenderForm() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/admin/products/new"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("admin/product_form"))
-                .andExpect(model().attributeExists("product"))
-                .andExpect(model().attribute("product",
-                        Matchers.isA(Product.class))) // Specific type check
-                .andExpect(model().attribute("formAction", "/admin/products"))
-                .andExpect(model().attribute("pageTitle", "새 상품 추가"));
-    }
-
-    // GET /admin/products/{id}/edit 테스트
-    @Test
-    @DisplayName("GET /admin/products/{id}/edit - 상품 수정 폼 페이지를 올바르게 렌더링한다 (상품 존재 시)")
-    void showEditProductForm_shouldRenderFormWithExistingProduct() throws Exception {
-        long existingProductId = 1L;
-        Product existingProduct = new Product(existingProductId, "수정될 상품", 5000,
-                "http://edit.img/original.jpg");
-        ResponseEntity<Product> successResponse = new ResponseEntity<>(existingProduct,
-                HttpStatus.OK);
-
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products/" + existingProductId),
-                eq(HttpMethod.GET),
-                any(),
-                eq(Product.class)
-        )).thenReturn(successResponse);
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/admin/products/{id}/edit", existingProductId))
-                .andExpect(status().isOk())
-                .andExpect(view().name("admin/product_form"))
-                .andExpect(model().attributeExists("product"))
-                .andExpect(model().attribute("product", existingProduct))
-                .andExpect(model().attribute("formAction", "/admin/products/" + existingProductId))
-                .andExpect(model().attribute("pageTitle", "상품 수정"))
-                .andExpect(model().attribute("_method", "PUT"));
-    }
-
-    @Test
-    @DisplayName("GET /admin/products/{id}/edit - 상품이 없으면 /admin/products로 리다이렉트하며 에러 메시지 전달")
-    void showEditProductForm_shouldRedirectWhenProductNotFound() throws Exception {
-        long nonExistingProductId = 999L;
-        String notFoundMessage = "수정할 상품을 찾을 수 없습니다.";
-
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products/" + nonExistingProductId),
-                eq(HttpMethod.GET),
-                any(),
-                eq(Product.class)
-        )).thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND,
-                notFoundMessage));
-        when(apiErrorMappingService.getErrorMessageForNotFoundProduct()).thenReturn(
-                notFoundMessage);
-
-        mockMvc.perform(
-                        MockMvcRequestBuilders.get("/admin/products/{id}/edit", nonExistingProductId))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/products?error=" + notFoundMessage));
-    }
-
-    @Test
-    @DisplayName("GET /admin/products/{id}/edit - API 호출 중 ResourceAccessException 발생 시 목록으로 리다이렉트하며 에러 메시지 전달")
-    void showEditProductForm_shouldHandleResourceAccessException() throws Exception {
-        long productId = 1L;
-        String errorMessage = "상품 정보를 가져오는 API 서버에 연결할 수 없습니다.";
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products/" + productId),
-                eq(HttpMethod.GET),
-                any(),
-                eq(Product.class)
-        )).thenThrow(new ResourceAccessException("Connection refused"));
-        when(apiErrorMappingService.getErrorMessageForResourceAccess()).thenReturn(errorMessage);
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/admin/products/{id}/edit", productId))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/products?error=" + errorMessage));
-    }
-
-    @Test
-    @DisplayName("GET /admin/products/{id}/edit - API 호출 중 기타 예외 발생 시 목록으로 리다이렉트하며 에러 메시지 전달")
-    void showEditProductForm_shouldHandleGenericError() throws Exception {
-        long productId = 1L;
-        String errorMessage = "상품 수정 폼 로드 중 알 수 없는 오류가 발생했습니다.";
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products/" + productId),
-                eq(HttpMethod.GET),
-                any(),
-                eq(Product.class)
-        )).thenThrow(new RuntimeException("알 수 없는 오류"));
-        when(apiErrorMappingService.getGenericErrorMessage()).thenReturn(
-                "상품 수정 폼 로드 중 알 수 없는 오류가 발생했습니다.");
-        mockMvc.perform(MockMvcRequestBuilders.get("/admin/products/{id}/edit", productId))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("/admin/products?error=" + errorMessage));
-    }
-
-    // PUT /admin/products/{id} 테스트
-    @Test
-    @DisplayName("PUT /admin/products/{id} - 상품 수정 성공: 유효한 요청이면 /admin/products로 리다이렉트한다")
-    void updateProduct_shouldRedirectOnSuccess() throws Exception {
-        long existingProductId = 1L;
-        Product updatedProduct = new Product(existingProductId, "수정된 상품", 6000,
-                "http://updated.img/updated.jpg");
-        ResponseEntity<Product> successResponse = new ResponseEntity<>(updatedProduct,
-                HttpStatus.OK);
-
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products/" + existingProductId),
-                eq(HttpMethod.PUT),
-                any(HttpEntity.class),
-                eq(Product.class)
-        )).thenReturn(successResponse);
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/products/{id}", existingProductId)
-                        .param("_method", "PUT")
-                        .param("id", String.valueOf(existingProductId))
-                        .param("name", "수정된 상품")
-                        .param("price", "6000")
-                        .param("imageUrl", "http://updated.img/updated.jpg"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/products"));
-    }
-
-    @Test
-    @DisplayName("PUT /admin/products/{id} - 상품 수정 실패: API에서 400 Bad Request 반환 시 폼 페이지로 돌아가며 에러 메시지 표시")
-    void updateProduct_shouldReturnFormAndErrorMessageOnBadRequest() throws Exception {
-        long existingProductId = 1L;
-        String errorMessage = "입력 데이터가 유효하지 않습니다. 이름을 채우고, 가격은 양수, URL 형식을 확인하세요.";
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products/" + existingProductId),
-                eq(HttpMethod.PUT),
-                any(HttpEntity.class),
-                eq(Product.class)
-        )).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Invalid update data"));
-        when(apiErrorMappingService.mapApiErrorToUserMessage(HttpStatus.BAD_REQUEST)).thenReturn(
-                errorMessage);
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/products/{id}", existingProductId)
-                        .param("_method", "PUT")
-                        .param("id", String.valueOf(existingProductId))
-                        .param("name", "")
-                        .param("price", "6000")
-                        .param("imageUrl", "http://updated.img/invalid.jpg"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("admin/product_form"))
-                .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", errorMessage));
-    }
-
-    @Test
-    @DisplayName("PUT /admin/products/{id} - 상품 수정 실패: API에서 404 Not Found 반환 시 폼 페이지로 돌아가며 에러 메시지 표시")
-    void updateProduct_shouldReturnErrorPageOnNotFound() throws Exception {
-        long nonExistingProductId = 999L;
-        String errorMessage = "수정하려는 상품을 찾을 수 없습니다."; // 이 메시지는 ApiErrorMappingService에서 가져옴
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products/" + nonExistingProductId),
-                eq(HttpMethod.PUT),
-                any(HttpEntity.class),
-                eq(Product.class)
-        )).thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, "Product not found"));
-        when(apiErrorMappingService.mapApiErrorToUserMessage(HttpStatus.NOT_FOUND)).thenReturn(
-                "요청한 리소스를 찾을 수 없습니다."); // 실제 mapApiErrorToUserMessage 호출 결과
-        when(apiErrorMappingService.getErrorMessageForNotFoundProduct()).thenReturn(
-                errorMessage); // 컨트롤러에서 Not Found일 때 특별히 반환하는 메시지
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/products/{id}", nonExistingProductId)
-                        .param("_method", "PUT")
-                        .param("id", String.valueOf(nonExistingProductId))
-                        .param("name", "없는 상품")
-                        .param("price", "100")
-                        .param("imageUrl", "http://updated.img/notfound.jpg"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("admin/product_form"))
-                .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", errorMessage));
-    }
-
-    @Test
-    @DisplayName("PUT /admin/products/{id} - 상품 수정 실패: API 호출 중 ResourceAccessException 발생 시 폼 페이지로 돌아가며 에러 메시지 표시")
-    void updateProduct_shouldHandleResourceAccessException() throws Exception {
-        long existingProductId = 1L;
-        String errorMessage = "API 서버에 연결할 수 없거나 상품 수정 중 오류가 발생했습니다.";
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products/" + existingProductId),
-                eq(HttpMethod.PUT),
-                any(HttpEntity.class),
-                eq(Product.class)
-        )).thenThrow(new ResourceAccessException("Connection refused"));
-        when(apiErrorMappingService.getErrorMessageForResourceAccess()).thenReturn(
-                errorMessage.split(
-                        "또는")[0].trim()); // split because the controller adds "또는 상품 수정 중 오류가 발생했습니다."
-        // For tests, match the exact expected string or use a pattern.
-        // A more robust way would be to make the service return the exact string.
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/products/{id}", existingProductId)
-                        .param("_method", "PUT")
-                        .param("id", String.valueOf(existingProductId))
-                        .param("name", "오류 상품")
-                        .param("price", "100")
-                        .param("imageUrl", "http://updated.img/error.jpg"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("admin/product_form"))
-                .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", errorMessage));
-    }
-
-    @Test
-    @DisplayName("PUT /admin/products/{id} - 상품 수정 실패: API 호출 중 기타 예외 발생 시 폼 페이지로 돌아가며 일반 에러 메시지 표시")
-    void updateProduct_shouldHandleGenericError() throws Exception {
-        long existingProductId = 1L;
-        String genericErrorMessage = "알 수 없는 오류가 발생했습니다. 다시 시도해주세요.";
-        String exceptionMessage = "알 수 없는 오류";
-        when(restTemplate.exchange(
-                eq("http://localhost:8080/api/products/" + existingProductId),
-                eq(HttpMethod.PUT),
-                any(HttpEntity.class),
-                eq(Product.class)
-        )).thenThrow(new RuntimeException(exceptionMessage));
-        when(apiErrorMappingService.getGenericErrorMessage()).thenReturn(genericErrorMessage);
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/products/{id}", existingProductId)
-                        .param("_method", "PUT")
-                        .param("id", String.valueOf(existingProductId))
-                        .param("name", "오류 상품")
-                        .param("price", "100")
-                        .param("imageUrl", "http://updated.img/error.jpg"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("admin/product_form"))
-                .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage",
-                        genericErrorMessage + ": " + exceptionMessage));
+        ResponseEntity<String> notFound = restTemplate.exchange(
+                baseUrl + "/999", HttpMethod.DELETE, null, String.class);
+        assertThat(notFound.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }

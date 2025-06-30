@@ -1,10 +1,14 @@
+// src/main/java/gift/controller/ProductController.java
 package gift.controller;
 
-import gift.model.Product;
+import gift.dto.ProductRequest;
+import gift.dto.ProductResponse;
+import gift.entity.Product;
+import gift.exception.ResourceNotFoundException;
 import gift.service.ProductService;
+import jakarta.validation.Valid;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import java.util.stream.Collectors;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,44 +20,58 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/products")
 public class ProductController {
 
     private final ProductService productService;
 
-    @Autowired
-    public ProductController(ProductService productService) {
-        this.productService = productService;
+    public ProductController(ProductService svc) {
+        this.productService = svc;
     }
 
-    @GetMapping("/products")
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    @GetMapping
+    public ResponseEntity<List<ProductResponse>> getAll() {
+        List<ProductResponse> list = productService.getAllProducts().stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(list);
     }
 
-    @GetMapping("/products/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Product product = productService.getProductById(id)
-                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다: " + id));
-        return new ResponseEntity<>(product, HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponse> getById(@PathVariable Long id) {
+        Product p = productService.getProductById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("상품을 찾을 수 없습니다: " + id));
+        return ResponseEntity.ok(toResponse(p));
     }
 
-    @PostMapping("/products")
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        Product createdProduct = productService.createProduct(product);
-        return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<ProductResponse> create(
+            @Valid @RequestBody ProductRequest req) {
+        Product saved = productService.createProduct(toEntity(req));
+        return ResponseEntity.status(201).body(toResponse(saved));
     }
 
-    @PutMapping("/products/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id,
-            @RequestBody Product product) {
-        Product updatedProduct = productService.updateProduct(id, product);
-        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponse> update(
+            @PathVariable Long id,
+            @Valid @RequestBody ProductRequest req) {
+        Product updated = productService.updateProduct(id, toEntity(req));
+        return ResponseEntity.ok(toResponse(updated));
     }
 
-    @DeleteMapping("/products/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         productService.deleteProduct(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
+    }
+
+    private Product toEntity(ProductRequest r) {
+        return new Product(null, r.getName(), r.getPrice(), r.getImageUrl());
+    }
+
+    private ProductResponse toResponse(Product e) {
+        return new ProductResponse(
+                e.getId(), e.getName(), e.getPrice(), e.getImageUrl()
+        );
     }
 }
