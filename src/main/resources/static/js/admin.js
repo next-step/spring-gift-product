@@ -1,4 +1,4 @@
-document.getElementById("create-product-form").addEventListener("submit", async function(e) {
+document.getElementById("create-product-form").addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const data = {
@@ -19,17 +19,18 @@ document.getElementById("create-product-form").addEventListener("submit", async 
         alert("상품이 등록되었습니다!");
         window.location.reload();
     } else {
-        alert("등록에 실패했습니다.");
+        const errorMessage = await response.text(); // 응답 본문 받아오기
+        alert("등록에 실패했습니다: " + errorMessage); // 서버 메시지 표시
     }
 });
 
-document.getElementById("patch-product-form").addEventListener("submit", async function(e) {
+document.getElementById("patch-product-form").addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const productId = document.getElementById("patch-id").value
 
     const data = {
-        id : document.getElementById("patch-id").value,
+        id: document.getElementById("patch-id").value,
         name: document.getElementById("patch-name").value,
         price: parseFloat(document.getElementById("patch-price").value),
         imageUrl: document.getElementById("patch-imageUrl").value
@@ -54,7 +55,7 @@ document.getElementById("patch-product-form").addEventListener("submit", async f
 document.getElementById("delete-btn").addEventListener('click', async function (event) {
 
     const productId = event.target.dataset.productId;
-    if(!confirm(`정말로 ${productId}번 상품을 삭제하시겠습니까?`)){
+    if (!confirm(`정말로 ${productId}번 상품을 삭제하시겠습니까?`)) {
         return
     }
     const response = await fetch(`/api/products/${productId}`, {

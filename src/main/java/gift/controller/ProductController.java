@@ -19,7 +19,10 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto requestDto) {
+    public ResponseEntity<?> createProduct(@RequestBody ProductRequestDto requestDto) {
+        if (requestDto.getName().length() >= 100) {
+            return ResponseEntity.badRequest().body("이름이 너무 깁니다. 100자 이내로 작성해주세요.");
+        }
         return ResponseEntity.ok(productService.saveProduct(requestDto));
 
     }
