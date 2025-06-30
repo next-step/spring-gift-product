@@ -85,6 +85,7 @@ public class AdminItemController {
             ItemResponse item = itemService.getItemById(id);
             model.addAttribute("item",
                 new ItemRequest(item.name(), item.price(), item.imageUrl()));
+            model.addAttribute("itemId", id);
             return "admin/items/form";
         } catch (ResponseStatusException ex) {
             model.addAttribute("errorMessage", ex.getReason());
