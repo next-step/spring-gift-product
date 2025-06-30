@@ -19,4 +19,3 @@ public interface ItemRepository {
 
     void deleteItem(Long id);
 }
-
