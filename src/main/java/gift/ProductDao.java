@@ -1,5 +1,6 @@
 package gift;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
@@ -29,10 +30,15 @@ public class ProductDao {
     }
 
     public Product findById(Long id) {
-        return jdbcClient.sql("SELECT * FROM PRODUCTS WHERE id = :id")
-                .param("id", id)
-                .query(Product.class)
-                .single();
+        try {
+            return jdbcClient.sql("SELECT * FROM PRODUCTS WHERE id = :id")
+                    .param("id", id)
+                    .query(Product.class)
+                    .single();
+        }
+        catch (EmptyResultDataAccessException e) {
+            throw new EmptyResultDataAccessException(1);
+        }
     }
 
     public void update(Long id, ProductDTO productDto) {
