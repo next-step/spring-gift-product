@@ -5,12 +5,22 @@ import gift.product.dto.ProductUpdateRequestDto;
 
 public class Product {
 
-    private final Long id;
+    private Long id;
     private String name;
     private Long price;
     private String imageUrl;
 
+    public Product() {
+    }
+
     public Product(Long id, ProductCreateRequestDto dto) {
+        this.id = id;
+        this.name = dto.name();
+        this.price = dto.price();
+        this.imageUrl = dto.imageUrl();
+    }
+
+    public Product(Long id, ProductUpdateRequestDto dto) {
         this.id = id;
         this.name = dto.name();
         this.price = dto.price();
