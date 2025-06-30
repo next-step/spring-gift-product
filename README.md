@@ -47,3 +47,18 @@ Product 정의
 create, createForm : 상품 추가  
 edit, editForm : 상품 수정  
 delete : 상품 삭제
+
+
+## 3단계 구현
+
+0. 기능을 구현하기 전 README.md에 구현할 기능 목록을 정리해 추가한다.
+1. 자바 컬렉션 프레임워크를 사용하여 메모리에 저장하던 상품 정보를 데이터베이스에 저장
+2. 메모리에 저장하고 있던 모든 코드를 제거하고 H2 데이터베이스를 사용하도록 변경
+3. 사용하는 테이블은 애플리케이션이 실행될 때 구축
+
+### 추가된 파일
+- resources/db/Schema.sql : 테이블 정의
+- resources/db/ExmapleData.sql : 기본 데이터, 샘플 데이터 정의
+
+### 사용 도구
+- jdbcClient 사용

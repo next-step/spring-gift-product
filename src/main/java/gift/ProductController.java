@@ -1,14 +1,9 @@
 package gift;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/products")
@@ -24,8 +19,8 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProducts(@PathVariable Long id) {
-        Product storedProduct = products.findById(id);
+    public ResponseEntity<Optional<Product>> getProducts(@PathVariable Long id) {
+        Optional<Product> storedProduct = products.findById(id);
         if (storedProduct == null) {
             return ResponseEntity.notFound().build();
         }
