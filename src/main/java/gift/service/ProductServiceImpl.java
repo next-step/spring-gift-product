@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -21,6 +22,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ProductResponse create(ProductRequest request) {
         Product savedProduct = productRepository.save(
             new Product(null, request.name(), request.price(), request.imageUrl()));
@@ -29,6 +31,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ProductResponse> getAllProducts() {
         return productRepository.findAll().stream()
             .map(ProductResponse::from)
@@ -36,6 +39,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProductResponse getProduct(Long id) {
         Product product = productRepository.findById(id)
             .orElseThrow(() -> new CustomException(CustomResponseCode.NOT_FOUND));
@@ -44,6 +48,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ProductResponse update(Long id, ProductRequest request) {
         Product product = productRepository.findById(id)
             .orElseThrow(() -> new CustomException(CustomResponseCode.NOT_FOUND));
@@ -55,6 +60,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         if (productRepository.findById(id).isEmpty()) {
             throw new CustomException(CustomResponseCode.NOT_FOUND);
