@@ -62,6 +62,5 @@ public class ItemController {
         ItemDto updateItem = itemService.updateItem(id, dto);
         return ResponseEntity.ok(updateItem);
     }
-
-
+  
 }

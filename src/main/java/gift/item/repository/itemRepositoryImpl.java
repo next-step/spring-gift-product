@@ -12,10 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class itemRepositoryImpl implements ItemRepository {
@@ -50,25 +47,27 @@ public class itemRepositoryImpl implements ItemRepository {
         String sql = "SELECT * FROM item";
         return jdbcTemplate.query(sql, (rs, rowNum) ->
             new ItemDto(
-                    new Item(
-                            rs.getLong("id"),
-                            rs.getString("name"),
-                            rs.getInt("price"),
-                            rs.getString("image_url")
-                    )
-            ));
+                new Item(
+                    rs.getLong("id"),
+                    rs.getString("name"),
+                    rs.getInt("price"),
+                    rs.getString("image_url")
+                )
+            )
+        );
     }
 
     @Override
     public Item findItem(Long id) {
         String sql = "SELECT * FROM item WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) ->
-                new Item(
-                        rs.getLong("id"),
-                        rs.getString("name"),
-                        rs.getInt("price"),
-                        rs.getString("image_url")
-                ));
+            new Item(
+                rs.getLong("id"),
+                rs.getString("name"),
+                rs.getInt("price"),
+                rs.getString("image_url")
+            )
+        );
     }
 
     @Override
