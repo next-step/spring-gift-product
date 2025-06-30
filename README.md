@@ -49,3 +49,15 @@ static 아래 css 폴더 안에 css 파일들을 생성함<br/>
 4. ### 상품 삭제
 
 - 삭제 버튼을 누르면 id가 전달되어 삭제됨
+
+# Step3 데이터 베이스
+
+h2 데이터베이스를 연결하고 jdbcclient를 사용하여 기존 컬렉션에 저장하던것을 데이터베이스에 저장한다.
+
+## 구현 기능
+
+1. schema.sql을 사용하여 테이블을 생성한다.
+2. jdbcclient을 사용하여 ProductRepository에서 sql을 작성하여 데이터를 저장한다.
+3. jdbcclient을 사용하여 ProductRepository에서 sql을 작성하여 데이터를 찾아온다.
+4. jdbcclient을 사용하여 ProductRepository에서 sql을 작성하여 데이터를 수정한다.
+5. jdbcclient을 사용하여 ProductRepository에서 sql을 작성하여 테이터를 삭제한다.
