@@ -2,6 +2,7 @@ package gift;
 
 import gift.dto.CreateProductRequest;
 import gift.repository.ProductMemoryRepository;
+import gift.repository.ProductRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,16 +14,16 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
-    private final ProductMemoryRepository repository;
+    private final ProductRepository repository;
 
 
-    public Application(ProductMemoryRepository repository) {
+    public Application(ProductRepository repository) {
         this.repository = repository;
     }
 
-    @PostConstruct
-    public void init() {
-        repository.save(new CreateProductRequest("productA", 10000, "exA.com"));
-        repository.save(new CreateProductRequest("productB", 20000, "exB.com"));
-    }
+//    @PostConstruct
+//    public void init() {
+//        repository.save(new CreateProductRequest("productA", 10000, "exA.com"));
+//        repository.save(new CreateProductRequest("productB", 20000, "exB.com"));
+//    }
 }
