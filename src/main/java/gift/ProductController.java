@@ -39,18 +39,14 @@ public class ProductController {
         ProductDto productdto1;
         productdto1 = new ProductDto(updateProductdto.getName(), updateProductdto.getPrice(), updateProductdto.getImageUrl());
         Product product = productdao.findById(id);
-        if( product != null) {
-            productdao.update(id, productdto1);
-        }
+        productdao.update(id, productdto1);
         return productdto1;
     }
 
     @DeleteMapping("/product/{id}/delete")
     public Product deleteById(@PathVariable Long id) {
         Product product = productdao.findById(id);
-        if( product != null) {
-            productdao.delete(id);
-        }
+        productdao.delete(id);
         return product;
     }
 
@@ -61,7 +57,7 @@ public class ProductController {
 
     @ExceptionHandler(EmptyResultDataAccessException.class)
     public ResponseEntity<String> handleEmptyResultDataAccess(EmptyResultDataAccessException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("DB에서 해당 ID를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
     }
 
 }
