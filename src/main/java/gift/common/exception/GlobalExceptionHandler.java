@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
         for (FieldError fieldError : fieldErrors) {
             sb.append(fieldError.getDefaultMessage()).append('\n');
         }
-        ErrorResponse response = new ErrorResponse(LocalDateTime.now(), sb.toString());
+        ErrorResponse response = ErrorResponse.of(sb.toString());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
