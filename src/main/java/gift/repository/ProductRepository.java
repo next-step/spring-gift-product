@@ -7,6 +7,6 @@ public interface ProductRepository {
     List<Product> findAllProducts();
     Product saveProduct(Product product);
     Product findProductById(Long id);
-    Product updateProduct(Long id, String name, Long price, String ImageUrl);
+    void updateProduct(Long id, String name, Long price, String ImageUrl);
     void deleteProduct(Long id);
 }
