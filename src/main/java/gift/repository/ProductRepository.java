@@ -10,6 +10,8 @@ public interface ProductRepository {
 
     Optional<Product> findProduct(Long productId);
 
+    void updateProduct(Product product);
+
     void deleteProduct(Long productId);
 
     List<Product> findAllProducts();

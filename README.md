@@ -27,10 +27,10 @@
 - [x] JdbcClient를 활용한 DB 연동 구현
     - [x] Map 기반 임시 저장소 제거
     - [x] JdbcClient를 통한 DB 접근 구현
-    - [ ] SQL 기반 CRUD 로직 적용
+    - [x] SQL 기반 CRUD 로직 적용
         - [x] saveProduct: 상품 저장 (INSERT)
         - [x] findProduct: ID로 상품 단건 조회 (SELECT)
         - [x] findAllProducts: 상품 목록 조회 (SELECT)
         - [x] deleteProduct: 상품 삭제 (DELETE)
-        - [ ] updateProduct: 상품 수정 (UPDATE)
+        - [x] updateProduct: 상품 수정 (UPDATE)
     - [x] Product.class를 사용한 자동 객체 매핑 적용

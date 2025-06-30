@@ -39,6 +39,8 @@ public class ProductService {
                 productRequestDto.imageUrl()
         );
 
+        productRepository.updateProduct(product);
+
         return ProductResponseDto.from(product);
     }
 

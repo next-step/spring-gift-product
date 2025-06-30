@@ -44,6 +44,18 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
+    public void updateProduct(Product product) {
+        var sql = "UPDATE product SET name = :name, price = :price, image_url = :image_url  WHERE id = :id";
+
+        client.sql(sql)
+              .param("name", product.getName())
+              .param("price", product.getPrice())
+              .param("image_url", product.getImageUrl())
+              .param("id", product.getId())
+              .update();
+    }
+
+    @Override
     public void deleteProduct(Long productId) {
         var sql = "DELETE FROM product WHERE id = :id";
 
