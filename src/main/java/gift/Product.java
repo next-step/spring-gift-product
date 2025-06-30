@@ -18,7 +18,7 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public Product(Long id, ProductDTO productdto) {
+    public Product(Long id, ProductDto productdto) {
         if(productdto.getPrice() < 0) {
             throw new IllegalArgumentException("Price should be positive");
         }

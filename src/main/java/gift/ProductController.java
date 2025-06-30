@@ -3,7 +3,6 @@ package gift;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,28 +18,26 @@ public class ProductController {
 
     @GetMapping("/product/list")
     public List<Product> findAll() {
-        List<Product> products = productdao.getAll();
-        return products;
+        return productdao.getAll();
     }
 
     @PostMapping("/product/add")
-    public ProductDTO saveProduct(@RequestBody ProductDTO productdto) {
-        ProductDTO productdto1;
-        productdto1 = new ProductDTO(productdto.getName(), productdto.getPrice(), productdto.getImageUrl());
+    public ProductDto saveProduct(@RequestBody ProductDto productdto) {
+        ProductDto productdto1;
+        productdto1 = new ProductDto(productdto.getName(), productdto.getPrice(), productdto.getImageUrl());
         productdao.save(productdto1);
         return productdto1;
     }
 
     @GetMapping("/product/{id}")
     public Product findById(@PathVariable Long id) {
-        Product product = productdao.findById(id);
-        return product;
+        return productdao.findById(id);
     }
 
     @PatchMapping("/product/{id}/update")
-    public ProductDTO updateProduct(@PathVariable Long id, @RequestBody ProductDTO updateProductdto) {
-        ProductDTO productdto1;
-        productdto1 = new ProductDTO(updateProductdto.getName(), updateProductdto.getPrice(), updateProductdto.getImageUrl());
+    public ProductDto updateProduct(@PathVariable Long id, @RequestBody ProductDto updateProductdto) {
+        ProductDto productdto1;
+        productdto1 = new ProductDto(updateProductdto.getName(), updateProductdto.getPrice(), updateProductdto.getImageUrl());
         Product product = productdao.findById(id);
         if( product != null) {
             productdao.update(id, productdto1);

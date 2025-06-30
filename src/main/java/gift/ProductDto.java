@@ -1,13 +1,13 @@
 package gift;
 
-public class ProductDTO {
+public class ProductDto {
     private String name;
     private int price;
     private String imageUrl;
 
-    public ProductDTO() {};
+    public ProductDto() {}
 
-    public ProductDTO(String name, int price, String imageUrl) {
+    public ProductDto(String name, int price, String imageUrl) {
         if(price < 0) {
             throw new IllegalArgumentException("Price should be positive");
         }
@@ -16,7 +16,7 @@ public class ProductDTO {
         this.imageUrl = imageUrl;
     }
 
-    public ProductDTO(Product product) {
+    public ProductDto(Product product) {
         if(product.getPrice() < 0) {
             throw new IllegalArgumentException("Price should be positive");
         }

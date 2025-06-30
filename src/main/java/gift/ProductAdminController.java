@@ -27,14 +27,14 @@ public class ProductAdminController {
 
     @GetMapping("/product/add")
     public String addForm(Model model) {
-        model.addAttribute("productdto", new ProductDTO());
+        model.addAttribute("productdto", new ProductDto());
         return "addForm";
     }
 
     @PostMapping("/product/add")
-    public String saveProduct(@ModelAttribute ProductDTO productdto) {
-        ProductDTO productdto1;
-        productdto1 = new ProductDTO(productdto.getName(), productdto.getPrice(), productdto.getImageUrl());
+    public String saveProduct(@ModelAttribute ProductDto productdto) {
+        ProductDto productdto1;
+        productdto1 = new ProductDto(productdto.getName(), productdto.getPrice(), productdto.getImageUrl());
         productdao.save(productdto1);
         return "redirect:/api/admin/product/list";
     }
@@ -42,9 +42,7 @@ public class ProductAdminController {
     @ResponseBody
     @GetMapping("/product/{id}")
     public Product findById(@PathVariable Long id) {
-        Product product = new Product();
-        product = productdao.findById(id);
-        return product;
+        return productdao.findById(id);
     }
 
     @GetMapping("/product/{id}/update")
@@ -55,9 +53,9 @@ public class ProductAdminController {
     }
 
     @PatchMapping("/product/{id}/update")
-    public String updateProduct(@PathVariable Long id, @ModelAttribute ProductDTO updateProductdto) {
-        ProductDTO productdto1;
-        productdto1 = new ProductDTO(updateProductdto.getName(), updateProductdto.getPrice(), updateProductdto.getImageUrl());
+    public String updateProduct(@PathVariable Long id, @ModelAttribute ProductDto updateProductdto) {
+        ProductDto productdto1;
+        productdto1 = new ProductDto(updateProductdto.getName(), updateProductdto.getPrice(), updateProductdto.getImageUrl());
         Product product = productdao.findById(id);
         if( product != null) {
             productdao.update(id, productdto1);

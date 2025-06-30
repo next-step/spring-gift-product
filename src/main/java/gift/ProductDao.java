@@ -14,7 +14,7 @@ public class ProductDao {
         this.jdbcClient = jdbcClient;
     }
 
-    public void save(ProductDTO productDto) {
+    public void save(ProductDto productDto) {
         jdbcClient.sql("INSERT INTO PRODUCTS (name, price, imageUrl) VALUES (:name, :price, :imageUrl)")
                 .param("name", productDto.getName())
                 .param("price", productDto.getPrice())
@@ -41,7 +41,7 @@ public class ProductDao {
         }
     }
 
-    public void update(Long id, ProductDTO productDto) {
+    public void update(Long id, ProductDto productDto) {
         if (productDto.getName() != null) {
             jdbcClient.sql("UPDATE PRODUCTS SET name = :name WHERE id = :id")
                     .param("name", productDto.getName())
