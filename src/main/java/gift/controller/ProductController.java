@@ -1,7 +1,7 @@
 package gift.controller;
 
-import gift.domain.Product;
 import gift.dto.ProductRequest;
+import gift.dto.ProductResponse;
 import gift.dto.common.Page;
 import gift.service.ProductManagementService;
 import jakarta.validation.Valid;
@@ -30,8 +30,8 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> create(@Valid @RequestBody ProductRequest request) {
-        Product createdProduct = productService.create(request);
+    public ResponseEntity<ProductResponse> create(@Valid @RequestBody ProductRequest request) {
+        ProductResponse createdProduct = productService.create(request);
         URI location = URI.create("/api/products/" + createdProduct.id());
 
         return ResponseEntity.created(location)
@@ -39,17 +39,17 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Product>> getAllByPage(
+    public ResponseEntity<Page<ProductResponse>> getAllByPage(
             @RequestParam(defaultValue = "1") @Min(1) Integer pageNumber,
             @RequestParam(defaultValue = "10") @Min(1) Integer pageSize) {
 
-        Page<Product> page = productService.getAllByPage(pageNumber, pageSize);
+        Page<ProductResponse> page = productService.getAllByPage(pageNumber, pageSize);
         return ResponseEntity.ok(page);
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<Product> getById(@PathVariable Long productId) {
-        Product product = productService.getById(productId);
+    public ResponseEntity<ProductResponse> getById(@PathVariable Long productId) {
+        ProductResponse product = productService.getById(productId);
         return ResponseEntity.ok(product);
     }
 
@@ -62,12 +62,8 @@ public class ProductController {
 
     @DeleteMapping
     public ResponseEntity<Void> deleteAllByIds(
-            @RequestBody(required = false) List<Long> ids) {
-        if (ids == null || ids.isEmpty()) {
-            productService.deleteAll();
-        } else {
-            productService.deleteAllByIds(ids);
-        }
+            @RequestBody List<Long> ids) {
+        productService.deleteAllByIds(ids);
         return ResponseEntity.noContent().build();
     }
 
