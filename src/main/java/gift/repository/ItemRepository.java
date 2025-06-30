@@ -60,7 +60,21 @@ public class ItemRepository {
         return jdbcTemplate.query(sql, itemRowMapper, size, offset);
     }
 
-//    public void deleteById(Long id) {
-//        items.remove(id);
-//    }
+    public void update(Item item) {
+        String sql = "UPDATE products SET name = ?, price = ?, image_url = ? WHERE id = ?";
+        int affectedRows = jdbcTemplate.update(sql,
+            item.getName(),
+            item.getPrice(),
+            item.getImageUrl(),
+            item.getId());
+
+        if (affectedRows == 0) {
+            throw new EmptyResultDataAccessException("업데이트할 상품을 찾을 수 없습니다: " + item.getId(), 1);
+        }
+    }
+
+    public void deleteById(Long id) {
+        String sql = "DELETE FROM products WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
 }
