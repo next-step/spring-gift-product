@@ -20,16 +20,14 @@ public class AdminController {
     }
 
     @GetMapping
-    public String showProductList(Model model) {
+    public String showProductList(Model model, @ModelAttribute ProductRequest productRequest) {
         List<ProductResponse> products = productService.findAllProducts();
         model.addAttribute("products", products);
-        model.addAttribute("productRequest", new ProductRequest("", 0, ""));
         return "admin/product-list";
     }
 
     @GetMapping("/add")
-    public String showAddForm(Model model) {
-        model.addAttribute("productRequest", new ProductRequest("", 0, ""));
+    public String showAddForm(@ModelAttribute ProductRequest productRequest) {
         return "admin/product-form";
     }
 

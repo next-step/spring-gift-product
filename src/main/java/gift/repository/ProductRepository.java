@@ -1,37 +1,66 @@
 package gift.repository;
 
 import gift.entity.Product;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class ProductRepository {
-    private static final Map<Long, Product> store = new ConcurrentHashMap<>();
-    private static final AtomicLong sequence = new AtomicLong(0L);
 
-    public Product save(Product product) {
-        Long newId = sequence.incrementAndGet();
-        product.assignId(newId);
-        store.put(newId, product);
-        return product;
+    private final JdbcTemplate jdbcTemplate;
+
+    public ProductRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    private final RowMapper<Product> productRowMapper = (resultSet, rowNum) -> new Product(
+            resultSet.getLong("id"),
+            resultSet.getString("name"),
+            resultSet.getInt("price"),
+            resultSet.getString("image_url")
+    );
+
+    public List<Product> findAll() {
+        String sql = "SELECT id, name, price, image_url FROM product";
+        return jdbcTemplate.query(sql, productRowMapper);
     }
 
     public Optional<Product> findById(Long id) {
-        return Optional.ofNullable(store.get(id));
+        String sql = "SELECT id, name, price, image_url FROM product WHERE id = ?";
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, productRowMapper, id));
+    }
+
+    public Product save(Product product) {
+        String sql = "INSERT INTO product (name, price, image_url) VALUES (?, ?, ?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, product.getName());
+            ps.setInt(2, product.getPrice());
+            ps.setString(3, product.getImageUrl());
+            return ps;
+        }, keyHolder);
+
+        Long generatedId = keyHolder.getKey().longValue();
+        product.assignId(generatedId);
+        return product;
     }
 
     public void update(Product product) {
-        store.put(product.getId(), product);
-    }
-
-    public List<Product> findAll() {
-        return new ArrayList<>(store.values());
+        String sql = "UPDATE product SET name = ?, price = ?, image_url = ? WHERE id = ?";
+        jdbcTemplate.update(sql, product.getName(), product.getPrice(), product.getImageUrl(), product.getId());
     }
 
     public void delete(Long id) {
-        store.remove(id);
+        String sql = "DELETE FROM product WHERE id = ?";
+        jdbcTemplate.update(sql, id);
     }
 }
