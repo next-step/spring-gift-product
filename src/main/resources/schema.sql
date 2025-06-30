@@ -1,4 +1,4 @@
-create table product
+create table products
 (
     id        bigint,
     name      varchar(100),
