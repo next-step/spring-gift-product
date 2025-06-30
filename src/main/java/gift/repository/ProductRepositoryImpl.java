@@ -1,10 +1,17 @@
 package gift.repository;
 
 import gift.entity.Product;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -19,13 +26,23 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public Product save(Product product) {
 
-        if (product.getId() == null) {
-            String sql = "insert into product (name, imageUrl) values (?, ?)";
-            jdbcTemplate.update(sql, product.getName(), product.getImageUrl());
-        } else {
-            String sql2 = "update product set name = ?, imageUrl = ? where id = ?";
-            jdbcTemplate.update(sql2, product.getName(), product.getImageUrl(), product.getId());
+        String sql = "insert into product (name, imageUrl) values (?, ?)";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, product.getName());
+            ps.setString(2, product.getImageUrl());
+            return ps;
+        }, keyHolder);
+
+        Number key = keyHolder.getKey();
+
+        if(key != null) {
+            product.setId(key.longValue());
         }
+
         return product;
     }
 
