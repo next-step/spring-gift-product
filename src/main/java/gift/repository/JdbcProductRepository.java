@@ -25,7 +25,7 @@ public class JdbcProductRepository implements ProductRepositoryInterface{
 
     @Override
     public Product addProduct(Product product) {
-        String sql = "INSERT INTO products (name, price, imageUrl) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO product (name, price, imageUrl) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, product.getName(), product.getPrice(), product.getImageUrl());
 
         return product;
@@ -43,22 +43,17 @@ public class JdbcProductRepository implements ProductRepositoryInterface{
 
     @Override
     public List<Product> findAllProducts() {
-        String sql = "SELECT * FROM products";
+        String sql = "SELECT * FROM product";
         return jdbcTemplate.query(sql, this::RowMapperProduct);
     }
 
     @Override
     public Optional<Product> findProductById(Long id) {
-        String sql = "SELECT * FROM products WHERE id = ?";
+        String sql = "SELECT * FROM product WHERE id = ?";
 
         try {
             Product product = jdbcTemplate.queryForObject(sql, this::RowMapperProduct, id);
-            return Optional.of(new Product(
-                    product.getId(),
-                    product.getName(),
-                    product.getPrice(),
-                    product.getImageUrl()
-            ));
+            return Optional.of(product);
         } catch (Exception e) {
             return Optional.empty();
         }
@@ -66,7 +61,17 @@ public class JdbcProductRepository implements ProductRepositoryInterface{
 
     @Override
     public Optional<Product> updateProduct(Long id, Product product) {
-        return Optional.empty();
+
+        String sql = "SELECT * FROM product WHERE id = ?";
+
+        try {
+            jdbcTemplate.queryForObject(sql, this::RowMapperProduct, id);
+            sql = "UPDATE product SET name = ?, price = ?, imageUrl = ? WHERE id = ?";
+            jdbcTemplate.update(sql, product.getName(), product.getPrice(), product.getImageUrl(), id);
+            return Optional.of(new Product(id, product.getName(), product.getPrice(), product.getImageUrl()));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 
     @Override
