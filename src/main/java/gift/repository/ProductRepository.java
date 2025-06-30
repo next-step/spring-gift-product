@@ -67,11 +67,9 @@ public class ProductRepository {
     }
 
     public Optional<Product> update(Long id, String name, int price, String imageUrl) {
-        Product product = products.get(id);
-        if (product == null) {
-            return Optional.empty();
-        }
-        product.update(name, price, imageUrl);
-        return Optional.of(product);
+        String sql = "UPDATE product SET name = ?, price = ?, image_url = ? WHERE id = ?";
+        int updated = jdbcTemplate.update(sql, name, price, imageUrl, id);
+        if (updated == 0) return Optional.empty();
+        return findById(id);
     }
 }
