@@ -122,7 +122,4 @@ Spring Boot와 Thymeleaf 기반의 상품 관리 웹 애플리케이션입니다
 - [ ] Spring Data JPA 기반 Repository 구현체 추가
 - [ ] E2E 테스트 케이스 추가
 - [ ] CI 파이프라인으로 테스트 자동화
-<<<<<<< HEAD
----
-=======
->>>>>>> 56a6bc8c5048f3e0236134d123489332511a55c5
+
