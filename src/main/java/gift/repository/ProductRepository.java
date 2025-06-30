@@ -16,7 +16,7 @@ public class ProductRepository {
         this.jdbcClient = jdbcClient;
     }
     public Product save(Product product) {
-        var sql ="INSERT INTO (name,price,imageUrl) Value (:name, :price, :imageUrl)";
+        var sql ="INSERT INTO product(name,price,imageUrl) Values (:name, :price, :imageUrl)";
         jdbcClient.sql(sql)
                 .param("name", product.getName())
                 .param("price", product.getPrice())
@@ -27,20 +27,28 @@ public class ProductRepository {
     }
 
     public List<Product> findAll() {
-        var sql ="SELECT *  From  product";
-        return jdbcClient.sql(sql).query(getProductRowMapper()).list();
+        var sql ="SELECT *  FROM  product";
+        return jdbcClient.sql(sql).query(PRODUCT_ROW_MAPPER).list();
     }
 
-    private static RowMapper<Product> getProductRowMapper() {
-        return (rs, rowNum) -> {
-            var id = rs.getLong("id");
-            var name = rs.getString("name");
-            var price = rs.getInt("price");
-            var imageUrl = rs.getString("imageUrl");
-            return new Product(id, name, price, imageUrl);
-        };
-    }
+//    private static RowMapper<Product> getProductRowMapper() {
+//        return (rs, rowNum) -> {
+//            var id = rs.getLong("id");
+//            var name = rs.getString("name");
+//            var price = rs.getInt("price");
+//            var imageUrl = rs.getString("imageUrl");
+//            return new Product(id, name, price, imageUrl);
+//        };
+//    }
 
+ // 한번 생성해서 쓰기
+    private static final RowMapper<Product> PRODUCT_ROW_MAPPER = (rs, rowNum) -> {
+        var id = rs.getLong("id");
+        var name = rs.getString("name");
+        var price = rs.getInt("price");
+        var imageUrl = rs.getString("imageUrl");
+        return new Product(id, name, price, imageUrl);
+    };
 
 
     public Optional<Product> findById(Long id) {
@@ -48,7 +56,7 @@ public class ProductRepository {
 
         return jdbcClient.sql(sql)
                 .param("id", id)
-                .query(getProductRowMapper())
+                .query(PRODUCT_ROW_MAPPER)
                 .optional();
     }
 
