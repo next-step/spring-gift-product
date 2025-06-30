@@ -23,13 +23,6 @@ public class ProductAdminController {
         this.productService = productService;
     }
 
-
-    /**
-     * 상품 목록 조회
-     *
-     * @param model
-     * @return
-     */
     @GetMapping
     public String products(Model model) {
         List<ProductInfoDto> products = productService.getProducts()
@@ -42,13 +35,6 @@ public class ProductAdminController {
         return "admin/products";
     }
 
-    /**
-     * 상품 상세정보 조회
-     *
-     * @param id
-     * @param model
-     * @return
-     */
     @GetMapping("/{id}")
     public String productDetail(@PathVariable("id") Long id, Model model){
         Product product = productService.getProduct(id);
@@ -58,25 +44,12 @@ public class ProductAdminController {
         return "admin/product-detail";
     }
 
-    /**
-     * 상품 추가 폼 페이지
-     *
-     * @param model
-     * @return
-     */
     @GetMapping("/add")
     public String addProductForm(Model model) {
-        model.addAttribute("product", new ProductRequestDto("", 0, ""));
+        model.addAttribute(ProductRequestDto.getEmpty());
         return "admin/product-add-form";
     }
 
-    /**
-     * 상품 추가 처리
-     *
-     * @param requestDto
-     * @param bindingResult
-     * @return
-     */
     @PostMapping("/add")
     public String addProduct(@ModelAttribute @Valid ProductRequestDto requestDto, BindingResult bindingResult){
 
@@ -88,13 +61,6 @@ public class ProductAdminController {
         return "redirect:/admin/products";
     }
 
-    /**
-     * 상품 수정 폼 페이지
-     *
-     * @param id
-     * @param model
-     * @return
-     */
     @GetMapping("/edit/{id}")
     public String editProductForm(@PathVariable("id") Long id, Model model){
         Product product = productService.getProduct(id);
@@ -105,15 +71,6 @@ public class ProductAdminController {
         return "admin/product-edit-form";
     }
 
-    /**
-     * 상품 수정 처리
-     *
-     * @param id
-     * @param editDto
-     * @param bindingResult
-     * @param model
-     * @return
-     */
     @PostMapping("/edit/{id}")
     public String editProduct(
             @PathVariable("id") Long id,
@@ -132,12 +89,6 @@ public class ProductAdminController {
         return "redirect:/admin/products/" + id;
     }
 
-    /**
-     * 상품 삭제
-     *
-     * @param id
-     * @return
-     */
     @DeleteMapping("/{id}")
     public String deleteProduct(@PathVariable("id") Long id) {
         productService.delete(id);

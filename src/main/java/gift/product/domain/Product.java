@@ -12,10 +12,6 @@ public class Product {
         this(null, name, price, imageUrl);
     }
 
-    public Product(Long id, ProductRequestDto requestDto){
-        this(id, requestDto.name(), requestDto.price(), requestDto.imageUrl());
-    }
-
     public Product(Long id, String name, int price, String imageUrl){
         this.id = id;
         this.name = name;

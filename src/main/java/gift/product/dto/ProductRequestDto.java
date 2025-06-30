@@ -15,6 +15,14 @@ public record ProductRequestDto(
 
         String imageUrl
 ){
+    private static final String DEFAULT_NAME = "Default";
+    private static final int DEFAULT_PRICE = 0;
+    private static final String DEFAULT_IMAGE_URL = "";
+
+    public static ProductRequestDto getEmpty() {
+        return new ProductRequestDto(DEFAULT_NAME, DEFAULT_PRICE, DEFAULT_IMAGE_URL);
+    }
+
     public Product toProduct() {
         return new Product(name, price, imageUrl);
     }
