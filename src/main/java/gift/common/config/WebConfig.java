@@ -1,4 +1,4 @@
-package gift;
+package gift.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,6 @@
-package gift;
+package gift.product.dto;
+
+import gift.product.domain.Product;
 
 public class ProductDto {
     private String name;

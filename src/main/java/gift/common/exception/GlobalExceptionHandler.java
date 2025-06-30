@@ -1,4 +1,4 @@
-package gift;
+package gift.common.exception;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;

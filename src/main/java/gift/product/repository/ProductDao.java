@@ -1,5 +1,7 @@
-package gift;
+package gift.product.repository;
 
+import gift.product.domain.Product;
+import gift.product.dto.ProductDto;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
