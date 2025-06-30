@@ -3,6 +3,7 @@ package gift.repository;
 import gift.domain.Product;
 import jakarta.annotation.PostConstruct;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -42,11 +43,22 @@ public class ProductRepository {
     }
 
     public Optional<Product> findById(Long id) {
-        return Optional.ofNullable(products.get(id));
+        String sql = "SELECT * FROM product WHERE id = ?";
+        List<Product> result = jdbcTemplate.query(sql, rowMapper(), id);
+        return result.stream().findAny();
     }
 
     public List<Product> findAll() {
-        return new ArrayList<>(products.values());
+        return jdbcTemplate.query("SELECT * FROM product", rowMapper());
+    }
+
+    private RowMapper<Product> rowMapper() {
+        return (rs, rowNum) -> new Product(
+                rs.getLong("id"),
+                rs.getString("name"),
+                rs.getInt("price"),
+                rs.getString("image_url")
+        );
     }
 
     public boolean deleteById(Long id) {
