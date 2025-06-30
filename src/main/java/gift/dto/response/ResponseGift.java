@@ -9,13 +9,13 @@ public record ResponseGift(
         Integer giftPrice,
         String giftPhotoUrl
 ) {
-    public static ResponseGift toJSON(Long id, Gift gift) {
+    public static ResponseGift from(Gift gift) {
         return new ResponseGift(
-                id,
                 gift.getId(),
-                gift.getName(),
-                gift.getPrice(),
-                gift.getImageUrl()
+                gift.getGiftId(),
+                gift.getGiftName(),
+                gift.getGiftPrice(),
+                gift.getGiftPhotoUrl()
         );
     }
 }

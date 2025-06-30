@@ -3,8 +3,7 @@ package gift.controller;
 import gift.dto.request.RequestGift;
 import gift.dto.request.RequestModifyGift;
 import gift.dto.response.ResponseGift;
-import gift.entity.Gift;
-import gift.repository.GiftRepository;
+import gift.repository.GiftJdbcRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +11,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class GiftWebViewController {
-    private final GiftRepository giftRepository;
+    private final GiftJdbcRepository giftRepository;
 
-    public GiftWebViewController(GiftRepository giftRepository) {
+    public GiftWebViewController(GiftJdbcRepository giftRepository) {
         this.giftRepository = giftRepository;
     }
 
@@ -31,37 +30,37 @@ public class GiftWebViewController {
 
     @PostMapping("/addItem")
     public String addItem(@ModelAttribute RequestGift requestGift, RedirectAttributes redirectAttributes){
-        ResponseGift responseGift = giftRepository.save(requestGift);
+        ResponseGift responseGift = ResponseGift.from(giftRepository.save(RequestGift.toEntity(requestGift)));
         redirectAttributes.addAttribute("giftId", responseGift.id());
         return "redirect:/gift/{giftId}";
     }
 
     @GetMapping("/gift/{id}")
     public String giftWebView(Model model, @PathVariable Long id){
-        model.addAttribute("gift", giftRepository.findById(id));
+        model.addAttribute("gift", giftRepository.findById(id).orElse(null));
         return "/singleGift.html";
     }
 
     @GetMapping("/gift/{id}/edit")
     public String editWebView(Model model, @PathVariable Long id){
-        model.addAttribute("gift", giftRepository.findById(id));
+        model.addAttribute("gift", giftRepository.findById(id).orElse(null));
         return "/modify.html";
     }
 
-    @PostMapping("/{id}/edit")
+    @PostMapping("gift/{id}/edit")
     public String edit(
             @PathVariable Long id,
             @ModelAttribute RequestModifyGift item,
             RedirectAttributes redirectAttributes
     ) {
-        giftRepository.modify(id, item);
+        giftRepository.modify(id, RequestModifyGift.toEntity(item));
         redirectAttributes.addAttribute("giftId", id);
         return "redirect:/gift/{giftId}";
     }
 
     @PostMapping("/gift/{id}/delete")
     public String delete(@PathVariable Long id){
-        giftRepository.delete(id);
+        giftRepository.deleteById(id);
         return "redirect:/admin";
     }
 }
