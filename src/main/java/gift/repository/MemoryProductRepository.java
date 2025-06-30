@@ -19,7 +19,7 @@ public class MemoryProductRepository implements ProductRepository {
 
   public ProductResponseDto createProduct(Product product) {
     Long productId = products.isEmpty() ? InitId : Collections.max(products.keySet()) + IncIdCnt;
-    product.setId(productId);
+//    product.setId(productId);
 
     products.put(productId, product);
 
