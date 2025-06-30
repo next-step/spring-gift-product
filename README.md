@@ -13,7 +13,7 @@
 
 ### 2. JdbcTemplate을 통한 데이터베이스 접근 구현
 
-- 왜 JbdcTemplate인가?
+- 왜 JbdcTemplate인가? 좀 더 익숙해 구현과 디버깅이 쉬워 선택하게 됐다.
 - ProductRepository 객체에서 JdbcTemplate을 사용하도록 구현한다.
 - 사용자용 API, 관리자용 API 모두 데이터베이스 접근을 위해 공통적으로 ProductRepository를 이용하고 있다. ProductRepository에서
   JdbcTemplate를 통한 데이터베이스 접근 로직을 구현하는 게 적합하다고 생각했다.
