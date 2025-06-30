@@ -20,16 +20,14 @@ public class AdminController {
     }
 
     @GetMapping
-    public String showProductList(Model model) {
+    public String showProductList(Model model, @ModelAttribute ProductRequest productRequest) {
         List<ProductResponse> products = productService.findAllProducts();
         model.addAttribute("products", products);
-        model.addAttribute("productRequest", new ProductRequest(0L,"", 0, ""));
         return "admin/product-list";
     }
 
     @GetMapping("/add")
-    public String showAddForm(Model model) {
-        model.addAttribute("productRequest", new ProductRequest(0L,"", 0, ""));
+    public String showAddForm(@ModelAttribute ProductRequest productRequest) {
         return "admin/product-form";
     }
 
@@ -42,7 +40,7 @@ public class AdminController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable("id") Long id, Model model) {
         ProductResponse product = productService.findProductById(id);
-        model.addAttribute("productRequest", new ProductRequest(product.id(), product.name(), product.price(), product.imageUrl()));
+        model.addAttribute("productRequest", new ProductRequest(product.name(), product.price(), product.imageUrl()));
         model.addAttribute("productId", id);
         return "admin/product-edit-form";
     }

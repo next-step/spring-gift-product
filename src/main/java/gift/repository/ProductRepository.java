@@ -8,6 +8,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.*;
 
 @Repository
@@ -33,8 +34,7 @@ public class ProductRepository {
 
     public Optional<Product> findById(Long id) {
         String sql = "SELECT id, name, price, image_url FROM product WHERE id = ?";
-        List<Product> products = jdbcTemplate.query(sql, productRowMapper, id);
-        return products.stream().findFirst();
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, productRowMapper, id));
     }
 
     public Product save(Product product) {
@@ -42,7 +42,7 @@ public class ProductRepository {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, product.getName());
             ps.setInt(2, product.getPrice());
             ps.setString(3, product.getImageUrl());
