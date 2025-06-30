@@ -8,12 +8,11 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.PreparedStatement;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
-
-    private final Map<Long, Product> products = new HashMap<>();
 
     private JdbcTemplate jdbcTemplate;
 
@@ -55,7 +54,8 @@ public class ProductService {
     }
 
     public boolean deleteProduct(Long id) {
-        return products.remove(id) != null;
+        String sql = "delete from products where id = ?";
+        return jdbcTemplate.update(sql, id) != 0;
     }
 
     private RowMapper<Product> productRowMapper() {
