@@ -2,8 +2,10 @@ package gift.repository;
 
 import gift.entity.Product;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,9 +13,13 @@ import java.util.Optional;
 public class ProductRepository {
 
     private final JdbcClient jdbcClient;
+    private final SimpleJdbcInsert jdbcInsert;
 
-    public ProductRepository(JdbcClient jdbcClient) {
+    public ProductRepository(JdbcClient jdbcClient, DataSource dataSource) {
         this.jdbcClient = jdbcClient;
+        this.jdbcInsert = new SimpleJdbcInsert(dataSource)
+                .withTableName("product")
+                .usingGeneratedKeyColumns("id");
     }
 
     public List<Product> findAll() {
@@ -23,10 +29,13 @@ public class ProductRepository {
     }
 
     public Product save(Product product) {
-        jdbcClient.sql("INSERT INTO product (name, price, image_url) VALUES (?, ?, ?)")
-                .params(product.getName(), product.getPrice(), product.getImageUrl())
-                .update();
-        // insert 후 id 자동 반환이 필요하면 SimpleJdbcInsert 사용 가능 (추가 설명 필요 시 알려주세요!)
+        var params = new java.util.HashMap<String, Object>();
+        params.put("name", product.getName());
+        params.put("price", product.getPrice());
+        params.put("image_url", product.getImageUrl());
+
+        Number generatedId = jdbcInsert.executeAndReturnKey(params);
+        product.setId(generatedId.longValue());
         return product;
     }
 
