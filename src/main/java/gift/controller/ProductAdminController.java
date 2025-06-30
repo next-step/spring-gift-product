@@ -38,16 +38,15 @@ public class ProductAdminController {
     @GetMapping("/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
         ProductResponse product = productService.findById(id);
-        ProductRequest form = new ProductRequest();
-        form.setId(product.getId());
-        form.setName(product.getName());
-        form.setPrice(product.getPrice());
-        form.setImageUrl(product.getImageUrl());
+        ProductRequest form = new ProductRequest(
+                product.getId(),
+                product.getName(),
+                product.getPrice(),
+                product.getImageUrl()
+        );
         model.addAttribute("product", form);
         return "products/form";
     }
-
-
     @PostMapping("/{id}")
     public String update(@PathVariable Long id, @ModelAttribute ProductRequest request) {
         productService.update(id, request);
