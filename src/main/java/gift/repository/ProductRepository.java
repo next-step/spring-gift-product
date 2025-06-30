@@ -30,7 +30,10 @@ public class ProductRepository {
     }
 
     public Optional<Product> findById(Long id){
-        return Optional.ofNullable(products.get(id));
+        return jdbcClient.sql("SELECT id, name, price, image_url FROM product WHERE id = :id")
+                .param("id", id)
+                .query(getProductRowMapper())
+                .optional();
     }
 
     public List<Product> findAll(){
