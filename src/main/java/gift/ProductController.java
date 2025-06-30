@@ -15,7 +15,7 @@ public class ProductController {
 
     @GetMapping("/product/list")
     public List<Product> findAll() {
-        return productdao.getAll();
+        return productdao.findAll();
     }
 
     @PostMapping("/product/add")

@@ -24,7 +24,7 @@ public class ProductDao {
     }
 
 
-    public List<Product> getAll() {
+    public List<Product> findAll() {
         return jdbcClient.sql("SELECT * FROM PRODUCTS")
                 .query(Product.class)
                 .list();

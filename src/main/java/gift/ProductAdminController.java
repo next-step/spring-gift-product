@@ -17,7 +17,7 @@ public class ProductAdminController {
 
     @GetMapping("/product/list")
     public String findAll(Model model) {
-        List<Product> products = productdao.getAll();
+        List<Product> products = productdao.findAll();
         model.addAttribute("products", products);
         return "products";
     }
