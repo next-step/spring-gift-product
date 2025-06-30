@@ -3,6 +3,7 @@ package gift;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class ProductDao {
                 .single();
     }
 
+    @Transactional
     public void update(Long id, ProductDto productDto) {
         if (productDto.getName() != null) {
             jdbcClient.sql("UPDATE PRODUCTS SET name = :name WHERE id = :id")
