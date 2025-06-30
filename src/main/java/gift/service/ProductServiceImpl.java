@@ -22,7 +22,7 @@ public class ProductServiceImpl implements ProductService {
     // 1. 상품 등록
     @Override
     public ResponseDto create(RequestDto dto) {
-        Product product = new Product(dto.getId(), dto.getName());
+        Product product = new Product(null, dto.getName(), dto.getImageUrl());
         Product saved = productRepository.save(product);
 
         return new ResponseDto(saved);
@@ -58,8 +58,8 @@ public class ProductServiceImpl implements ProductService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 id = " + id));
 
         product.update(dto);
-        Product updated = productRepository.save(product);
-        return new ResponseDto(updated);
+        productRepository.update(product);
+        return new ResponseDto(product);
     }
 
     // 4. 상품 삭제

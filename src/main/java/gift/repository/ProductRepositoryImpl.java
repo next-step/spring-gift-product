@@ -3,75 +3,65 @@ package gift.repository;
 import gift.entity.Product;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    private final JdbcClient jdbcClient;
+    private final JdbcTemplate jdbcTemplate;
 
-    public ProductRepositoryImpl(JdbcClient jdbcClient) {
-        this.jdbcClient = jdbcClient;
+    public ProductRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
-
-    private Long idNum = 1L;
 
     @Override
     public Product save(Product product) {
-        product.setId(idNum++);
 
-        final var sql = "insert into product (id, name, imageUrl) values (?, ?, ?)";
-        jdbcClient.sql(sql)
-                .params(List.of(
-                        product.getId(),
-                        product.getName(),
-                        product.getImageUrl()
-                ))
-                .update();
-
+        if(product.getId() == null) {
+            String sql = "insert into product (name, imageUrl) values (?, ?)";
+            jdbcTemplate.update(sql, product.getName(), product.getImageUrl());
+        }else {
+            String sql2 = "update product set name = ?, imageUrl = ? where id = ?";
+            jdbcTemplate.update(sql2, product.getName(), product.getImageUrl(), product.getId());
+        }
         return product;
     }
 
     @Override
     public List<Product> findAll() {
-        return jdbcClient.sql("select * from product")
-                .query((rs, rowNum) -> new Product(
-                        rs.getLong("id"),
-                        rs.getString("name"),
-                        rs.getString("imageUrl")
-                ))
-                .list();
+        return jdbcTemplate.query("select * from product", getProductRowMapper());
     }
 
     @Override
     public Optional<Product> findById(Long id) {
-        var sql = "select id, name, imageUrl from product where id = ?";
+        String sql = "select id, name, imageUrl from product where id = ?";
 
-        return Optional.ofNullable(jdbcClient.sql(sql)
-                .params(List.of(id))
-                .query(getProductRowMapper())
-                .single()
-        );
+        return jdbcTemplate.query(sql, getProductRowMapper(), id)
+                .stream()
+                .findFirst();
+    }
+
+    @Override
+    public void update(Product product) {
+        String sql = "update product set name = ?, imageUrl = ? where id = ?";
+
+        jdbcTemplate.update(sql, product.getName(), product.getImageUrl(), product.getId());
     }
 
     @Override
     public void deleteById(Long id) {
-        var sql = "delete from product where id = ?";
+        String sql = "delete from product where id = ?";
 
-        jdbcClient.sql(sql)
-                .params(List.of(id))
-                .update();
+        jdbcTemplate.update(sql, id);
     }
 
-
     private static RowMapper<Product> getProductRowMapper() {
-        return (rs, rowNum) -> {
-            final var id = rs.getLong("id");
-            final var name = rs.getString("name");
-            final var imageUrl = rs.getString("imageUrl");
-            return new Product(id, name, imageUrl);
-        };
+        return (rs, rowNum) -> new Product(
+                rs.getLong("id"),
+                rs.getString("name"),
+                rs.getString("imageUrl")
+        );
     }
 }
