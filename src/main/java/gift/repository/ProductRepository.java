@@ -10,33 +10,30 @@ import java.util.*;
 @Repository
 public class ProductRepository {
     private final JdbcClient jdbcClient;
-    private long Id = 1;
+
 
     public ProductRepository(JdbcClient jdbcClient) {
         this.jdbcClient = jdbcClient;
     }
     public Product save(Product product) {
-        if (product.getId() == null) {
-            product.setId(Id++);
-        }
-        var sql ="insert into Product (id, name,price,imageUrl) values (:id, :name, :price, :imageUrl)";
+        var sql ="INSERT INTO (name,price,imageUrl) Value (:name, :price, :imageUrl)";
         jdbcClient.sql(sql)
-                .param("id", product.getId())
                 .param("name", product.getName())
                 .param("price", product.getPrice())
                 .param("imageUrl", product.getImageUrl())
                 .update();
+
         return product;
     }
 
     public List<Product> findAll() {
-        var sql ="select * from Product";
+        var sql ="SELECT *  From  product";
         return jdbcClient.sql(sql).query(getProductRowMapper()).list();
     }
 
     private static RowMapper<Product> getProductRowMapper() {
         return (rs, rowNum) -> {
-            var id = rs.getLong(    "id");
+            var id = rs.getLong("id");
             var name = rs.getString("name");
             var price = rs.getInt("price");
             var imageUrl = rs.getString("imageUrl");

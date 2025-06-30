@@ -1,7 +1,7 @@
 Create table Product(
-    id bigint,
-    name varchar(255),
-    price bigint,
-    imageUrl varchar(255),
+    id bigint AUTO_INCREMENT,
+    name varchar(50),
+    price int,
+    imageUrl varchar(512),
     primary key (id)
 );
