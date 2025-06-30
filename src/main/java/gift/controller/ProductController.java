@@ -1,11 +1,11 @@
 package gift.controller;
 
+import gift.dto.PageRequestDto;
+import gift.dto.PageResult;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +27,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ProductResponseDto>> findAllProducts(Pageable pageable) {
-        Page<ProductResponseDto> list = productService.findAllProducts(pageable);
+    public ResponseEntity<PageResult<ProductResponseDto>> findAllProducts(PageRequestDto pageRequestDto) {
+        PageResult<ProductResponseDto> list = productService.findAllProducts(pageRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 

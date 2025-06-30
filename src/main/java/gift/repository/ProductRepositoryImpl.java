@@ -1,102 +1,111 @@
 package gift.repository;
 
+import gift.dto.PageRequestDto;
+import gift.dto.PageResult;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import gift.exception.ProductNotFoundException;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    private final ConcurrentHashMap<Long, Product> products = new ConcurrentHashMap<>();
-    private final AtomicLong initId = new AtomicLong();
+    private final JdbcClient jdbcClient;
+    private static final RowMapper<ProductResponseDto> getProductRowMapper() {
+        return (rs, rowNum) -> {
+            var id = rs.getLong("id");
+            var name = rs.getString("name");
+            var price = rs.getInt("price");
+            var imageUrl = rs.getString("image_url");
+            return new ProductResponseDto(id, name, price, imageUrl);
+        };
+    }
 
-    @Override
-    public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
-        Product product = new Product(initId.incrementAndGet(),
-                productRequestDto.getName(),
-                productRequestDto.getPrice(),
-                productRequestDto.getImageUrl()
-        );
-        products.put(initId.get(), product);
-        return new ProductResponseDto(product.getId(),
-                product.getName(),
-                product.getPrice(),
-                product.getImageUrl());
+    public ProductRepositoryImpl(JdbcClient jdbcClient) {
+        this.jdbcClient = jdbcClient;
     }
 
     @Override
-    public Page<ProductResponseDto> findAllProducts(Pageable pageable) {
-        List<Product> allProducts = new ArrayList<>(products.values());
+    public ProductResponseDto createProduct(ProductRequestDto productRequestDto) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        var sql = "INSERT INTO product(name, price, image_url) VALUES (:name, :price, :imageUrl);";
+        jdbcClient.sql(sql)
+                .param("name", productRequestDto.name())
+                .param("price", productRequestDto.price())
+                .param("imageUrl", productRequestDto.imageUrl())
+                .update(keyHolder);
 
-        int total = allProducts.size();
+        return new ProductResponseDto(keyHolder.getKey().longValue(), productRequestDto.name(), productRequestDto.price(), productRequestDto.imageUrl());
+    }
 
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
-        int startIdx = currentPage * pageSize;
-        int endIdx = Math.min(startIdx + pageSize, total);
+    @Override
+    public PageResult<ProductResponseDto> findAllProducts(PageRequestDto pageRequestDto) {
+        int page = Math.max(pageRequestDto.page(), 0);
+        int size = pageRequestDto.size();
+        int offset = page * size;
 
-        List<ProductResponseDto> pageList = new ArrayList<>();
-        if (startIdx < total) {
-            pageList = allProducts.subList(startIdx, endIdx).stream()
-                    .map(this::toResponseDto)
-                    .toList();
-        }
+        String sql = "SELECT id, name, price, image_url FROM product LIMIT :limit OFFSET :offset";
 
-        return new PageImpl<>(pageList, pageable, total);
+        List<ProductResponseDto> content = jdbcClient.sql(sql)
+                .param("limit", size)
+                .param("offset", offset)
+                .query(getProductRowMapper())
+                .list();
+
+        int total = jdbcClient.sql("SELECT COUNT(*) FROM product")
+                .query(Integer.class)
+                .single();
+
+        int totalPages = (int) Math.ceil((double) total / size);
+
+        return new PageResult<>(content, page, totalPages, size, total);
     }
 
     @Override
     public ProductResponseDto findProductById(Long id) {
-        Product product = products.get(id);
+        String sql = "SELECT id, name, price, image_url FROM product WHERE id = :id";
 
-        if (product == null) {
-            throw new NoSuchElementException("상품을 찾을 수 없습니다. id=" + id);
-        }
-
-        return new ProductResponseDto(product.getId(),
-                product.getName(),
-                product.getPrice(),
-                product.getImageUrl());
+        return jdbcClient.sql(sql)
+                .param("id", id)
+                .query(getProductRowMapper())
+                .optional()
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     @Override
     public ProductResponseDto updateProduct(Long id, ProductRequestDto productRequestDto) {
-        Product product = products.get(id);
+        String sql = "UPDATE product SET name = :name, price = :price, image_url = :imageUrl WHERE id = :id";
 
-        if (product == null) {
-            throw new NoSuchElementException("수정할 상품이 없습니다. id=" + id);
-        }
+        int updated = jdbcClient.sql(sql)
+                .param("name", productRequestDto.name())
+                .param("price", productRequestDto.price())
+                .param("imageUrl", productRequestDto.imageUrl())
+                .param("id", id)
+                .update();
 
-        product.update(
-                productRequestDto.getName(),
-                productRequestDto.getPrice(),
-                productRequestDto.getImageUrl()
-        );
-        return new ProductResponseDto(
-                product.getId(),
-                product.getName(),
-                product.getPrice(),
-                product.getImageUrl()
-        );
+        if (updated == 0)
+            throw new ProductNotFoundException(id);
+
+        return new ProductResponseDto(id, productRequestDto.name(), productRequestDto.price(), productRequestDto.imageUrl());
     }
 
     @Override
     public void deleteProduct(Long id) {
-        if (!products.containsKey(id)) {
-            throw new NoSuchElementException("삭제하고자 하는 상품이 존재하지 않습니다. id=" + id);
-        }
+        String sql = "DELETE FROM product WHERE id = :id";
 
-        products.remove(id);
+        int deleted = jdbcClient.sql(sql)
+                .param("id", id)
+                .update();
+
+        if (deleted == 0)
+            throw new ProductNotFoundException(id);
     }
 
     private ProductResponseDto toResponseDto(Product product) {

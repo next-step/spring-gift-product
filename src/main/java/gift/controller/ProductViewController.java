@@ -1,13 +1,11 @@
 package gift.controller;
 
+import gift.dto.PageRequestDto;
+import gift.dto.PageResult;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.service.ProductService;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +23,7 @@ public class ProductViewController {
     // 상품 등록
     @GetMapping("/new")
     public String createForm(Model model) {
-        model.addAttribute("product", new ProductRequestDto());
+        model.addAttribute("product", new ProductRequestDto("하리보 콜라맛", 2000, "test.jpg"));
         return "product/create";
     }
 
@@ -37,14 +35,14 @@ public class ProductViewController {
     }
 
     @GetMapping
-    public String list(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+    public String list(@RequestParam(defaultValue = "0") int page,
+                       @RequestParam(defaultValue = "5") int size,
                        Model model) {
-        Page<ProductResponseDto> products = productService.findAllProducts(pageable);
 
-        model.addAttribute("products", products);
-        model.addAttribute("currentPage", products.getNumber());
-        model.addAttribute("totalPages", products.getTotalPages());
+        PageRequestDto pageRequestDto = new PageRequestDto(page, size);
+        PageResult<ProductResponseDto> pageResult = productService.findAllProducts(pageRequestDto);
 
+        model.addAttribute("pageResult", pageResult);
         return "product/list";
     }
 
