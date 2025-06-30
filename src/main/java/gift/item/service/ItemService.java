@@ -20,8 +20,9 @@ public class ItemService {
     }
 
     public ItemDto saveItem(CreateItemDto dto) {
-        Item item = itemRepository.saveItem(dto);
-        return new ItemDto(item);
+        Item item = new Item(null, dto.getName(), dto.getPrice(), dto.getImageUrl());
+        Item savedItem = itemRepository.saveItem(item);
+        return new ItemDto(savedItem);
     }
 
     public ItemDto findItem(Long id) {
@@ -33,7 +34,10 @@ public class ItemService {
     }
 
     public List<ItemDto> findAllItems() {
-        return itemRepository.findAllItems();
+        List<Item> item = itemRepository.findAllItems();
+        return item.stream()
+                .map(ItemDto::new)
+                .toList();
     }
 
     public void deleteItem(Long id) {

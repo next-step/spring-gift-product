@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface ItemRepository {
 
-    Item saveItem(CreateItemDto dto);
+    Item saveItem(Item item);
 
-    List<ItemDto> findAllItems();
+    List<Item> findAllItems();
 
     Item findItem(Long id);
 

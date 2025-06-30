@@ -27,36 +27,35 @@ public class itemRepositoryImpl implements ItemRepository {
     }
 
     @Override
-    public Item saveItem(CreateItemDto dto) {
+    public Item saveItem(Item item) {
         String sql = "INSERT INTO item (name, price, image_url) VALUES (?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, dto.getName());
-            ps.setInt(2, dto.getPrice());
-            ps.setString(3, dto.getImageUrl());
+            ps.setString(1, item.getName());
+            ps.setInt(2, item.getPrice());
+            ps.setString(3, item.getImageUrl());
             return ps;
         }, keyHolder);
 
         Long id = keyHolder.getKey().longValue();
 
-        return new Item(id, dto.getName(), dto.getPrice(), dto.getImageUrl());
+        return new Item(id, item.getName(), item.getPrice(), item.getImageUrl());
     }
 
     @Override
-    public List<ItemDto> findAllItems() {
+    public List<Item> findAllItems() {
         String sql = "SELECT * FROM item";
         return jdbcTemplate.query(sql, (rs, rowNum) ->
-            new ItemDto(
-                    new Item(
-                            rs.getLong("id"),
-                            rs.getString("name"),
-                            rs.getInt("price"),
-                            rs.getString("image_url")
-                    )
-            ));
+                new Item(
+                        rs.getLong("id"),
+                        rs.getString("name"),
+                        rs.getInt("price"),
+                        rs.getString("image_url")
+                )
+        );
     }
 
     @Override
