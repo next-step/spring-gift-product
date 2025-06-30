@@ -22,6 +22,7 @@ public class ProductController {
         model.addAttribute("products", list);
         return "admin/product_list";
     }
+
     @GetMapping("/new")
     public String createForm(Model model) {
         model.addAttribute("product",new Product());
