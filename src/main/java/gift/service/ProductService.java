@@ -26,9 +26,7 @@ public class ProductService implements ProductServiceInterface {
     @Override
     public ProductResponseDto addProduct(ProductRequestDto requestDto) {
 
-        long productId = productRepository.getNewProductId();
         Product product = new Product(
-                productId,
                 requestDto.getName(),
                 requestDto.getPrice(),
                 requestDto.getImageUrl()
