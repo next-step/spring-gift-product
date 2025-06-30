@@ -54,19 +54,18 @@ public class ProductService {
         if (imageUrl != null) {
             product.setImageUrl(imageUrl);
         }
-        optionalProduct = productRepository.updateProduct(product);
-        throwNotFoundIfTrue(optionalProduct.isEmpty());
-        return optionalProduct.get();
+        throwNotFoundIfTrue(productRepository.updateProduct(product) == 1);
+        return product;
     }
 
     public Product updateProductById(Long id, String name, Integer price, String imageUrl) {
-        Optional<Product> optionalProduct = productRepository.updateProduct(new Product(id, name, price, imageUrl));
-        throwNotFoundIfTrue(optionalProduct.isEmpty());
-        return optionalProduct.get();
+        Product product = new Product(id, name, price, imageUrl);
+        throwNotFoundIfTrue(productRepository.updateProduct(product) == 1);
+        return product;
     }
 
     public void deleteProductById(Long id) {
-        throwNotFoundIfTrue(!productRepository.deleteProductById(id));
+        throwNotFoundIfTrue(productRepository.deleteProductById(id) == 1);
     }
 
     private void throwNotFoundIfTrue(boolean condition) {

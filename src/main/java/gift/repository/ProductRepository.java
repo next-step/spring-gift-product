@@ -1,10 +1,14 @@
 package gift.repository;
 
 import gift.entity.Product;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
 
@@ -36,26 +40,25 @@ public class ProductRepository {
 
     public List<Product> getProductList() {
         return jdbcClient.sql("select * from product")
-                .query(getProductRowMapper())
-                .list();
+            .query(getProductRowMapper())
+            .list();
     }
 
-    public Optional<Product> updateProduct(Product product) {
-        int updated = jdbcClient.sql("update product set name = :name, price = :price, image_url = :imageUrl where id = :id")
-                .param("id", product.getId())
-                .param("name", product.getName())
-                .param("price", product.getPrice())
-                .param("imageUrl", product.getImageUrl())
-                .update();
-        return updated == 1 ? Optional.of(product) : Optional.empty();
+    // return updated row counts
+    public int updateProduct(Product product) {
+        return jdbcClient.sql("update product set name = :name, price = :price, image_url = :imageUrl where id = :id")
+            .param("id", product.getId())
+            .param("name", product.getName())
+            .param("price", product.getPrice())
+            .param("imageUrl", product.getImageUrl())
+            .update();
     }
 
-    // return true when successfully deleted, false when id not exists.
-    public boolean deleteProductById(Long id) {
-        int updated = jdbcClient.sql("delete from product where id = :id")
-                .param("id", id)
-                .update();
-        return updated == 1;
+    // return updated row counts
+    public int deleteProductById(Long id) {
+        return jdbcClient.sql("delete from product where id = :id")
+            .param("id", id)
+            .update();
     }
 
     private static RowMapper<Product> getProductRowMapper() {
