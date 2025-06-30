@@ -1,8 +1,9 @@
-package gift.Controller;
+package gift.controller;
 
-import gift.Dto.*;
-import gift.Entity.*;
+import gift.dto.*;
+import gift.entity.*;
 
+import gift.repository.ProductRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody ProductRequest request) {
+    public ResponseEntity<?> add(@RequestBody ProductRequestDto request) {
         String error = validate(request);
         if (error != null) {
             return ResponseEntity.badRequest().body(error);
@@ -54,7 +55,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ProductRequest request) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ProductRequestDto request) {
         Product existing = repository.findById(id).orElse(null);
         if (existing == null) {
             return ResponseEntity.notFound().build();
@@ -64,7 +65,7 @@ public class ProductController {
         if (error != null) {
             return ResponseEntity.badRequest().body(error);
         }
-      
+
         Product updated = new Product(
                 id,
                 request.getName(),
@@ -84,7 +85,7 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    private String validate(ProductRequest request) {
+    private String validate(ProductRequestDto request) {
         if (request.getName() == null || request.getName().isBlank()) {
             return "상품 이름은 비어 있을 수 없습니다.";
         }
