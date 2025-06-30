@@ -1,12 +1,18 @@
 package gift.domain;
 
 public class Product {
+
     private Long id;
     private String name;
     private int price;
     private String imageUrl;
 
+    // 기본 생성자 추가 !
     public Product() {
+        this.id = null;
+        this.name = "";
+        this.price = 0;
+        this.imageUrl = "";
     }
 
     public Product(Long id, String name, int price, String imageUrl) {
@@ -16,38 +22,13 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    // Getter/Setter
+    public Long   getId()       { return id; }
+    public String getName()     { return name; }
+    public int    getPrice()    { return price; }
+    public String getImageUrl() { return imageUrl; }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
+    public void setId(Long id)             { this.id = id; }
+    public void setName(String name)       { this.name = name; }
+    public void setPrice(int price)        { this.price = price; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }

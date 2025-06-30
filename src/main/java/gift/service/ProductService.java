@@ -1,41 +1,43 @@
 package gift.service;
 
 import gift.domain.Product;
+import gift.repository.ProductRepository;
 import org.springframework.stereotype.Service;
-import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.transaction.annotation.Transactional;
 
-
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 //
 @Service
+@Transactional
 public class ProductService {
-    private final Map<Long, Product> productStore = new ConcurrentHashMap<>();
-    private long idSequence = 1;
+
+    private final ProductRepository repo;
+
+    public ProductService(ProductRepository repo) {
+        this.repo = repo;
+    }
+
 
     public List<Product> findAll() {
-        return new ArrayList<>(productStore.values());
+        return repo.findAll();
     }
 
     public Optional<Product> findById(Long id) {
-        return Optional.ofNullable(productStore.get(id));
+        return repo.findById(id);
     }
 
-    public Product save(Product product) {
-        product.setId(idSequence++);
-        productStore.put(product.getId(), product);
-        return product;
+    public void save(Product product) {
+        long id = repo.save(product);
+        product.setId(id);
     }
 
-    public boolean update(Long id, Product updated) {
-        if (!productStore.containsKey(id)) return false;
-        updated.setId(id);
-        productStore.put(id, updated);
-        return true;
+    public boolean update(Long id, Product product) {
+        return repo.update(id, product);
     }
 
     public boolean delete(Long id) {
-        return productStore.remove(id) != null;
+        return repo.delete(id);
     }
-
 }
