@@ -44,7 +44,6 @@ public class DatabaseProductRepository implements ProductRepository {
         this.jdbcClient = jdbcClient;
     }
 
-    @Transactional
     @Override
     public Long saveProduct(String name, Integer price, String imageUrl) {
         GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();

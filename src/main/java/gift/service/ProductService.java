@@ -38,12 +38,14 @@ public class ProductService {
         );
     }
 
+    @Transactional(readOnly = true)
     public List<ProductResponseDto> findAllProducts() {
         return productRepository.findAllProducts().stream()
                 .map(ProductResponseDto::new)
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public ProductResponseDto findProductById(Long id) {
         return productRepository.findProductById(id)
                 .map(ProductResponseDto::new)
