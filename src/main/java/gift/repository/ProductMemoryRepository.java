@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository
+//@Repository
 public class ProductMemoryRepository implements ProductRepository{
 
     private final Map<Long, Product> products = new HashMap<>();
