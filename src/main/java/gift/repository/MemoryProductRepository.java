@@ -9,9 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public class MemoryProductRepository implements ProductRepository {
 
   private final Map<Long, Product> products = new HashMap<>();
@@ -21,7 +19,7 @@ public class MemoryProductRepository implements ProductRepository {
 
   public ProductResponseDto createProduct(Product product) {
     Long productId = products.isEmpty() ? InitId : Collections.max(products.keySet()) + IncIdCnt;
-    product.setId(productId);
+//    product.setId(productId);
 
     products.put(productId, product);
 

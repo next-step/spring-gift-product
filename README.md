@@ -24,4 +24,11 @@
 - [x] 변수 네이밍 수정 (MemoryProductRepository의 productMap -> products)
 - [x] 패키지 이름 변경 entity -> domain
 - [x] 매직 넘버 상수화 (MemoryProductRepository)
-- [x] Product의 setter, 기본 생성자 사용 지양에 따른 ProductServiceImpl의 createProduct 수정 
+- [x] Product의 setter, 기본 생성자 사용 지양에 따른 ProductServiceImpl의 createProduct 수정
+
+### 상품관리 - 3단계 기능 목록
+
+- [x] application.properties 세팅
+- [x] schema, 초기 데이터 세팅 sql 작성
+- [x] 기존 MemoryProductRepository 어노테이션 제거
+- [x] H2 데이터베이스 기반 repository 구현
