@@ -44,14 +44,7 @@ public class AdminProductController {
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Long id, Model model) {
         ProductResponse product = productService.findProductById(id);
-        ProductRequest request = new ProductRequest(
-                product.getId(),
-                product.getName(),
-                product.getPrice(),
-                product.getImageUrl()
-        );
-
-        model.addAttribute("product", request);
+        model.addAttribute("product", product);
         return "admin/product/form";
     }
 
