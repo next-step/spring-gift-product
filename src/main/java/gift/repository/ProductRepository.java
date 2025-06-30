@@ -3,9 +3,7 @@ package gift.repository;
 import gift.entity.Product;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,9 +23,6 @@ public class ProductRepository {
             rs.getInt("price"),
             rs.getString("image_url")
     );
-
-    private final Map<Long, Product> products = new HashMap<>();
-    private Long sequence = 1L;
 
     public ProductRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
