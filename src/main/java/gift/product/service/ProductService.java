@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -26,12 +27,24 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public List<Product> findAll() {
+    public List<ProductDto> findAll() {
+        return productdao.findAll().stream()
+                .map(ProductDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Product> adminFindAll() {
         return productdao.findAll();
     }
 
     @Transactional(readOnly = true)
-    public Product findById(String id) {
+    public ProductDto findById(String id) {
+        return new ProductDto(productdao.findById(id));
+    }
+
+    @Transactional(readOnly = true)
+    public Product adminFindById(String id) {
         return productdao.findById(id);
     }
 
@@ -40,14 +53,14 @@ public class ProductService {
         if(productdto.getPrice() < 0) {
             throw new IllegalArgumentException("Price should be positive");
         }
-        Product product = productdao.findById(id);
+        productdao.findById(id);
         productdao.update(id, productdto);
     }
 
     @Transactional
-    public Product deleteProduct(String id) {
+    public ProductDto deleteProduct(String id) {
         Product product = productdao.findById(id);
         productdao.delete(id);
-        return product;
+        return new ProductDto(product);
     }
 }
