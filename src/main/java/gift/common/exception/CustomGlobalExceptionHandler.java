@@ -3,6 +3,7 @@ package gift.common.exception;
 import gift.common.code.CustomResponseCode;
 import gift.common.dto.CustomResponseBody;
 import java.util.stream.Collectors;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,6 +33,15 @@ public class CustomGlobalExceptionHandler {
             .body(new CustomResponseBody<>(
                 CustomResponseCode.VALIDATION_FAILED.getCode(),
                 errors,
+                null));
+    }
+
+    @ExceptionHandler(DataAccessException.class)
+    public ResponseEntity<CustomResponseBody<Void>> handleDBException(DataAccessException e) {
+        return ResponseEntity.status(CustomResponseCode.DB_ERROR.getCode())
+            .body(new CustomResponseBody<>(
+                CustomResponseCode.DB_ERROR.getCode(),
+                CustomResponseCode.DB_ERROR.getMessage(),
                 null));
     }
 
