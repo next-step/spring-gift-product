@@ -67,16 +67,4 @@ public class ProductAdminController {
         productdao.delete(id);
         return "redirect:/api/admin/product/list";
     }
-
-    @ResponseBody
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ResponseBody
-    @ExceptionHandler(EmptyResultDataAccessException.class)
-    public ResponseEntity<String> handleEmptyResultDataAccess(EmptyResultDataAccessException e) {
-        return new ResponseEntity<>("DB에서 해당 ID를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
-    }
 }

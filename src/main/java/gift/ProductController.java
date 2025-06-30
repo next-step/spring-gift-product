@@ -49,15 +49,4 @@ public class ProductController {
         productdao.delete(id);
         return product;
     }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(EmptyResultDataAccessException.class)
-    public ResponseEntity<String> handleEmptyResultDataAccess(EmptyResultDataAccessException e) {
-        return new ResponseEntity<>("DB에서 해당 ID를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
-    }
-
 }
