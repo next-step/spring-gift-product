@@ -5,6 +5,7 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepositoryInterface;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,7 +19,7 @@ public class ProductService implements ProductServiceInterface {
 
     private final ProductRepositoryInterface productRepository;
 
-    public ProductService(ProductRepositoryInterface productRepository) {
+    public ProductService(@Qualifier("jdbcProductRepository") ProductRepositoryInterface productRepository) {
         this.productRepository = productRepository;
     }
 

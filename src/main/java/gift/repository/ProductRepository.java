@@ -1,14 +1,12 @@
 package gift.repository;
 
-import gift.dto.ProductRequestDto;
-import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-@Repository
+@Repository("memProductRepository")
 public class ProductRepository implements ProductRepositoryInterface {
     private final Map<Long, Product> products = new HashMap<>();
     private long productId = 1L;
