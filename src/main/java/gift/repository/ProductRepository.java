@@ -22,7 +22,7 @@ public class ProductRepository {
         rs.getInt("price"),
         rs.getString("image_url")
     );
-    private KeyHolder keyHolder = new GeneratedKeyHolder();
+    private final KeyHolder keyHolder = new GeneratedKeyHolder();
 
     public ProductRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
