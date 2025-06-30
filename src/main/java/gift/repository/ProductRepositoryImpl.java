@@ -19,10 +19,10 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public Product save(Product product) {
 
-        if(product.getId() == null) {
+        if (product.getId() == null) {
             String sql = "insert into product (name, imageUrl) values (?, ?)";
             jdbcTemplate.update(sql, product.getName(), product.getImageUrl());
-        }else {
+        } else {
             String sql2 = "update product set name = ?, imageUrl = ? where id = ?";
             jdbcTemplate.update(sql2, product.getName(), product.getImageUrl(), product.getId());
         }
