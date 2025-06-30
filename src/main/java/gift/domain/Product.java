@@ -6,12 +6,7 @@ public class Product {
     private int price;
     private String imageUrl;
 
-    public Product() {}
-
-    public Product(String name, int price, String imageUrl) {
-        this.name = name;
-        this.price = price;
-        this.imageUrl = imageUrl;
+    public Product() {
     }
 
     public Product(Long id, String name, int price, String imageUrl) {
@@ -21,13 +16,35 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    // getter/setter 생략 가능 (Lombok 쓰면 @Data도 가능)
-    public Long getId() { return id; }
+    public Product(String name, int price, String imageUrl) {
+        this(null, name, price, imageUrl);
+    }
 
-    public String getName() { return name; }
+    public Long getId() {
+        return id;
+    }
 
-    public int getPrice() { return price; }
+    public String getName() {
+        return name;
+    }
 
-    public String getImageUrl() { return imageUrl; }
+    public int getPrice() {
+        return price;
+    }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }

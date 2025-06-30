@@ -1,4 +1,4 @@
-package gift.Controller;
+package gift.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gift.domain.Product;
@@ -12,8 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -66,7 +64,7 @@ class ProductControllerTest {
     @DisplayName("단일 상품 조회 성공")
     void getProductByIdSuccess() throws Exception {
         Product product = new Product(1L, "커피", 4000, "http://image.url");
-        when(productService.getById(1L)).thenReturn(Optional.of(product));
+        when(productService.getById(1L)).thenReturn(product);
 
         mockMvc.perform(get("/api/products/1"))
                 .andExpect(status().isOk())
