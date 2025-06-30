@@ -43,7 +43,9 @@ public class ProductRepository {
     }
 
     public void deleteById(Long id){
-        products.remove(id);
+        jdbcClient.sql("DELETE FROM product WHERE id = :id")
+                .param("id", id)
+                .update();
     }
 
     private static RowMapper<Product> getProductRowMapper(){

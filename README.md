@@ -65,3 +65,4 @@
   - `feat`: `RowMapper<Product>`를 반환하는 `getProductRowMapper()` 추가
   - `refactor`: id 값에 따라 `Optional<Product>`를 반환하는 `findById(Long id)` 리펙토링
   - `refactor`: 상품 전체 리스트를 반환하는 `findAll()` 리펙토링
+  - `refactor`: id 값에 해당하는 상품을 삭제하는 `deleteById(Long id)` 리펙토링
