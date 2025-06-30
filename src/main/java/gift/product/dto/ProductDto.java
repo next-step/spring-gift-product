@@ -1,11 +1,19 @@
 package gift.product.dto;
 
+import gift.product.domain.Product;
+
 public class ProductDto {
     private String name;
     private int price;
     private String imageUrl;
 
     public ProductDto() {}
+
+    public ProductDto(Product product) {
+        this.name = product.getName();
+        this.price = product.getPrice();
+        this.imageUrl = product.getImageUrl();
+    }
 
     public String getName() {
         return name;
