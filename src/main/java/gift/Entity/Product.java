@@ -1,15 +1,17 @@
 package gift.entity;
 
+import java.math.BigDecimal;
+
 public class Product {
 
     private Long id;
     private String name;
-    private int price;
+    private BigDecimal price;
     private String imgUrl;
 
     public Product() {}
 
-    public Product(Long id, String name, int price, String imgUrl) {
+    public Product(Long id, String name, BigDecimal price, String imgUrl) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -22,8 +24,8 @@ public class Product {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public int getPrice() { return price; }
-    public void setPrice(int price) { this.price = price; }
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(BigDecimal price) { this.price = price; }
 
 
     public String getImgUrl() { return imgUrl; }

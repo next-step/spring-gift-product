@@ -7,6 +7,7 @@ import gift.repository.ProductRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.*;
 
@@ -89,7 +90,7 @@ public class ProductController {
         if (request.getName() == null || request.getName().isBlank()) {
             return "상품 이름은 비어 있을 수 없습니다.";
         }
-        if (request.getPrice() < 0) {
+        if (request.getPrice() == null || request.getPrice().compareTo(BigDecimal.ZERO) < 0) {
             return "가격은 0 이상이어야 합니다.";
         }
         if (request.getImgUrl() == null || request.getImgUrl().isBlank()) {

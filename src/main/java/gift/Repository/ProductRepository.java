@@ -23,7 +23,7 @@ public class ProductRepository {
         Product p = new Product();
         p.setId(rs.getLong("id"));
         p.setName(rs.getString("name"));
-        p.setPrice(rs.getInt("price"));
+        p.setPrice(rs.getBigDecimal("price"));
         p.setImgUrl(rs.getString("imgUrl"));
         return p;
     };
@@ -57,7 +57,7 @@ public class ProductRepository {
                     Statement.RETURN_GENERATED_KEYS
             );
             ps.setString(1, product.getName());
-            ps.setInt(2, product.getPrice());
+            ps.setBigDecimal(2, product.getPrice());
             ps.setString(3, product.getImgUrl());
             return ps;
         }, keyHolder);
