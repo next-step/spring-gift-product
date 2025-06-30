@@ -6,7 +6,6 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -67,14 +66,9 @@ public class ProductRepository {
     }
 
     public Product update(Long id, String name, int price, String imageUrl) {
-        Product product = products.get(id);
-        if (product == null) {
-            throw new NoSuchElementException("해당 ID의 상품이 존재하지 않습니다...");
-        }
-
-        Product updated = new Product(id, name, price, imageUrl);
-        products.put(id, updated);
-        return updated;
+        String sql = "UPDATE products SET name = ?, price = ?, image_url = ? WHERE id = ?";
+        jdbcTemplate.update(sql, name, price, imageUrl, id);
+        return new Product(id, name, price, imageUrl);
     }
 
     public boolean delete(Long id) {

@@ -26,6 +26,6 @@
     - [x] 상품 전체 조회 (findAll) 기능 DB 연동
     - [x] 상품 단건 조회 (findById) 기능 DB 연동
     - [x] 상품 저장 (save) 기능 DB 연동
-    - [ ] 상품 수정 (update) 기능 DB 연동
+    - [x] 상품 수정 (update) 기능 DB 연동
     - [ ] 상품 삭제 (delete) 기능 DB 연동
 - [ ] 기존 메모리 저장소 관련 코드 최종 제거
