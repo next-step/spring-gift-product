@@ -41,11 +41,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
 
-        /*Product product = productRepository.findProduct(id);
-        if (product == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "상품을 찾을 수 없습니다. id = " + id);
-        }*/
-
 
         int rows = productRepository.updateProduct(id, requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
         if (rows == 0) {
