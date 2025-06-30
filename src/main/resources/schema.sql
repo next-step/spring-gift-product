@@ -1,6 +1,6 @@
 create table products
 (
-    id        bigint,
+    id        bigint auto_increment,
     name      varchar(100),
     price     bigint,
     image_url varchar(255),

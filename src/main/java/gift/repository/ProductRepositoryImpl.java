@@ -4,15 +4,11 @@ import gift.entity.Product;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    private final Map<Long, Product> products = new HashMap<>();
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -39,10 +35,8 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public Product saveProduct(Product product) {
-        Long productId = products.isEmpty() ? 1 : Collections.max(products.keySet()) + 1;
-        product.setId(productId);
-        String sql = "insert into products(id, name, price, image_url) values(?,?,?,?)";
-        jdbcTemplate.update(sql, productId, product.getName(), product.getPrice(), product.getImageUrl());
+        String sql = "insert into products(name, price, image_url) values(?,?,?)";
+        jdbcTemplate.update(sql, product.getName(), product.getPrice(), product.getImageUrl());
 
         return product;
     }
