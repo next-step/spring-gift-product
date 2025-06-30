@@ -3,6 +3,9 @@ package gift.service;
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
+import gift.exception.InvalidImageUrlException;
+import gift.exception.InvalidNameException;
+import gift.exception.InvalidPriceException;
 import gift.exception.ProductNotFoundException;
 import gift.repository.ProductRepository;
 import java.util.stream.Collectors;
@@ -37,19 +40,26 @@ public class ProductService {
     }
 
     public ProductResponseDto updateProduct(Long productId, ProductRequestDto dto) {
-        Product product = findProductByIdFun(productId);
-        product.updateProductInfo(dto.name(), dto.price(), dto.imageUrl());
-        return product.toDto();
+        if(dto.name() == null) {
+            throw new InvalidNameException();
+        }
+        if(dto.price() < 0) {
+            throw new InvalidPriceException();
+        }
+        if(dto.imageUrl() == null) {
+            throw new InvalidImageUrlException();
+        }
+        Product updatedProduct = productRepository.updateProduct(productId, dto.name(), dto.price(), dto.imageUrl());
+        return updatedProduct.toDto();
     }
 
     //가격만 수정하는 것은 꽤 합리적이라고 생각
     public ProductResponseDto updateProductPrice(Long productId, int price) {
-        Product product = productRepository.findById(productId);
-        if(product == null) {
-            throw new ProductNotFoundException();
+        if(price < 0) {
+            throw new InvalidPriceException();
         }
-        product.updatePrice(price);
-        return product.toDto();
+        Product updatedProduct = productRepository.updatePrice(productId, price);
+        return updatedProduct.toDto();
     }
 
     public void deleteProduct(Long productId) {

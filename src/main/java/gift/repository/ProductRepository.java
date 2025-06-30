@@ -1,6 +1,10 @@
 package gift.repository;
 
 import gift.entity.Product;
+import gift.exception.InvalidImageUrlException;
+import gift.exception.InvalidNameException;
+import gift.exception.InvalidPriceException;
+import gift.exception.ProductNotFoundException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -49,6 +53,23 @@ public class ProductRepository {
             return product;
             }
         ,name,price,imageUrl);
+    }
+    public Product updateProduct(Long id, String name, int price, String imageUrl) {
+        String sql = "update products set name = ?, price = ?, imageUrl = ? where id = ?";
+        int updatedRow = jdbcTemplate.update(sql, name, price, imageUrl, id);
+        if(updatedRow == 0) {
+            throw new ProductNotFoundException();
+        }
+        return findById(id);
+    }
+
+    public Product updatePrice(Long id, int price) {
+        String sql = "update products set price = ? where id = ?";
+        int updatedRows = jdbcTemplate.update(sql, price, id);
+        if(updatedRows == 0) {
+            throw new ProductNotFoundException();
+        }
+        return findById(id);
     }
 //
 //    public void deleteById(Long id) {
