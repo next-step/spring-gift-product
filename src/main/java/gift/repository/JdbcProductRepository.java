@@ -49,7 +49,19 @@ public class JdbcProductRepository implements ProductRepositoryInterface{
 
     @Override
     public Optional<Product> findProductById(Long id) {
-        return Optional.empty();
+        String sql = "SELECT * FROM products WHERE id = ?";
+
+        try {
+            Product product = jdbcTemplate.queryForObject(sql, this::RowMapperProduct, id);
+            return Optional.of(new Product(
+                    product.getId(),
+                    product.getName(),
+                    product.getPrice(),
+                    product.getImageUrl()
+            ));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 
     @Override
