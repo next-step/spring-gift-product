@@ -62,7 +62,8 @@ public class ProductRepository {
     }
 
     public boolean deleteById(Long id) {
-        return products.remove(id) != null;
+        int updated = jdbcTemplate.update("DELETE FROM product WHERE id = ?", id);
+        return updated > 0;
     }
 
     public Optional<Product> update(Long id, String name, int price, String imageUrl) {
