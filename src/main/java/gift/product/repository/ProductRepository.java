@@ -54,10 +54,26 @@ public class ProductRepository {
     //추가
     public ProductResponseDto save(Product product) {
 
-        String sql = "insert into product(name, price, image_url) values(?, ?, ?)";
-        jdbcTemplate.update(sql, productRowMapper);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        return ProductResponseDto.fromEntity(product);
+        String sql = "insert into product(name, price, image_url) values(?, ?, ?)";
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, product.getName());
+                ps.setInt(2, product.getPrice());
+                ps.setString(3, product.getImageUrl());
+                return ps;
+            }
+        },keyHolder);
+
+        if(keyHolder.getKey() != null){
+            product.setId(keyHolder.getKey().longValue());
+            return ProductResponseDto.fromEntity(product);
+        }
+
+        return null;
     }
 
     //수정
