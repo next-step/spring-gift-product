@@ -4,6 +4,8 @@ import gift.entity.Product;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -22,11 +24,17 @@ public class ProductRepository {
 
 
     public Product save(Product product){
-        long newId = ++sequence;
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        Product newProduct = product.withId(newId);
-        products.put(newId, newProduct);
-        return newProduct;
+        jdbcClient.sql("INSERT INTO product VALUES (:name, :price, :image_url)")
+                .param("name", product.getName())
+                .param("price", product.getPrice())
+                .param("image_url", product.getImageUrl())
+                .update(keyHolder, "id");
+
+        Long newId = keyHolder.getKey().longValue();
+
+        return new Product(newId, product.getName(), product.getPrice(), product.getImageUrl());
     }
 
     public Optional<Product> findById(Long id){
