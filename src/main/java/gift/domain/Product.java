@@ -41,8 +41,4 @@ public class Product {
   public String getImageUrl() {
     return this.imageUrl;
   }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
 }
