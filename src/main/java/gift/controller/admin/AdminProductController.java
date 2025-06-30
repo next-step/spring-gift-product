@@ -32,7 +32,7 @@ public class AdminProductController {
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("product", new ProductRequest(null, "", 0, ""));
-        return "admin/product/form";
+        return "admin/product/new-form";
     }
 
     @PostMapping
@@ -45,7 +45,7 @@ public class AdminProductController {
     public String showEditForm(@PathVariable Long id, Model model) {
         ProductResponse product = productService.findProductById(id);
         model.addAttribute("product", product);
-        return "admin/product/form";
+        return "admin/product/edit-form";
     }
 
     @PostMapping("/{id}")
