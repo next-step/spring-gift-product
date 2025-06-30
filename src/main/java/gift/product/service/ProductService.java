@@ -36,13 +36,9 @@ public class ProductService {
     }
 
     public void update(Long id, ProductRequestDto requestDto){
-        Optional<Product> product = repository.findById(id);
-
-        if (product.isEmpty()){
-            throw new ProductNotFoundException("상품을 찾을 수 없습니다. ID: " + id);
-        }
-
-        product.get().update(requestDto.name(), requestDto.price(), requestDto.imageUrl());
+        repository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("상품을 찾을 수 없습니다. ID: " + id));
+        repository.update(id, requestDto.name(), requestDto.price(), requestDto.imageUrl());
     }
 
     public void delete(Long id){

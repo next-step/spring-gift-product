@@ -13,5 +13,7 @@ public interface ProductRepository {
 
     public Optional<Product> findById(Long id);
 
+    public void update(Long id, String name, int price, String imageUrl);
+
     public void deleteById(Long id);
 }

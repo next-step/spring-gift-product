@@ -38,6 +38,14 @@ public class MemoryProductRepository implements ProductRepository{
     }
 
     @Override
+    public void update(Long id, String name, int price, String imageUrl) {
+        Product target = products.get(id);
+        if(target != null){
+            target.update(name, price, imageUrl);
+        }
+    }
+
+    @Override
     public void deleteById(Long id){
         // 존재하지 않으면 무시
         products.remove(id);
