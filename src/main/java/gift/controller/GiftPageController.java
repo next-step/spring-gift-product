@@ -38,17 +38,18 @@ public class GiftPageController {
   @PostMapping
   public String createGift(@ModelAttribute GiftRequestDto dto) {
     giftService.saveGift(dto);
+
     return "redirect:/gift-page";
   }
 
   @GetMapping("/{id}")
   public String showEditForm(@PathVariable Long id, Model model) {
-    GiftResponseDto g = giftService.findById(id);
+    GiftResponseDto giftToEdit = giftService.findById(id);
 
     GiftUpdateDto updateDto = new GiftUpdateDto(
-        g.getName(),
-        g.getPrice(),
-        g.getImageUrl()
+        giftToEdit.name(),
+        giftToEdit.price(),
+        giftToEdit.imageUrl()
     );
 
     model.addAttribute("gift", updateDto);

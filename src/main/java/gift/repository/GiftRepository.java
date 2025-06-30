@@ -1,19 +1,18 @@
 package gift.repository;
 
-import gift.dto.GiftResponseDto;
 import gift.entity.Gift;
 import java.util.List;
 import java.util.Optional;
 
 public interface GiftRepository {
 
-  GiftResponseDto saveGift(Gift gift);
+  Gift saveGift(Gift gift);            // Gift 엔티티 반환
 
-  List<GiftResponseDto> findAllGifts();
+  List<Gift> findAllGifts();           // 전체 Gift 목록 (엔티티 리스트)
 
-  Optional<Gift> findById(Long id);
+  Optional<Gift> findById(Long id);    // 단건 조회
 
-  void updateGift(Gift gift);
+  void updateGift(Gift gift);          // 수정
 
-  void deleteGiftById(Long id);
+  void deleteGiftById(Long id);        // 삭제
 }

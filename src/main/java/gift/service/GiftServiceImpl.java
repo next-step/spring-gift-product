@@ -24,12 +24,16 @@ public class GiftServiceImpl implements GiftService {
         dto.getPrice(),
         dto.getImageUrl()
     );
-    return giftRepository.saveGift(gift);
+    Gift savedGift = giftRepository.saveGift(gift);
+    return toDto(savedGift);
   }
 
   @Override
   public List<GiftResponseDto> findAll() {
-    return giftRepository.findAllGifts();
+    return giftRepository.findAllGifts()
+                         .stream()
+                         .map(this::toDto)
+                         .toList();
   }
 
   @Override
@@ -37,12 +41,7 @@ public class GiftServiceImpl implements GiftService {
     Gift gift = giftRepository.findById(id)
                               .orElseThrow(() -> new IllegalArgumentException(
                                   "해당 ID의 선물이 존재하지 않습니다: " + id));
-    return new GiftResponseDto(
-        gift.getId(),
-        gift.getName(),
-        gift.getPrice(),
-        gift.getImageUrl()
-    );
+    return toDto(gift);
   }
 
   @Override
@@ -62,16 +61,19 @@ public class GiftServiceImpl implements GiftService {
     }
 
     giftRepository.updateGift(gift);
-    return new GiftResponseDto(
-        gift.getId(),
-        gift.getName(),
-        gift.getPrice(),
-        gift.getImageUrl()
-    );
+    return toDto(gift);
   }
 
   @Override
   public void deleteGift(Long id) {
     giftRepository.deleteGiftById(id);
   }
+
+  private GiftResponseDto toDto(Gift gift) {
+    return new GiftResponseDto(
+        gift.getId(), gift.getName(), gift.getPrice(), gift.getImageUrl()
+    );
+  }
+
 }
+
