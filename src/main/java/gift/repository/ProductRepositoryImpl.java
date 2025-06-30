@@ -1,6 +1,7 @@
 package gift.repository;
 
 import gift.entity.Product;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -9,6 +10,12 @@ import java.util.*;
 public class ProductRepositoryImpl implements ProductRepository {
 
     private final Map<Long, Product> products = new HashMap<>();
+
+    private final JdbcTemplate jdbcTemplate;
+
+    public ProductRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
     public List<Product> findAllProducts() {
@@ -22,7 +29,9 @@ public class ProductRepositoryImpl implements ProductRepository {
     public Product saveProduct(Product product) {
         Long productId = products.isEmpty() ? 1 : Collections.max(products.keySet()) + 1;
         product.setId(productId);
-        products.put(productId, product);
+        String sql = "insert into product(id, name, price, image_url) values(?,?,?,?)";
+        jdbcTemplate.update(sql, productId, product.getName(), product.getPrice(), product.getImageUrl());
+
         return product;
     }
 
