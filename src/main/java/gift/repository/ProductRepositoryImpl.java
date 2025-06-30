@@ -1,73 +1,89 @@
 package gift.repository;
 
 import gift.dto.ProductRequestDto;
-import gift.dto.ProductResponseDto;
 import gift.entity.Product;
+import gift.exception.FailedGenerateKeyException;
 import gift.exception.ProductNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.server.ResponseStatusException;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
-    private final Map<Long, Product> products = new HashMap<>();
-    private final Random random = new Random();
-    private Long nextId = 1L;
+    private final JdbcTemplate jdbcTemplate;
 
-    @Override
-    public ProductResponseDto createProduct(ProductRequestDto requestDto) {
-        Long id = nextId++; // jpa 사용 전까지 임시 번호 부여(여러 스레드 사용시 문제 발생 가능)
-        String name = requestDto.name();
-        Integer price = requestDto.price();
-        String imageUrl = requestDto.imageUrl();
-
-        Product product = new Product(id, name, price, imageUrl);
-        products.put(id, product);
-
-        return ProductResponseDto.from(product);
+    public ProductRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public List<ProductResponseDto> findAllProducts() {
-        List<ProductResponseDto> productList = new ArrayList<>();
-        for (Map.Entry<Long, Product> entry : products.entrySet()) {
-            productList.add(ProductResponseDto.from(entry.getValue()));
+    public long createProduct(ProductRequestDto requestDto) {
+        final String sql = "INSERT INTO products (name, price, image_url) VALUES (?, ?, ?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, requestDto.name());
+            ps.setInt(2, requestDto.price());
+            ps.setString(3, requestDto.imageUrl());
+            return ps;
+        }, keyHolder);
+        Number key = keyHolder.getKey();
+        if (key == null) {
+            throw new FailedGenerateKeyException();
         }
-
-        return productList;
+        return key.longValue();
     }
 
     @Override
-    public ProductResponseDto findProductById(Long id) {
-        Product product = products.get(id);
+    public List<Product> findAllProducts() {
+        final String sql = "SELECT * FROM products";
+
+        return jdbcTemplate.query(sql, productRowMapper());
+    }
+
+    @Override
+    public Product findProductById(Long id) {
+        final String sql = "SELECT * FROM products WHERE id = ?";
+
+        Product product = jdbcTemplate.queryForObject(sql, productRowMapper(), id);
         if (product == null) {
             throw new ProductNotFoundException(id);
         }
-
-        return ProductResponseDto.from(product);
+        return product;
     }
 
     @Override
-    public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
-        Product product = new Product(
-            id,
-            requestDto.name(),
-            requestDto.price(),
-            requestDto.imageUrl());
-        products.put(id, product);
+    public void updateProduct(Long id, ProductRequestDto requestDto) {
+        final String sql = "UPDATE products SET name = ?, price = ?, image_url = ? WHERE id = ?";
 
-        return ProductResponseDto.from(product);
+        int updated = jdbcTemplate.update(sql, requestDto.name(), requestDto.price(), requestDto.imageUrl(), id);
+        if (updated == 0) {
+            throw new ProductNotFoundException(id);
+        }
     }
 
     @Override
     public void deleteProduct(Long id) {
-        if (products.remove(id) == null) {
+        final String sql = "DELETE FROM products WHERE id = ?";
+
+        int deleted = jdbcTemplate.update(sql, id);
+        if (deleted == 0) {
             throw new ProductNotFoundException(id);
         }
+    }
+
+    private RowMapper<Product> productRowMapper() {
+        return (rs, rowNum) -> new Product(
+            rs.getLong("id"),
+            rs.getString("name"),
+            rs.getInt("price"),
+            rs.getString("image_url")
+        );
     }
 }

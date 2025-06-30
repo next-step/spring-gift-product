@@ -21,6 +21,12 @@ public class GlobalExceptionHandler {
             .body("요청 형식이 잘못되었습니다.");
     }
 
+    @ExceptionHandler(FailedGenerateKeyException.class)
+    public ResponseEntity<String> handleFaildGenerateKey(FailedGenerateKeyException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(ex.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneralError(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

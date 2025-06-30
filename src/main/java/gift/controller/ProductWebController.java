@@ -5,18 +5,20 @@ import gift.dto.ProductResponseDto;
 import gift.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/admin/products")
-public class ProductPageController {
+public class ProductWebController {
     private final ProductService productService;
 
-    public ProductPageController(ProductService productService) {
+    public ProductWebController(ProductService productService) {
         this.productService = productService;
     }
 
@@ -29,11 +31,11 @@ public class ProductPageController {
     @GetMapping("/new")
     public String createForm(Model model) {
         model.addAttribute("productId", null);
-        model.addAttribute("product", new ProductRequestDto("", 0, ""));
+        model.addAttribute("product", ProductRequestDto.from());
         return "products/form";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
         ProductResponseDto product = productService.findProductById(id);
         model.addAttribute("productId", id);
@@ -49,13 +51,13 @@ public class ProductPageController {
         return "redirect:/admin/products";
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public String update(@PathVariable Long id, @ModelAttribute ProductRequestDto requestDto) {
         productService.updateProduct(id, requestDto);
         return "redirect:/admin/products";
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id) {
         productService.deleteProduct(id);
         return "redirect:/admin/products";
