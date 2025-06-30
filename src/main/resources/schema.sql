@@ -1,5 +1,5 @@
 CREATE TABLE PRODUCTS (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    id CHAR(36) PRIMARY KEY,
     name varchar(255),
     price INT,
     imageUrl varchar(255)

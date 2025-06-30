@@ -16,7 +16,7 @@ public class ProductDao {
     }
 
     public void save(ProductDto productDto) {
-        jdbcClient.sql("INSERT INTO PRODUCTS (name, price, imageUrl) VALUES (:name, :price, :imageUrl)")
+        jdbcClient.sql("INSERT INTO PRODUCTS (id, name, price, imageUrl) VALUES (UUID(), :name, :price, :imageUrl)")
                 .param("name", productDto.getName())
                 .param("price", productDto.getPrice())
                 .param("imageUrl", productDto.getImageUrl())
@@ -30,7 +30,7 @@ public class ProductDao {
                 .list();
     }
 
-    public Product findById(Long id) throws EmptyResultDataAccessException {
+    public Product findById(String id) throws EmptyResultDataAccessException {
         return jdbcClient.sql("SELECT * FROM PRODUCTS WHERE id = :id")
                 .param("id", id)
                 .query(Product.class)
@@ -38,7 +38,7 @@ public class ProductDao {
     }
 
     @Transactional
-    public void update(Long id, ProductDto productDto) {
+    public void update(String id, ProductDto productDto) {
         if (productDto.getName() != null) {
             jdbcClient.sql("UPDATE PRODUCTS SET name = :name WHERE id = :id")
                     .param("name", productDto.getName())
@@ -59,7 +59,7 @@ public class ProductDao {
         }
     }
 
-    public void delete(Long id) {
+    public void delete(String id) {
         jdbcClient.sql("DELETE FROM PRODUCTS WHERE id = :id")
                 .param("id", id)
                 .update();

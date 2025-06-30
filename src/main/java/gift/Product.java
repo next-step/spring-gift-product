@@ -1,14 +1,14 @@
 package gift;
 
 public class Product {
-    private Long id;
+    private String id;
     private String name;
     private int price;
     private String imageUrl;
 
     public Product() {}
 
-    public Product(Long id, String name, int price, String imageUrl) {
+    public Product(String id, String name, int price, String imageUrl) {
         if(price < 0) {
             throw new IllegalArgumentException("Price should be positive");
         }
@@ -18,7 +18,7 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
-    public Product(Long id, ProductDto productdto) {
+    public Product(String id, ProductDto productdto) {
         if(productdto.getPrice() < 0) {
             throw new IllegalArgumentException("Price should be positive");
         }
@@ -28,7 +28,7 @@ public class Product {
         this.imageUrl = productdto.getImageUrl();
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -44,7 +44,7 @@ public class Product {
         return imageUrl;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

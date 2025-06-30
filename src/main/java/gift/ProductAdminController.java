@@ -1,8 +1,5 @@
 package gift;
 
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,19 +38,19 @@ public class ProductAdminController {
 
     @ResponseBody
     @GetMapping("/product/{id}")
-    public Product findById(@PathVariable Long id) {
+    public Product findById(@PathVariable String id) {
         return productdao.findById(id);
     }
 
     @GetMapping("/product/{id}/update")
-    public String updateForm(@PathVariable Long id, Model model) {
+    public String updateForm(@PathVariable String id, Model model) {
         Product product = productdao.findById(id);
         model.addAttribute("product", product);
         return "updateForm";
     }
 
     @PatchMapping("/product/{id}/update")
-    public String updateProduct(@PathVariable Long id, @ModelAttribute ProductDto updateProductdto) {
+    public String updateProduct(@PathVariable String id, @ModelAttribute ProductDto updateProductdto) {
         ProductDto productdto1;
         productdto1 = new ProductDto(updateProductdto.getName(), updateProductdto.getPrice(), updateProductdto.getImageUrl());
         Product product = productdao.findById(id);
@@ -62,7 +59,7 @@ public class ProductAdminController {
     }
 
     @DeleteMapping("/product/{id}/delete")
-    public String deleteById(@PathVariable Long id) {
+    public String deleteById(@PathVariable String id) {
         Product product = productdao.findById(id);
         productdao.delete(id);
         return "redirect:/api/admin/product/list";

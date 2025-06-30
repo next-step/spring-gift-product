@@ -1,8 +1,5 @@
 package gift;
 
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,12 +27,12 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id}")
-    public Product findById(@PathVariable Long id) {
+    public Product findById(@PathVariable String id) {
         return productdao.findById(id);
     }
 
     @PatchMapping("/product/{id}/update")
-    public ProductDto updateProduct(@PathVariable Long id, @RequestBody ProductDto updateProductdto) {
+    public ProductDto updateProduct(@PathVariable String id, @RequestBody ProductDto updateProductdto) {
         ProductDto productdto1;
         productdto1 = new ProductDto(updateProductdto.getName(), updateProductdto.getPrice(), updateProductdto.getImageUrl());
         Product product = productdao.findById(id);
@@ -44,7 +41,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/product/{id}/delete")
-    public Product deleteById(@PathVariable Long id) {
+    public Product deleteById(@PathVariable String id) {
         Product product = productdao.findById(id);
         productdao.delete(id);
         return product;
