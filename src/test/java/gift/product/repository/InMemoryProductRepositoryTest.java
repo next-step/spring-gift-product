@@ -2,6 +2,7 @@ package gift.product.repository;
 
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import gift.global.common.dto.SortInfo;
 import gift.product.domain.Product;
@@ -33,8 +34,10 @@ class InMemoryProductRepositoryTest {
   void 상품을_저장하면_ID를_반환한다() {
     Long savedId = repository.save(testProduct);
 
-    assertThat(savedId).isNotNull();
-    assertThat(savedId).isPositive();
+    assertAll(
+        () -> assertThat(savedId).isNotNull(),
+        () -> assertThat(savedId).isPositive()
+    );
   }
 
   @Test
@@ -50,11 +53,13 @@ class InMemoryProductRepositoryTest {
 
     Optional<Product> foundProduct = repository.findById(savedId);
 
-    assertThat(foundProduct).isPresent();
-    assertThat(foundProduct.get().name()).isEqualTo("테스트 상품");
-    assertThat(foundProduct.get().price()).isEqualTo(10000);
-    assertThat(foundProduct.get().description()).isEqualTo("테스트 상품 설명");
-    assertThat(foundProduct.get().imageUrl()).isEqualTo("http://test.com/image.jpg");
+    assertAll(
+        () -> assertThat(foundProduct).isPresent(),
+        () -> assertThat(foundProduct.get().name()).isEqualTo("테스트 상품"),
+        () -> assertThat(foundProduct.get().price()).isEqualTo(10000),
+        () -> assertThat(foundProduct.get().description()).isEqualTo("테스트 상품 설명"),
+        () -> assertThat(foundProduct.get().imageUrl()).isEqualTo("http://test.com/image.jpg")
+    );
   }
 
   @Test
@@ -92,11 +97,13 @@ class InMemoryProductRepositoryTest {
     repository.update(savedId, updatedProduct);
 
     Optional<Product> foundProduct = repository.findById(savedId);
-    assertThat(foundProduct).isPresent();
-    assertThat(foundProduct.get().name()).isEqualTo("수정된 상품");
-    assertThat(foundProduct.get().price()).isEqualTo(15000);
-    assertThat(foundProduct.get().description()).isEqualTo("수정된 설명");
-    assertThat(foundProduct.get().imageUrl()).isEqualTo("http://test.com/updated.jpg");
+    assertAll(
+        () -> assertThat(foundProduct).isPresent(),
+        () -> assertThat(foundProduct.get().name()).isEqualTo("수정된 상품"),
+        () -> assertThat(foundProduct.get().price()).isEqualTo(15000),
+        () -> assertThat(foundProduct.get().description()).isEqualTo("수정된 설명"),
+        () -> assertThat(foundProduct.get().imageUrl()).isEqualTo("http://test.com/updated.jpg")
+    );
   }
 
   @Test
@@ -127,7 +134,7 @@ class InMemoryProductRepositoryTest {
   void 삭제시_ID가_null이면_예외가_발생한다() {
     assertThatThrownBy(() -> repository.deleteById(null))
         .isInstanceOf(NullPointerException.class)
-        .hasMessage("id cannot be null");
+        .hasMessage("ID는 null일 수 없습니다");
   }
 
   @Test
@@ -136,8 +143,10 @@ class InMemoryProductRepositoryTest {
     Long id2 = repository.save(new Product(null, "상품2", 20000, "설명2", "image2.jpg"));
     Long id3 = repository.save(new Product(null, "상품3", 30000, "설명3", "image3.jpg"));
 
-    assertThat(id1).isLessThan(id2);
-    assertThat(id2).isLessThan(id3);
+    assertAll(
+        () -> assertThat(id1).isLessThan(id2),
+        () -> assertThat(id2).isLessThan(id3)
+    );
   }
 
   @Test
@@ -165,8 +174,10 @@ class InMemoryProductRepositoryTest {
 
     Optional<Product> foundProduct = repository.findById(savedId);
 
-    assertThat(foundProduct).isPresent();
-    assertThat(foundProduct.get().id()).isEqualTo(savedId);
+    assertAll(
+        () -> assertThat(foundProduct).isPresent(),
+        () -> assertThat(foundProduct.get().id()).isEqualTo(savedId)
+    );
   }
 
   @Test
@@ -174,14 +185,15 @@ class InMemoryProductRepositoryTest {
     Long id1 = repository.save(testProduct);
     Long id2 = repository.save(testProduct);
 
-    assertThat(id1).isNotEqualTo(id2);
-
     Optional<Product> product1 = repository.findById(id1);
     Optional<Product> product2 = repository.findById(id2);
 
-    assertThat(product1).isPresent();
-    assertThat(product2).isPresent();
-    assertThat(product1.get().id()).isNotEqualTo(product2.get().id());
+    assertAll(
+        () -> assertThat(id1).isNotEqualTo(id2),
+        () -> assertThat(product1).isPresent(),
+        () -> assertThat(product2).isPresent(),
+        () -> assertThat(product1.get().id()).isNotEqualTo(product2.get().id())
+    );
   }
 
   @Test
@@ -232,12 +244,14 @@ class InMemoryProductRepositoryTest {
     latch.await(5, TimeUnit.SECONDS);
     executorService.shutdown();
 
-    assertThat(results).hasSize(threadCount);
-    assertThat(results.stream().allMatch(Optional::isPresent)).isTrue();
-    assertThat(results.stream()
-        .map(Optional::get)
-        .map(Product::name)
-        .allMatch("테스트 상품"::equals)).isTrue();
+    assertAll(
+        () -> assertThat(results).hasSize(threadCount),
+        () -> assertThat(results.stream().allMatch(Optional::isPresent)).isTrue(),
+        () -> assertThat(results.stream()
+            .map(Optional::get)
+            .map(Product::name)
+            .allMatch("테스트 상품"::equals)).isTrue()
+    );
   }
 
   @Test
@@ -271,8 +285,10 @@ class InMemoryProductRepositoryTest {
 
     for (Long id : savedIds) {
       Optional<Product> product = repository.findById(id);
-      assertThat(product).isPresent();
-      assertThat(product.get().name()).startsWith("업데이트된상품");
+      assertAll(
+          () -> assertThat(product).isPresent(),
+          () -> assertThat(product.get().name()).startsWith("업데이트된상품")
+      );
     }
   }
 
@@ -314,9 +330,11 @@ class InMemoryProductRepositoryTest {
     latch.await(5, TimeUnit.SECONDS);
     executorService.shutdown();
 
-    assertThat(savedIds).hasSize(saveThreadCount);
-    assertThat(readResults).hasSize(readThreadCount);
-    assertThat(readResults.stream().allMatch(Optional::isPresent)).isTrue();
+    assertAll(
+        () -> assertThat(savedIds).hasSize(saveThreadCount),
+        () -> assertThat(readResults).hasSize(readThreadCount),
+        () -> assertThat(readResults.stream().allMatch(Optional::isPresent)).isTrue()
+    );
   }
 
   @Test
@@ -381,7 +399,9 @@ class InMemoryProductRepositoryTest {
     latch.await(5, TimeUnit.SECONDS);
     executorService.shutdown();
 
-    assertThat(results).hasSize(threadCount);
-    assertThat(results.stream().allMatch(list -> list.size() <= 10)).isTrue();
+    assertAll(
+        () -> assertThat(results).hasSize(threadCount),
+        () -> assertThat(results.stream().allMatch(list -> list.size() <= 10)).isTrue()
+    );
   }
 }

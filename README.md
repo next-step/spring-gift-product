@@ -29,8 +29,11 @@ Spring Boot 기반의 간단한 상품 관리 API입니다.
 - [ ] 상품 품절 상태 관리
 - [ ] 등록일 기준 정렬 기능
 
-# 🛒 2단계 - 상품 관리 웹 애플리케이션
+
+# 🛒 2단계 - 관리자 화면
 Spring Boot와 Thymeleaf 기반의 상품 관리 웹 애플리케이션입니다. 관리자가 **웹 브라우저**를 통해 상품을 **조회, 등록, 수정, 삭제**할 수 있는 관리 시스템을 제공합니다.
+
+---
 
 ## ✅ 구현할 기능 목록
 
@@ -79,4 +82,44 @@ Spring Boot와 Thymeleaf 기반의 상품 관리 웹 애플리케이션입니다
 | GET | `/admin/products/edit/{id}` | 상품 수정 폼 |
 | POST | `/admin/products/edit/{id}` | 상품 수정 처리 |
 | POST | `/admin/products/delete/{id}` | 상품 삭제 처리 |
+
+# 🧱 3단계 - 데이터베이스 적용
+
+이 단계에서는 기존에 자바 컬렉션 프레임워크로 메모리에 저장하던 상품 정보를 **H2 데이터베이스**에 영구적으로 저장하도록 변경합니다.
+
+---
+
+## ✅ 구현 목표
+
+### 📌 1. H2 데이터베이스 연동
+- [x] H2 데이터베이스 의존성 추가
+- [x] DataSource 및 H2 설정 구성
+
+### 📌 2. JDBC 기반 Repository 구현
+- [x] `JdbcTemplate`과 `SimpleJdbcInsert`를 활용한 `ProductRepository` 구현
+- [x] CRUD 기능 완전 구현
+
+### 📌 3. 환경별 Repository 설정 관리
+- [x] **`dev` 프로파일 활성화 시 `JdbcProductRepository` 자동 등록**
+- [x] 테스트 및 운영 환경에서 Repository 구현체 유연한 교체 지원
+
+### 📌 4. 데이터베이스 스키마 및 초기 데이터
+- [x] `resources/schema.sql` 작성:
+  - `product` 테이블 생성 스크립트
+  - 초기 테스트 데이터 삽입 쿼리
+
+---
+
+## 🔧 주요 구현 포인트
+
+- **프로파일 기반 설정**: 개발/테스트/운영 환경별 Repository 구현체 분리
+- **JDBC Template 활용**: Spring의 JDBC 추상화를 통한 안전한 DB 접근
+- **스키마 자동 초기화**: 애플리케이션 시작 시 테이블 생성 및 데이터 로드
+
+---
+
+## 🚀 향후 확장 계획
+- [ ] Spring Data JPA 기반 Repository 구현체 추가
+- [ ] E2E 테스트 케이스 추가
+- [ ] CI 파이프라인으로 테스트 자동화
 
