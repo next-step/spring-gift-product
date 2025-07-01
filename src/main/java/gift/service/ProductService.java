@@ -25,7 +25,7 @@ public class ProductService {
     this.productRepository = productRepository;
   }
 
-  private Product findProductByIdFun(Long id) {
+  private Product findProductByIdOrFail(Long id) {
     Product product = productRepository.findById(id);
       if (product == null) {
           throw new ProductNotFoundException();
@@ -34,7 +34,7 @@ public class ProductService {
   }
 
   public ProductResponseDto findProductById(Long productId) {
-    return findProductByIdFun(productId).toDto();
+    return findProductByIdOrFail(productId).toDto();
   }
 
   public ProductResponseDto saveProduct(ProductRequestDto dto) {
@@ -67,7 +67,7 @@ public class ProductService {
   }
 
   public void deleteProduct(Long productId) {
-    findProductByIdFun(productId);
+    findProductByIdOrFail(productId);
     productRepository.deleteById(productId);
   }
 
