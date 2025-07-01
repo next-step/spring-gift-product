@@ -74,8 +74,8 @@ public class ProductRepositoryImpl implements ProductRepository{
     }
 
     @Override
-    public void updateById(Long id, Product product) {
-        jdbcClient.sql("""
+    public boolean updateById(Long id, Product product) {
+        int updated = jdbcClient.sql("""
             UPDATE products
             SET name = :name, price = :price, image_url = :imageUrl
             WHERE id = :id
@@ -85,5 +85,7 @@ public class ProductRepositoryImpl implements ProductRepository{
                 .param("imageUrl", product.getImageUrl())
                 .param("id", id)
                 .update();
+
+        return updated > 0;
     }
 }
