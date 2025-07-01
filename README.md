@@ -7,14 +7,14 @@
 
 ### 상품 API
 
-|URL|메서드|기능|설명|
-|--|--|--|--|
-|/api/products|POST|상품 생성|새 상품 등록|
-|/api/products/{productId}|GET|상품 단건 조회|특정 상품의 정보 조회|
-|/api/products|GET|상품 전체 조회|모든 상품의 정보 조회|
-|/api/products/{productId}|PUT|상품 수정|기존 상품의 정보 수정|
-|/api/products/{productId}|DELETE|상품 단건 삭제|특정 상품 삭제|
-|/api/products|DELETE|상품 전체 삭제|모든 상품 삭제|
+|URL|메서드|기능|설명|성공 시 상태코드|
+|--|--|--|--|--|
+|/api/products|POST|상품 생성|새 상품 등록|201 Created|
+|/api/products/{productId}|GET|상품 단건 조회|특정 상품의 정보 조회|200 OK|
+|/api/products|GET|상품 전체 조회|모든 상품의 정보 조회|200 OK|
+|/api/products/{productId}|PUT|상품 수정|기존 상품의 정보 수정|204 No Content|
+|/api/products/{productId}|DELETE|상품 단건 삭제|특정 상품 삭제|204 No Content|
+|/api/products|DELETE|상품 전체 삭제|모든 상품 삭제|204 No Content|
 
 
 2. 관리자 화면 구현
@@ -28,3 +28,10 @@
 |/management/products|GET|상품 목록 페이지 (목록 조회)|
 |/management/products/new|GET|상품 등록 페이지|
 |/management/products/{id}|GET|상품 수정 페이지|
+
+3. 데이터베이스 적용
+
+### 데이터베이스 연동: H2 & Spring JDBC
+
+- 상품 정보 관리를 위해 H2 데이터베이스를 사용한다.
+- `SimpleJdbcInsert` 및 `JdbcClient`를 활용하여 구현한다.
