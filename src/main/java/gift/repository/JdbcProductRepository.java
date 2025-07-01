@@ -17,31 +17,28 @@ public class JdbcProductRepository implements ProductRepository {
 
     private final JdbcTemplate jdbc;
     private final SimpleJdbcInsert insert;
+    private final RowMapper<Product> productRowMapper;
 
-    private final RowMapper<Product> rowMapper = (rs, rowNum) ->
-            new Product(
-                    rs.getLong("id"),
-                    rs.getString("name"),
-                    rs.getInt("price"),
-                    rs.getString("image_url")
-            );
-
-    public JdbcProductRepository(JdbcTemplate jdbc, DataSource dataSource) {
+    // 생성자를 통해 ProductRowMapper를 주입받습니다.
+    public JdbcProductRepository(JdbcTemplate jdbc, DataSource dataSource,
+            ProductRowMapper productRowMapper) {
         this.jdbc = jdbc;
         this.insert = new SimpleJdbcInsert(dataSource)
                 .withTableName("product")
                 .usingGeneratedKeyColumns("id");
+        this.productRowMapper = productRowMapper;
     }
 
     @Override
     public List<Product> findAll() {
-        return jdbc.query("SELECT id, name, price, image_url FROM product", rowMapper);
+        return jdbc.query("SELECT id, name, price, image_url FROM product", productRowMapper);
     }
 
     @Override
     public Optional<Product> findById(Long id) {
         List<Product> list = jdbc.query(
-                "SELECT id, name, price, image_url FROM product WHERE id = ?", rowMapper, id);
+                "SELECT id, name, price, image_url FROM product WHERE id = ?", productRowMapper,
+                id); // 사용
         return list.stream().findFirst();
     }
 
@@ -55,22 +52,30 @@ public class JdbcProductRepository implements ProductRepository {
     @Override
     public Product save(Product product) {
         if (product.id() == null || product.id() <= 0) {
-            Map<String, Object> params = new HashMap<>();
-            params.put("name", product.name());
-            params.put("price", product.price());
-            params.put("image_url", product.imageUrl());
-            Number key = insert.executeAndReturnKey(params);
-            return product.withId(key.longValue());
+            return insertProduct(product);
         } else {
-            int updated = jdbc.update(
-                    "UPDATE product SET name = ?, price = ?, image_url = ? WHERE id = ?",
-                    product.name(), product.price(), product.imageUrl(), product.id()
-            );
-            if (updated == 0) {
-                throw new IllegalArgumentException("상품을 찾을 수 없습니다: " + product.id());
-            }
-            return product;
+            return updateProduct(product);
         }
+    }
+
+    private Product insertProduct(Product product) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", product.name());
+        params.put("price", product.price());
+        params.put("image_url", product.imageUrl());
+        Number key = insert.executeAndReturnKey(params);
+        return product.withId(key.longValue());
+    }
+
+    private Product updateProduct(Product product) {
+        int updated = jdbc.update(
+                "UPDATE product SET name = ?, price = ?, image_url = ? WHERE id = ?",
+                product.name(), product.price(), product.imageUrl(), product.id()
+        );
+        if (updated == 0) {
+            throw new IllegalArgumentException("상품을 찾을 수 없습니다: " + product.id());
+        }
+        return product;
     }
 
     @Override
