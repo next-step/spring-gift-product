@@ -18,8 +18,8 @@ public class Product {
         return new Product(id, name, price, imageUrl);
     }
 
-    public Product createUpdatedProduct(String name, Integer price, String imageUrl) {
-        return new Product(this.id, name, price, imageUrl);
+    public static Product of(String name, Integer price, String imageUrl) {
+        return new Product(null, name, price, imageUrl);
     }
 
     public Long getId() {
