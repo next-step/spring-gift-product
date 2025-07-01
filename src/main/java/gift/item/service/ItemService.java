@@ -27,6 +27,7 @@ public class ItemService {
         return new ItemDto(savedItem);
     }
 
+    @Transactional(readOnly = true)
     public ItemDto findItem(Long id) {
         Item item = itemRepository.findItem(id);
         if (item == null) {
@@ -35,6 +36,7 @@ public class ItemService {
         return new ItemDto(item);
     }
 
+    @Transactional(readOnly = true)
     public List<ItemDto> findAllItems() {
         List<Item> item = itemRepository.findAllItems();
         return item.stream()
