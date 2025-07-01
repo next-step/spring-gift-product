@@ -66,11 +66,14 @@ public class ProductService {
     }
 
     public List<ProductResponse> getAllProducts() {
-        Optional<List<Product>> optionalProducts = productRepository.getAll();
-        if (optionalProducts.isEmpty()) {
-            throw new RuntimeException("ProductService : getAllProducts() failed - 404 Not Found Error");
+        List<Product> products = productRepository.getAll();
+        if (products == null) {
+            throw new RuntimeException("ProductService : getAllProducts() failed - 500 Internal Server Error");
         }
-        return optionalProducts.get()
+        if (products.isEmpty()) {
+            return null;
+        }
+        return products
                 .stream()
                 .map(ProductResponse::from)
                 .toList();

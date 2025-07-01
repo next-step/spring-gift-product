@@ -39,13 +39,11 @@ public class ProductRepository {
                 .update();
     }
 
-    public Optional<List<Product>> getAll(){
+    public List<Product> getAll(){
         String sql = "SELECT * FROM product";
-        return Optional.of(
-                jdbcClient.sql(sql)
+        return jdbcClient.sql(sql)
                 .query(Product.class)
-                .list()
-        );
+                .list();
     }
 
     public int update(Product product){
