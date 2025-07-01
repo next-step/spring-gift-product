@@ -28,17 +28,20 @@ public class ProductService {
   }
 
   public Optional<Product> update(Long id, Product product) {
-    if (!productRepository.exists(id)) {
-      return Optional.empty();
+    Optional<Product> existing = productRepository.findById(id);
+    if (existing.isPresent()) {
+      productRepository.update(product);
+      return Optional.of(product);
     }
-    return Optional.of(productRepository.update(id, product));
+    return Optional.empty();
   }
 
   public boolean delete(Long id) {
-    if (!productRepository.exists(id)) {
-      return false;
+    Optional<Product> existing = productRepository.findById(id);
+    if (existing.isPresent()) {
+      productRepository.delete(id);
+      return true;
     }
-    productRepository.delete(id);
-    return true;
+    return false;
   }
 }
