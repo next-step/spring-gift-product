@@ -5,57 +5,49 @@ import gift.product.dto.ProductCreateRequestDto;
 import gift.product.dto.ProductResponseDto;
 import gift.product.dto.ProductUpdateRequestDto;
 import gift.product.entity.Product;
+import gift.product.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductService {
 
-    private final ConcurrentHashMap<Long, Product> products = new ConcurrentHashMap<>();
-    private final AtomicLong nextId = new AtomicLong(0);
+    private static final String PRODUCT_NOT_FOUND_MESSAGE = "해당 상품을 찾을 수 없습니다.";
+    private final ProductRepository productRepository;
 
-    private void validateProduct(Product product) {
-        if (product == null) {
-            throw new EntityNotFoundException("해당 상품을 찾을 수 없습니다.");
-        }
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
-    public ProductResponseDto createProduct(ProductCreateRequestDto product) {
-        final long newProductId = nextId.incrementAndGet();
-
-        Product newProduct = new Product(newProductId, product);
-        products.put(newProductId, newProduct);
-        return new ProductResponseDto(newProduct);
+    public ProductResponseDto createProduct(ProductCreateRequestDto requestDto) {
+        Long newProductId = productRepository.save(requestDto);
+        return new ProductResponseDto(new Product(newProductId, requestDto));
     }
 
-    public ProductResponseDto updateProduct(Long id, ProductUpdateRequestDto product) {
-        Product existingProduct = products.get(id);
-        validateProduct(existingProduct);
-
-        synchronized (existingProduct) {
-            existingProduct.update(product);
-            return new ProductResponseDto(existingProduct);
-        }
+    @Transactional
+    public ProductResponseDto updateProduct(Long id, ProductUpdateRequestDto requestDto) {
+        getProduct(id);
+        productRepository.update(id, requestDto);
+        return getProduct(id);
     }
 
+    @Transactional
     public void deleteProduct(Long id) {
-        Product existingProduct = products.get(id);
-        validateProduct(existingProduct);
-        products.remove(id);
+        getProduct(id);
+        productRepository.delete(id);
     }
 
     public List<ProductResponseDto> getProducts() {
-        return products.values().stream()
+        return productRepository.findAll().stream()
                 .map(ProductResponseDto::new)
                 .toList();
     }
 
     public ProductResponseDto getProduct(Long id) {
-        Product product = products.get(id);
-        validateProduct(product);
-        return new ProductResponseDto(product);
+        return new ProductResponseDto(
+                productRepository.findById(id)
+                        .orElseThrow(() -> new EntityNotFoundException(PRODUCT_NOT_FOUND_MESSAGE)));
     }
 }
