@@ -20,42 +20,21 @@ import java.util.stream.Collectors;
 @Service
 public class ItemService {
 
-	private final JdbcTemplate jdbcTemplate;
+	private final ItemRepositoryImpl itemRepository;
 
-	public ItemService(JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}
+	public ItemService(ItemRepositoryImpl itemRepository) {this.itemRepository = itemRepository;}
 
 
 	public Long createItem(ItemRequest req) {
 
-		final String sql = "INSERT INTO item (name, price, image_url) VALUES (?, ?, ?)";
-
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-
 		Item item = new Item(req.name(), req.price(), req.imageUrl());
-
-
-
-		jdbcTemplate.update(connection -> {
-			PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			ps.setString(1, item.getName());
-			ps.setInt(2, item.getPrice());
-			ps.setString(3, item.getImageUrl());
-			return ps;
-		}, keyHolder);
-
-		return keyHolder.getKey().longValue();
+		
+		return itemRepository.save(item);
 	}
 
 	public List<GetItemResponse> getAllItems() {
 
-		final String sql = "select * from item";
-
-		List<Item> items =  jdbcTemplate.query(sql, (rs, rowNum) -> new Item(
-			rs.getLong("id"),
-			rs.getString("name"),
-			rs.getInt("price"),
-			rs.getString("image_url")
-		));
+		List<Item> items = itemRepository.findAll();
 
 		return items.stream()
 			.map(
@@ -71,16 +50,8 @@ public class ItemService {
 
 	public GetItemResponse getItem(Long itemId) {
 
-		final String sql = "select * from item where id = ?";
-
-		// todo: 존재 확인 로직
-
-		Item item =  jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new Item(
-			rs.getLong("ID"),
-			rs.getString("NAME"),
-			rs.getInt("PRICE"),
-			rs.getString("IMAGE_URL")
-		), itemId);
+		Item item = itemRepository.findById(itemId)
+			.orElseThrow(() -> new RuntimeException("존재하지 않는 아이템입니다."));
 
 		return new GetItemResponse(item.getId(), item.getName(), item.getPrice(), item.getImageUrl());
 	}
@@ -88,24 +59,24 @@ public class ItemService {
 
 	public GetItemResponse updateItem(Long itemId, ItemRequest req) {
 
-		// todo: 존재 확인 로직
+		itemRepository.findById(itemId)
+			.orElseThrow(() -> new RuntimeException("존재하지 않는 아이템입니다."));
 
+		Item item = new Item(itemId, req.name(), req.price(), req.imageUrl());
 
-		final String sql = "update item set name = ?, price = ?, image_url = ? where id = ?";
+		itemRepository.update(item);
 
-
-		jdbcTemplate.update(sql, req.name(), req.price(), req.imageUrl(), itemId);
 		return getItem(itemId);
 	}
 
 
 	public void deleteItem(Long itemId) {
 
-		// todo: 존재 확인 로직
+		itemRepository.findById(itemId)
+			.orElseThrow(() -> new RuntimeException("존재하지 않는 아이템입니다."));
 
+		itemRepository.deleteById(itemId);
 
-		final String sql = "delete from item where id = ?";
-		jdbcTemplate.update(sql, itemId);
 	}
 
 }

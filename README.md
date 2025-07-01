@@ -36,6 +36,6 @@
 - [X] validation 추가 
 - [X] db 초기화 및 목업데이터 삽입 로직 위치 변경 (service -> schema/data.sql) 
 - [X] Item 객체 사용으로 변경 
-- [ ] Optional로 NPE 대응
+- [X] Optional로 NPE 대응
 - [X] Repository 계층 구현
-- [ ] 서비스와 리포지토리의 분리
+- [X] 서비스와 리포지토리의 분리
