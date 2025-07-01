@@ -5,11 +5,13 @@ import gift.dto.ProductResponseDTO;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class ProductService {
     private final ProductRepository productRepository;
 
@@ -40,6 +42,7 @@ public class ProductService {
         );
     }
 
+    @Transactional
     public ProductResponseDTO create(ProductRequestDTO productRequestDTO) {
         Product product = new Product(
                 null,
@@ -58,6 +61,7 @@ public class ProductService {
         );
     }
 
+    @Transactional
     public ProductResponseDTO update(Integer id, ProductRequestDTO productRequestDTO) {
         Product updated = new Product(
                 id,
@@ -78,6 +82,7 @@ public class ProductService {
         );
     }
 
+    @Transactional
     public void delete(Integer id) {
         if (productRepository.delete(id) == 0) {
             throw new IllegalArgumentException("Product not found");
