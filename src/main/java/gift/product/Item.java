@@ -17,6 +17,13 @@ public class Item {
 		this.imageUrl = imageUrl;
 	}
 
+	public Item(Long id, String name, Integer price, String imageUrl) {
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.imageUrl = imageUrl;
+	}
+
 	public Long getId() {
 		return id;
 	}

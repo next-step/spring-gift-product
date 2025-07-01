@@ -35,3 +35,5 @@
     - [X] 게시글 삭제
 - [X] validation 추가 
 - [X] db 초기화 및 목업데이터 삽입 로직 위치 변경 (service -> schema/data.sql) 
+- [X] Item 객체 사용으로 변경 
+- [ ] Optional로 NPE 대응
