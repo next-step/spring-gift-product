@@ -16,8 +16,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class JdbcProductRepository implements ProductRepository {
 
-    private final JdbcTemplate jdbcTemplate;
+    private static final int NO_ROWS_AFFECTED = 0;
 
+    private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Product> productRowMapper = (rs, rowNum) -> new Product(
             rs.getLong("id"),
             rs.getString("name"),
@@ -79,6 +80,6 @@ public class JdbcProductRepository implements ProductRepository {
     public boolean delete(Long id) {
         String sql = "DELETE FROM products WHERE id = ?";
         int affectedRows = jdbcTemplate.update(sql, id);
-        return affectedRows > 0;
+        return affectedRows > NO_ROWS_AFFECTED;
     }
 }
