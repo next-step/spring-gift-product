@@ -15,9 +15,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public class JdbcProductRepository implements ProductRepository{
   private final NamedParameterJdbcTemplate jdbcTemplate;
   private final SimpleJdbcInsert jdbcInsert;
@@ -40,7 +38,7 @@ public class JdbcProductRepository implements ProductRepository{
   @Override
   public Optional<Product> findById(Long id) {
     Objects.requireNonNull(id,"ID은 null이 될 수 없습니다.");
-    String sql = "SELECT * FROM Product WHERE id = :id";
+    String sql = "SELECT * FROM product WHERE id = :id";
     try {
       Map<String, Object> params = Map.of("id", id);
       return Optional.of(jdbcTemplate.queryForObject(sql, params, productRowMapper()));
@@ -51,9 +49,10 @@ public class JdbcProductRepository implements ProductRepository{
 
   @Override
   public List<Product> findAll(int offset, int pageSize, SortInfo sortInfo) {
+    String sortDirection = sortInfo.isAscending() ? "ASC" : "DESC";
     String sql = String.format(
         "SELECT * FROM product ORDER BY %s %s LIMIT :limit OFFSET :offset",
-        sortInfo.field(), sortInfo.isAscending()
+        sortInfo.field(), sortDirection
     );
 
     MapSqlParameterSource params = new MapSqlParameterSource()
@@ -68,7 +67,7 @@ public class JdbcProductRepository implements ProductRepository{
     Objects.requireNonNull(id,"ID는 null일 수 없습니다");
     Objects.requireNonNull(updateProduct,"상품은 null일 수 없습니다");
 
-    String sql = "UPDATE product SET name = :name, price = :price, description = :description, imageUrl =: imageUrl " +
+    String sql = "UPDATE product SET name = :name, price = :price, description = :description, image_url = :imageUrl " +
         "WHERE id = :id";
 
     SqlParameterSource params = new MapSqlParameterSource()
@@ -88,7 +87,7 @@ public class JdbcProductRepository implements ProductRepository{
   public void deleteById(Long id) {
     Objects.requireNonNull(id,"ID는 null일 수 없습니다");
 
-    String sql = "DELETE FROM schedule WHERE id = :id";
+    String sql = "DELETE FROM product WHERE id = :id";
     SqlParameterSource params = new MapSqlParameterSource()
         .addValue("id",id);
 
@@ -97,8 +96,13 @@ public class JdbcProductRepository implements ProductRepository{
       throw new IllegalArgumentException("삭제 실패");
     }
   }
-
   private RowMapper<Product> productRowMapper(){
-    return BeanPropertyRowMapper.newInstance(Product.class);
+    return (rs, rowNum) -> Product.withId(
+        rs.getLong("id"),
+        rs.getString("name"),
+        rs.getInt("price"),
+        rs.getString("description"),
+        rs.getString("image_url")
+    );
   }
 }
