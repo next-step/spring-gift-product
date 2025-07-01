@@ -17,3 +17,20 @@
 - [x] 상품 추가
 - [x] 상품 수정
 - [x] 상품 삭제
+
+## 3️⃣ step3: 데이터베이스 적용
+
+- [x] 데이터베이스 설정
+    - [x] H2 데이터베이스 연동 설정
+    - [x] schema.sql 파일로 product 테이블 구조 정의
+    - [x] data.sql 파일로 초기 데이터 삽입
+- [x] JdbcClient를 활용한 DB 연동 구현
+    - [x] Map 기반 임시 저장소 제거
+    - [x] JdbcClient를 통한 DB 접근 구현
+    - [x] SQL 기반 CRUD 로직 적용
+        - [x] saveProduct: 상품 저장 (INSERT)
+        - [x] findProduct: ID로 상품 단건 조회 (SELECT)
+        - [x] findAllProducts: 상품 목록 조회 (SELECT)
+        - [x] deleteProduct: 상품 삭제 (DELETE)
+        - [x] updateProduct: 상품 수정 (UPDATE)
+    - [x] Product.class를 사용한 자동 객체 매핑 적용

@@ -36,7 +36,7 @@ public class ProductController {
 
     // 상품 단건 조회
     @GetMapping("/{productId}")
-    public ResponseEntity<ProductResponseDto> findProduct(@PathVariable long productId) {
+    public ResponseEntity<ProductResponseDto> findProduct(@PathVariable Long productId) {
         try {
             return ResponseEntity.ok(productService.findProduct(productId));
         } catch (IllegalArgumentException e) {
@@ -47,7 +47,7 @@ public class ProductController {
     // 상품 수정
     @PutMapping("/{productId}")
     public ResponseEntity<ProductResponseDto> updateProduct(
-            @PathVariable long productId,
+            @PathVariable Long productId,
             @RequestBody ProductRequestDto productRequestDto) {
 
         try {
@@ -59,7 +59,7 @@ public class ProductController {
 
     // 상품 삭제
     @DeleteMapping("/{productId}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable long productId) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
 
         try {
             productService.deleteProduct(productId);

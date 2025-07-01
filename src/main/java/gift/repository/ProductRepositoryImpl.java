@@ -1,45 +1,75 @@
 package gift.repository;
 
 import gift.entity.Product;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
 
-    // 임시 DB
-    private final Map<Long, Product> products = new HashMap<>();
+    // JdbcClient
+    private final JdbcClient client;
 
-    // id값
-    private long nextId = 1;
+    public ProductRepositoryImpl(JdbcClient client) {
+        this.client = client;
+    }
 
     @Override
     public Product saveProduct(Product product) {
-        long productId = nextId++;
-        product.setId(productId);
-        products.put(productId, product);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        return product;
+        var sql = "INSERT INTO product (name, price, image_url) VALUES (:name, :price, :image_url)";
+        client.sql(sql)
+              .param("name", product.getName())
+              .param("price", product.getPrice())
+              .param("image_url", product.getImageUrl())
+              .update(keyHolder);
+
+        return new Product(keyHolder.getKey().longValue(), product.getName(), product.getPrice(),
+                product.getImageUrl());
     }
 
     @Override
-    public Product findProduct(long productId) {
+    public Optional<Product> findProduct(Long productId) {
+        var sql = "SELECT * FROM product WHERE id = :id";
 
-        return products.get(productId);
+        return client.sql(sql)
+                     .param("id", productId)
+                     .query(Product.class)
+                     .optional();
     }
 
     @Override
-    public Product deleteProduct(long productId) {
-        return products.remove(productId);
+    public void updateProduct(Product product) {
+        var sql = "UPDATE product SET name = :name, price = :price, image_url = :image_url  WHERE id = :id";
+
+        client.sql(sql)
+              .param("name", product.getName())
+              .param("price", product.getPrice())
+              .param("image_url", product.getImageUrl())
+              .param("id", product.getId())
+              .update();
+    }
+
+    @Override
+    public void deleteProduct(Long productId) {
+        var sql = "DELETE FROM product WHERE id = :id";
+
+        client.sql(sql)
+              .param("id", productId)
+              .update();
     }
 
     @Override
     public List<Product> findAllProducts() {
+        var sql = "SELECT * FROM product";
 
-        return new ArrayList<>(products.values());
+        return client.sql(sql)
+                     .query(Product.class)
+                     .list();
     }
-
 }

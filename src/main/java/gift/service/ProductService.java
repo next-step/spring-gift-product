@@ -6,6 +6,7 @@ import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductService {
@@ -16,51 +17,55 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     public ProductResponseDto saveProduct(ProductRequestDto productRequestDto) {
-        Product product = new Product(null, productRequestDto.getName(),
-                productRequestDto.getPrice(), productRequestDto.getImageUrl());
+        Product product = new Product(null, productRequestDto.name(),
+                productRequestDto.price(), productRequestDto.imageUrl());
 
         Product savedProduct = productRepository.saveProduct(product);
 
-        return new ProductResponseDto(savedProduct);
+        return ProductResponseDto.from(savedProduct);
     }
 
-    public ProductResponseDto findProduct(long productId) {
-        Product product = productRepository.findProduct(productId);
-        if (product == null) {
-            throw new IllegalArgumentException();
-        }
+    @Transactional(readOnly = true)
+    public ProductResponseDto findProduct(Long productId) {
+        Product product = findProductOrThrow(productId);
 
-        return new ProductResponseDto(product);
+        return ProductResponseDto.from(product);
     }
 
-    public ProductResponseDto updateProduct(long productId, ProductRequestDto productRequestDto) {
-        Product product = productRepository.findProduct(productId);
-        if (product == null) {
-            throw new IllegalArgumentException();
-        }
-
+    @Transactional
+    public ProductResponseDto updateProduct(Long productId, ProductRequestDto productRequestDto) {
+        Product product = findProductOrThrow(productId);
         product.update(
-                productRequestDto.getName(),
-                productRequestDto.getPrice(),
-                productRequestDto.getImageUrl()
+                productRequestDto.name(),
+                productRequestDto.price(),
+                productRequestDto.imageUrl()
         );
 
-        return new ProductResponseDto(product);
+        productRepository.updateProduct(product);
+
+        return ProductResponseDto.from(product);
     }
 
-    public void deleteProduct(long productId) {
+    @Transactional
+    public void deleteProduct(Long productId) {
+        findProductOrThrow(productId);
 
-        if (productRepository.deleteProduct(productId) == null) {
-            throw new IllegalArgumentException();
-        }
+        productRepository.deleteProduct(productId);
     }
 
+    @Transactional(readOnly = true)
     public List<ProductResponseDto> findAllProducts() {
 
         return productRepository.findAllProducts()
                                 .stream()
-                                .map(ProductResponseDto::new)
+                                .map(ProductResponseDto::from)
                                 .toList();
+    }
+
+    private Product findProductOrThrow(Long productId) {
+        return productRepository.findProduct(productId)
+                                .orElseThrow(IllegalArgumentException::new);
     }
 }
