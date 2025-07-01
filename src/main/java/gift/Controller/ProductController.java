@@ -1,11 +1,13 @@
-package gift.Controller;
+package gift.controller;
 
-import gift.Dto.*;
-import gift.Entity.*;
+import gift.dto.*;
+import gift.entity.*;
 
+import gift.repository.ProductRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.*;
 
@@ -35,7 +37,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<?> add(@RequestBody ProductRequest request) {
+    public ResponseEntity<?> add(@RequestBody ProductRequestDto request) {
         String error = validate(request);
         if (error != null) {
             return ResponseEntity.badRequest().body(error);
@@ -47,14 +49,14 @@ public class ProductController {
                 request.getPrice(),
                 request.getImgUrl()
         );
-        Product saved = repository.save(product);
+        Product saved = repository.create(product);
 
         URI location = URI.create("/api/products/" + saved.getId());
         return ResponseEntity.created(location).body(saved);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ProductRequest request) {
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ProductRequestDto request) {
         Product existing = repository.findById(id).orElse(null);
         if (existing == null) {
             return ResponseEntity.notFound().build();
@@ -64,14 +66,14 @@ public class ProductController {
         if (error != null) {
             return ResponseEntity.badRequest().body(error);
         }
-      
+
         Product updated = new Product(
                 id,
                 request.getName(),
                 request.getPrice(),
                 request.getImgUrl()
         );
-        repository.save(updated);
+        repository.update(updated);
         return ResponseEntity.ok(updated);
     }
 
@@ -84,11 +86,11 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    private String validate(ProductRequest request) {
+    private String validate(ProductRequestDto request) {
         if (request.getName() == null || request.getName().isBlank()) {
             return "상품 이름은 비어 있을 수 없습니다.";
         }
-        if (request.getPrice() < 0) {
+        if (request.getPrice() == null || request.getPrice().compareTo(BigDecimal.ZERO) < 0) {
             return "가격은 0 이상이어야 합니다.";
         }
         if (request.getImgUrl() == null || request.getImgUrl().isBlank()) {

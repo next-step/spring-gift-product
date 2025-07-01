@@ -1,7 +1,7 @@
-package gift.Controller;
+package gift.controller;
 
-import gift.Entity.Product;
-import gift.Repository.ProductRepository;
+import gift.entity.Product;
+import gift.repository.ProductRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 public class AdminProductController {
 
     private final ProductRepository repository;
+
     public AdminProductController(ProductRepository repository) {
+
         this.repository = repository;
     }
 
@@ -29,7 +31,7 @@ public class AdminProductController {
 
     @PostMapping("/new")
     public String create(@ModelAttribute Product product) {
-        repository.save(product);
+        repository.create(product);
         return "redirect:/admin/products";
     }
 
@@ -46,7 +48,7 @@ public class AdminProductController {
     @PostMapping("/edit/{id}")
     public String update(@PathVariable Long id, @ModelAttribute Product product) {
         product.setId(id);
-        repository.save(product);
+        repository.update(product);
         return "redirect:/admin/products";
     }
 
