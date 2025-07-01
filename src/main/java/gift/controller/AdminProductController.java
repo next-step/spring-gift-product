@@ -42,7 +42,6 @@ public class AdminProductController {
     @PostMapping
     public String create(@ModelAttribute Product product) {
         Product saved = productService.create(product);
-        System.out.println("등록된 상품 ID: " + saved.getId());
         return "redirect:/admin/products";
     }
 
