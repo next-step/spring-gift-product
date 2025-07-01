@@ -40,9 +40,9 @@ public class ProductRepository {
     public Optional<Product> findById(Long id) {
 
         String sql = "select * from product where id = ?";
-        List<Product> productList = jdbcTemplate.query(sql ,productRowMapper, id);
 
-        return Optional.ofNullable(productList.getFirst());
+        // List<Product> productList = jdbcTemplate.query(sql ,productRowMapper, id);
+        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, productRowMapper, id));
     }
 
     //전체 조회
