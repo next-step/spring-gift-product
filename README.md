@@ -22,3 +22,13 @@
     * `PUT /admin/products/{id}` (폼 제출 후 상품 수정 처리)
 * [X] 상품 삭제 기능: 특정 상품 삭제 기능 구현
     * `DELETE /admin/products/{id}`
+
+## Step 3: 구현할 기능 목록
+
+* [X] step 2 리뷰 반영
+    * record class로 변경
+    * Product.java의 setter 함수명 명시적으로 변경
+* [X] H2 데이터베이스 연결 설정
+* [X] `schema.sql`에 테이블 스키마 정의 (AUTO_INCREMENT 포함)
+* [X] `data.sql`에 초기 데이터 삽입
+* [X] `JdbcTemplate` 기반 `ProductRepository` 구현

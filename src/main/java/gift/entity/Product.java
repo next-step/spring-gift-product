@@ -1,54 +1,33 @@
-// src/main/java/gift/entity/Product.java
 package gift.entity;
 
-public class Product {
+public record Product(
+        Long id,
+        String name,
+        int price,
+        String imageUrl
+) {
 
-    private Long id;
-    private String name;
-    private int price;
-    private String imageUrl;
-
-    public Product() {
+    // Factory method
+    public static Product createProduct(Long id, String name, int price, String imageUrl) {
+        if (id == null) {
+            throw new IllegalArgumentException("Product ID cannot be null");
+        }
+        return new Product(id, name, price, imageUrl);
     }
 
-    public Product(Long id, String name, int price, String imageUrl) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.imageUrl = imageUrl;
+    public Product withId(Long id) {
+        return new Product(id, this.name, this.price, this.imageUrl);
     }
 
-    // getters / setters
-
-    public Long getId() {
-        return id;
+    public Product withName(String name) {
+        return new Product(this.id, name, this.price, this.imageUrl);
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Product withPrice(int price) {
+        return new Product(this.id, this.name, price, this.imageUrl);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public Product withImageUrl(String imageUrl) {
+        return new Product(this.id, this.name, this.price, imageUrl);
     }
 }

@@ -34,7 +34,7 @@ public class AdminProductController {
 
     @GetMapping("/new")
     public String createForm(Model model) {
-        model.addAttribute("product", new Product());
+        model.addAttribute("product", new Product(null, "", 0, ""));
         return "/admin/product_form";
     }
 
@@ -49,7 +49,7 @@ public class AdminProductController {
 
     @PostMapping
     public String create(@Valid @ModelAttribute("product") ProductRequest req) {
-        Product toSave = new Product(null, req.getName(), req.getPrice(), req.getImageUrl());
+        Product toSave = new Product(null, req.name(), req.price(), req.imageUrl());
         productService.createProduct(toSave);
         return "redirect:/admin/products";
     }
@@ -58,7 +58,7 @@ public class AdminProductController {
     @PutMapping("/{id}")
     public String update(@PathVariable("id") Long id,
             @Valid @ModelAttribute("product") ProductRequest req) {
-        Product toUpdate = new Product(id, req.getName(), req.getPrice(), req.getImageUrl());
+        Product toUpdate = new Product(id, req.name(), req.price(), req.imageUrl());
         productService.updateProduct(id, toUpdate);
         return "redirect:/admin/products";
     }

@@ -66,12 +66,12 @@ public class ProductController {
     }
 
     private Product toEntity(ProductRequest r) {
-        return new Product(null, r.getName(), r.getPrice(), r.getImageUrl());
+        return new Product(null, r.name(), r.price(), r.imageUrl());
     }
 
     private ProductResponse toResponse(Product e) {
         return new ProductResponse(
-                e.getId(), e.getName(), e.getPrice(), e.getImageUrl()
+                e.id(), e.name(), e.price(), e.imageUrl()
         );
     }
 }
