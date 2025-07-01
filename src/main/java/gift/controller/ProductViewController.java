@@ -3,6 +3,7 @@ package gift.controller;
 import gift.dto.ProductRequestDTO;
 import gift.dto.ProductResponseDTO;
 import gift.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +27,7 @@ public class ProductViewController {
     }
 
     @PostMapping("/create")
-    public String createProduct(@ModelAttribute ProductRequestDTO product) {
+    public String createProduct(@Valid @ModelAttribute ProductRequestDTO product) {
         productService.create(product);
         return "redirect:/products";
     }
@@ -34,7 +35,7 @@ public class ProductViewController {
     @PostMapping("/update")
     public String updateProduct(
             @RequestParam("id") Integer id,
-            @ModelAttribute ProductRequestDTO product) {
+            @Valid @ModelAttribute ProductRequestDTO product) {
         productService.update(id, product);
         return "redirect:/products";
     }
