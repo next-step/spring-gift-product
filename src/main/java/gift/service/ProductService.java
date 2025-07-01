@@ -26,10 +26,10 @@ public class ProductService{
         return ProductResponse.of(product.getName(), product.getPrice(), product.getImageUrl());
     }
 
-    public Long save(ProductRequest request) {
+    public Long insert(ProductRequest request) {
         validateRequest(request);
 
-        Long id = productRepository.save(ProductMapper.toEntity(request));
+        Long id = productRepository.insert(ProductMapper.toEntity(request));
         return id;
     }
 

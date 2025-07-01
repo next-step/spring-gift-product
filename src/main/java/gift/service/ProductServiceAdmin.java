@@ -26,8 +26,8 @@ public class ProductServiceAdmin{
         return productRepository.findAll();
     }
 
-    public void saveAdmin(Product product) {
-        productRepository.save(product);
+    public void insertAdmin(Product product) {
+        productRepository.insert(product);
     }
 
     public void updateAdmin(ProductRequest request) {

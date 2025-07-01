@@ -34,7 +34,7 @@ public class ProductRepository {
         return Optional.of(jdbcTemplate.queryForObject(sql, rowMapper, productId));
     }
 
-    public Long save(Product product) {
+    public Long insert(Product product) {
         String sql = "insert into products(name, price, image_url) "
             + "values(?,?,?) ";
 

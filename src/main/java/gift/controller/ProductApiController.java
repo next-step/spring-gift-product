@@ -50,7 +50,7 @@ public class ProductApiController {
     public ProductCreateResponse createProduct(
         @RequestBody ProductRequest request
     ) {
-        Long id = productService.save(request);
+        Long id = productService.insert(request);
 
         return new ProductCreateResponse(id);
     }
