@@ -73,6 +73,15 @@ public class ProductRepository {
         return keyHolder.getKey().longValue();
     }
 
+    public boolean existsById(Long id) {
+        var sql = "SELECT COUNT(*) FROM product WHERE id = :id";
+
+        return client.sql(sql)
+            .param("id", id)
+            .query(Long.class)
+            .single() > 0;
+    }
+
     public int update(Product product) {
         var sql = """
         UPDATE product
