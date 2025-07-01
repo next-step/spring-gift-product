@@ -5,11 +5,13 @@ import gift.dto.ProductResponseDTO;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class ProductService {
     private final ProductRepository productRepository;
 
@@ -31,9 +33,7 @@ public class ProductService {
 
     public ProductResponseDTO getById(Integer id) {
         Product product = productRepository.findById(id);
-        if (product == null) {
-            throw new IllegalArgumentException("Product not found");
-        }
+
         return new ProductResponseDTO(
                 product.getId(),
                 product.getName(),
@@ -42,44 +42,50 @@ public class ProductService {
         );
     }
 
+    @Transactional
     public ProductResponseDTO create(ProductRequestDTO productRequestDTO) {
         Product product = new Product(
                 null,
-                productRequestDTO.getName(),
-                productRequestDTO.getPrice(),
-                productRequestDTO.getImageUrl()
+                productRequestDTO.name(),
+                productRequestDTO.price(),
+                productRequestDTO.imageUrl()
         );
 
         Product saved = productRepository.save(product);
 
         return new ProductResponseDTO(
-                saved.getId(),
+                null,
                 saved.getName(),
                 saved.getPrice(),
                 saved.getImageUrl()
         );
     }
 
+    @Transactional
     public ProductResponseDTO update(Integer id, ProductRequestDTO productRequestDTO) {
-        Product product = productRepository.findById(id);
-        if (product == null) {
+        Product updated = new Product(
+                id,
+                productRequestDTO.name(),
+                productRequestDTO.price(),
+                productRequestDTO.imageUrl()
+        );
+
+        if (productRepository.update(id, updated) == 0) {
             throw new IllegalArgumentException("Product not found");
         }
-        product.update(productRequestDTO.getName(), productRequestDTO.getPrice(), productRequestDTO.getImageUrl());
 
         return new ProductResponseDTO(
-                product.getId(),
-                product.getName(),
-                product.getPrice(),
-                product.getImageUrl()
+                updated.getId(),
+                updated.getName(),
+                updated.getPrice(),
+                updated.getImageUrl()
         );
     }
 
+    @Transactional
     public void delete(Integer id) {
-        Product product = productRepository.findById(id);
-        if (product == null) {
+        if (productRepository.delete(id) == 0) {
             throw new IllegalArgumentException("Product not found");
         }
-        productRepository.delete(id);
     }
 }

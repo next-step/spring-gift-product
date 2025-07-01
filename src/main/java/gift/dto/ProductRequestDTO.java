@@ -1,23 +1,13 @@
 package gift.dto;
 
+import jakarta.validation.constraints.Size;
+
 import java.math.BigInteger;
 
-public class ProductRequestDTO {
-    private final String name;
-    private final BigInteger price;
-    private final String imageUrl;
-
-    public ProductRequestDTO(String name, BigInteger price, String imageUrl) {
-        this.name = name;
-        this.price = price;
-        this.imageUrl = imageUrl;
-    }
-
-    public String getName() {
-        return name;
-    }
-    public BigInteger getPrice() { return price; }
-    public String getImageUrl() {
-        return imageUrl;
-    }
-}
+public record ProductRequestDTO (
+        @Size(max = 255, message = "상품명은 255자를 초과할 수 없습니다.")
+        String name,
+        BigInteger price,
+        @Size(max = 1000, message = "이미지 URL은 1000자를 초과할 수 없습니다.")
+        String imageUrl
+) {}
