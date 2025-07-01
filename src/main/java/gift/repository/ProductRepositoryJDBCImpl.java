@@ -74,7 +74,10 @@ public class ProductRepositoryJDBCImpl implements ProductRepository {
             .param("imageUrl", product.getImageUrl())
             .update();
 
-        return product;
+        return jdbcClient.sql("SELECT * FROM product WHERE id = :id")
+            .param("id", product.getId())
+            .query(ROW_MAPPER)
+            .single();
     }
 
     @Override
