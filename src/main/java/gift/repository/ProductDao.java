@@ -2,8 +2,11 @@ package gift.repository;
 
 import gift.model.Product;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -13,45 +16,35 @@ public class ProductDao {
     public ProductDao(JdbcTemplate jdbcTemplate) { this.jdbcTemplate = jdbcTemplate; }
 
     public void insertProduct(Product product) {
-        var sql = "insert into product(id, name, price, image) values(?, ?, ?, ?)";
-        jdbcTemplate.update(sql, product.getId(), product.getName(), product.getPrice(), product.getImage());
+        final var sql = "insert into product(name, price, image) values(?, ?, ?)";
+        jdbcTemplate.update(sql, product.getName(), product.getPrice(), product.getImage());
     }
     public List<Product> getAllProducts() {
-        var sql = "select * from product";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> new Product(
-                rs.getLong("id"),
-                rs.getString("name"),
-                rs.getInt("price"),
-                rs.getString("image")
-        ));
+        final var sql = "select * from product";
+        return jdbcTemplate.query(sql, new ProductRowMapper());
     }
     public Product getProductById(long id) {
-        var sql = "select * from product where id = ?";
-        return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> new Product(
-                rs.getLong("id"),
-                rs.getString("name"),
-                rs.getInt("price"),
-                rs.getString("image")
-        ), id);
+        final var sql = "select * from product where id = ?";
+        return jdbcTemplate.queryForObject(sql, new ProductRowMapper(),id);
     }
     public void removeProduct(long id) {
-        var sql = "delete from product where id = ?";
+        final var sql = "delete from product where id = ?";
         jdbcTemplate.update(sql, id);
     }
-    public void updateProduct(Long id, Product product_origin, Product product) {
-        var sql = "UPDATE product SET name = ?, price = ?, image = ? WHERE id = ?";
-        if (product.getId() == null){
-            product.setId(product_origin.getId());
-        }
-        if (product.getName() == null){
-            product.setName(product_origin.getName());
-        }
-        if (product.getPrice() == null){
-            product.setPrice(product_origin.getPrice());
-        }
-        if (product.getImage() == null){
-            product.setImage(product_origin.getImage());
-        }
+    public void updateProduct(Long id, Product product, Product product_changed) {
+        final var sql = "UPDATE product SET name = ?, price = ?, image = ? WHERE id = ?";
+        product.updateFields(product_changed);
         jdbcTemplate.update(sql, product.getName(), product.getPrice(), product.getImage(),id);
+    }
+    public class ProductRowMapper implements RowMapper<Product> {
+        @Override
+        public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new Product(
+                    rs.getLong("id"),
+                    rs.getString("name"),
+                    rs.getInt("price"),
+                    rs.getString("image")
+            );
+        }
     }
 }

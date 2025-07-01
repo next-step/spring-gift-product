@@ -30,4 +30,19 @@ public class Product {
     public void setImage(String image) {
         this.image = image;
     }
+
+    public void updateFields(Product partialProduct){
+        if (partialProduct == null) {
+            return;
+        }
+        if (partialProduct.name != null) {
+            this.name = partialProduct.name;
+        }
+        if (partialProduct.price != null) {
+            this.price = partialProduct.price;
+        }
+        if (partialProduct.image != null) {
+            this.image = partialProduct.image;
+        }
+    }
 }
