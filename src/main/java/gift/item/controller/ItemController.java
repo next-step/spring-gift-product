@@ -4,6 +4,7 @@ import gift.item.dto.CreateItemDto;
 import gift.item.dto.ItemDto;
 import gift.item.dto.UpdateItemDto;
 import gift.item.service.ItemService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class ItemController {
     //상품 생성
     @PostMapping("/api/products")
     public ResponseEntity<ItemDto> addItem(
-            @RequestBody CreateItemDto dto
+            @RequestBody @Valid CreateItemDto dto
     ) {
         ItemDto itemDto = itemService.saveItem(dto);
         return ResponseEntity.ok(itemDto);
@@ -57,7 +58,7 @@ public class ItemController {
     @PutMapping("/api/products/{id}")
     public ResponseEntity<ItemDto> updateItem(
             @PathVariable Long id,
-            @RequestBody UpdateItemDto dto
+            @RequestBody @Valid UpdateItemDto dto
     ) {
         itemService.updateItem(id, dto);
         return ResponseEntity.noContent().build();
