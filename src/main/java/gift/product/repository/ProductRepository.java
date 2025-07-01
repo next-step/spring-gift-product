@@ -1,49 +1,59 @@
 package gift.product.repository;
 
 import gift.product.Product;
-import gift.product.dto.ProductRequest;
-import gift.product.dto.ProductUpdateRequest;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
 public class ProductRepository {
-    private final Map<Long, Product> products = new HashMap<>();
+    private final JdbcClient jdbcClient;
 
-    private static Long nextId = 1L;
+    public ProductRepository(JdbcClient jdbcClient) {
+        this.jdbcClient = jdbcClient;
+    }
 
-    public Optional<Product> save(ProductRequest request){
-        if (products.containsKey(nextId)){
-            return Optional.empty();
-        }
-        Product product = new Product(nextId, request.name(), request.price(), request.imageUrl());
-        products.put(nextId, product);
-        nextId = nextId + 1;
+    public Optional<Product> save(Product product){
+        String insertSql = "INSERT INTO product (name, price, image_url) VALUES (:name, :price, :imageUrl)";
+        jdbcClient.sql(insertSql)
+                .param("name", product.getName())
+                .param("price", product.getPrice())
+                .param("imageUrl", product.getImageUrl())
+                .update();
         return Optional.of(product);
     }
 
     public Optional<Product> get(Long id) {
-        if (products.containsKey(nextId)){
-            return Optional.empty();
-        }
-        return Optional.of(products.get(id));
+        String sql = "SELECT * FROM product WHERE id = :id";
+        return jdbcClient.sql(sql)
+                .param("id", id)
+                .query(Product.class)
+                .optional();
     }
 
     public void delete(Long id){
-        products.remove(id);
+        String sql = "DELETE FROM product WHERE id = :id";
+        jdbcClient.sql(sql)
+                .param("id", id)
+                .update();
     }
 
-    public Optional<List<Product>> getAll(){
-        List<Product> productList = new ArrayList<>(products.values());
-        return Optional.of(productList);
+    public List<Product> getAll(){
+        String sql = "SELECT * FROM product";
+        return jdbcClient.sql(sql)
+                .query(Product.class)
+                .list();
     }
 
-    public Product update(Long id, ProductUpdateRequest request){
-        Product product = products.get(id);
-        products.remove(id);
-        Product updatedProduct = new Product(id, request.name(), request.price(), request.imageUrl());
-        products.put(id, updatedProduct);
-        return updatedProduct;
+    public int update(Product product){
+        String updateSql = "UPDATE product SET name = :name, price = :price, image_url = :imageUrl WHERE id = :id";
+
+        return jdbcClient.sql(updateSql)
+                .param("id", product.getId())
+                .param("name", product.getName())
+                .param("price", product.getPrice())
+                .param("imageUrl", product.getImageUrl())
+                .update();
     }
 }
