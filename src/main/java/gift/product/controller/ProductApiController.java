@@ -21,12 +21,6 @@ public class ProductApiController {
         this.productService = productService;
     }
 
-    /**
-     * 상품 등록 API
-     *
-     * @param requestDto
-     * @return
-     */
     @PostMapping
     public ResponseEntity<Void> addProduct(@RequestBody @Valid ProductRequestDto requestDto){
         Product savedProduct = productService.saveProduct(requestDto);
@@ -34,11 +28,6 @@ public class ProductApiController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    /**
-     * 전체 상품 조회 API
-     *
-     * @return
-     */
     @GetMapping
     public ResponseEntity<List<ProductResponseDto>> getProducts(){
         List<ProductResponseDto> responses = productService.getProducts()
@@ -49,40 +38,21 @@ public class ProductApiController {
         return ResponseEntity.ok(responses);
     }
 
-    /**
-     * 특정 상품 조회 API
-     *
-     * @param id
-     * @return
-     */
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDto> getProduct(@PathVariable Long id){
         Product product = productService.getProduct(id);
         return ResponseEntity.ok(ProductResponseDto.productFrom(product));
     }
 
-    /**
-     * 상품 업데이트 API
-     *
-     * @param id
-     * @param requestDto
-     * @return
-     */
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateProduct(@PathVariable Long id, @RequestBody @Valid ProductRequestDto requestDto){
         productService.update(id, requestDto);
-        return ResponseEntity.noContent().build(); // 204
+        return ResponseEntity.noContent().build();
     }
 
-    /**
-     * 상품 삭제 API
-     *
-     * @param id
-     * @return
-     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id){
         productService.delete(id);
-        return ResponseEntity.noContent().build(); // 204
+        return ResponseEntity.noContent().build();
     }
 }

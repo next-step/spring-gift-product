@@ -1,7 +1,5 @@
 package gift.product.domain;
 
-import gift.product.dto.ProductRequestDto;
-
 public class Product {
     private Long id;
     private String name;
@@ -12,9 +10,7 @@ public class Product {
         this(null, name, price, imageUrl);
     }
 
-    public Product(Long id, ProductRequestDto requestDto){
-        this(id, requestDto.name(), requestDto.price(), requestDto.imageUrl());
-    }
+    public Product() {}
 
     public Product(Long id, String name, int price, String imageUrl){
         this.id = id;
@@ -39,6 +35,17 @@ public class Product {
         return imageUrl;
     }
 
+    public void setId(Long id){
+        this.id = id;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public void setPrice(int price){
+        this.price = price;
+    }
     public void update(String name, int price, String imageUrl) {
         this.name = name;
         this.price = price;
