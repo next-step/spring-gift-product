@@ -8,9 +8,6 @@ public class Item {
     private String imageUrl;
 
     public Item(Long id, String name, int price, String imageUrl) {
-        if (id == null) {
-            throw new IllegalArgumentException("상품 ID는 비어있을 수 없습니다.");
-        }
         this.id = id;
         this.name = name;
         this.price = price;

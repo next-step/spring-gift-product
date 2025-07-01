@@ -20,11 +20,7 @@ public class ItemService {
     }
 
     public ItemResponse createItem(ItemRequest request) {
-        if (itemRepository.findById(request.id()).isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
-                "이미 존재하는 상품 ID입니다: " + request.id());
-        }
-        Item item = new Item(request.id(), request.name(), request.price(), request.imageUrl());
+        Item item = new Item(null, request.name(), request.price(), request.imageUrl());
         Item savedItem = itemRepository.save(item);
         return ItemResponse.from(savedItem);
     }
@@ -46,12 +42,14 @@ public class ItemService {
 
     public ItemResponse updateItem(Long id, ItemRequest request) {
         Item existingItem = itemRepository.findById(id)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                "수정하려는 상품을 찾을 수 없습니다: " + id));
+            .orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "수정하려는 상품을 찾을 수 없습니다: " + id));
         existingItem.updateItemInfo(request.name(), request.price(), request.imageUrl());
-        Item updatedItem = itemRepository.save(existingItem);
-        return ItemResponse.from(updatedItem);
+        itemRepository.update(existingItem);
+        return ItemResponse.from(existingItem);
     }
+
 
     public void deleteItem(Long id) {
         itemRepository.findById(id)

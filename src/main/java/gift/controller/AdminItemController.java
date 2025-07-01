@@ -43,7 +43,7 @@ public class AdminItemController {
 
     @GetMapping("/new")
     public String newItemForm(Model model) {
-        model.addAttribute("item", new ItemRequest(null, null, 0, null));
+        model.addAttribute("item", new ItemRequest(null, 0, null));
         return "admin/items/form";
     }
 
@@ -84,7 +84,8 @@ public class AdminItemController {
         try {
             ItemResponse item = itemService.getItemById(id);
             model.addAttribute("item",
-                new ItemRequest(item.id(), item.name(), item.price(), item.imageUrl()));
+                new ItemRequest(item.name(), item.price(), item.imageUrl()));
+            model.addAttribute("itemId", id);
             return "admin/items/form";
         } catch (ResponseStatusException ex) {
             model.addAttribute("errorMessage", ex.getReason());

@@ -1,57 +1,80 @@
 package gift.repository;
 
 import gift.entity.Item;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class ItemRepository {
 
-    private final Map<Long, Item> items = new HashMap<>();
+    private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert simpleJdbcInsert;
+
+    public ItemRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+        this.simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+            .withTableName("products")
+            .usingGeneratedKeyColumns("id");
+    }
+
+    private final RowMapper<Item> itemRowMapper = (rs, rowNum) -> new Item(
+        rs.getLong("id"),
+        rs.getString("name"),
+        rs.getInt("price"),
+        rs.getString("image_url")
+    );
 
     public Item save(Item item) {
-        items.put(item.getId(), item);
-        return item;
+        Map<String, Object> params = new HashMap<>();
+        params.put("name", item.getName());
+        params.put("price", item.getPrice());
+        params.put("image_url", item.getImageUrl());
+
+        Long id = simpleJdbcInsert.executeAndReturnKey(params).longValue();
+
+        return new Item(id, item.getName(), item.getPrice(), item.getImageUrl());
     }
 
     public Optional<Item> findById(Long id) {
-        return Optional.ofNullable(items.get(id));
+        String sql = "SELECT id, name, price, image_url FROM products WHERE id = ?";
+        try {
+            Item item = jdbcTemplate.queryForObject(sql, itemRowMapper, id);
+            return Optional.ofNullable(item);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     public List<Item> findAll(int page, int size, String sortProperty, String sortDirection) {
-        List<Item> allItems = new ArrayList<>(items.values());
+        String sql = String.format(
+            "SELECT id, name, price, image_url FROM products ORDER BY %s %s LIMIT ? OFFSET ?",
+            sortProperty, sortDirection);
+        int offset = page * size;
+        return jdbcTemplate.query(sql, itemRowMapper, size, offset);
+    }
 
-        // 카테고리 Id를 필터링 하는 부분을 제외하고 페이지네이션을 구현함. 다음 과제에서 추가 예정
+    public void update(Item item) {
+        String sql = "UPDATE products SET name = ?, price = ?, image_url = ? WHERE id = ?";
+        int affectedRows = jdbcTemplate.update(sql,
+            item.getName(),
+            item.getPrice(),
+            item.getImageUrl(),
+            item.getId());
 
-        if (sortProperty != null && !sortProperty.isEmpty()) {
-            Comparator<Item> comparator = switch (sortProperty) {
-                case "id" -> Comparator.comparing(Item::getId);
-                case "name" -> Comparator.comparing(Item::getName);
-                case "price" -> Comparator.comparing(Item::getPrice);
-                default -> Comparator.comparing(Item::getId);
-            };
-            if ("desc".equalsIgnoreCase(sortDirection)) {
-                comparator = comparator.reversed();
-            }
-            allItems.sort(comparator);
+        if (affectedRows == 0) {
+            throw new EmptyResultDataAccessException("업데이트할 상품을 찾을 수 없습니다: " + item.getId(), 1);
         }
-
-        int startIndex = page * size;
-        int endIndex = Math.min(startIndex + size, allItems.size());
-
-        if (startIndex >= allItems.size() || startIndex < 0) {
-            return new ArrayList<>();
-        }
-
-        return allItems.subList(startIndex, endIndex);
     }
 
     public void deleteById(Long id) {
-        items.remove(id);
+        String sql = "DELETE FROM products WHERE id = ?";
+        jdbcTemplate.update(sql, id);
     }
 }

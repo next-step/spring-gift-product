@@ -2,26 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title th:text="${item.id() == null ? '새 상품 등록' : '상품 수정'}">상품 폼</title>
+  <title th:text="${itemId == null ? '새 상품 등록' : '상품 수정'}">상품 폼</title>
   <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
 <div class="container">
-  <h1 th:text="${item.id() == null ? '새 상품 등록' : '상품 수정'}">상품 폼</h1>
+  <h1 th:text="${itemId == null ? '새 상품 등록' : '상품 수정'}">상품 폼</h1>
 
   <div th:if="${errorMessage}" class="alert error" th:text="${errorMessage}"></div>
 
-  <form th:action="${item.id() == null ? '/admin/items' : '/admin/items/' + item.id()}"
+  <form th:action="${itemId == null ? '/admin/items' : '/admin/items/' + itemId}"
         th:object="${item}" method="post">
 
-    <input type="hidden" th:if="${item.id() != null}" name="_method" value="put"/>
-
-    <div class="form-group">
-      <label for="id">ID:</label>
-      <input type="number" id="id" th:field="*{id}" th:readonly="${item.id() != null}"
-             th:attr="placeholder=${item.id() == null ? '상품 ID (숫자)' : ''}"/>
-      <span th:if="${#fields.hasErrors('id')}" th:errors="*{id}" class="error-message"></span>
-    </div>
+    <input type="hidden" th:if="${itemId != null}" name="_method" value="put"/>
 
     <div class="form-group">
       <label for="name">이름:</label>
@@ -43,7 +36,7 @@
     </div>
 
     <div class="form-actions">
-      <button type="submit" class="btn primary" th:text="${item.id() == null ? '등록' : '수정'}">제출
+      <button type="submit" class="btn primary" th:text="${itemId == null ? '등록' : '수정'}">제출
       </button>
       <a href="/admin/items" class="btn secondary">목록으로</a>
     </div>
