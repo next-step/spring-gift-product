@@ -21,7 +21,7 @@ public class ProductService {
 
     public ProductResponseDto findProductById(Long id){
         // null 검사 후 반환
-        Product product = productRepository.findProductById(id).orElseThrow(() -> new ProductNotFoundException(id));
+        Product product = productRepository.findProductById(id);
         return new ProductResponseDto(product);
     }
 
@@ -42,7 +42,7 @@ public class ProductService {
         }
 
         // null 검사 후 반환
-        Product product = productRepository.findProductById(id).orElseThrow(() -> new ProductNotFoundException(id));
+        Product product = productRepository.findProductById(id);
         return new ProductResponseDto(product);
     }
 
