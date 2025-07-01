@@ -98,12 +98,10 @@
 
     // 상품 삭제
     function deleteProduct(id) {
-        fetch('/api/products', {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id })
+        fetch(`/api/products/${id}`, {
+            method: 'DELETE'
         })
-            .then(() => fetchProducts())
+            .then(() => fetchProducts());
     }
 
     // 상품 수정

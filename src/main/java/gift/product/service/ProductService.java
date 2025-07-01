@@ -45,7 +45,7 @@ public class ProductService {
             product.setName(productRequestDto.getName());
             product.setPrice(productRequestDto.getPrice());
             product.setImageUrl(productRequestDto.getImageUrl());
-            return fromEntity(productRepository.save(product));
+            return productRepository.save(product);
         }
         return null;
     }

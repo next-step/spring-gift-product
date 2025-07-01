@@ -48,9 +48,9 @@ public class ProductController {
     }
 
     //삭제
-    @DeleteMapping
-    public ResponseEntity<Void> deleteProduct(@RequestBody ProductRequestDto productRequestDto) {
-        productService.deleteProduct(productRequestDto.getId());
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
 
