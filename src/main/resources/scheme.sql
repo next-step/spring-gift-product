@@ -1,8 +1,7 @@
-create table member
-{
-    id bigint,
-    name  varchar(100),
-    age int,
-    email varchar(255),
-    primary key(id)
-}
+CREATE TABLE product
+(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name  VARCHAR(255),
+    price INT,
+    image VARCHAR(255)
+);

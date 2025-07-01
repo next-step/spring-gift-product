@@ -1,33 +1,42 @@
 package gift.controller;
 
 import gift.model.Product;
+import gift.repository.ProductDao;
 import org.springframework.web.bind.annotation.*;
-import gift.service.ProductService;
 
 import java.util.List;
 
 @RequestMapping("/api")
 @RestController
 public class ProductController {
-    private final ProductService productService;
+    private final ProductDao productDao;
 
-    public ProductController(ProductService productService) {
-        this.productService = productService;
+    public ProductController(ProductDao productDao) {
+        this.productDao = productDao;
     }
+
     @GetMapping("/products")
     public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+        return productDao.getAllProducts();
     }
+
+    @GetMapping("/products/{id}")
+    public Product getProductById(@PathVariable int id) {
+        return productDao.getProductById(id);
+    }
+
     @PostMapping("/products")
     public void addProduct(@RequestBody Product product) {
-        productService.addProduct(product);
+        productDao.insertProduct(product);
     }
+
     @DeleteMapping("products/{id}")
     public void deleteProduct(@PathVariable Long id) {
-        productService.removeProduct(id);
+        productDao.removeProduct(id);
     }
+
     @PatchMapping("/products/{id}")
     public void updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        productService.updateProduct(id, product);
+        productDao.updateProduct(id, productDao.getProductById(id), product);
     }
 }
