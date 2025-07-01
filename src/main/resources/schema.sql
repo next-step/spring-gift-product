@@ -2,5 +2,5 @@ CREATE TABLE IF NOT EXISTS item (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(500) NOT NULL,
     price INT NOT NULL,
-    image_url TEXT
+    image_url TEXT NOT NULL
 );
