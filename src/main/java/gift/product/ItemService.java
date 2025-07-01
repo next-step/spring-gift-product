@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 public class ItemService {
 
 	private final ItemRepositoryImpl itemRepository;
@@ -28,10 +30,11 @@ public class ItemService {
 	public Long createItem(ItemRequest req) {
 
 		Item item = new Item(req.name(), req.price(), req.imageUrl());
-		
+
 		return itemRepository.save(item);
 	}
 
+	@Transactional(readOnly = true)
 	public List<GetItemResponse> getAllItems() {
 
 		List<Item> items = itemRepository.findAll();
@@ -47,7 +50,7 @@ public class ItemService {
 			).toList();
 	}
 
-
+	@Transactional(readOnly = true)
 	public GetItemResponse getItem(Long itemId) {
 
 		Item item = itemRepository.findById(itemId)
