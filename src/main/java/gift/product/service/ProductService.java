@@ -23,9 +23,10 @@ public class ProductService {
 
     @Transactional
     public ProductResponse addProduct(ProductRequest req) {
-        Optional<Product> product = productRepository.save(req);
-        if (product.isPresent()) {
-            return ProductResponse.from(product.get());
+        Product product = new Product(req.name(), req.price(), req.imageUrl());
+        Optional<Product> optionalProduct = productRepository.save(product);
+        if (optionalProduct.isPresent()) {
+            return ProductResponse.from(optionalProduct.get());
         }
         throw new RuntimeException("ProductService : addProduct() failed - 500 Internal Server Error");
     }

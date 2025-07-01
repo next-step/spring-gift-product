@@ -17,20 +17,14 @@ public class ProductRepository {
     public ProductRepository(JdbcClient jdbcClient) {
         this.jdbcClient = jdbcClient;
     }
-
-    private static Long nextId = 11L;
-
-    public Optional<Product> save(ProductRequest request){
-        Product product = new Product(nextId, request.name(), request.price(), request.imageUrl());
-
-        String insertSql = "INSERT INTO product (id, name, price, image_url) VALUES (:id, :name, :price, :imageUrl)";
+    
+    public Optional<Product> save(Product product){
+        String insertSql = "INSERT INTO product (name, price, image_url) VALUES (:name, :price, :imageUrl)";
         jdbcClient.sql(insertSql)
-                .param("id", nextId)
-                .param("name", request.name())
-                .param("price", request.price())
-                .param("imageUrl", request.imageUrl())
+                .param("name", product.getName())
+                .param("price", product.getPrice())
+                .param("imageUrl", product.getImageUrl())
                 .update();
-        nextId = nextId + 1;
         return Optional.of(product);
     }
 
