@@ -12,7 +12,6 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
 public class ProductService {
 
     private static final String PRODUCT_NOT_FOUND_MESSAGE = "해당 상품을 찾을 수 없습니다.";
@@ -22,7 +21,6 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    @Transactional
     public ProductResponseDto createProduct(ProductCreateRequestDto requestDto) {
         Long newProductId = productRepository.save(requestDto);
         return new ProductResponseDto(new Product(newProductId, requestDto));
