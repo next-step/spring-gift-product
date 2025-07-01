@@ -4,6 +4,7 @@ import gift.entity.Product;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -66,7 +67,11 @@ public class JdbcProductRepository implements ProductRepository {
     @Override
     public Product update(Long id, String name, int price, String imageUrl) {
         String sql = "UPDATE products SET name = ?, price = ?, image_url = ? WHERE id = ?";
-        jdbcTemplate.update(sql, name, price, imageUrl, id);
+        var affectedRows = jdbcTemplate.update(sql, name, price, imageUrl, id);
+
+        if (affectedRows == 0) {
+            throw new NoSuchElementException("해당 ID의 상품이 존재하지 않아 업데이트할 수 없습니다: " + id);
+        }
         return new Product(id, name, price, imageUrl);
     }
 
