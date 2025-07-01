@@ -24,41 +24,47 @@ public class ProductAdminController {
     @GetMapping
     public String list(Model model) {
         model.addAttribute("products", service.getAll());
-        return "admin/list";  // templates/admin/list.html
+        return "admin/list";
     }
 
     // 추가 폼
     @GetMapping("/create")
     public String createForm() {
-        return "admin/create";  // templates/admin/create.html
+        return "admin/create";
     }
 
     // 상품 추가
     @PostMapping("/create")
     public String create(ProductRequestDto dto) {
-        service.createProduct(dto);
+        Product product = new Product(null, dto.name(), dto.price(), dto.imageUrl());
+        service.createProduct(product);
         return "redirect:/admin/products";
     }
 
     // 수정 폼
     @GetMapping("/{id}/update")
     public String updateForm(@PathVariable Long id, Model model) {
-        Product product = service.getById(id);
+        Product product = service.getById(id)
+                .orElseThrow(() -> new IllegalArgumentException("상품 없음"));
         model.addAttribute("product", product);
-        return "admin/update";  // templates/admin/update.html
+        return "admin/update";
     }
 
     // 상품 수정
     @PostMapping("/{id}/update")
     public String update(@PathVariable Long id, ProductRequestDto dto) {
-        service.updateProduct(id, dto);
+        Product product = new Product(id, dto.name(), dto.price(), dto.imageUrl());
+        service.update(id, product).orElseThrow(() -> new IllegalArgumentException("수정 실패"));
         return "redirect:/admin/products";
     }
 
     // 상품 삭제
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable Long id) {
-        service.delete(id);
+        boolean deleted = service.delete(id);
+        if (!deleted) {
+            throw new IllegalArgumentException("삭제 실패");
+        }
         return "redirect:/admin/products";
     }
 }

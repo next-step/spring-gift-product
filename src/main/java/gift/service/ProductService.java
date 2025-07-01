@@ -1,9 +1,9 @@
 package gift.service;
 
-import gift.dto.ProductRequestDto;
 import gift.entity.Product;
 import gift.repository.ProductRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,25 +21,24 @@ public class ProductService {
     }
 
     // 단건 조회
-    public Product getById(long id) {
+    public Optional<Product> getById(Long id) {
         return repo.findById(id);
     }
 
     // 추가
-    public Product createProduct(ProductRequestDto req) {
-        Product product = new Product(null, req.name(), req.price(), req.imageUrl());
-        return repo.createProduct(product);
+    public Product createProduct(Product product) {
+        return repo.save(product);
     }
 
     // 수정
-    public Product updateProduct(Long id, ProductRequestDto req) {
-        Product updatedProduct = new Product(id, req.name(), req.price(), req.imageUrl());
-        return repo.updateProduct(id, updatedProduct);
+    public Optional<Product> update(Long id, Product product) {
+        return repo.update(id, product);
     }
 
     // 삭제
     public boolean delete(Long id) {
-        if (repo.findById(id) == null) {
+        Optional<Product> existing = repo.findById(id);
+        if (existing.isEmpty()) {
             return false;
         }
         repo.delete(id);
