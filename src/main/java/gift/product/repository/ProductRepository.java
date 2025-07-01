@@ -81,7 +81,7 @@ public class ProductRepository {
 
         String sql = "update product set name = ?, price = ?, image_url = ? where id = ?";
 
-        jdbcTemplate.update(sql, productRowMapper);
+        jdbcTemplate.update(sql, product.getName(), product.getPrice(), product.getImageUrl(), product.getId());
 
         return product;
     }
