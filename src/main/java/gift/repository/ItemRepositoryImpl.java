@@ -1,18 +1,16 @@
 package gift.repository;
 
 
-import gift.dto.ItemDTO;
 import gift.entity.Item;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Repository
+//@Repository
 public class ItemRepositoryImpl implements ItemRepository {
 
     private final Map<Long, Item> items = new ConcurrentHashMap<>();
