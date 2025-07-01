@@ -28,20 +28,15 @@ public class ProductService {
 
     @Transactional
     public ProductResponseDto updateProduct(Long id, ProductUpdateRequestDto requestDto) {
-        boolean updated = productRepository.update(id, requestDto);
-        if (!updated) {
-            throw new EntityNotFoundException(PRODUCT_NOT_FOUND_MESSAGE);
-        }
-
-        return new ProductResponseDto(new Product(id, requestDto));
+        getProduct(id);
+        productRepository.update(id, requestDto);
+        return getProduct(id);
     }
 
     @Transactional
     public void deleteProduct(Long id) {
-        boolean deleted = productRepository.delete(id);
-        if (!deleted) {
-            throw new EntityNotFoundException(PRODUCT_NOT_FOUND_MESSAGE);
-        }
+        getProduct(id);
+        productRepository.delete(id);
     }
 
     public List<ProductResponseDto> getProducts() {

@@ -41,19 +41,17 @@ public class ProductRepository {
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
-    public boolean update(Long id, ProductUpdateRequestDto requestDto) {
-        int affectedRows = jdbcClient.sql(
+    public void update(Long id, ProductUpdateRequestDto requestDto) {
+        jdbcClient.sql(
                         "UPDATE product SET name=?, price=?, image_url=? WHERE id=?")
                 .param(requestDto.name())
                 .param(requestDto.price())
                 .param(requestDto.imageUrl())
                 .param(id)
                 .update();
-        return affectedRows > 0;
     }
 
-    public boolean delete(Long id) {
-        int affectedRows = jdbcClient.sql("DELETE FROM product WHERE id=?").param(id).update();
-        return affectedRows > 0;
+    public void delete(Long id) {
+        jdbcClient.sql("DELETE FROM product WHERE id=?").param(id).update();
     }
 }
