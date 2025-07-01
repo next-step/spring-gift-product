@@ -1,11 +1,7 @@
 package gift.product.repository;
 
 import gift.product.Product;
-import gift.product.dto.ProductRequest;
-import gift.product.dto.ProductUpdateRequest;
 import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -17,7 +13,7 @@ public class ProductRepository {
     public ProductRepository(JdbcClient jdbcClient) {
         this.jdbcClient = jdbcClient;
     }
-    
+
     public Optional<Product> save(Product product){
         String insertSql = "INSERT INTO product (name, price, image_url) VALUES (:name, :price, :imageUrl)";
         jdbcClient.sql(insertSql)
@@ -52,14 +48,14 @@ public class ProductRepository {
         );
     }
 
-    public int update(Long id, ProductUpdateRequest request){
+    public int update(Product product){
         String updateSql = "UPDATE product SET name = :name, price = :price, image_url = :imageUrl WHERE id = :id";
 
         return jdbcClient.sql(updateSql)
-                .param("id", id)
-                .param("name", request.name())
-                .param("price", request.price())
-                .param("imageUrl", request.imageUrl())
+                .param("id", product.getId())
+                .param("name", product.getName())
+                .param("price", product.getPrice())
+                .param("imageUrl", product.getImageUrl())
                 .update();
     }
 }

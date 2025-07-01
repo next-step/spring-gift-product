@@ -5,11 +5,8 @@ import gift.product.dto.ProductRequest;
 import gift.product.dto.ProductResponse;
 import gift.product.dto.ProductUpdateRequest;
 import gift.product.repository.ProductRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +39,18 @@ public class ProductService {
 
     @Transactional
     public void updateProduct(Long id, ProductUpdateRequest req) {
-        int affectedRows = productRepository.update(id, req);
+        // 1. 조회
+        Optional<Product> optionalProduct = productRepository.get(id);
+        if (optionalProduct.isEmpty()) {
+            throw new RuntimeException("ProductService : updateProduct() failed - 404 Not Found Error");
+        }
+        Product product = optionalProduct.get();
+
+        // 2. 수정
+        product.update(req.name(), req.price(), req.imageUrl());
+
+        // 3. DB 업데이트
+        int affectedRows = productRepository.update(product);
         if (affectedRows == 0) {
             throw new RuntimeException("ProductService : updateProduct() failed - 500 Internal Server Error");
         }
