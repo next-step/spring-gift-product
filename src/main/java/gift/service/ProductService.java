@@ -27,9 +27,9 @@ public class ProductService {
 
   private Product findProductByIdOrFail(Long id) {
     Product product = productRepository.findById(id);
-      if (product == null) {
-          throw new ProductNotFoundException();
-      }
+    if (product == null) {
+      throw new ProductNotFoundException();
+    }
     return product;
   }
 
@@ -43,15 +43,6 @@ public class ProductService {
   }
 
   public ProductResponseDto updateProduct(Long productId, ProductRequestDto dto) {
-    if (dto.name() == null) {
-      throw new InvalidNameException();
-    }
-    if (dto.price() < 0) {
-      throw new InvalidPriceException();
-    }
-    if (dto.imageUrl() == null) {
-      throw new InvalidImageUrlException();
-    }
     Product updatedProduct = productRepository.updateProduct(productId, dto.name(), dto.price(),
         dto.imageUrl());
     return updatedProduct.toDto();
