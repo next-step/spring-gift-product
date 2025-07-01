@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 public class ProductRepository {
 
     private final NamedParameterJdbcTemplate template;
-    private final SimpleJdbcInsert insert;
+    private final SimpleJdbcInsert jdbcInsert;
 
     private final RowMapper<Product> rowMapper = (rs, rowNum) -> new Product(
             rs.getLong("id"),
@@ -27,7 +27,7 @@ public class ProductRepository {
 
     public ProductRepository(DataSource dataSource) {
         this.template = new NamedParameterJdbcTemplate(dataSource);
-        this.insert = new SimpleJdbcInsert(dataSource)
+        this.jdbcInsert = new SimpleJdbcInsert(dataSource)
                 .withTableName("product")
                 .usingGeneratedKeyColumns("id");
     }
@@ -55,7 +55,7 @@ public class ProductRepository {
                 .addValue("price", product.getPrice())
                 .addValue("image_url", product.getImageUrl());
 
-        Number key = insert.executeAndReturnKey(params);
+        Number key = jdbcInsert.executeAndReturnKey(params);
         long id = key.longValue();
         product.setId(id);
         return product;
