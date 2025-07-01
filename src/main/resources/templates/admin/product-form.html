@@ -6,12 +6,11 @@
 </head>
 <body>
 <div class="form-container">
+
   <h1 th:text="${product?.id} == null ? '상품 등록' : '상품 수정'"></h1>
 
-  <form th:action="${product?.id} == null ? @{/admin/products} : @{/admin/products/{id}(id=${product.id})}"
-        th:object="${product}" method="post">
-
-    <input type="hidden" name="_method" th:if="${product?.id} != null" value="put"/>
+  <form th:action="${product?.id} == null ? @{/admin/products} : @{/admin/products/{id}/update(id=${product.id})}"
+        method="post" th:object="${product}">
 
     <div class="form-group">
       <label for="name">상품명</label>
@@ -29,7 +28,8 @@
     </div>
 
     <div class="button-group">
-      <button type="submit" class="btn-submit" th:text="${product?.id} == null ? '등록' : '수정'">제출</button>
+      <button type="submit" class="btn-submit"
+              th:text="${product?.id} == null ? '등록' : '수정'">제출</button>
       <a class="btn-cancel" th:href="@{/admin/products}">← 목록으로</a>
     </div>
 
@@ -37,4 +37,5 @@
 </div>
 </body>
 </html>
+
 

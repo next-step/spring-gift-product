@@ -9,7 +9,7 @@
   <h1>📦 상품 상세 정보</h1>
   <div class="product-card">
     <div class="product-image">
-      <img th:src="${product.imageUrl}" alt="상품 이미지"/>
+      <img th:if="${product.imageUrl != null}" th:src="${product.imageUrl}" alt="상품 이미지"/>
     </div>
     <div class="product-info">
       <p><strong>ID:</strong> <span th:text="${product.id}">1</span></p>
