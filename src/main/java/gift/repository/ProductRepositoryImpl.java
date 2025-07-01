@@ -74,7 +74,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         jdbcTemplate.update(sql, id);
     }
 
-    private static RowMapper<Product> getProductRowMapper() {
+    private static final RowMapper<Product> getProductRowMapper() {
         return (rs, rowNum) -> new Product(
                 rs.getLong("id"),
                 rs.getString("name"),
