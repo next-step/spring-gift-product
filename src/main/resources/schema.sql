@@ -1,6 +1,6 @@
 CREATE TABLE product
 (
-    id       BIGINT,
+    id       BIGINT AUTO_INCREMENT,
     name     VARCHAR(100),
     price    INT,
     imageUrl VARCHAR(255),
