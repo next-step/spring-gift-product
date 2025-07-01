@@ -25,3 +25,17 @@
 - [X] 상품 생성 기능 연동
 - [X] 상품 수정 기능 연동
 - [X] 상품 삭제 기능 연동
+
+### [✔️] DB 마이그레이션 (HashMap -> h2)
+- [X] h2 연결 및 목업 데이터 추가
+- [X] jdbctemplate 메서드로 기존 코드 리팩토링
+    - [X] 게시글 조회 
+    - [X] 게시글 생성
+    - [X] 게시글 수정
+    - [X] 게시글 삭제
+- [X] validation 추가 
+- [X] db 초기화 및 목업데이터 삽입 로직 위치 변경 (service -> schema/data.sql) 
+- [X] Item 객체 사용으로 변경 
+- [X] Optional로 NPE 대응
+- [X] Repository 계층 구현
+- [X] 서비스와 리포지토리의 분리

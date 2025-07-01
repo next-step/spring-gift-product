@@ -1,10 +1,17 @@
 package gift.product;
 
 
+import gift.product.dto.GetItemResponse;
+import gift.product.dto.ItemRequest;
 import jakarta.annotation.PostConstruct;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,61 +19,67 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 public class ItemService {
 
-	private final Map<Long, Item> db = new HashMap<>();
+	private final ItemRepositoryImpl itemRepository;
 
-	// 테스트를 위해 서버 재실행마다 15개의 아이템을 채워놓기
-	@PostConstruct
-	public void init() {
-		for (int i = 1; i <= 15; i++) {
-			Item item = new Item(
-				"Item " + i,
-				i * 1000,
-				"url" + i
-			);
-			db.put(item.getId(), item);
-		}
-	}
+	public ItemService(ItemRepositoryImpl itemRepository) {this.itemRepository = itemRepository;}
+
 
 	public Long createItem(ItemRequest req) {
-		if(req.name() == null || req.price() == null || req.imageUrl() == null)
-			throw new RuntimeException("요청 데이터가 잘못됐습니다.");
 
 		Item item = new Item(req.name(), req.price(), req.imageUrl());
-		db.put(item.getId(), item);
-		return item.getId();
+
+		return itemRepository.save(item);
 	}
 
+	@Transactional(readOnly = true)
 	public List<GetItemResponse> getAllItems() {
-		return db.values()
-			.stream()
-			.map(item -> new GetItemResponse(item.getId(), item.getName(), item.getPrice(), item.getImageUrl()))
-			.collect(Collectors.toList());
+
+		List<Item> items = itemRepository.findAll();
+
+		return items.stream()
+			.map(
+				item -> new GetItemResponse(
+					item.getId(),
+					item.getName(),
+					item.getPrice(),
+					item.getImageUrl()
+				)
+			).toList();
 	}
 
-
+	@Transactional(readOnly = true)
 	public GetItemResponse getItem(Long itemId) {
-		Item item = db.get(itemId);
-		if (item == null) {
-			throw new RuntimeException("해당 ID는 존재하지 않습니다!");
-		}
+
+		Item item = itemRepository.findById(itemId)
+			.orElseThrow(() -> new RuntimeException("존재하지 않는 아이템입니다."));
+
 		return new GetItemResponse(item.getId(), item.getName(), item.getPrice(), item.getImageUrl());
 	}
 
 
 	public GetItemResponse updateItem(Long itemId, ItemRequest req) {
-		Item item = db.get(itemId);
-		item.setName(req.name());
-		item.setPrice(req.price());
-		item.setImageUrl(req.imageUrl());
-		return new GetItemResponse(item.getId(), item.getName(), item.getPrice(), item.getImageUrl());
+
+		itemRepository.findById(itemId)
+			.orElseThrow(() -> new RuntimeException("존재하지 않는 아이템입니다."));
+
+		Item item = new Item(itemId, req.name(), req.price(), req.imageUrl());
+
+		itemRepository.update(item);
+
+		return getItem(itemId);
 	}
 
 
 	public void deleteItem(Long itemId) {
-		Item item = db.get(itemId);
-		db.remove(itemId);
+
+		itemRepository.findById(itemId)
+			.orElseThrow(() -> new RuntimeException("존재하지 않는 아이템입니다."));
+
+		itemRepository.deleteById(itemId);
+
 	}
 
 }

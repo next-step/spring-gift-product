@@ -1,6 +1,9 @@
 package gift.product;
 
 
+import gift.product.dto.GetItemResponse;
+import gift.product.dto.ItemRequest;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +21,7 @@ public class ItemController {
 
 	// 게시글 생성
 	@PostMapping()
-	public Long createItem(@RequestBody ItemRequest req) {
+	public Long createItem(@Valid @RequestBody ItemRequest req) {
 		return itemService.createItem(req);
 	}
 
@@ -36,7 +39,7 @@ public class ItemController {
 
 	// 게시글 수정
 	@PutMapping("/{itemId}")
-	public GetItemResponse updateItem(@PathVariable Long itemId, @RequestBody ItemRequest req) {
+	public GetItemResponse updateItem(@PathVariable Long itemId, @Valid @RequestBody ItemRequest req) {
 		if(req.name() == null || req.price() == null || req.imageUrl() == null)
 			throw new RuntimeException("요청 데이터가 잘못됐습니다.");
 

@@ -12,15 +12,17 @@ public class Item {
 	private String imageUrl;
 
 	public Item(String name, Integer price, String imageUrl) {
-		this.id = nextId++; // 생성자에서 id 저장
 		this.name = name;
 		this.price = price;
 		this.imageUrl = imageUrl;
 	}
 
-	// auto increment 구현용 정적변수
-	private static long nextId = 1;
-
+	public Item(Long id, String name, Integer price, String imageUrl) {
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.imageUrl = imageUrl;
+	}
 
 	public Long getId() {
 		return id;

@@ -1,6 +1,9 @@
 package gift.product;
 
 
+import gift.product.dto.GetItemResponse;
+import gift.product.dto.ItemRequest;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +39,7 @@ public class AdminController {
 
 	// 3. 게시글 등록처리
 	@PostMapping
-	public String create(@ModelAttribute ItemRequest req) {
+	public String create(@ModelAttribute @Valid ItemRequest req) {
 		itemService.createItem(req);
 		return "redirect:/admin/products";
 	}
@@ -53,7 +56,7 @@ public class AdminController {
 
 	// 5. 게시글 수정처리
 	@PostMapping("/{id}/edit")
-	public String update(@PathVariable Long id, @ModelAttribute ItemRequest req) {
+	public String update(@PathVariable Long id, @ModelAttribute @Valid ItemRequest req) {
 		itemService.updateItem(id, req);
 		return "redirect:/admin/products";
 	}
