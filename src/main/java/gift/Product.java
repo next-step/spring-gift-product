@@ -1,10 +1,19 @@
 package gift;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+
 public class Product {
 
     private Long id;
+
+    @NotBlank(message = "이름은 필수 항목입니다.")
     private String name;
+
+    @Positive(message = "가격은 0보다 커야 합니다.")
     private int price;
+
+    @NotBlank(message = "이미지 URL을 입력해주세요.")
     private String imageUrl;
 
     public Product(Long id, String name, int price, String imageUrl) {
