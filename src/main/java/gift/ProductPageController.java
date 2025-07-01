@@ -1,8 +1,10 @@
 package gift;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -31,26 +33,37 @@ public class ProductPageController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute Product product) {
+    public String create(@Valid @ModelAttribute Product product, BindingResult result) {
+        if (result.hasErrors()) {
+            return "Productform";
+        }
         products.save(product);
         return "redirect:/products";
     }
 
     @GetMapping("/{id}/edit")
     public String editForm(@PathVariable Long id, Model model) {
-        model.addAttribute("product", products.findById(id));
+        Product product = products.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다. id=" + id));
+        model.addAttribute("product", product);
         return "Productform";
     }
 
     @PostMapping("/{id}")
-    public String edit(@PathVariable Long id, @ModelAttribute Product updated) {
+    public String edit(@Valid @PathVariable Long id, @ModelAttribute Product updated, BindingResult result) {
+        if (result.hasErrors()) {
+            return "Productform";
+        }
         products.update(id, updated);
         return "redirect:/products";
     }
 
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable Long id) {
+        products.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다. id=" + id));
         products.delete(id);
+
         return "redirect:/products";
     }
 

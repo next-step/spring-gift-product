@@ -1,14 +1,9 @@
 package gift;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/products")
@@ -24,9 +19,9 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProducts(@PathVariable Long id) {
-        Product storedProduct = products.findById(id);
-        if (storedProduct == null) {
+    public ResponseEntity<Optional<Product>> getProducts(@PathVariable Long id) {
+        Optional<Product> storedProduct = products.findById(id);
+        if (storedProduct.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(storedProduct);
@@ -39,7 +34,7 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProducts(@PathVariable Long id, @RequestBody Product update) {
-        if (products.findById(id)== null) {
+        if (products.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         update.setId(id);
@@ -49,7 +44,7 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
-        if (products.findById(id) != null) {
+        if (products.findById(id).isPresent()) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
