@@ -1,10 +1,18 @@
 package gift.dto;
 
-public class RequestDto {
+import gift.entity.Product;
+
+public class ResponseDto {
 
     private Long id;
     private String name;
     private String imageUrl;
+
+    public ResponseDto(Product product) {
+        this.id = product.getId();
+        this.name = product.getName();
+        this.imageUrl = product.getImageUrl();
+    }
 
     public Long getId() {
         return id;
@@ -14,13 +22,7 @@ public class RequestDto {
         return name;
     }
 
-    public String getImageUrl() {return imageUrl;}
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public String getImageUrl() {
+        return imageUrl;
     }
 }

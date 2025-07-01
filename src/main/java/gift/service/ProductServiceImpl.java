@@ -22,10 +22,7 @@ public class ProductServiceImpl implements ProductService {
     // 1. 상품 등록
     @Override
     public ResponseDto create(RequestDto dto) {
-        Product product = new Product(); // 기본 생성자 사용
-        product.setName(dto.getName());
-        product.setImageUrl(dto.getImageUrl());
-
+        Product product = new Product(null, dto.getName(), dto.getImageUrl());
         Product saved = productRepository.save(product);
 
         return new ResponseDto(saved);
@@ -49,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResponseDto findById(Long id) {
         Product product = productRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 id = " + id));
+                () -> new ResponseStatusException(HttpStatus.NO_CONTENT));
 
         return new ResponseDto(product);
     }
@@ -58,18 +55,18 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResponseDto update(Long id, RequestDto dto) {
         Product product = productRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 id = " + id));
+                () -> new ResponseStatusException(HttpStatus.NO_CONTENT));
 
         product.update(dto);
-        Product updated = productRepository.save(product);
-        return new ResponseDto(updated);
+        productRepository.update(product);
+        return new ResponseDto(product);
     }
 
     // 4. 상품 삭제
     @Override
     public void delete(Long id) {
         Product product = productRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 id = " + id));
+                () -> new ResponseStatusException(HttpStatus.NO_CONTENT));
 
         productRepository.deleteById(id);
     }

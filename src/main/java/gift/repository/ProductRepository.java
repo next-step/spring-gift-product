@@ -15,6 +15,9 @@ public interface ProductRepository {
     // 2-2. 선택 조회
     Optional<Product> findById(Long id);
 
-    // 3. 삭제
+    // 3. 수정
+    void update(Product product);
+
+    // 4. 삭제
     void deleteById(Long id);
 }
