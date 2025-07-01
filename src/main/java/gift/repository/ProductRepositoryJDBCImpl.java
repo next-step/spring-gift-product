@@ -20,6 +20,14 @@ public class ProductRepositoryJDBCImpl implements ProductRepository {
         this.jdbcClient = jdbcClient;
     }
 
+
+    private static final RowMapper<Product> ROW_MAPPER = (rs, rowNum) -> new Product(
+        rs.getLong("id"),
+        rs.getString("name"),
+        rs.getInt("price"),
+        rs.getString("image_url")
+    );
+
     @Override
     public Product save(Product product) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -37,14 +45,14 @@ public class ProductRepositoryJDBCImpl implements ProductRepository {
 
         return jdbcClient.sql("SELECT * FROM product WHERE id = :id")
             .param("id", generatedId)
-            .query(rowMapper)
+            .query(ROW_MAPPER)
             .single();
     }
 
     @Override
     public List<Product> findAll() {
         return jdbcClient.sql("SELECT * FROM product")
-            .query(rowMapper)
+            .query(ROW_MAPPER)
             .list();
     }
 
@@ -52,7 +60,7 @@ public class ProductRepositoryJDBCImpl implements ProductRepository {
     public Optional<Product> findById(Long id) {
         return jdbcClient.sql("SELECT * FROM product WHERE id = :id")
             .param("id", id)
-            .query(rowMapper)
+            .query(ROW_MAPPER)
             .optional();
     }
 
@@ -75,11 +83,4 @@ public class ProductRepositoryJDBCImpl implements ProductRepository {
             .param("id", id)
             .update();
     }
-
-    private static final RowMapper<Product> rowMapper = (rs, rowNum) -> new Product(
-        rs.getLong("id"),
-        rs.getString("name"),
-        rs.getInt("price"),
-        rs.getString("image_url")
-    );
 }
