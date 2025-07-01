@@ -3,7 +3,7 @@ package gift.controller;
 
 import gift.dto.request.ProductRequestDto;
 import gift.dto.response.ProductResponseDto;
-import gift.dto.view.ProductView;
+import gift.view.ProductView;
 import gift.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,7 +67,7 @@ public class ProductAdminController {
         return "admin/edit-form";
     }
 
-    @PostMapping("/edit/{id}")
+    @PutMapping("/edit/{id}")
     public String updateProduct(@PathVariable Long id,
                                 @Valid @ModelAttribute("product") ProductRequestDto requestDto,
                                 BindingResult bindingResult,
@@ -82,10 +82,12 @@ public class ProductAdminController {
         return "redirect:/admin/products";
     }
 
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public String deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
 
         return "redirect:/admin/products";
     }
+
+
 }

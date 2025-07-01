@@ -1,4 +1,4 @@
-package gift.dto.view;
+package gift.view;
 
 import gift.dto.response.ProductResponseDto;
 

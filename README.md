@@ -51,3 +51,22 @@
   - 
 - [x] 상품 삭제 기능
   - `feat`: 상품 삭제 처리 컨트롤러 로직 구현 (`POST /admin/products/delete/{id}`)
+
+# 3단계: 데이터베이스 적용
+
+## 기능 목록
+
+- [x] H2 데이터베이스 연동 설정
+  - `feat`: `application.properties`에 연결 정보 설정
+- [x] 상품 테이블 스키마
+  - `feat`: `schema.sql` 추가
+- [x] ProductRepository 데이터베이스 적용
+  - `refactor`: 데이터저장소를 HashMap 기반에서 JdbcClient 기반으로 전환
+  - `feat`: `RowMapper<Product>`를 반환하는 `getProductRowMapper()` 추가
+  - `refactor`: id 값에 따라 `Optional<Product>`를 반환하는 `findById(Long id)` 리펙토링
+  - `refactor`: 상품 전체 리스트를 반환하는 `findAll()` 리펙토링
+  - `refactor`: id 값에 해당하는 상품을 삭제하는 `deleteById(Long id)` 리펙토링
+  - `refactor`: 상품 객체를 데이터 저장소에 저장하는 `save(Product product)` 리펙토링
+  - `refactor`: 상품을 수정하는 `update(Product product)` 리펙토링(추가) && 기존 관련 메서드 삭제
+- [x] 상품 초기화
+  - `feat`: `data.sql` 추가
