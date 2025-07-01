@@ -1,19 +1,18 @@
 package gift.repository;
 
-import gift.dto.GiftResponseDto;
 import gift.entity.Gift;
 import java.util.List;
 import java.util.Optional;
 
 public interface GiftRepository {
 
-  GiftResponseDto saveGift(Gift gift);
+  Gift saveGift(Gift gift);       
 
-  List<GiftResponseDto> findAllGifts();
+  List<Gift> findAllGifts();         
 
-  Optional<Gift> findById(Long id);
+  Optional<Gift> findById(Long id);  
 
-  void updateGift(Gift gift);
+  void updateGift(Gift gift);        
 
-  void deleteGiftById(Long id);
+  void deleteGiftById(Long id);        
 }

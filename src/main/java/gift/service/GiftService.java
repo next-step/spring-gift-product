@@ -9,15 +9,15 @@ import java.util.Map;
 
 public interface GiftService {
 
-  GiftResponseDto saveGift(GiftRequestDto dto);
+    GiftResponseDto saveGift(GiftRequestDto dto);
 
-  List<GiftResponseDto> findAll();
+    List<GiftResponseDto> findAll();
 
-  Optional<GiftResponseDto> findById(Long id);
+    Optional<GiftResponseDto> findById(Long id);  
 
-  GiftResponseDto update(Long id, Map<String, Object> updates);
+    GiftResponseDto update(Long id, Map<String, Object> updates); 
 
-  GiftResponseDto update(Long id, GiftUpdateDto updateDto);
+    GiftResponseDto update(Long id, GiftUpdateDto updateDto); 
 
-  void deleteGift(Long id);
+    void deleteGift(Long id);
 }

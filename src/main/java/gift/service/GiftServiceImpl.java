@@ -26,23 +26,22 @@ public class GiftServiceImpl implements GiftService {
         dto.getPrice(),
         dto.getImageUrl()
     );
-    return giftRepository.saveGift(gift);
+    Gift savedGift = giftRepository.saveGift(gift);
+    return toDto(savedGift);
   }
 
   @Override
   public List<GiftResponseDto> findAll() {
-    return giftRepository.findAllGifts();
+    return giftRepository.findAllGifts()
+                         .stream()
+                         .map(this::toDto)
+                         .toList();
   }
 
   @Override
   public Optional<GiftResponseDto> findById(Long id) {
     return giftRepository.findById(id)
-                         .map(gift -> new GiftResponseDto(
-                             gift.getId(),
-                             gift.getName(),
-                             gift.getPrice(),
-                             gift.getImageUrl()
-                         ));
+                         .map(this::toDto);
   }
 
   @Override
@@ -62,13 +61,7 @@ public class GiftServiceImpl implements GiftService {
     }
 
     giftRepository.updateGift(gift);
-
-    return new GiftResponseDto(
-        gift.getId(),
-        gift.getName(),
-        gift.getPrice(),
-        gift.getImageUrl()
-    );
+    return toDto(gift);
   }
 
   @Override
@@ -88,17 +81,20 @@ public class GiftServiceImpl implements GiftService {
     }
 
     giftRepository.updateGift(gift);
+    return toDto(gift);
+  }
 
+  @Override
+  public void deleteGift(Long id) {
+    giftRepository.deleteGiftById(id);
+  }
+
+  private GiftResponseDto toDto(Gift gift) {
     return new GiftResponseDto(
         gift.getId(),
         gift.getName(),
         gift.getPrice(),
         gift.getImageUrl()
     );
-  }
-
-  @Override
-  public void deleteGift(Long id) {
-    giftRepository.deleteGiftById(id);
   }
 }
