@@ -2,6 +2,16 @@
 
 ## STEP02: 상품 조회 및 관리 화면 구현
 
+### (추가) 데이터베이스를 이용하여 데이터를 저장
+1. JDBC Client를 활용하여 데이터를 저장
+2. Controller에서 데이터를 모아둔 것을 Repository로 분리
+3. ProductRepository에서 SQL문 실행
+4. ProductController에서는 받아온 데이터를 repository 객체를 통하여 역할을 넘김
+
+### 왜 JDBC Client인가?
+- 처음에는 JDBC Template을 사용하려 했으나, 중간에 막혀버리는 문제가 생김
+- 비교적 JDBC Client가 쉬워서,,, 그대로 진행하게 되었음
+
 ### 상품의 구성 요소
 - ID: 등록한 순서대로 상품 ID 생성
 - 이름: 상품의 이름
