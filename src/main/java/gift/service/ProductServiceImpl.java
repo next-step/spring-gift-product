@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -28,24 +29,24 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findAllProducts() {
+    public List<ProductResponseDto> findAllProducts() {
         List<Product> allProducts = productRepository.findAllProducts();
-        return allProducts;
+        List<ProductResponseDto> productResponseDtoList = allProducts.stream()
+                .map(product -> new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl()))
+                .collect(Collectors.toList());
+        return productResponseDtoList;
     }
 
 
     @Override
     public ProductResponseDto updateProduct(Long id, ProductRequestDto requestDto) {
 
-        Product product = productRepository.findProduct(id);
-        if (product == null) {
+
+        int rows = productRepository.updateProduct(id, requestDto.getName(), requestDto.getPrice(), requestDto.getImageUrl());
+        if (rows == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "상품을 찾을 수 없습니다. id = " + id);
         }
-
-        product.changeName(requestDto.getName());
-        product.changePrice(requestDto.getPrice());
-        product.changImageUrl(requestDto.getImageUrl());
-
+        Product product = productRepository.findProduct(id);
         return new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl());
     }
 

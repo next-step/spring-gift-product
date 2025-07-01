@@ -13,25 +13,18 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
+    public Product(long id, String name, long price, String imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
+    }
+
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void changeName(String name) {
-        if (name != null)
-            this.name = name;
-    }
-
-    public void changePrice(Long price) {
-        if (price != null)
-            this.price = price;
-    }
-
-    public void changImageUrl(String imageUrl) {
-        if (imageUrl != null)
-            this.imageUrl = imageUrl;
-    }
 
     public Long getId() {
         return id;

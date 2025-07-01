@@ -2,13 +2,11 @@ package gift.controller;
 
 import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
-import gift.entity.Product;
 import gift.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/products")
@@ -21,17 +19,17 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto requestDto) {
+    public ResponseEntity<?> createProduct(@RequestBody ProductRequestDto requestDto) {
+        if (requestDto.getName().length() >= 100) {
+            return ResponseEntity.badRequest().body("이름이 너무 깁니다. 100자 이내로 작성해주세요.");
+        }
         return ResponseEntity.ok(productService.saveProduct(requestDto));
 
     }
 
     @GetMapping
     public ResponseEntity<List<ProductResponseDto>> findAllProducts() {
-        List<Product> products = productService.findAllProducts();
-        return ResponseEntity.ok(products.stream()
-                .map(product -> new ProductResponseDto(product.getId(), product.getName(), product.getPrice(), product.getImageUrl()))
-                .collect(Collectors.toList()));
+        return ResponseEntity.ok(productService.findAllProducts());
     }
 
     @DeleteMapping("/{id}")
@@ -41,7 +39,10 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDto requestDto) {
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDto requestDto) {
+        if (requestDto.getName() == null || requestDto.getPrice() == null || requestDto.getImageUrl() == null) {
+            return ResponseEntity.badRequest().body("필수값이 누락되었습니다.");
+        }
         return ResponseEntity.ok(productService.updateProduct(id, requestDto));
     }
 
