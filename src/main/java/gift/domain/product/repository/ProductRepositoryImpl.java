@@ -1,8 +1,6 @@
 package gift.domain.product.repository;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 import gift.common.pagination.Page;
 import gift.common.pagination.Pageable;
@@ -33,10 +31,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     public Page<Product> find(Pageable pageable) {
 
-        int totalRow = jdbcClient.sql("""
-                        SELECT COUNT(*)
-                        FROM Product;
-                """).query(Integer.class).single();
+        int totalRow = getProductTotalRow();
 
         int start = pageable.getOffset();
 
@@ -58,7 +53,7 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     public Optional<Product> findById(Long id) {
 
-        return id == null ? null : jdbcClient.sql(
+        return id == null ? Optional.empty() : jdbcClient.sql(
                         """
                                 SELECT id, name, price, image_url
                                 FROM PRODUCT
@@ -69,43 +64,47 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     public Product save(Product product) {
-
-        KeyHolder keyHolder = new GeneratedKeyHolder();
         Long id = product.getId();
         if (id == null) {
-            jdbcClient.sql(
-                            """
-                                    INSERT INTO PRODUCT (name, price, image_url)
-                                    VALUES (:name, :price, :imageUrl)
-                                    """
-                    ).param("name", product.getName())
-                    .param("price", product.getPrice())
-                    .param("imageUrl", product.getImageUrl())
-                    .update(keyHolder);
-
-            id = Objects.requireNonNull(keyHolder.getKey()).longValue();
-        } else {
-            jdbcClient.sql(
-                            """
-                                         UPDATE PRODUCT
-                                         SET name = :name,
-                                             price = :price,
-                                             image_url = :imageUrl
-                                         WHERE id = :id
-                                    """
-                    ).param("id", id)
-                    .param("name", product.getName())
-                    .param("price", product.getPrice())
-                    .param("imageUrl", product.getImageUrl())
-                    .update();
-
+            id = insertProduct(product);
         }
+        updateProduct(product);
 
         return new Product(id,
                 product.getName(),
                 product.getPrice(),
                 product.getImageUrl());
+    }
 
+    private Long insertProduct(Product product) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcClient.sql(
+                        """
+                                INSERT INTO PRODUCT (name, price, image_url)
+                                VALUES (:name, :price, :imageUrl)
+                                """
+                ).param("name", product.getName())
+                .param("price", product.getPrice())
+                .param("imageUrl", product.getImageUrl())
+                .update(keyHolder);
+
+        return Objects.requireNonNull(keyHolder.getKey()).longValue();
+    }
+
+    private void updateProduct(Product product) {
+        jdbcClient.sql(
+                        """
+                                     UPDATE PRODUCT
+                                     SET name = :name,
+                                         price = :price,
+                                         image_url = :imageUrl
+                                     WHERE id = :id
+                                """
+                ).param("id", product.getId())
+                .param("name", product.getName())
+                .param("price", product.getPrice())
+                .param("imageUrl", product.getImageUrl())
+                .update();
     }
 
     public void deleteById(Long id) {
@@ -126,4 +125,10 @@ public class ProductRepositoryImpl implements ProductRepository {
                 .isPresent();
     }
 
+    private int getProductTotalRow() {
+        return jdbcClient.sql("""
+                        SELECT COUNT(*)
+                        FROM Product;
+                """).query(Integer.class).single();
+    }
 }
