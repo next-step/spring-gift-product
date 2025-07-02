@@ -5,6 +5,7 @@ import gift.dto.ProductRequestDto;
 import gift.dto.ProductResponseDto;
 import gift.entity.Product;
 import gift.repository.ProductRepositoryInterface;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,16 +19,14 @@ public class ProductService implements ProductServiceInterface {
 
     private final ProductRepositoryInterface productRepository;
 
-    public ProductService(ProductRepositoryInterface productRepository) {
+    public ProductService(@Qualifier("jdbcProductRepository") ProductRepositoryInterface productRepository) {
         this.productRepository = productRepository;
     }
 
     @Override
     public ProductResponseDto addProduct(ProductRequestDto requestDto) {
 
-        long productId = productRepository.getNewProductId();
         Product product = new Product(
-                productId,
                 requestDto.getName(),
                 requestDto.getPrice(),
                 requestDto.getImageUrl()
@@ -40,7 +39,16 @@ public class ProductService implements ProductServiceInterface {
 
     @Override
     public PageResponseDto getPageProducts(int page, int pageSize) {
-        List<Product> productList = productRepository.findAllProducts();
+
+        int totalProducts = productRepository.countAllProducts();
+        int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
+        if (totalPages == 0){
+            totalPages = 1;
+        }
+
+        int fromIndex = Math.max(0, (page - 1) * pageSize);
+
+        List<Product> productList = productRepository.findProductsByPage(fromIndex, pageSize);
         List<ProductResponseDto> products = new ArrayList<>();
         for (Product product : productList) {
             products.add(new ProductResponseDto(
@@ -51,21 +59,7 @@ public class ProductService implements ProductServiceInterface {
             ));
         }
 
-        int totalProducts = products.size();
-        int totalPages = (int) Math.ceil((double) totalProducts / pageSize);
-        if (totalPages == 0){
-            totalPages = 1;
-        }
-
-        int fromIndex = (page - 1) * pageSize;
-        int toIndex = Math.min(fromIndex + pageSize, totalProducts);
-
-        List<ProductResponseDto> pageProducts = new ArrayList<>();
-        if (fromIndex < totalProducts) {
-            pageProducts = products.subList(fromIndex, toIndex);
-        }
-
-        return new PageResponseDto(page, totalPages, pageProducts);
+        return new PageResponseDto(page, totalPages, products);
     }
 
     @Override
@@ -119,6 +113,11 @@ public class ProductService implements ProductServiceInterface {
         if (!deleted) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @Override
+    public int countAllProducts() {
+        return productRepository.countAllProducts();
     }
 
 }

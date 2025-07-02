@@ -18,6 +18,9 @@ public interface ProductRepositoryInterface {
     // 전체 상품 목록 조회
     List<Product> findAllProducts();
 
+    // 페이지 단위로 상품 가져오기
+    List<Product> findProductsByPage(int offset, int limit);
+
     // 선택 상품 조회
     Optional<Product> findProductById(Long id);
 
@@ -26,4 +29,9 @@ public interface ProductRepositoryInterface {
 
     // 상품 삭제 (성공시 true, 없으면 false)
     boolean deleteProduct(Long id);
+    
+    // 전체 상품 개수 조회
+    int countAllProducts();
+
+
 }

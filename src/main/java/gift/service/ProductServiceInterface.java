@@ -26,4 +26,7 @@ public interface ProductServiceInterface {
 
     // 상품 삭제
     void deleteProduct(Long id);
+
+    // 전체 상품 개수 조회
+    int countAllProducts();
 }

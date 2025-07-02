@@ -13,6 +13,10 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
+    public Product(String name, Integer price, String imageUrl) {
+        this(null, name, price, imageUrl);
+    }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
