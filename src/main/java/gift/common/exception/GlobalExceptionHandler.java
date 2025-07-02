@@ -102,5 +102,4 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .property("path", req.getRequestURI())
                 .build();
     }
-
 }
