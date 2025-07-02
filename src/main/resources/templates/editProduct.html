@@ -6,7 +6,7 @@
 </head>
 <body>
 <h2 style="text-align: center">상품 수정</h2>
-<form th:object="${product}" th:action="@{/admin/products/{id}(id=${product.id})}" method="post" style="display: flex; justify-content: center; align-items: center">
+<form th:object="${product}" th:action="@{/admin/products/{id}(id=${product.id})}" th:method="put" style="display: flex; justify-content: center; align-items: center">
     <ul>
         <li>
             <label for="name">상품명:</label>
