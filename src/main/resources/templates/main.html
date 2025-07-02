@@ -11,7 +11,6 @@
 <div>
   <h2>상품 등록</h2>
   <form th:action="@{/admin/products}" th:object="${request}" method="post">
-    <label>Id: <input type="number" th:field="*{id}" required/></label>
     <label>Name: <input type="text" th:field="*{name}" /></label>
     <label>Price: <input type="number" th:field="*{price}" /></label>
     <label>Image Url: <input type="text" th:field="*{imageUrl}" /></label>

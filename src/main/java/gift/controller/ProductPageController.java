@@ -36,7 +36,7 @@ public class ProductPageController {
     @PostMapping("")
     public String createProduct(@ModelAttribute ProductRequest request) {
         Product product = ProductMapper.toEntity(request);
-        productServiceAdmin.saveAdmin(product);
+        productServiceAdmin.insertAdmin(product);
         return "redirect:/admin/products";
     }
 
