@@ -1,8 +1,6 @@
 package gift.domain.product.service;
 
-import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -24,7 +22,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductResponse> getAllProducts(Pageable pageable) {
-        return productRepository.findAll(pageable).map(ProductResponse::from);
+        return productRepository.find(pageable).map(ProductResponse::from);
     }
 
     @Override
@@ -32,7 +30,7 @@ public class ProductServiceImpl implements ProductService {
         if (!productRepository.existsById(id)) {
             throw new NoSuchElementException("상품을 찾을 수 없습니다.");
         }
-        Product product = productRepository.findById(id);
+        Product product = productRepository.findById(id).orElseThrow(NoSuchElementException::new);
         return ProductResponse.from(product);
     }
 
@@ -59,6 +57,4 @@ public class ProductServiceImpl implements ProductService {
         }
         productRepository.deleteById(id);
     }
-    
-
 }

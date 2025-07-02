@@ -27,3 +27,25 @@ DELETE /api/products/{productId}
 3. 관리자 상품 수정 기능
 
 4. 관리자 상품 삭제 기능
+
+## 3단계
+
+1. h2 데이터베이스 환경설정
+
+    - build.gradle에 h2 데이터베이스 의존성 추가
+    - application.yml에 h2 데이터베이스 설정 추가
+      - H2 콘솔 활성화
+      - JDBC URL,username,password 설정
+
+2. 스키마 스크립트, 데이터 스크립트 생성
+
+    - src/main/resources/schema.sql
+
+3. CREATE 기능 구현(JdbcClient)
+    
+
+4. READ 기능 구현(JdbcClient)
+
+5. UPDATE 기능 구현(JdbcClient)
+
+6. DELETE 기능 구현(JdbcClient)

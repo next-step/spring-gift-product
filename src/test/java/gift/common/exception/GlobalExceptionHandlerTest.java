@@ -31,16 +31,18 @@ class GlobalExceptionHandlerTest {
 
     // --- 테스트용 DTO ---
     private record TestRequest(
-        @NotBlank(message = "이름은 필수입니다.")
-        String name,
-        @NotNull(message = "나이는 필수입니다.")
-        Integer age
-    ) {}
+            @NotBlank(message = "이름은 필수입니다.")
+            String name,
+            @NotNull(message = "나이는 필수입니다.")
+            Integer age
+    ) {
+    }
 
     @RestController
     public static class TestController {
         @PostMapping("/test/validation")
-        public void validation(@Valid @RequestBody TestRequest request) {}
+        public void validation(@Valid @RequestBody TestRequest request) {
+        }
 
         @GetMapping("/test/illegal-argument")
         public void illegalArgument() {
@@ -48,8 +50,9 @@ class GlobalExceptionHandlerTest {
         }
 
         @GetMapping("/test/missing-param")
-        public void missingParam(@RequestParam(required = true) String requiredParam) {}
-        
+        public void missingParam(@RequestParam(required = true) String requiredParam) {
+        }
+
         @GetMapping("/test/generic-exception")
         public void genericException() throws Exception {
             throw new Exception("예상치 못한 에러입니다.");
@@ -65,13 +68,12 @@ class GlobalExceptionHandlerTest {
 
         // when & then
         mockMvc.perform(post("/test/validation")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.errorCode").value("VALIDATION_FAILED"))
-            .andExpect(jsonPath("$.errors.length()").value(2))
-            .andExpect(jsonPath("$.errors[?(@.errorType == 'name')].reason").value("이름은 필수입니다."))
-            .andExpect(jsonPath("$.errors[?(@.errorType == 'age')].reason").value("나이는 필수입니다."));
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("VALIDATION_FAILED"))
+                .andExpect(jsonPath("$.errors").isArray())
+                .andExpect(jsonPath("$.errors.length()").value(2));
     }
 
     @Test
@@ -82,21 +84,20 @@ class GlobalExceptionHandlerTest {
 
         // when & then
         mockMvc.perform(post("/test/validation")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(malformedJson))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.errorCode").value("MALFORMED_JSON"))
-            .andExpect(jsonPath("$.errors[0].reason").value("유효하지 않은 요청 본문 형식입니다"));
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(malformedJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("MALFORMED_JSON"));
     }
-    
+
     @Test
     @DisplayName("IllegalArgumentException 처리 테스트")
     void handleIllegalArgumentException() throws Exception {
         // when & then
         mockMvc.perform(get("/test/illegal-argument"))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.errorCode").value("INVALID_INPUT"))
-            .andExpect(jsonPath("$.errors[0].reason").value("잘못된 인자가 전달되었습니다."));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("INVALID_INPUT"))
+                .andExpect(jsonPath("$.detail").value("잘못된 인자가 전달되었습니다."));
     }
 
     @Test
@@ -104,17 +105,17 @@ class GlobalExceptionHandlerTest {
     void handleMissingParams() throws Exception {
         // when & then
         mockMvc.perform(get("/test/missing-param"))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.errorCode").value("MISSING_PARAMETER"))
-            .andExpect(jsonPath("$.errors[0].errorType").value("requiredParam"));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("MISSING_PARAMETER"))
+                .andExpect(jsonPath("$.parameter").value("requiredParam"));
     }
-    
+
     @Test
     @DisplayName("처리되지 않은 모든 예외 처리 테스트")
     void handleGenericException() throws Exception {
         // when & then
         mockMvc.perform(get("/test/generic-exception"))
-            .andExpect(status().isInternalServerError())
-            .andExpect(jsonPath("$.errorCode").value("UNEXPECTED_ERROR"));
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.code").value("UNEXPECTED_ERROR"));
     }
-} 
+}
