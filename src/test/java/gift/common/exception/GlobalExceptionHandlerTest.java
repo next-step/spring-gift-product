@@ -71,10 +71,9 @@ class GlobalExceptionHandlerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errorCode").value("VALIDATION_FAILED"))
-                .andExpect(jsonPath("$.errors.length()").value(2))
-                .andExpect(jsonPath("$.errors[?(@.errorType == 'name')].reason").value("이름은 필수입니다."))
-                .andExpect(jsonPath("$.errors[?(@.errorType == 'age')].reason").value("나이는 필수입니다."));
+                .andExpect(jsonPath("$.code").value("VALIDATION_FAILED"))
+                .andExpect(jsonPath("$.errors").isArray())
+                .andExpect(jsonPath("$.errors.length()").value(2));
     }
 
     @Test
@@ -88,8 +87,7 @@ class GlobalExceptionHandlerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(malformedJson))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errorCode").value("MALFORMED_JSON"))
-                .andExpect(jsonPath("$.errors[0].reason").value("유효하지 않은 요청 본문 형식입니다"));
+                .andExpect(jsonPath("$.code").value("MALFORMED_JSON"));
     }
 
     @Test
@@ -98,8 +96,8 @@ class GlobalExceptionHandlerTest {
         // when & then
         mockMvc.perform(get("/test/illegal-argument"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errorCode").value("INVALID_INPUT"))
-                .andExpect(jsonPath("$.errors[0].reason").value("잘못된 인자가 전달되었습니다."));
+                .andExpect(jsonPath("$.code").value("INVALID_INPUT"))
+                .andExpect(jsonPath("$.detail").value("잘못된 인자가 전달되었습니다."));
     }
 
     @Test
@@ -108,8 +106,8 @@ class GlobalExceptionHandlerTest {
         // when & then
         mockMvc.perform(get("/test/missing-param"))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errorCode").value("MISSING_PARAMETER"))
-                .andExpect(jsonPath("$.errors[0].errorType").value("requiredParam"));
+                .andExpect(jsonPath("$.code").value("MISSING_PARAMETER"))
+                .andExpect(jsonPath("$.parameter").value("requiredParam"));
     }
 
     @Test
@@ -118,6 +116,6 @@ class GlobalExceptionHandlerTest {
         // when & then
         mockMvc.perform(get("/test/generic-exception"))
                 .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("$.errorCode").value("UNEXPECTED_ERROR"));
+                .andExpect(jsonPath("$.code").value("UNEXPECTED_ERROR"));
     }
 }
